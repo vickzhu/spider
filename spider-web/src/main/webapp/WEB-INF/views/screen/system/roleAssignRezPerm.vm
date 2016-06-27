@@ -1,0 +1,79 @@
+####################
+##    分配资源权限        ##
+####################
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">系统管理</a> <a href="#" class="current">角色管理</a> </div>
+    <h1>[$!{role.roleName}]资源权限分配</h1>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+			<form id="resourceForm" method="post" class="form-horizontal">
+				$!{tokenTool.hiddenField}
+				<input type="hidden" name="roleId" value="${role.roleId}" />
+				#foreach($group in $resourceGroupList)
+				<div class="widget-title">
+					<span class="icon">
+						<input class="cb_group" type="checkbox" groupId="${group.groupId}"/>
+					</span>
+                    <h5>$!{group.groupName}</h5>
+        			<span class="label label-info"></span>
+                </div>
+                <div class="widget-content" id="_rg$!{group.groupId}">
+					#foreach($entry in $resourceMap.get($!{group.groupId}))
+						<label>
+							<input type="checkbox" name="resourceId" value="$!{entry.resourceId}" #if(${permissionMap.get($!{entry.resourceId})})checked #end>$!{entry.resourceName}
+                        </label>						
+					#end
+				</div>
+				#end
+    		<div style="padding:10px;">
+    			<button id="btn_save" type="button" class="btn btn-success">保存</button>
+				<button type="button" class="btn btn-inverse" onclick="window.location.href='#springUrl('/system/role')'">返回</button>
+            </div>
+          </form>  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="#resources('layer/layer.js')"></script>
+<script type="text/javascript">
+	$(function(){
+		$(".widget-content").each(function(){
+			var isAllChecked = true;
+			$(this).find(":checkbox").each(function(){
+				if(!$(this).is(':checked')){
+					isAllChecked = false;
+					return;
+				}
+			});
+			if(isAllChecked){
+				$(this).prev().find(":checkbox").attr("checked",true);
+			}
+		});
+		
+		$(".cb_group").click(function(){
+			var groupId = $(this).attr("groupId");
+			var checked = $(this).attr("checked");
+			$("#_rg"+groupId+" input:checkbox").click();
+		});
+		
+		$("#btn_save").click(function(){
+			jQuery.post("#springUrl('/system/role/resourcePermission')",$("#resourceForm").serialize(),function(data){
+				var msg = data.success?"分配成功！":"分配失败！";
+				var icon = data.success?6:5;
+				layer.alert(msg, {
+                  skin: 'layui-layer-molv',
+				  icon: icon,
+				  closeBtn: 0
+                }, function(){
+					window.location.reload();
+                });
+			});
+		});
+		
+	})
+</script>

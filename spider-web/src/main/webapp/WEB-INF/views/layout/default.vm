@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Matrix Admin</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="#resources('css/bootstrap.min.css')" />
+<link rel="stylesheet" href="#resources('css/bootstrap-responsive.min.css')" />
+<link rel="stylesheet" href="#resources('css/matrix-style.css')" />
+<link rel="stylesheet" href="#resources('css/matrix-media.css')" />
+<link rel="stylesheet" href="#resources('css/uniform.css')" />
+<link rel="stylesheet" href="#resources('font-awesome/css/font-awesome.css')" />
+<script src="#resources('js/jquery.min.js')"></script> 
+</head>
+<body>
+#parse("control/header.vm")
+#parse("control/left.vm")
+$screen_content
+#parse("control/footer.vm")
+<!--end-Footer-part-->
+<script src="#resources('js/jquery.ui.custom.min.js')"></script> 
+<script src="#resources('js/bootstrap.min.js')"></script> 
+<script src="#resources('js/matrix.js')"></script>
+<script src="#resources('js/jquery.uniform.js')"></script>
+</body>
+</html>

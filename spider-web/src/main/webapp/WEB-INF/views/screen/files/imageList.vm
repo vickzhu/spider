@@ -1,0 +1,157 @@
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">文件管理</a> <a href="#" class="current">图片管理</a> </div>
+  </div>
+  <div class="container-fluid"><hr>
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-picture"></i> </span>
+            <h5>图片</h5>
+			<a class="label label-info" style="line-height:20px;" href="#springUrl('/files/image/add')">新增图片</a>
+          </div>
+          <div class="widget-content">
+            <ul class="thumbnails">
+              <li class="span2"> 
+				<a> 
+					<img src="#resources('img/gallery/imgbox3.jpg')" alt="" > 
+				</a>
+                <div class="actions">
+					<a alt="编辑" href="#springUrl('files/image/edit')"><i class="icon-pencil"></i></a> 
+					<a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')">
+						<i class="icon-search"></i>
+					</a> 
+				</div>
+              </li>
+              <li class="span2"> <a> <img src="#resources('img/gallery/imgbox4.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span2"> <a > <img src="#resources('img/gallery/imgbox5.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span2"> <a> <img src="#resources('img/gallery/imgbox1.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span2"> <a > <img src="#resources('img/gallery/imgbox2.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span2"> <a> <img src="#resources('img/gallery/imgbox3.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span2"> <a> <img src="#resources('img/gallery/imgbox4.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span2"> <a> <img src="#resources('img/gallery/imgbox5.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span2"> <a> <img src="#resources('img/gallery/imgbox1.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span2"> <a> <img src="#resources('img/gallery/imgbox2.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span2"> <a> <img src="#resources('img/gallery/imgbox3.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span2"> <a> <img src="#resources('img/gallery/imgbox4.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span2"> <a> <img src="#resources('img/gallery/imgbox5.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span2"> <a> <img src="#resources('img/gallery/imgbox1.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span2"> <a> <img src="#resources('img/gallery/imgbox2.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span2"> <a> <img src="#resources('img/gallery/imgbox3.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span2"> <a> <img src="#resources('img/gallery/imgbox4.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span2"> <a> <img src="#resources('img/gallery/imgbox5.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+            </ul>
+            <ul class="thumbnails">
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox1.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox2.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox3.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox4.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox5.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox1.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox2.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox3.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox4.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox5.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox1.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox2.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox3.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox4.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a class="thumbnail lightbox_trigger" href="#resources('img/gallery/imgbox5.jpg')"> <img src="#resources('img/gallery/imgbox5.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox1.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox2.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox3.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox4.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox5.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox1.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox2.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox3.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+              <li class="span1"> <a> <img src="#resources('img/gallery/imgbox4.jpg')" alt="" > </a>
+                <div class="actions"> <a title="" href="#"><i class="icon-pencil"></i></a> <a class="lightbox_trigger" href="#resources('img/gallery/imgbox3.jpg')"><i class="icon-search"></i></a> </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

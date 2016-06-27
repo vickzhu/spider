@@ -1,0 +1,63 @@
+<div id="content" class="box">
+	<p class="crumby">
+		您现在的位置：<a href="javascript:;">系统管理</a>&nbsp;>>&nbsp;<a href="javascript:;">角色管理</a>
+	</p>
+	<!-- Form -->
+    <fieldset>
+		<legend></legend>
+		<form action="#springUrl('/op/role/list')" method="get" id="searchForm">
+			<input type="hidden" name="pageIndex" id="pageIndex"/>
+			<table class="nostyle">
+				<tr>
+					<td>角色名称:</td>
+					<td>
+						<input type="text" size="20" name="roleName" class="input-text" value="$!{roleName}" />
+					</td>
+					<td rowspan="2" class="t-right">
+						<input type="submit" class="input-submit" value="查 询" />
+						<input type="button" class="input-submit" value="添加角色 " onclick='location.href="#springUrl("/op/role/add")"' />
+					</td>
+				</tr>
+			</table>
+		</form>
+	</fieldset>
+	<!-- Table (TABLE) -->
+    <table class="width100">
+		<tr>
+			<th>名称</th>
+			<th>key值</th>
+			<th>描述</th>
+			<th>操作</th>
+        </tr>
+    	#foreach($role in $!{roleList})
+			<tr>
+				<td>$!{role.roleName}</td>
+				<td>$!{role.roleKey}</td>
+				<td>$!{role.roleDesc}</td>
+				<td>
+					<a href="#springUrl('/op/role/grant_permission')?opRoleId=$!role.opRoleId">分配权限</a>&nbsp;&nbsp;
+					<a href="#springUrl('/op/role/edit')?opRoleId=$!role.opRoleId">编辑</a>&nbsp;&nbsp;
+					<a href="#springUrl('/op/role/delete')?opRoleId=$!role.opRoleId">删除</a>&nbsp;&nbsp;
+				</td>
+			</tr>
+    	#end
+	</table>
+	<div id="page_nav" style="margin-top:10px;"></div>
+</div>
+<script type="text/javascript" src="resources/js/pagination.js"></script>
+<script type="text/javascript">
+	function gotoPage(pageNo){
+		$("#pageIndex").val(pageNo);
+		$("#searchForm").submit();
+	}
+	var showButtonNum = 5;
+	showPageNav(${roleList.query.currentPage},${roleList.query.totalPage});
+	//生成分页导航条
+	function showPageNav(pageNo,totalPage){
+	 	if(totalPage < showButtonNum){//如果总页数小于显示页，则把二者统一
+			showButtonNum = totalPage;
+		}
+		var style ={"fontColor":"#333333","borderColor":"#ceced0","bgColor":"white","selectedFontColor":"white","selectedBorderColor":"#ceced0","selectedBgColor":"#c52937"};
+		$('#page_nav').html(new Pagination(pageNo+"",totalPage,showButtonNum,gotoPage,style).getHtml());
+	}
+</script>

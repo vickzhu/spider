@@ -1,0 +1,64 @@
+<div id="content" class="box">
+	<p class="crumby">
+		您现在的位置：<a href="javascript:;">系统管理</a>&nbsp;>>&nbsp;<a href="javascript:;">资源管理</a>
+	</p>
+	<!-- Form -->
+    <fieldset>
+		<legend></legend>
+		<form action="#springUrl('/op/resource/list')" method="get" id="searchForm">
+			<input type="hidden" name="pageIndex" id="pageIndex"/>
+			<table class="nostyle">
+				<tr>
+					<td>资源名称:</td>
+					<td>
+						<input type="text" size="20" name="resourceName" class="input-text" value="$!{resourceName}" />
+					</td>
+					<td>资源URI:</td>
+					<td>
+						<input type="text" size="20" name="resourceURI" class="input-text" value="$!{resourceURI}" />
+					</td>
+					<td rowspan="2" class="t-right">
+						<input type="submit" class="input-submit" value="查 询" />
+						<input type="button" class="input-submit" value="添加资源 " onclick='location.href="#springUrl("/op/resource/add")"' />
+					</td>
+				</tr>
+			</table>
+		</form>
+	</fieldset>
+	<!-- Table (TABLE) -->
+    <table class="width100">
+		<tr>
+			<th>资源名称</th>
+			<th>URI</th>
+			<th>操作</th>
+		</tr>
+		#foreach($resource in $!{resourceList})
+			<tr>
+				<td><a href="#springUrl('/op/resource/edit')?resourceId=$!{resource.resourceId}">$!{resource.resourceName}</a></td>
+				<td>$!{resource.resourceURI}</td>
+				<td>
+					<a href="#springUrl('/op/resource/edit')?resourceId=$!{resource.resourceId}">修改</a>
+					<a class="group_del" href="javascript:;" resourceId="$!{resource.resourceId}">删除</a>
+				</td>
+			</tr>
+		#end
+	</table>
+	<div id="page_nav" style="margin-top:10px;"></div>
+</div>
+<script type="text/javascript" src="resources/js/pagination.js"></script>
+<script type="text/javascript">
+	function gotoPage(pageNo){
+		$("#pageIndex").val(pageNo);
+		$("#searchForm").submit();
+	}
+	var showButtonNum = 5;
+	showPageNav(${resourceList.query.currentPage},${resourceList.query.totalPage});
+	//生成分页导航条
+	function showPageNav(pageNo,totalPage){
+	 	if(totalPage < showButtonNum){//如果总页数小于显示页，则把二者统一
+			showButtonNum = totalPage;
+		}
+		var style ={"fontColor":"#333333","borderColor":"#ceced0","bgColor":"white","selectedFontColor":"white","selectedBorderColor":"#ceced0","selectedBgColor":"#c52937"};
+		$('#page_nav').html(new Pagination(pageNo+"",totalPage,showButtonNum,gotoPage,style).getHtml());
+	}
+</script>

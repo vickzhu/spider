@@ -1,0 +1,44 @@
+<div id="content">
+    <div id="content-header">
+      <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#" class="tip-bottom">资讯</a> <a href="#" class="current">图片</a> </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="widget-box">
+            <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+              <h5>图片详情</h5>
+            </div>
+            <div class="widget-content">
+				<div class="control-group">
+					<img src="http://localhost:8080/pentagon/resources/img/gallery/imgbox3.jpg"/>
+                </div>
+				<div class="control-group">
+    				<label class="control-label">标签:</label>
+    				<div class="controls">
+    					<input id="tag" name="tag" class="span6" type="text" placeholder="Tag" disabled />
+    				</div>
+                </div>
+				<div class="control-group">
+    				<label class="control-label">简介:</label>
+    				<div class="controls">
+    					<textarea id="brief" name="brief" class="span6" disabled ></textarea>
+    				</div>
+                </div>
+				<div class="control-group">
+    				<label class="control-label">地址:</label>
+    				<div class="controls">
+    					<input id="url" name="url" class="span6" type="text" placeholder="Tag" disabled />
+    				</div>
+                </div>
+				<div class="control-group">
+					<button type="button" class="btn btn-success" onclick="window.location.href='#springUrl('/files/image/add')'">添加</button>
+					<button type="button" class="btn btn-info" onclick="window.location.href='#springUrl('/files/image/edit')'">修改</button>
+					<button type="button" class="btn btn-inverse" onclick="window.location.href='#springUrl('/files/image')'">返回列表</button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

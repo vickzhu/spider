@@ -1,0 +1,39 @@
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">资讯管理</a> <a href="#" class="current">资讯类别管理</a> </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+            <h5>资讯类别</h5>
+			<a class="label label-info" style="line-height:20px;" href="#springUrl('/news/category/add')">新增资讯类别</a>
+          </div>
+          <div class="widget-content">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>编号</th>
+                  <th>类别</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+				#foreach($category in ${categoryList})
+                <tr>
+                  <td>$!{category.categoryId}</td>
+                  <td>$!{category.categoryName}</td>
+                  <td class="center">
+					<a href="#springUrl('/news/category/edit')?categoryId=${category.categoryId}">编辑</a>
+				  </td>
+                </tr>
+				#end
+              </tbody>
+             </table>
+			</div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

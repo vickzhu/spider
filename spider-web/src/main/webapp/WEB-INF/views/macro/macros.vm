@@ -1,0 +1,9 @@
+#macro(showEnable $enable)
+	#if($enable == 1)
+		<font color="green">启用</font>
+	#else
+		<font color="red">禁用</font>
+	#end
+#end
+
+#macro(resources $url)#springUrl("/resources/$url")#end

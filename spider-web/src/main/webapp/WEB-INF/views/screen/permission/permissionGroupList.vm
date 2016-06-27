@@ -1,0 +1,41 @@
+<div id="content" class="box">
+	<p class="crumby">
+		您现在的位置：<a href="javascript:;">系统管理</a>&nbsp;>>&nbsp;<a href="javascript:;">资源组管理</a>
+	</p>
+	<!-- Form -->
+    <fieldset>
+		<legend></legend>
+		<form action="#springUrl('/op/permission_group/list')" method="get" id="searchForm">
+			<table class="nostyle">
+				<tr>
+					<td>资源组名称:</td>
+					<td>
+						<input type="text" size="20" name="groupName" class="input-text" value="$!{groupName}" />
+					</td>
+					<td rowspan="2" class="t-right">
+						<input type="submit" class="input-submit" value="查 询" />
+						<input type="button" class="input-submit" value="添加资源组 " onclick='location.href="#springUrl("/op/permission_group/add")"' />
+					</td>
+				</tr>
+			</table>
+		</form>
+	</fieldset>
+	<!-- Table (TABLE) -->
+    <table class="width100">
+        <tr>
+          <th>权限组</th>
+          <th>排序</th>
+    	  <th>操作</th>
+        </tr>
+    	#foreach($permissionGroup in $!{permissionGroupList})
+        <tr>
+          <td><a href="#springUrl('/op/permission_group/edit')?groupId=$!{permissionGroup.opPermissionGroupId}">$!{permissionGroup.groupName}</a></td>
+          <td>$!{permissionGroup.orderNum}</td>
+    	  <td>
+    		<a href="#springUrl('/op/permission_group/edit')?groupId=$!{permissionGroup.opPermissionGroupId}">修改</a>
+    		<a class="group_del" href="javascript:;" groupId="$!{permissionGroup.opPermissionGroupId}" groupName="$!{permissionGroup.groupName}">删除</a>
+    	  </td>
+        </tr>
+    	#end
+	</table>
+</div>

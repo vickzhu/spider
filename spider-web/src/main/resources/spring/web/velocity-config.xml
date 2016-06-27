@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<!-- velocity view resolver -->
+	<bean id="viewResolver"
+		class="com.gandalf.framework.velocity.GandalfVelocityLayoutViewResolver">
+		<property name="cache" value="false" /><!-- 是否缓存模板  -->
+		<property name="prefix" value="screen/" />
+		<property name="suffix" value=".vm" />
+		<property name="toolboxConfigLocation" value="/WEB-INF/classes/toolbox.xml" />
+		<property name="viewClass" value="com.gandalf.framework.velocity.GandalfVelocityLayoutView"/>
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<property name="exposeSpringMacroHelpers" value="true" /><!-- 是否使用spring对宏定义的支持 -->
+		<property name="exposeRequestAttributes" value="false" /><!-- 是否开放request属性 -->
+		<property name="exposeSessionAttributes" value="false" /><!-- 是否开放session属性 -->
+		<property name="requestContextAttribute" value="rc" /><!-- request属性引用名称 -->
+		<property name="layoutUrl" value="layout/default.vm" />
+		<property name="order" value="0"></property>
+	</bean>
+	
+	<bean id="velocityConfigurer"
+		class="com.gandalf.framework.velocity.GandalfVelocityConfigurer">
+		<property name="configLocation" value="classpath:velocity.properties" />
+		<property name="velocityProperties">
+			<props>
+				<prop key="eventhandler.referenceinsertion.class">com.gandalf.framework.velocity.EscapeHtmlHandler</prop>
+				<prop key="velocimacro.library">macro/macros.vm</prop>
+				<prop key="eventhandler.noescape.html.match">\\$\\{?screen_content\\}?</prop>
+				<prop key="input.encoding">utf-8</prop>
+				<prop key="output.encoding">utf-8</prop>
+			</props>
+		</property>
+	</bean>
+</beans>

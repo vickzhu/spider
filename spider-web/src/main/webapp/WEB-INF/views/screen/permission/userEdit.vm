@@ -1,0 +1,66 @@
+<div id="content" class="box">
+	<p class="crumby">
+		您现在的位置：<a>系统管理</a>&nbsp;&gt;&gt&nbsp;<a>新增用户</a>
+	</p>
+	<form action="op/user/edit" method="post">
+		<input type="hidden" name="opUserId" value="$!{opUser.opUserId}"/>
+    	<fieldset>
+    		<legend>新增用户</legend>
+    		<table class="nostyle">
+				<tr>
+    				<td>用户名:</td>
+    				<td>$!{opUser.username}</td>
+    			</tr>
+				<tr>
+    				<td>真实姓名:</td>
+    				<td><input type="text" size="40" name="realName" class="input-text" value="$!{opUser.realName}" /></td>
+    			</tr>
+				<tr>
+    				<td>手机号:</td>
+    				<td><input type="text" size="40" name="telephone" class="input-text" value="$!{opUser.telephone}" /></td>
+    			</tr>
+				<tr>
+    				<td>EMAIL:</td>
+    				<td><input type="text" size="40" name="email" class="input-text" value="$!{opUser.email}"/></td>
+    			</tr>
+				<tr>
+    				<td>状态:</td>
+    				<td>
+						#if($!opUser.userStatus == 'Y')
+                            <select name="userStatus" class="myselect" style="width:235px;">
+    							<option value="Y" selected >启用</option>
+    							<option value="N">禁用</option>
+    						</select>
+						#else
+                            <select name="userStatus" class="myselect" style="width:235px;">
+    							<option value="Y">启用</option>
+    							<option value="N" selected >禁用</option>
+    						</select>
+						#end
+					</td>
+    			</tr>
+				<tr>
+    				<td>角色:</td>
+    				<td>
+                        <select name="opRoleId" class="myselect" style="width:235px;" id="opRoleIdSelect">
+							<option value="">请选择</option>
+							#foreach($opRole in $opRoleList)
+                                <option value="$opRole.opRoleId">$!opRole.roleName</option>
+							#end
+						</select>
+						<input type="hidden" id="opRoleIdInput" value="$!{opUser.opRoleId}"/>
+					</td>
+    			</tr>
+    		</table>
+    	</fieldset>
+    	<p>
+    		<input type="submit" class="input-submit" value="提交" />
+			<input type="button" class="input-submit" value="返回" onclick="javascript:history.back(-1)"/>
+    	</p>
+	</form>
+</div>
+<script type="text/javascript">
+	$(function() {
+		$("#opRoleIdSelect").val($("#opRoleIdInput").val());
+	});
+</script>

@@ -6,4 +6,50 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>spider-web</artifactId>
+  <packaging>war</packaging>
+  <properties>
+  	<druid.version>1.0.1</druid.version>
+  </properties>
+  <dependencies>
+  	<dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid</artifactId>
+        <version>${druid.version}</version>
+    </dependency>
+  </dependencies>
+  <profiles>
+ 	<profile>
+		<id>dev</id>
+      		<properties>  
+              <env>dev</env>  
+          </properties>  
+          <activation>  
+              <activeByDefault>true</activeByDefault>  
+          </activation>  
+      </profile>
+      <profile>  
+          <id>test</id>  
+          <properties>  
+              <env>test</env>  
+          </properties>
+          <activation>  
+              <activeByDefault>false</activeByDefault>  
+          </activation>  
+      </profile>
+      <profile>  
+          <id>production</id>  
+          <properties>  
+              <env>production</env>  
+          </properties>
+          <activation>  
+              <activeByDefault>false</activeByDefault>  
+          </activation>  
+      </profile>
+	</profiles>
+	<build>
+		<finalName>spider</finalName>
+		<filters>
+			<filter>src/main/filters/${env}.properties</filter>
+		</filters>
+	</build>
 </project>

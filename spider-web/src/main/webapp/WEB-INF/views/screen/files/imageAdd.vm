@@ -1,0 +1,78 @@
+<div id="content">
+    <div id="content-header">
+      <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#" class="tip-bottom">资讯</a> <a href="#" class="current">图片</a> </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="widget-box">
+            <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+              <h5>添加图片</h5>
+            </div>
+            <div class="widget-content nopadding">
+              <form action="#springUrl('/files/image/add')" id="image_form" method="post" class="form-horizontal" novalidate="novalidate">
+				$!{tokenTool.hiddenField}
+				<div class="control-group">
+                  <label class="control-label">标签:</label>
+                  <div class="controls">
+                    <input id="tag" name="tag" class="span6" type="text" placeholder="Tag" />
+                  </div>
+                </div>
+				<div class="control-group">
+                  <label class="control-label">说明:</label>
+                  <div class="controls">
+					<textarea id="brief" name="brief" class="span6"></textarea>
+                  </div>
+                </div>
+				<div class="control-group">
+                  <label class="control-label">图片:</label>
+                  <div class="controls">
+					<input type="file" id="selFile" />
+					<div id="fileDiv">
+    					<img id="selectedImg" name="selectedImg" style="max-width:200px;display:block;"/>
+					</div>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button type="button" class="btn btn-success">确定</button>
+				  <button type="button" class="btn btn-inverse" onclick="window.location.href='#springUrl('/files/image')'">取消</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<script type="text/javascript">
+	$(function(){		
+		$("#selFile").change(function(){
+			var fileObj = document.getElementById("selFile");
+			if(fileObj.files && fileObj.files[0]){
+				var file = fileObj.files[0];
+				$("#fileDiv").show();
+				var src = window.URL.createObjectURL(file);
+				previewImg(src);
+			}		
+		});
+		
+		function previewImg(src){
+			$("#fileDiv").show();
+			$("#selectedImg").attr("src",src);
+		}
+		
+		$(".btn-success").click(function(){
+			jQuery.post("#springUrl('/system/user/edit')",$(form).serialize(),function(data){
+				var msg = data?"更新成功！":"更新失败！";
+				var icon = data?6:5;
+				layer.alert(msg, {
+                  skin: 'layui-layer-molv',
+				  icon: icon,
+				  closeBtn: 0
+                }, function(){
+					window.location.reload();
+                });
+			});
+		});
+	});
+</script>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tools>
+	<toolbox scope="request">
+		<tool class="com.gandalf.framework.velocity.tool.CookieTool"/>
+		<tool class="com.gandalf.framework.velocity.tool.HostTool"/>
+   	</toolbox>
+   	<toolbox scope="application">
+   		<tool class="com.gandalf.framework.velocity.tool.TokenTool"/>
+   		<tool class="org.apache.velocity.tools.generic.DateTool"/>
+   		<tool class="org.apache.velocity.tools.generic.NumberTool"/>
+   		<tool class="org.apache.velocity.tools.generic.MathTool"/>
+   	</toolbox>
+</tools>

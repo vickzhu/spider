@@ -1,0 +1,100 @@
+#set( $layout = "layout/null.vm" )
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+        <title>资车贷管理后台</title><meta charset="UTF-8" />
+         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		 <link rel="stylesheet" type="text/css" href="#springUrl('/resources/css/login.css')">
+    </head>
+    <body>
+	<form id="loginform" autocomplete="off" method="post">
+		$!{tokenTool.hiddenField}
+		<div class="box">
+			<div class="box-in">
+			    #if($!errorMsg)
+			    <p style="text-align:center;width:350px; height:22px; line-height:22px;color:red;position:absolute;top:-28px;left:-45px;">$!errorMsg</p>
+                #end
+				<div class="name">
+                    <span></span>
+                    <input type="text" name="username" placeholder="用户名" value="$!{username}" style="width: 207px;color: gray;"/>
+                    <i class="tips nameText" ></i>
+                </div>
+                <div class="pwd">
+                    <span></span>
+                    <input type="text" name="password" placeholder="密码" onfocus="this.type='password'" style="width: 207px;color: gray;"/>
+                    <i class="tips cipher"></i>
+                </div>
+                <p class="yzm clearfix">
+                   <input type="text" name="captchaNum" placeholder="验证码" style="width:120px;" />
+                   <span><img title="点击刷新" id="captchaImg" style="vertical-align: middle;width:100px;height:38px;"/></span>
+				    <i class="tips captch"></i>
+                </p>
+                <div class="login">
+					<input type="button" onclick="logion()" style="background: #12adff;" value="	登录"/>
+                </div>
+			</div>
+        </div>
+    </form>
+   <script src="#springUrl('/resources/js/jquery.min.js')"></script>  
+   <script type="text/javascript">
+		$(function(){
+			var captchaUrl = "#springUrl('/captcha.jpgx')";
+			$("#captchaImg").click(function(){
+				$(this).attr("src",captchaUrl+"?"+Math.random());
+			});	
+			$("#captchaImg").attr("src",captchaUrl+"?"+Math.random())
+		});
+		
+        $(function(){
+		
+			var L = $(window).width()/2 - $('.box').width()/2;
+			var T = $(window).height()/2 - $('.box').height()/2;
+            $('.box').css({
+                'top': T,
+                'left': L
+            });
+			
+            window.onresize=function(){
+                var L = $(window).width()/2 - $('.box').width()/2;
+                var T = $(window).height()/2 - $('.box').height()/2;
+                $('.box').css({
+                    'top': T,
+                    'left': L
+                });
+            };
+			
+    		$(document).keyup(function(event){
+                  if(event.keyCode ==13){
+    			     logion();
+                  }
+            });
+		});
+		 
+		//登录
+		function logion(){
+		   $(".box .nameText").empty();
+		   $(".box .cipher").empty();
+		   $(".captch").empty();
+		   var bool = true;
+		   if($("input[name='username']").val()==""){
+		      $(".box .nameText").html("用户名不能为空");
+			  bool = false;
+		   }
+		   if($("input[name='password']").val()==""){
+              $(".box .cipher").html("密码不能为空");
+			   bool = false;
+		   }
+		   if($("input[name='captchaNum']").val()==""){
+		       $(".captch").html("验证码不能为空");
+			    bool = false;
+		   }
+		   if(bool){
+    		   $("#loginform").attr("action","#springUrl('/login')");
+    		   $("#loginform").submit();
+		   }
+		}
+	</script>
+</body>
+
+</html>
+

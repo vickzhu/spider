@@ -1,0 +1,40 @@
+<!--sidebar-menu-->
+
+<div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> Dashboard2</a>
+  <ul>
+	<li class="submenu"> <a href="#"><i class="icon icon-file"></i> <span>文件管理</span> <span class="label label-important">1</span></a>
+      <ul>
+        <li><a href="#springUrl('/files/image')">图片管理</a></li>
+      </ul>
+    </li>
+    <li class="submenu"> <a href="#"><i class="icon icon-list"></i> <span>资讯管理</span> <span class="label label-important">2</span></a>
+      <ul>
+        <li><a href="#springUrl('/news/category')">资讯类别</a></li>
+        <li><a href="#springUrl('/news')">资讯</a></li>
+      </ul>
+    </li>
+	<li class="submenu active"> <a href="#"><i class="icon icon-cog"></i> <span>系统管理</span><span class="label label-important">4</span></a>
+      <ul>
+        <li><a href="#springUrl('/system/user')">用户管理</a></li>
+        <li><a href="#springUrl('/system/resourcePermissionGroup')">资源组管理</a></li>
+		<li><a href="#springUrl('/system/resourcePermission')">资源管理</a></li>
+        <li><a href="#springUrl('/system/role')">角色管理</a></li>
+        <li><a href="#springUrl('/system/menu')">菜单管理</a></li>
+      </ul>
+    </li>
+    <li class="content"> <span>Monthly Bandwidth Transfer</span>
+      <div class="progress progress-mini progress-danger active progress-striped">
+        <div style="width: 77%;" class="bar"></div>
+      </div>
+      <span class="percent">77%</span>
+      <div class="stat">21419.94 / 14000 MB</div>
+    </li>
+    <li class="content"> <span>Disk Space Usage</span>
+      <div class="progress progress-mini active progress-striped">
+        <div style="width: 87%;" class="bar"></div>
+      </div>
+      <span class="percent">87%</span>
+      <div class="stat">604.44 / 4000 MB</div>
+    </li>
+  </ul>
+</div>

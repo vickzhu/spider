@@ -1,0 +1,64 @@
+<div id="content" class="box">
+	<p class="crumby">
+		您现在的位置：<a href="javascript:;">系统管理</a>&nbsp;>>&nbsp;<a href="javascript:;">权限管理</a>
+	</p>
+	<!-- Form -->
+    <fieldset>
+		<legend></legend>
+		<form action="#springUrl('/op/permission/list')" method="get" id="searchForm">
+			<input type="hidden" name="pageIndex" id="pageIndex"/>
+			<table class="nostyle">
+				<tr>
+					<td>资源名称:</td>
+					<td>
+						<input type="text" size="20" name="permissionName" class="input-text" value="$!{permissionName}" />
+					</td>
+					<td rowspan="2" class="t-right">
+						<input type="submit" class="input-submit" value="查 询" />
+						<input type="button" class="input-submit" value="添加权限 " onclick='location.href="#springUrl("/op/resource/add")"' />
+					</td>
+				</tr>
+			</table>
+		</form>
+	</fieldset>
+	<!-- Table (TABLE) -->
+    <table class="width100">
+		<tr>
+			<th>权限名</th>
+			<th>排序</th>
+			<th>所属分组</th>
+			<th>入口资源</th>
+			<th>操作</th>
+        </tr>
+    	#foreach($permission in $!{permissionList})
+        <tr>
+			<td><a href="#springUrl('/op/permission/edit')?permissionId=$!{permission.opPermissionId}">$!{permission.permissionName}</a></td>
+			<td>$!{permission.orderNum}</td>
+			<td>$!{permission.opPermissionGroupName}</td>
+			<td>$!{permission.opResourceURI}</td>
+			<td>
+				<a href="#springUrl('/op/permission/edit')?permissionId=$!{permission.opPermissionId}">修改</a>
+				<a class="group_del" href="javascript:;" permissionId="$!{permission.opPermissionId}" permissionName="$!{permission.permissionName}">删除</a>
+			</td>
+        </tr>
+    	#end
+	</table>
+	<div id="page_nav" style="margin-top:10px;"></div>
+</div>
+<script type="text/javascript" src="resources/js/pagination.js"></script>
+<script type="text/javascript">
+	function gotoPage(pageNo){
+		$("#pageIndex").val(pageNo);
+		$("#searchForm").submit();
+	}
+	var showButtonNum = 5;
+	showPageNav(${permissionList.query.currentPage},${permissionList.query.totalPage});
+	//生成分页导航条
+	function showPageNav(pageNo,totalPage){
+	 	if(totalPage < showButtonNum){//如果总页数小于显示页，则把二者统一
+			showButtonNum = totalPage;
+		}
+		var style ={"fontColor":"#333333","borderColor":"#ceced0","bgColor":"white","selectedFontColor":"white","selectedBorderColor":"#ceced0","selectedBgColor":"#c52937"};
+		$('#page_nav').html(new Pagination(pageNo+"",totalPage,showButtonNum,gotoPage,style).getHtml());
+	}
+</script>

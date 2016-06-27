@@ -1,0 +1,64 @@
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">系统管理</a> <a href="#" class="current">角色管理</a> </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+            <h5>用户列表</h5>
+			<span class="label label-info"></span>
+          </div>
+		  <div class="widget-content nopadding">
+			<form action="#" method="get" class="form-horizontal">
+				<input type="hidden" id="curPage" name="curPage" value="$!{curPage}" />
+                <div class="search_option">
+					<div>
+                        <label>状态：</label>
+						<span>
+                            <select name="enable">
+        						<option value="">请选择</option>
+        						<option value="1">启用</option>
+        						<option value="0">禁用</option>
+                            </select>
+						</span>
+					</div>
+    				<div>
+    					<button type="submit" class="btn btn-success">搜索</button>
+    					<button type="button" class="btn btn-primary" onclick="location.href='#springUrl("/system/role/add")'">添加角色</button>
+					</div>
+                </div>
+			</form>
+          </div>
+          <div class="widget-content">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>编号</th>
+                  <th>角色</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+				#foreach($role in $roleList)
+                <tr>
+                  <td>$!{role.roleId}</td>
+                  <td>$!{role.roleName}</td>
+                  <td class="center">#showEnable($!{role.enable})</td>
+                  <td class="center">
+					<a href="#springUrl('/system/role/edit')?roleId=${role.roleId}">编辑</a>
+					<a href="#springUrl('/system/role/resourcePermission')?roleId=${role.roleId}">资源权限</a>
+					<a href="#springUrl('/system/role/menuPermission')?roleId=${role.roleId}">菜单权限</a>
+				  </td>
+                </tr>
+				#end
+              </tbody>
+            </table>
+			</div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

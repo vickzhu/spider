@@ -1,0 +1,74 @@
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">系统管理</a> <a href="#" class="current">资源权限管理</a> </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+            <h5>资源权限列表</h5>
+			<span class="label label-info"></span>
+          </div>
+		  <div class="widget-content nopadding">
+			<form id="searchForm" action="#springUrl('/system/user')" method="get" class="form-horizontal">
+				<input type="hidden" id="curPage" name="curPage" value="$!{curPage}" />
+                <div class="search_option">
+					<span>
+                        <label>资源名：</label>
+						<input id="resourceName" name="resourceName" type="text" value="$!{resourceName}"/>
+					</span>
+					<span>
+                        <label>资源组：</label>
+						<select name="role">
+							<option value="">请选择</option>
+							#foreach($entry in $groupMap.entrySet())
+								<option value="${entry.key}" #if($role == ${entry.key})selected#end>${entry.value}</option>	
+							#end
+						</select>
+					</span>
+                    <span style="display:inline-block">
+                        <button type="button" class="btn btn-success" onclick="gotoPage(1)">搜索</button>
+                        <button type="button" class="btn btn-primary" onclick="location.href='#springUrl("/system/resourcePermission/add")'">添加资源</button>
+                    </span>
+                </div>
+			</form>
+          </div>
+          <div class="widget-content">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>编号</th>
+                  <th>资源权限</th>
+                  <th>资源权限组</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+				#foreach($resource in ${page.records})
+                <tr class="">
+                  <td>$!{resource.resourceId}</td>
+                  <td>$!{resource.resourceName}</td>
+				  <td>$!{groupMap.get($!{resource.resourceGroupId})}</td>
+                  <td class="center">
+					<a href="#springUrl('/system/resourcePermission/edit')?resourceId=$!{resource.resourceId}">编辑</a>
+				  </td>
+                </tr>
+				#end
+              </tbody>
+            </table>
+			  <div id="page_nav"></div>
+			</div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+<script src="#resources('js/pagination.js')"></script>
+<script type="text/javascript">
+	function gotoPage(pageNo){
+		$("#curPage").val(pageNo);
+		$("#searchForm").submit();
+	}
+	$('#page_nav').html(new Pagination($!{page.curPage},$!{page.totalPages}, gotoPage).getHtml());
+</script>

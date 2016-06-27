@@ -1,0 +1,70 @@
+<div id="content">
+    <div id="content-header">
+      <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="tip-bottom">Form elements</a> <a href="#" class="current">Common elements</a> </div>
+    </div>
+    <div class="container-fluid">
+      <hr>
+      <div class="row-fluid">
+        <div class="span6">
+          <div class="widget-box">
+            <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+              <h5>资源权限组</h5>
+            </div>
+            <div class="widget-content nopadding">
+              <form id="resource_form" method="post" class="form-horizontal" novalidate="novalidate">
+				$!{tokenTool.hiddenField}
+				<input type="hidden" name="groupId" value="${group.groupId}" />
+                <div class="control-group">
+                  <label class="control-label">权限组名 :</label>
+                  <div class="controls">
+                    <input id="groupName" name="groupName" type="text" value="$!{group.groupName}" placeholder="Group name" />
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-success">保存</button>
+				  <button type="button" class="btn btn-inverse" onclick="window.location.href='#springUrl('/system/resourcePermissionGroup')'">返回</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<script src="#resources('js/jquery.validate.js')"></script>
+<script src="#resources('layer/layer.js')"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#resource_form").validate({
+    		groupName:{
+    			required:true
+    		},
+			messages:{
+				required:"请输入权限组名"
+			},
+    		errorClass: "help-inline",
+    		errorElement: "span",
+    		highlight:function(element, errorClass, validClass) {
+				$(element).parents('.control-group').removeClass('success');
+    			$(element).parents('.control-group').addClass('error');
+    		},
+    		unhighlight: function(element, errorClass, validClass) {
+    			$(element).parents('.control-group').removeClass('error');
+    			$(element).parents('.control-group').addClass('success');
+    		},
+			submitHandler:function(form){
+				jQuery.post("#springUrl('/system/resourcePermissionGroup/edit')",$(form).serialize(),function(data){
+					var msg = data?"更新成功！":"更新失败！";
+					var icon = data?6:5;
+					layer.alert(msg, {
+                      skin: 'layui-layer-molv',
+					  icon: icon,
+					  closeBtn: 0
+                    }, function(){
+						window.location.reload();
+                    });
+				});
+			}
+    	});
+	})
+</script>

@@ -1,0 +1,25 @@
+<div id="content" class="box">
+	<p class="crumby">
+		您现在的位置：<a href="javascript:;">系统管理</a>&nbsp;&gt;&gt&nbsp;<a href="javascript:;">添加资源</a>
+	</p>
+	<form action="#springUrl('/op/resource/add')" method="post">
+		$!{tokenTool.hiddenField}
+    	<fieldset>
+    		<legend>资源</legend>
+    		<table class="nostyle">
+				<tr>
+    				<td>资源名:</td>
+    				<td><input type="text" size="40" name="resourceName" class="input-text" /></td>
+    			</tr>
+				<tr>
+    				<td>URI:</td>
+    				<td><input type="text" size="40" name="resourceUri" class="input-text" /></td>
+    			</tr>
+    		</table>
+    	</fieldset>
+    	<p>
+    		<input type="submit" class="input-submit" value="提交" />
+			<input type="button" class="input-submit" value="返回" onclick="javascript:history.back(-1)"/>
+    	</p>
+	</form>
+</div>

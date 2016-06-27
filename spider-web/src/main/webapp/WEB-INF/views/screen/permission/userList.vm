@@ -1,0 +1,82 @@
+<div id="content" class="box">
+	<p class="crumby">
+		您现在的位置：<a href="javascript:;">系统管理</a>&nbsp;>>&nbsp;<a href="javascript:;">用户管理</a>
+	</p>
+	<!-- Form -->
+	<fieldset>
+		<legend></legend>
+		<form action="#springUrl('/op/user/list')" method="get" id="searchForm">
+			<input type="hidden" id="pageIndex" name="pageIndex"/>
+			<table class="nostyle">
+				<tr>
+					<td>用户编号:</td>
+					<td>
+						<input type="text" size="20" name="userId" class="input-text" value="$!{userId}" />
+					</td>
+					<td>用户名:</td>
+					<td>
+						<input type="text" size="20" name="username" class="input-text" value="$!{username}" />
+					</td>
+					<td rowspan="2" class="t-right">
+						<input type="submit" class="input-submit" value="查 询" />
+						<input type="button" class="input-submit" value="添加用户 " onclick='location.href="#springUrl("/op/user/add")"' />
+					</td>
+				</tr>
+			</table>
+		</form>
+	</fieldset>
+	<!-- Table (TABLE) -->
+	<table class="width100">
+		<tr>
+			<th>用户名</th>
+            <th>真实姓名</th>
+            <th>手机号</th>
+            <th>EMAIL</th>
+            <th>角色</th>
+            <th>上次登录时间</th>
+            <th>上次登录IP</th>
+            <th>用户状态</th>
+        	<th>操作</th>
+		</tr>
+		#foreach($user in $!{userList})
+			<tr>
+				<td>$!{user.username}</td>
+				<td>$!{user.realName}</td>
+				<td>$!{user.telephone}</td>
+				<td>$!{user.email}</td>
+				<td>$!{user.roleName}</td>
+				<td>
+					#if($!{user.lastLoginTime})
+						$!{date.format('yyyy-MM-dd HH:mm:ss', $!{user.lastLoginTime})}	
+					#end
+				</td>
+				<td>$!{user.lastLoginIp}</td>
+				<td>
+					#showEnable($!{user.enable})
+				</td>
+				<td>
+					<a href="#springUrl('/op/user/edit')?userId=$!{user.userId}">编辑</a>
+				</td>
+			</tr>
+		#end
+	</table>
+	<div id="page_nav" style="margin-top:10px;"></div>
+</div>
+
+<script type="text/javascript" src="resources/js/pagination.js"></script>
+<script type="text/javascript">
+	function gotoPage(pageNo){
+		$("#pageIndex").val(pageNo);
+		$("#searchForm").submit();
+	}
+	var showButtonNum = 5;
+	showPageNav(${userList.query.currentPage},${userList.query.totalPage});
+	//生成分页导航条
+	function showPageNav(pageNo,totalPage){
+	 	if(totalPage < showButtonNum){//如果总页数小于显示页，则把二者统一
+			showButtonNum = totalPage;
+		}
+		var style ={"fontColor":"#333333","borderColor":"#ceced0","bgColor":"white","selectedFontColor":"white","selectedBorderColor":"#ceced0","selectedBgColor":"#c52937"};
+		$('#page_nav').html(new Pagination(pageNo+"",totalPage,showButtonNum,gotoPage,style).getHtml());
+	}
+</script>
