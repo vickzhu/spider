@@ -33,11 +33,16 @@
 			<property name="rootInterface" value="com.gandalf.framework.mybatis.BaseMapper"/>
 		</javaClientGenerator> 
 		
-		<table  tableName="company" domainObjectName="Company"> 
+		<table tableName="company" domainObjectName="Company"> 
 			<property name="suppressAllComments" value="true"/> 
 		    <property name="suppressDate" value="true"/>
-		    <generatedKey column="content_id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
-		</table>		 
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>	
+		<table tableName="shareholder" domainObjectName="ShareHolder"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>	 
 	</context>
 	
 </generatorConfiguration> 

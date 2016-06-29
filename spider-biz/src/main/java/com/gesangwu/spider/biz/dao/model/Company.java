@@ -1,6 +1,7 @@
 package com.gesangwu.spider.biz.dao.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class Company {
     private Long id;
@@ -15,11 +16,15 @@ public class Company {
 
     private Double marketValue;
 
-    private Double circMarketValue;
+    private Double floatMarketValue;
 
     private Double activeMarketValue;
 
     private BigDecimal lastPrice;
+
+    private Date gmtCreate;
+
+    private Date gmtUpdate;
 
     public Long getId() {
         return id;
@@ -69,12 +74,12 @@ public class Company {
         this.marketValue = marketValue;
     }
 
-    public Double getCircMarketValue() {
-        return circMarketValue;
+    public Double getFloatMarketValue() {
+        return floatMarketValue;
     }
 
-    public void setCircMarketValue(Double circMarketValue) {
-        this.circMarketValue = circMarketValue;
+    public void setFloatMarketValue(Double floatMarketValue) {
+        this.floatMarketValue = floatMarketValue;
     }
 
     public Double getActiveMarketValue() {
@@ -91,5 +96,21 @@ public class Company {
 
     public void setLastPrice(BigDecimal lastPrice) {
         this.lastPrice = lastPrice;
+    }
+
+    public Date getGmtCreate() {
+        return gmtCreate;
+    }
+
+    public void setGmtCreate(Date gmtCreate) {
+        this.gmtCreate = gmtCreate;
+    }
+
+    public Date getGmtUpdate() {
+        return gmtUpdate;
+    }
+
+    public void setGmtUpdate(Date gmtUpdate) {
+        this.gmtUpdate = gmtUpdate;
     }
 }

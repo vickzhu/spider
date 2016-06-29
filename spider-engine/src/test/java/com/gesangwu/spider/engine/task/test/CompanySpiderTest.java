@@ -6,13 +6,13 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
-import com.gesangwu.spider.engine.task.StockProfileSpider;
+import com.gesangwu.spider.engine.task.CompanySpider;
 import com.gesangwu.spider.engine.test.BaseTest;
 
-public class StockProfileSpiderTask extends BaseTest {
+public class CompanySpiderTest extends BaseTest {
 	
 	@Resource
-	private StockProfileSpider spider;
+	private CompanySpider spider;
 
 	@Test
 	public void test(){

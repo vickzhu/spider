@@ -2,6 +2,7 @@ package com.gesangwu.spider.biz.dao.model;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CompanyExample {
@@ -525,63 +526,63 @@ public class CompanyExample {
             return (Criteria) this;
         }
 
-        public Criteria andCircMarketValueIsNull() {
-            addCriterion("circ_market_value is null");
+        public Criteria andFloatMarketValueIsNull() {
+            addCriterion("float_market_value is null");
             return (Criteria) this;
         }
 
-        public Criteria andCircMarketValueIsNotNull() {
-            addCriterion("circ_market_value is not null");
+        public Criteria andFloatMarketValueIsNotNull() {
+            addCriterion("float_market_value is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCircMarketValueEqualTo(Double value) {
-            addCriterion("circ_market_value =", value, "circMarketValue");
+        public Criteria andFloatMarketValueEqualTo(Double value) {
+            addCriterion("float_market_value =", value, "floatMarketValue");
             return (Criteria) this;
         }
 
-        public Criteria andCircMarketValueNotEqualTo(Double value) {
-            addCriterion("circ_market_value <>", value, "circMarketValue");
+        public Criteria andFloatMarketValueNotEqualTo(Double value) {
+            addCriterion("float_market_value <>", value, "floatMarketValue");
             return (Criteria) this;
         }
 
-        public Criteria andCircMarketValueGreaterThan(Double value) {
-            addCriterion("circ_market_value >", value, "circMarketValue");
+        public Criteria andFloatMarketValueGreaterThan(Double value) {
+            addCriterion("float_market_value >", value, "floatMarketValue");
             return (Criteria) this;
         }
 
-        public Criteria andCircMarketValueGreaterThanOrEqualTo(Double value) {
-            addCriterion("circ_market_value >=", value, "circMarketValue");
+        public Criteria andFloatMarketValueGreaterThanOrEqualTo(Double value) {
+            addCriterion("float_market_value >=", value, "floatMarketValue");
             return (Criteria) this;
         }
 
-        public Criteria andCircMarketValueLessThan(Double value) {
-            addCriterion("circ_market_value <", value, "circMarketValue");
+        public Criteria andFloatMarketValueLessThan(Double value) {
+            addCriterion("float_market_value <", value, "floatMarketValue");
             return (Criteria) this;
         }
 
-        public Criteria andCircMarketValueLessThanOrEqualTo(Double value) {
-            addCriterion("circ_market_value <=", value, "circMarketValue");
+        public Criteria andFloatMarketValueLessThanOrEqualTo(Double value) {
+            addCriterion("float_market_value <=", value, "floatMarketValue");
             return (Criteria) this;
         }
 
-        public Criteria andCircMarketValueIn(List<Double> values) {
-            addCriterion("circ_market_value in", values, "circMarketValue");
+        public Criteria andFloatMarketValueIn(List<Double> values) {
+            addCriterion("float_market_value in", values, "floatMarketValue");
             return (Criteria) this;
         }
 
-        public Criteria andCircMarketValueNotIn(List<Double> values) {
-            addCriterion("circ_market_value not in", values, "circMarketValue");
+        public Criteria andFloatMarketValueNotIn(List<Double> values) {
+            addCriterion("float_market_value not in", values, "floatMarketValue");
             return (Criteria) this;
         }
 
-        public Criteria andCircMarketValueBetween(Double value1, Double value2) {
-            addCriterion("circ_market_value between", value1, value2, "circMarketValue");
+        public Criteria andFloatMarketValueBetween(Double value1, Double value2) {
+            addCriterion("float_market_value between", value1, value2, "floatMarketValue");
             return (Criteria) this;
         }
 
-        public Criteria andCircMarketValueNotBetween(Double value1, Double value2) {
-            addCriterion("circ_market_value not between", value1, value2, "circMarketValue");
+        public Criteria andFloatMarketValueNotBetween(Double value1, Double value2) {
+            addCriterion("float_market_value not between", value1, value2, "floatMarketValue");
             return (Criteria) this;
         }
 
@@ -702,6 +703,126 @@ public class CompanyExample {
 
         public Criteria andLastPriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("last_price not between", value1, value2, "lastPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateIsNull() {
+            addCriterion("gmt_create is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateIsNotNull() {
+            addCriterion("gmt_create is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateEqualTo(Date value) {
+            addCriterion("gmt_create =", value, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateNotEqualTo(Date value) {
+            addCriterion("gmt_create <>", value, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateGreaterThan(Date value) {
+            addCriterion("gmt_create >", value, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateGreaterThanOrEqualTo(Date value) {
+            addCriterion("gmt_create >=", value, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateLessThan(Date value) {
+            addCriterion("gmt_create <", value, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateLessThanOrEqualTo(Date value) {
+            addCriterion("gmt_create <=", value, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateIn(List<Date> values) {
+            addCriterion("gmt_create in", values, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateNotIn(List<Date> values) {
+            addCriterion("gmt_create not in", values, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateBetween(Date value1, Date value2) {
+            addCriterion("gmt_create between", value1, value2, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateNotBetween(Date value1, Date value2) {
+            addCriterion("gmt_create not between", value1, value2, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateIsNull() {
+            addCriterion("gmt_update is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateIsNotNull() {
+            addCriterion("gmt_update is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateEqualTo(Date value) {
+            addCriterion("gmt_update =", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateNotEqualTo(Date value) {
+            addCriterion("gmt_update <>", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateGreaterThan(Date value) {
+            addCriterion("gmt_update >", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateGreaterThanOrEqualTo(Date value) {
+            addCriterion("gmt_update >=", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateLessThan(Date value) {
+            addCriterion("gmt_update <", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateLessThanOrEqualTo(Date value) {
+            addCriterion("gmt_update <=", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateIn(List<Date> values) {
+            addCriterion("gmt_update in", values, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateNotIn(List<Date> values) {
+            addCriterion("gmt_update not in", values, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateBetween(Date value1, Date value2) {
+            addCriterion("gmt_update between", value1, value2, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateNotBetween(Date value1, Date value2) {
+            addCriterion("gmt_update not between", value1, value2, "gmtUpdate");
             return (Criteria) this;
         }
     }

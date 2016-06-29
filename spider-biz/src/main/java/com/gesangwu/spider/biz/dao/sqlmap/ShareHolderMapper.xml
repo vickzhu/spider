@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gesangwu.spider.biz.dao.mapper.ShareHolderMapper" >
+  <resultMap id="BaseResultMap" type="com.gesangwu.spider.biz.dao.model.ShareHolder" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="stock_code" property="stockCode" jdbcType="VARCHAR" />
+    <result column="end_date" property="endDate" jdbcType="VARCHAR" />
+    <result column="holder_name" property="holderName" jdbcType="VARCHAR" />
+    <result column="holder_code" property="holderCode" jdbcType="VARCHAR" />
+    <result column="ranking" property="ranking" jdbcType="INTEGER" />
+    <result column="hold_count" property="holdCount" jdbcType="DOUBLE" />
+    <result column="hold_rate" property="holdRate" jdbcType="DOUBLE" />
+    <result column="hold_float_rate" property="holdFloatRate" jdbcType="DOUBLE" />
+    <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, stock_code, end_date, holder_name, holder_code, ranking, hold_count, hold_rate, 
+    hold_float_rate, gmt_create
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.ShareHolderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shareholder
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="offset != null and offset > -1" >
+      limit ${offset},${rows}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from shareholder
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from shareholder
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gesangwu.spider.biz.dao.model.ShareHolderExample" >
+    delete from shareholder
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.gesangwu.spider.biz.dao.model.ShareHolder" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into shareholder (stock_code, end_date, holder_name, 
+      holder_code, ranking, hold_count, 
+      hold_rate, hold_float_rate, gmt_create
+      )
+    values (#{stockCode,jdbcType=VARCHAR}, #{endDate,jdbcType=VARCHAR}, #{holderName,jdbcType=VARCHAR}, 
+      #{holderCode,jdbcType=VARCHAR}, #{ranking,jdbcType=INTEGER}, #{holdCount,jdbcType=DOUBLE}, 
+      #{holdRate,jdbcType=DOUBLE}, #{holdFloatRate,jdbcType=DOUBLE}, #{gmtCreate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.ShareHolder" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into shareholder
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="stockCode != null" >
+        stock_code,
+      </if>
+      <if test="endDate != null" >
+        end_date,
+      </if>
+      <if test="holderName != null" >
+        holder_name,
+      </if>
+      <if test="holderCode != null" >
+        holder_code,
+      </if>
+      <if test="ranking != null" >
+        ranking,
+      </if>
+      <if test="holdCount != null" >
+        hold_count,
+      </if>
+      <if test="holdRate != null" >
+        hold_rate,
+      </if>
+      <if test="holdFloatRate != null" >
+        hold_float_rate,
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="stockCode != null" >
+        #{stockCode,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="holderName != null" >
+        #{holderName,jdbcType=VARCHAR},
+      </if>
+      <if test="holderCode != null" >
+        #{holderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ranking != null" >
+        #{ranking,jdbcType=INTEGER},
+      </if>
+      <if test="holdCount != null" >
+        #{holdCount,jdbcType=DOUBLE},
+      </if>
+      <if test="holdRate != null" >
+        #{holdRate,jdbcType=DOUBLE},
+      </if>
+      <if test="holdFloatRate != null" >
+        #{holdFloatRate,jdbcType=DOUBLE},
+      </if>
+      <if test="gmtCreate != null" >
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gesangwu.spider.biz.dao.model.ShareHolderExample" resultType="java.lang.Integer" >
+    select count(*) from shareholder
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update shareholder
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.stockCode != null" >
+        stock_code = #{record.stockCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endDate != null" >
+        end_date = #{record.endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.holderName != null" >
+        holder_name = #{record.holderName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.holderCode != null" >
+        holder_code = #{record.holderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ranking != null" >
+        ranking = #{record.ranking,jdbcType=INTEGER},
+      </if>
+      <if test="record.holdCount != null" >
+        hold_count = #{record.holdCount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.holdRate != null" >
+        hold_rate = #{record.holdRate,jdbcType=DOUBLE},
+      </if>
+      <if test="record.holdFloatRate != null" >
+        hold_float_rate = #{record.holdFloatRate,jdbcType=DOUBLE},
+      </if>
+      <if test="record.gmtCreate != null" >
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update shareholder
+    set id = #{record.id,jdbcType=BIGINT},
+      stock_code = #{record.stockCode,jdbcType=VARCHAR},
+      end_date = #{record.endDate,jdbcType=VARCHAR},
+      holder_name = #{record.holderName,jdbcType=VARCHAR},
+      holder_code = #{record.holderCode,jdbcType=VARCHAR},
+      ranking = #{record.ranking,jdbcType=INTEGER},
+      hold_count = #{record.holdCount,jdbcType=DOUBLE},
+      hold_rate = #{record.holdRate,jdbcType=DOUBLE},
+      hold_float_rate = #{record.holdFloatRate,jdbcType=DOUBLE},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gesangwu.spider.biz.dao.model.ShareHolder" >
+    update shareholder
+    <set >
+      <if test="stockCode != null" >
+        stock_code = #{stockCode,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        end_date = #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="holderName != null" >
+        holder_name = #{holderName,jdbcType=VARCHAR},
+      </if>
+      <if test="holderCode != null" >
+        holder_code = #{holderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ranking != null" >
+        ranking = #{ranking,jdbcType=INTEGER},
+      </if>
+      <if test="holdCount != null" >
+        hold_count = #{holdCount,jdbcType=DOUBLE},
+      </if>
+      <if test="holdRate != null" >
+        hold_rate = #{holdRate,jdbcType=DOUBLE},
+      </if>
+      <if test="holdFloatRate != null" >
+        hold_float_rate = #{holdFloatRate,jdbcType=DOUBLE},
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gesangwu.spider.biz.dao.model.ShareHolder" >
+    update shareholder
+    set stock_code = #{stockCode,jdbcType=VARCHAR},
+      end_date = #{endDate,jdbcType=VARCHAR},
+      holder_name = #{holderName,jdbcType=VARCHAR},
+      holder_code = #{holderCode,jdbcType=VARCHAR},
+      ranking = #{ranking,jdbcType=INTEGER},
+      hold_count = #{holdCount,jdbcType=DOUBLE},
+      hold_rate = #{holdRate,jdbcType=DOUBLE},
+      hold_float_rate = #{holdFloatRate,jdbcType=DOUBLE},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <insert id="insertShareHolderBatch" parameterType="java.util.List" useGeneratedKeys="true">
+  	insert into shareholder (stock_code, end_date, holder_name, 
+      holder_code, ranking, hold_count, 
+      hold_rate, hold_float_rate, gmt_create
+      )
+    values 
+    <foreach collection="list" index="index" item="holder" separator=",">
+    (#{holder.stockCode,jdbcType=VARCHAR}, #{holder.endDate,jdbcType=VARCHAR}, #{holder.holderName,jdbcType=VARCHAR}, 
+      #{holder.holderCode,jdbcType=VARCHAR}, #{holder.ranking,jdbcType=INTEGER}, #{holder.holdCount,jdbcType=DOUBLE}, 
+      #{holder.holdRate,jdbcType=DOUBLE}, #{holder.holdFloatRate,jdbcType=DOUBLE}, #{holder.gmtCreate,jdbcType=TIMESTAMP}
+      )
+    </foreach>
+  </insert>
+</mapper>

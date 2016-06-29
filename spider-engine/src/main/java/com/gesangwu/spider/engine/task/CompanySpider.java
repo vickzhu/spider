@@ -3,6 +3,7 @@ package com.gesangwu.spider.engine.task;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -10,7 +11,6 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
@@ -27,7 +27,7 @@ import com.gesangwu.spider.biz.service.CompanyService;
  *
  */
 @Component
-public class StockProfileSpider {
+public class CompanySpider {
 	
 	@Resource
 	private CompanyService companyService;
@@ -71,6 +71,7 @@ public class StockProfileSpider {
 		List<Company> companyList = new ArrayList<Company>();
 		detailList = detailList.replaceAll("\"", "");
 		String[] details = detailList.split("\\],\\[");
+		Date now = new Date();
 		for(String detail : details) {
 			String[] columns = detail.split(SymbolConstant.COMMA);
 			String symbol = columns[0];
@@ -84,15 +85,17 @@ public class StockProfileSpider {
 			company.setStockCode(code);
 //			company.setStockName(stockName);
 			company.setMarketValue(Double.valueOf(marketValue));
-			company.setCircMarketValue(Double.valueOf(circMarketValue));
+			company.setFloatMarketValue(Double.valueOf(circMarketValue));
 			company.setLastPrice(new BigDecimal(lastPrice));
+			company.setGmtCreate(now);
 			companyList.add(company);
+			
 		}
 		return companyList;
 	}
 
 	public static void main(String[] args) throws UnsupportedEncodingException {
-		StockProfileSpider spider = new StockProfileSpider();
+		CompanySpider spider = new CompanySpider();
 		spider.execute();
 	}
 	

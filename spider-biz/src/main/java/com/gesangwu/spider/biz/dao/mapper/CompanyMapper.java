@@ -7,7 +7,7 @@ import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.CompanyExample;
 
 public interface CompanyMapper extends BaseMapper<Company, CompanyExample> {
-	
-    void insertCompanyBatch(List<Company> companyList);
     
+	void insertCompanyBatch(List<Company> companyList);
+	
 }
