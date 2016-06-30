@@ -13,4 +13,6 @@ public interface CompanyService extends BaseService<Company, CompanyExample> {
 	
 	public void selectByPagination(CompanyExample example, Page<Company> page);
 	
+	public Company selectBySymbol(String symbol);
+	
 }

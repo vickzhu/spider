@@ -3,8 +3,13 @@ package com.gesangwu.spider.engine.task;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Component;
+
 import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
+import com.gesangwu.spider.biz.service.CompanyService;
 
 /**
  * 五档
@@ -14,10 +19,14 @@ import com.gandalf.framework.net.HttpTool;
  * @author zhuxb
  *
  */
+@Component
 public class FiveRangeSpider {
 	
 	private static final String regex = "var hq_str_([\\w]{8})=\"(.*)\";";
 	private static final Pattern r = Pattern.compile(regex);
+	
+	@Resource
+	private CompanyService companyService;
 	
 	public void execute(){
 		long time = System.currentTimeMillis();

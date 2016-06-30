@@ -33,4 +33,9 @@ public class ShareHolderServiceImpl extends BaseServiceImpl<ShareHolder, ShareHo
 		}
 	}
 
+	@Override
+	public Double calcFloatRate(String symbol) {
+		return mapper.calcFloatRate(symbol);
+	}
+
 }

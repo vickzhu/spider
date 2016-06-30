@@ -1,30 +1,94 @@
 package com.gesangwu.spider.engine.task.test;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.UnsupportedEncodingException;
 
 import com.gandalf.framework.net.HttpTool;
 
+
 public class Test {
 	
-	private static final String r = "\"publishdate\"\\:\"[0-9]*\",\"enddate\"\\:\"([0-9]*)\",\"compcode\"\\:\"[0-9]*\",\"shholdercode\"\\:(\"[0-9]*\"|null),\"shholdername\"\\:\"([^\"]*)\",\"shholdertype\"\\:\"[^\"]*\",\"rank1\":null,\"rank2\"\\:([0-9]{1,2}),\"holderamt\"\\:([0-9E\\.]*),\"holderrto\"\\:[0-9\\.]*,\"pctoffloatshares\"\\:([0-9\\.]*),";
-
-	private static Pattern p = Pattern.compile(r);
-	
-	public static void main(String[] args){
-		String cookieUrl = "https://xueqiu.com/account/lostpasswd";
-		HttpTool.get(cookieUrl);//这个链接只是为了获得cookie信息，因为后面的请求需要用到cookie
-		String url = "https://xueqiu.com/stock/f10/otsholder.json?symbol=sz002265";
-		String result = HttpTool.get(url);
-		Matcher m = p.matcher(result);
-		while(m.find()){    		
-    		String endDate = m.group(1);
-    		String holderCode = m.group(2);
-    		String holderName = m.group(3);
-    		String rank = m.group(4);
-    		String counts = m.group(5);//持股数量
-    		String pctOfFloatShares = m.group(6);//流通比例
-    		
-		}
+	public static void main(String[] args) throws UnsupportedEncodingException{
+		String result = HttpTool.get("http://money.finance.sina.com.cn/d/api/openapi_proxy.php/?__s=[[%22hq%22,%22hs_a%22,%22%22,0,1,10]]&callback=FDC_DC.theTableData");
+		System.out.println(decodeUnicode(result));
+		String name = "\u6d66\u53d1\u94f6\u884c";
+		String parsed = new String(name.getBytes("utf-8"));
+		System.out.println(parsed);
 	}
+	
+	public static String decodeUnicode(String theString) {  
+		char aChar;  
+		int len = theString.length();  
+		StringBuffer outBuffer = new StringBuffer(len);  
+		for (int x = 0; x < len;) {  
+			aChar = theString.charAt(x++);  
+			if (aChar == '\\') {  
+				aChar = theString.charAt(x++);  
+				if (aChar == 'u') {
+					int value = 0;
+					for (int i = 0; i < 4; i++) {
+						aChar = theString.charAt(x++);
+						switch (aChar) {
+						case '0':
+						case '1':
+						case '2':
+						case '3':
+						case '4': 
+						case '5':  
+
+	          case '6':  
+	           case '7':  
+	           case '8':  
+	           case '9':  
+	            value = (value << 4) + aChar - '0';  
+	            break;  
+	           case 'a':  
+	           case 'b':  
+	           case 'c':  
+	           case 'd':  
+	           case 'e':  
+	           case 'f':  
+	            value = (value << 4) + 10 + aChar - 'a';  
+	           break;  
+	           case 'A':  
+	           case 'B':  
+	           case 'C':  
+	           case 'D':  
+	           case 'E':  
+	           case 'F':  
+	            value = (value << 4) + 10 + aChar - 'A';  
+	            break;  
+	           default:  
+	            throw new IllegalArgumentException(  
+	              "Malformed   \\uxxxx   encoding.");  
+	           }  
+
+	         }  
+	          outBuffer.append((char) value);  
+	         } else {  
+	          if (aChar == 't')  
+	           aChar = '\t';  
+	          else if (aChar == 'r')  
+	           aChar = '\r';  
+
+	          else if (aChar == 'n')  
+
+	           aChar = '\n';  
+
+	          else if (aChar == 'f')  
+
+	           aChar = '\f';  
+
+	          outBuffer.append(aChar);  
+
+	         }  
+
+	        } else 
+
+	        outBuffer.append(aChar);  
+
+	       }  
+
+	       return outBuffer.toString();  
+
+	      } 
 }

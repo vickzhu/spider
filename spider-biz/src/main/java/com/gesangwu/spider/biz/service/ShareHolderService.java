@@ -10,4 +10,5 @@ public interface ShareHolderService extends BaseService<ShareHolder, ShareHolder
 
 	public void insertShareHolderBatch(List<ShareHolder> shareHolderList);
 	
+	public Double calcFloatRate(String symbol);
 }

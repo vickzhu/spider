@@ -305,4 +305,10 @@
       )
     </foreach>
   </insert>
+  <select id="calcFloatRate" parameterType="java.lang.String" resultType="java.lang.Double">
+  	select 
+  		sum(t.hold_float_rate) 
+  	from 
+  		(select * from shareholder where stock_code=#{symbol} order by end_date desc limit 10) as t;
+  </select>
 </mapper>

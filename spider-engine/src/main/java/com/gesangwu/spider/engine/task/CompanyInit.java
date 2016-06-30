@@ -2,6 +2,7 @@ package com.gesangwu.spider.engine.task;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +20,7 @@ import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.service.CompanyService;
 
 /**
- * 公司基本面，每天晚上跑一轮即可
+ * 公司初始化
  * <code>
  * http://finance.sina.com.cn/data/#stock-schq-hsgs-qbag
  * </code>
@@ -27,7 +28,7 @@ import com.gesangwu.spider.biz.service.CompanyService;
  *
  */
 @Component
-public class CompanySpider {
+public class CompanyInit {
 	
 	@Resource
 	private CompanyService companyService;
@@ -41,7 +42,7 @@ public class CompanySpider {
 	private static int cpp = 80;
 	
 //	@Scheduled(cron="0/5 * *  * * ? ") 
-	public void execute() throws UnsupportedEncodingException{
+	public void execute() {
 		companyService.deleteByExample(null);
 		String result = HttpTool.get("http://money.finance.sina.com.cn/d/api/openapi_proxy.php/?__s=[[%22hq%22,%22hs_a%22,%22%22,0,1,"+cpp+"]]&callback=FDC_DC.theTableData");
 		System.out.println(result);
@@ -76,14 +77,15 @@ public class CompanySpider {
 			String[] columns = detail.split(SymbolConstant.COMMA);
 			String symbol = columns[0];
 			String code = columns[1];
-//			String stockName = unicodeToGB(columns[2]);
+			String stockName = columns[2];
+			String encodeStockName = new String(stockName.getBytes(Charset.forName("utf-8")));
 			String marketValue = columns[19];
 			String circMarketValue = columns[20];
 			String lastPrice = columns[8];
 			Company company = new Company();
 			company.setSymbol(symbol);
 			company.setStockCode(code);
-//			company.setStockName(stockName);
+			company.setStockName(encodeStockName);
 			company.setMarketValue(Double.valueOf(marketValue));
 			company.setFloatMarketValue(Double.valueOf(circMarketValue));
 			company.setLastPrice(new BigDecimal(lastPrice));
@@ -95,7 +97,7 @@ public class CompanySpider {
 	}
 
 	public static void main(String[] args) throws UnsupportedEncodingException {
-		CompanySpider spider = new CompanySpider();
+		CompanyInit spider = new CompanyInit();
 		spider.execute();
 	}
 	

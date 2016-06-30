@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import com.gandalf.framework.mybatis.BaseMapper;
@@ -39,6 +40,15 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company, CompanyExample>
         page.setTotalCounts(totalCounts);
         List<Company> companyList = mapper.selectByExample(example);
         page.setRecords(companyList);
+	}
+
+	@Override
+	public Company selectBySymbol(String symbol) {
+		CompanyExample example = new CompanyExample();
+		CompanyExample.Criteria criteria = example.createCriteria();
+		criteria.andSymbolEqualTo(symbol);
+		List<Company> companyList = mapper.selectByExample(example);
+		return CollectionUtils.isEmpty(companyList)?null:companyList.get(0);
 	}
 
 }

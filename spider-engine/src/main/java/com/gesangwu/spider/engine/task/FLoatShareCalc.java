@@ -1,5 +1,7 @@
 package com.gesangwu.spider.engine.task;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +17,11 @@ import com.gesangwu.spider.biz.service.ShareHolderService;
 
 /**
  * 浮动筹码计算
+ * <pre>
+ * 两种方法，偏向于第二种效率高
  * select stock_code,sum(hold_float_rate),end_date from shareholder where stock_code='sz002265' group by end_date order by end_date desc limit 1;
+ * select t.stock_code,sum(t.hold_float_rate),end_date from (select * from shareholder where stock_code='sz002265' order by end_date desc limit 10) as t;
+ * </pre>
  * @author zhuxb
  *
  */
@@ -34,13 +40,29 @@ public class FLoatShareCalc {
 		Date now = new Date();
 		for(int cur = 1; cur<=totalPages; cur++){
 			System.out.println(cur);
-			Page<Company> page = new Page<Company>(cur);
+			Page<Company> page = new Page<Company>(cur, cpp);
 			companyService.selectByPagination(new CompanyExample(), page);
 			List<Company> companyList = page.getRecords();
 			for (Company company : companyList) {
-				
+				Double totalRate = holderService.calcFloatRate(company.getSymbol());
+				if(totalRate == null){
+					continue;
+				}
+				double floatMarketValue = company.getFloatMarketValue();
+				double activeMarketValue = calc(floatMarketValue, totalRate);
+				company.setActiveMarketValue(activeMarketValue);
+				company.setGmtUpdate(now);
+				companyService.updateByPrimaryKey(company);
 			}
 		}
+	}
+	
+	private double calc(double floatMarketValue, double totalRate){
+		double remainRate = 1 - totalRate/100;
+		BigDecimal mv = BigDecimal.valueOf(floatMarketValue);
+		BigDecimal rr = BigDecimal.valueOf(remainRate);
+		BigDecimal amv = mv.multiply(rr).setScale(4,RoundingMode.HALF_UP);
+		return amv.doubleValue();
 	}
 	
 }
