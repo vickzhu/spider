@@ -15,4 +15,6 @@ public interface CompanyService extends BaseService<Company, CompanyExample> {
 	
 	public Company selectBySymbol(String symbol);
 	
+	public List<Company> loadLittleCompany();
+	
 }

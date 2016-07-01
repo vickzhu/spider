@@ -51,4 +51,12 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company, CompanyExample>
 		return CollectionUtils.isEmpty(companyList)?null:companyList.get(0);
 	}
 
+	@Override
+	public List<Company> loadLittleCompany() {
+		CompanyExample example = new CompanyExample();
+		CompanyExample.Criteria criteria = example.createCriteria();
+		criteria.andActiveMarketValueLessThanOrEqualTo(200000d);
+		return mapper.selectByExample(example);
+	}
+
 }

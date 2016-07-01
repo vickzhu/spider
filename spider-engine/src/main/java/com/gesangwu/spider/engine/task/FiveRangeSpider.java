@@ -1,15 +1,22 @@
 package com.gesangwu.spider.engine.task;
 
+import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
+import com.gesangwu.spider.biz.dao.model.Company;
+import com.gesangwu.spider.biz.dao.model.FiveRangeStatis;
 import com.gesangwu.spider.biz.service.CompanyService;
+import com.gesangwu.spider.biz.service.FiveRangeStatisService;
+import com.gesangwu.spider.engine.util.LittleCompanyHolder;
 
 /**
  * 五档
@@ -27,55 +34,93 @@ public class FiveRangeSpider {
 	
 	@Resource
 	private CompanyService companyService;
+	@Resource
+	private FiveRangeStatisService statisService;
 	
+//	@Scheduled(cron = "0 */1 * W * ?")
 	public void execute(){
-		long time = System.currentTimeMillis();
-		String result = HttpTool.get("http://hq.sinajs.cn/etag.php?_="+time+"&list=sz002265,sz002495");
-		System.out.println(result);
-		Matcher matcher = r.matcher(result);
-		while(matcher.find()){
-			String code = matcher.group(1);
-			String detail = matcher.group(2);
-			String[] details = detail.split(SymbolConstant.COMMA);
-			String buy_1_count = details[10];
-			String buy_1_price = details[11];
-			System.out.println(details[0]+"买一："+buy_1_price+"   "+buy_1_count);
-			String buy_2_count = details[12];
-			String buy_2_price = details[13];
-			
-			String buy_3_count = details[14];
-			String buy_3_price = details[15];
-			
-			String buy_4_count = details[16];
-			String buy_4_price = details[17];
-			
-			String buy_5_count = details[18];
-			String buy_5_price = details[19];
-			System.out.println(details[0]+"买五："+buy_5_price+"   "+buy_5_count);
-			
-			String sell_1_count = details[20];
-			String sell_1_price = details[21];
-			System.out.println(details[0]+"卖一："+sell_1_price+"   "+sell_1_count);
-			
-			String sell_2_count = details[22];
-			String sell_2_price = details[23];
-			
-			String sell_3_count = details[24];
-			String sell_3_price = details[25];
-			
-			String sell_4_count = details[26];
-			String sell_4_price = details[27];
-			
-			String sell_5_count = details[28];
-			String sell_5_price = details[29];
-			System.out.println(details[0]+"卖五："+sell_5_price+"   "+sell_5_count);
+		List<Company> companyList = LittleCompanyHolder.getCompanyList();
+		int size = companyList.size();
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < size; i++) {
+			sb.append(companyList.get(i).getSymbol());
+			sb.append(SymbolConstant.COMMA);
+			if(i == size - 1){
+				fetch(sb.toString());
+				sb = new StringBuffer();
+			} else {
+				if(i != 0 && i % 499 == 0){
+					fetch(sb.toString());
+					sb = new StringBuffer();
+				}
+			}
 		}
 	}
-
-	public static void main(String[] args) {
-		FiveRangeSpider spider = new FiveRangeSpider();
-		spider.execute();
-
+	
+	private void fetch(String symbolArr){
+		String result = HttpTool.get("http://hq.sinajs.cn/etag.php?list=" + symbolArr);
+		Matcher matcher = r.matcher(result);
+		while(matcher.find()){
+			boolean b = false;
+			boolean s = false;
+			String symbol = matcher.group(1);
+			String detail = matcher.group(2);
+			String[] details = detail.split(SymbolConstant.COMMA);
+			String b_1_c = details[10];
+			String b_2_c = details[12];
+			String b_3_c = details[14];
+			String b_4_c = details[16];
+			String b_5_c = details[18];
+			if(Integer.valueOf(b_1_c)>=500000||Integer.valueOf(b_2_c)>=500000||Integer.valueOf(b_3_c)>=500000
+					||Integer.valueOf(b_4_c)>=500000||Integer.valueOf(b_5_c)>=500000){
+				b = true;
+			}
+			String s_1_c = details[20];
+			String s_2_c = details[22];
+			String s_3_c = details[24];
+			String s_4_c = details[26];
+			String s_5_c = details[28];
+			if(Integer.valueOf(s_1_c)>=500000||Integer.valueOf(s_2_c)>=500000||Integer.valueOf(s_3_c)>=500000
+					||Integer.valueOf(s_4_c)>=500000||Integer.valueOf(s_5_c)>=500000){
+				s = true;
+			}
+//			String buy_1_price = details[11];
+//			String buy_2_price = details[13];
+//			String buy_3_price = details[15];
+//			String buy_4_price = details[17];
+//			String buy_5_price = details[19];
+//			String sell_1_price = details[21];
+//			String sell_2_price = details[23];
+//			String sell_3_price = details[25];
+//			String sell_4_price = details[27];
+//			String sell_5_price = details[29];
+			String date = details[30];
+			if(b||s){
+				FiveRangeStatis statis = statisService.selectBySymbolAndDate(symbol, date);
+				if(statis == null){
+					statis = new FiveRangeStatis();
+					if(b){
+						statis.setBigBuy(1);
+					}
+					if(s){
+						statis.setBigSell(1);
+					}
+					statis.setDate(date);
+					statis.setStockName(details[0]);
+					statis.setSymbol(symbol);
+					statis.setGmtCreate(new Date());
+					statisService.insert(statis);
+				} else {
+					if(b){
+						statis.setBigBuy(statis.getBigBuy()+1);
+					}
+					if(s){
+						statis.setBigSell(statis.getBigSell()+1);
+					}
+					statisService.updateByPrimaryKey(statis);
+				}
+			}
+		}
 	}
 
 }
