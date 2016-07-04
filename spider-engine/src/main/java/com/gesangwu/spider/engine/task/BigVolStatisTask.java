@@ -8,14 +8,25 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.net.HttpTool;
+import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.dao.model.BigVolStatis;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.service.BigVolStatisService;
 import com.gesangwu.spider.engine.util.LittleCompanyHolder;
+import com.gesangwu.spider.engine.util.TradeTimeUtil;
 
+/**
+ * 大成交量统计
+ * <pre>
+ * 网易大单统计，http://quotes.money.163.com/hs/realtimedata/service/dadan.php?t=0?host=/hs/realtimedata/service/dadan.php?t=0&page=1&query=vol:6000;time_period:09_55-10_00&fields=RN,SYMBOL,NAME,DATE,PRICE,PRICE_PRE,PERCENT,TURNOVER_INC,VOLUME_INC,TRADE_TYPE,,CODE&sort=DATE&order=desc&count=25&type=query&callback=callback_1062193561&req=3232
+ * </pre>
+ * @author zhuxb
+ *
+ */
 @Component
 public class BigVolStatisTask {
 	
@@ -27,19 +38,28 @@ public class BigVolStatisTask {
 	
 	private static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 	
+//	@Scheduled(cron = "0 0/1 9-14 * * MON-FRI")
 	public void execute(){
+//		if(!TradeTimeUtil.checkTime()){
+//			return;
+//		}
 		long start = System.currentTimeMillis();
 		Date now = new Date();
 		String date = df.format(now);
 		List<Company> companyList = LittleCompanyHolder.getCompanyList();
 		for (Company company : companyList) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			String symbol = company.getSymbol();
-			String url = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_Bill.GetBillList?symbol="+company.getSymbol()+"&num=20&page=1&sort=ticktime&asc=0&volume=5000&amount=0&type=0&day="+date;
+			String url = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_Bill.GetBillList?symbol="+company.getSymbol()+"&num=20&page=1&sort=ticktime&asc=0&volume=500000&amount=0&type=0&day="+date;
 			String result = HttpTool.get(url);
-			Matcher m = r.matcher(result);
-			if(!m.matches()){
+			if(StringUtil.isBlank(result) || "null".equals(result)){
 				continue;
 			}
+			Matcher m = r.matcher(result);
 			int buyTotal = 0;
 			int sellTotal = 0;
 			int equalTotal = 0;
@@ -66,11 +86,6 @@ public class BigVolStatisTask {
 			statis.setEqualTotal(equalTotal);
 			statis.setGmtUpdate(now);
 			statisService.updateByPrimaryKey(statis);
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 		}
 		long end = System.currentTimeMillis();
 		System.out.println("======================" + (end - start));

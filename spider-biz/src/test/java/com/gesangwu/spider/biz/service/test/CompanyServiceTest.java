@@ -15,12 +15,12 @@ public class CompanyServiceTest extends BaseTest {
 	@Resource
 	private CompanyService companyService;
 
-//	@Test
+	@Test
 	public void testSelectAll(){
 		companyService.selectByExample(null);
 	}
 	
-	@Test
+//	@Test
 	public void testSelectByPagination(){
 		int cpp = 10;
 		int count = companyService.countByExample(null);

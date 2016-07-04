@@ -1,0 +1,40 @@
+/* 
+* @Author: Administrator
+* @Date:   2015-11-18 17:51:41
+* @Last Modified by:   Administrator
+* @Last Modified time: 2015-11-19 17:00:24
+*/
+*{margin:0;padding:0;list-style: none;}
+span{display: inline-block;}
+i{font-style: normal;margin-left: 40px;color:red;}
+input{border: 0;font-size: 14px;color:#bcbcbc;}
+input:focus {outline: none;}
+body{background: url(../image/stardust.png); font-size: 14px;font-family: "微软雅黑";}
+.clearfix { zoom: 1; }
+.clearfix:after { display: block; content: ""; clear: both; height: 0; visibility: hidden; }
+button { border: 0; cursor: pointer; background: none;}
+.box{width: 730px;height: 730px;background:url(../image/png.png) no-repeat; position: relative;}
+.box-in{width: 350px;height: 330px;position: absolute;top:245px;left: 240px;}
+.box-in div{
+	width: 255px;
+	height: 36px;
+	background: #fafafa;
+	border-radius: 5px;
+	border: 1px solid #dfdfdf;
+	margin-bottom: 30px;
+	position: relative;
+}
+.ic{
+		color:#000;
+	}
+.box-in div span{width: 38px;height: 38px;background: #12adff url(../image/pic1.png) no-repeat center center;float: left;}
+.box-in div input{float: left;background: #fafafa;height: 20px;line-height: 20px;margin:9px 5px;width: 207px;}
+.box-in .pwd span{background-image: url(../image/pic2.png) ;}
+.box-in .yzm{margin-bottom: 30px;width: 257px;position: relative;}
+.box-in .yzm input{width: 120px;height: 20px;line-height: 20px;border: 1px solid #dfdfdf;border-radius: 5px;padding: 8px;background: #fafafa;
+	float: left;
+}
+.box-in .yzm span{width: 80px;height: 38px;background: #f1fcda;margin-left: 9px;float: left;border-radius: 5px;}
+.box-in .yzm b{display: inline-block;width: 15px;height: 15px;background:url(../image/circle_03.jpg) no-repeat;margin:22px 0 0 14px;}
+.box-in .login{width: 257px;height: 38px;background: #12adff;color: #fff;border: none;text-align: center;line-height: 38px;}
+.box-in .login button{color: #fff;height: 38px;width: 257px;}

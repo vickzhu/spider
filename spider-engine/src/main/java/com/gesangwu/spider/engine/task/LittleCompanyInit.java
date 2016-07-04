@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gesangwu.spider.biz.dao.model.Company;
@@ -22,6 +23,7 @@ public class LittleCompanyInit {
 	@Resource
 	private CompanyService companyService;
 	
+	@Scheduled(cron = "0 0 8 * * MON-FRI")
 	public void load(){
 		List<Company> list = companyService.loadLittleCompany();
 		LittleCompanyHolder.setCompanyList(list);

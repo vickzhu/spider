@@ -16,6 +16,11 @@
         <artifactId>druid</artifactId>
         <version>${druid.version}</version>
     </dependency>
+    <dependency>
+    	<groupId>com.gesangwu</groupId>
+    	<artifactId>spider-engine</artifactId>
+    	<version>${project.version}</version>
+    </dependency>
   </dependencies>
   <profiles>
  	<profile>

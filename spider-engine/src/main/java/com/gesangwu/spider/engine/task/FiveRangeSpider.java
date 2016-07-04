@@ -1,5 +1,6 @@
 package com.gesangwu.spider.engine.task;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -7,6 +8,8 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +20,7 @@ import com.gesangwu.spider.biz.dao.model.FiveRangeStatis;
 import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.FiveRangeStatisService;
 import com.gesangwu.spider.engine.util.LittleCompanyHolder;
+import com.gesangwu.spider.engine.util.TradeTimeUtil;
 
 /**
  * 五档
@@ -29,6 +33,8 @@ import com.gesangwu.spider.engine.util.LittleCompanyHolder;
 @Component
 public class FiveRangeSpider {
 	
+	private static final Logger logger = LoggerFactory.getLogger(FiveRangeSpider.class);
+	
 	private static final String regex = "var hq_str_([\\w]{8})=\"(.*)\";";
 	private static final Pattern r = Pattern.compile(regex);
 	
@@ -37,8 +43,12 @@ public class FiveRangeSpider {
 	@Resource
 	private FiveRangeStatisService statisService;
 	
-//	@Scheduled(cron = "0 */1 * W * ?")
+	@Scheduled(cron = "0 0/1 9-14 * * MON-FRI")
 	public void execute(){
+		if(!TradeTimeUtil.checkTime()){
+			return;
+		}
+		long start = System.currentTimeMillis();
 		List<Company> companyList = LittleCompanyHolder.getCompanyList();
 		int size = companyList.size();
 		StringBuffer sb = new StringBuffer();
@@ -55,6 +65,8 @@ public class FiveRangeSpider {
 				}
 			}
 		}
+		long end = System.currentTimeMillis();
+		logger.info("Fetch the FiveRange use:"+(end-start)+"ms!");
 	}
 	
 	private void fetch(String symbolArr){

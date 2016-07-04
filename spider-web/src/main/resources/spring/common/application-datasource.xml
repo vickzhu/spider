@@ -68,7 +68,7 @@
         </property>
         <property name="mapperLocations">
             <list>
-                <value>classpath*:com/pentagon/**/sqlmap/*Mapper.xml</value>
+                <value>classpath*:com/gesangwu/**/sqlmap/*Mapper.xml</value>
             </list>
         </property>
     </bean>

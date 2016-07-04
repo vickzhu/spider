@@ -6,11 +6,11 @@ import java.util.regex.Pattern;
 import com.gandalf.framework.net.HttpTool;
 
 /**
- * 逐笔详情，其实详情无所谓，关键是取得内外盘数据
+ * 逐笔详情(一分钟有多笔)，其实详情无所谓，关键是取得内外盘数据
  * @author zhuxb
  *
  */
-public class DetailSpider {
+public class TradeDetailTask {
 	
 	private static final String regex = "var trade_INVOL_OUTVOL=\\[(\\d*),(\\d*)\\];";
 	private static final Pattern r = Pattern.compile(regex);
@@ -27,7 +27,7 @@ public class DetailSpider {
 	}
 
 	public static void main(String[] args) {
-		DetailSpider spider = new DetailSpider();
+		TradeDetailTask spider = new TradeDetailTask();
 		spider.execute();
 
 	}

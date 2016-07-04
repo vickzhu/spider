@@ -7,6 +7,9 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
@@ -15,12 +18,14 @@ import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.service.CompanyService;
 
 /**
- * 公司更新
+ * 公司信息更新
  * @author zhuxb
  *
  */
 @Component
-public class CompanyUpdate {
+public class CompanyUpdateTask {
+	
+	private static final Logger logger = LoggerFactory.getLogger(CompanyUpdateTask.class);
 	
 	private static final String r1 = "\"day\"\\:\"([0-9\\-]*)\",\"count\"\\:([0-9]*).*\"items\"\\:\\[\\[(.*)\\]\\]\\}\\]\\)";
 	private static final String r2 = "\"items\"\\:\\[\\[(.*)\\]\\]\\}\\]\\)";
@@ -31,7 +36,9 @@ public class CompanyUpdate {
 	@Resource
 	private CompanyService companyService;
 
+	@Scheduled(cron="0 0 3 * * ?")
 	public void execute(){
+		long start = System.currentTimeMillis();
 		String result = HttpTool.get("http://money.finance.sina.com.cn/d/api/openapi_proxy.php/?__s=[[%22hq%22,%22hs_a%22,%22%22,0,1,"+cpp+"]]&callback=FDC_DC.theTableData");
 		System.out.println(result);
 		Matcher matcher = p1.matcher(result);
@@ -52,7 +59,8 @@ public class CompanyUpdate {
 			detailList = matcher.group(1);
 			sou(detailList);
 		}	
-		System.out.println("========执行完毕========");
+		long end = System.currentTimeMillis();
+		logger.info("Update Company use:" + (end-start)+"ms!");
 	}
 	
 	/**

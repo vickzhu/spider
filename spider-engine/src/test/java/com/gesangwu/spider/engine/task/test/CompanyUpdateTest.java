@@ -4,13 +4,13 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
-import com.gesangwu.spider.engine.task.CompanyUpdate;
+import com.gesangwu.spider.engine.task.CompanyUpdateTask;
 import com.gesangwu.spider.engine.test.BaseTest;
 
 public class CompanyUpdateTest extends BaseTest {
 	
 	@Resource
-	private CompanyUpdate companyUpdate;
+	private CompanyUpdateTask companyUpdate;
 
 	@Test
 	public void test(){

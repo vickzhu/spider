@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.web.tool.Page;
@@ -16,7 +17,7 @@ import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.ShareHolderService;
 
 /**
- * 浮动筹码计算
+ * 活跃流通股东
  * <pre>
  * 两种方法，偏向于第二种效率高
  * select stock_code,sum(hold_float_rate),end_date from shareholder where stock_code='sz002265' group by end_date order by end_date desc limit 1;
@@ -33,6 +34,7 @@ public class FLoatShareCalc {
 	@Resource
 	private ShareHolderService holderService;
 	
+	@Scheduled(cron = "0 0 4 * * MON-FRI")
 	public void execute(){
 		int cpp = 20;
 		int count = companyService.countByExample(null);

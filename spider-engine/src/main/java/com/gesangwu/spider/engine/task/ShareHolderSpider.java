@@ -20,7 +20,7 @@ import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.ShareHolderService;
 
 /**
- * 股东
+ * 十大流通股东
  * https://xueqiu.com/S/SH603099/LTGD
  * 恒生：http://open.hs.net/online-test/arescloud
  * @author zhuxb
