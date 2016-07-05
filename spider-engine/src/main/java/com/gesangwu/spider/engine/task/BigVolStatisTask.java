@@ -22,7 +22,9 @@ import com.gesangwu.spider.engine.util.TradeTimeUtil;
 /**
  * 大成交量统计
  * <pre>
- * 网易大单统计，http://quotes.money.163.com/hs/realtimedata/service/dadan.php?t=0?host=/hs/realtimedata/service/dadan.php?t=0&page=1&query=vol:6000;time_period:09_55-10_00&fields=RN,SYMBOL,NAME,DATE,PRICE,PRICE_PRE,PERCENT,TURNOVER_INC,VOLUME_INC,TRADE_TYPE,,CODE&sort=DATE&order=desc&count=25&type=query&callback=callback_1062193561&req=3232
+ * 网易大单统计，
+ * http://quotes.money.163.com/hs/realtimedata/service/dadan.php?t=0?host=/hs/realtimedata/service/dadan.php?t=0&page=1&query=vol:6000;time_period:09_55-10_00&fields=RN,SYMBOL,NAME,DATE,PRICE,PRICE_PRE,PERCENT,TURNOVER_INC,VOLUME_INC,TRADE_TYPE,,CODE&sort=DATE&order=desc&count=25&type=query&callback=callback_1062193561&req=3232
+ * 
  * </pre>
  * @author zhuxb
  *
@@ -30,13 +32,14 @@ import com.gesangwu.spider.engine.util.TradeTimeUtil;
 @Component
 public class BigVolStatisTask {
 	
-	private static final String regex = "\\{symbol\\:\"([^\"]*)\",name\\:\"([^\"]*)\",ticktime\\:\"([0-9\\:]*)\",price\\:\"([0-9\\.]*)\",volume\\:\"([0-9]*)\",prev_price\\:\"([0-9\\.]*)\",kind\\:\"(D|U|E)\"}";
+	private static final String regex = "{\"CODE\"\\:\"\\d*\",\"TRADE_TYPE\"\\:[^,]*,\"PRICE_PRE\"\\:([0-9\\.]*),\"VOLUME_INC\"\\:(\\d*),\"SYMBOL\"\\:\"[0-9]{6}\",\"PERCENT\"\\:([0-9\\.\\-]*),\"NAME\"\\:\"[^\"]*\",\"PRICE\"\\:([0-9\\.]*),\"TURNOVER_INC\"\\:([0-9\\.]*),\"DATE\"\\:\"([^\"]*)\",\"RN\"\\:\\d*}";
 	private Pattern r = Pattern.compile(regex);
 	
 	@Resource
 	private BigVolStatisService statisService;
 	
 	private static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+	private static SimpleDateFormat df_full = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 //	@Scheduled(cron = "0 0/1 9-14 * * MON-FRI")
 	public void execute(){
@@ -46,46 +49,17 @@ public class BigVolStatisTask {
 		long start = System.currentTimeMillis();
 		Date now = new Date();
 		String date = df.format(now);
-		List<Company> companyList = LittleCompanyHolder.getCompanyList();
-		for (Company company : companyList) {
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			String symbol = company.getSymbol();
-			String url = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_Bill.GetBillList?symbol="+company.getSymbol()+"&num=20&page=1&sort=ticktime&asc=0&volume=500000&amount=0&type=0&day="+date;
-			String result = HttpTool.get(url);
-			if(StringUtil.isBlank(result) || "null".equals(result)){
-				continue;
-			}
-			Matcher m = r.matcher(result);
-			int buyTotal = 0;
-			int sellTotal = 0;
-			int equalTotal = 0;
-			while(m.find()){
-				String mark = m.group(7);
-				if("U".equals(mark)){
-					buyTotal++;
-				} else if("D".equals(mark)){
-					sellTotal++;
-				} else if("E".equals(mark)){
-					equalTotal++;
-				}
-			}
-			BigVolStatis statis = statisService.selectBySymbolAndDate(symbol, date);
-			if(statis == null){
-				statis = new BigVolStatis();
-				statis.setSymbol(symbol);
-				statis.setDate(date);
-				statis.setGmtCreate(now);
-				statisService.insert(statis);
-			} 
-			statis.setBuyTotal(buyTotal);
-			statis.setSellTotal(sellTotal);
-			statis.setEqualTotal(equalTotal);
-			statis.setGmtUpdate(now);
-			statisService.updateByPrimaryKey(statis);
+		
+		int page = 0;
+		int vol = 3000;
+		
+		String url = "http://quotes.money.163.com/hs/realtimedata/service/dadan.php?page="+page+"&query=vol:"+vol+";time_period:09_50-10_00&sort=DATE&order=desc&count=50";
+		
+		String result = HttpTool.get(url);
+		System.out.println(result);
+		Matcher m = r.matcher(result);
+		while(m.matches()){
+			System.out.println(m.group(1));
 		}
 		long end = System.currentTimeMillis();
 		System.out.println("======================" + (end - start));
