@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gesangwu.spider.biz.dao.mapper.BigVolStatisMapper" >
-  <resultMap id="BaseResultMap" type="com.gesangwu.spider.biz.dao.model.BigVolStatis" >
+<mapper namespace="com.gesangwu.spider.biz.dao.mapper.LargeVolMapper" >
+  <resultMap id="BaseResultMap" type="com.gesangwu.spider.biz.dao.model.LargeVol" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="symbol" property="symbol" jdbcType="VARCHAR" />
-    <result column="sell_total" property="sellTotal" jdbcType="INTEGER" />
-    <result column="buy_total" property="buyTotal" jdbcType="INTEGER" />
-    <result column="equal_total" property="equalTotal" jdbcType="INTEGER" />
-    <result column="date" property="date" jdbcType="VARCHAR" />
+    <result column="vol" property="vol" jdbcType="INTEGER" />
+    <result column="trade_type" property="tradeType" jdbcType="INTEGER" />
+    <result column="percent" property="percent" jdbcType="DOUBLE" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="trade_time" property="tradeTime" jdbcType="VARCHAR" />
     <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
-    <result column="gmt_update" property="gmtUpdate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -70,15 +70,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, symbol, sell_total, buy_total, equal_total, date, gmt_create, gmt_update
+    id, symbol, vol, trade_type, percent, amount, trade_time, gmt_create
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.BigVolStatisExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.LargeVolExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from big_vol_statis
+    from large_vol
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -92,90 +92,90 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from big_vol_statis
+    from large_vol
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from big_vol_statis
+    delete from large_vol
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.gesangwu.spider.biz.dao.model.BigVolStatisExample" >
-    delete from big_vol_statis
+  <delete id="deleteByExample" parameterType="com.gesangwu.spider.biz.dao.model.LargeVolExample" >
+    delete from large_vol
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.gesangwu.spider.biz.dao.model.BigVolStatis" >
+  <insert id="insert" parameterType="com.gesangwu.spider.biz.dao.model.LargeVol" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into big_vol_statis (symbol, sell_total, buy_total, 
-      equal_total, date, gmt_create, 
-      gmt_update)
-    values (#{symbol,jdbcType=VARCHAR}, #{sellTotal,jdbcType=INTEGER}, #{buyTotal,jdbcType=INTEGER}, 
-      #{equalTotal,jdbcType=INTEGER}, #{date,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
-      #{gmtUpdate,jdbcType=TIMESTAMP})
+    insert into large_vol (symbol, vol, trade_type, 
+      percent, amount, trade_time, 
+      gmt_create)
+    values (#{symbol,jdbcType=VARCHAR}, #{vol,jdbcType=INTEGER}, #{tradeType,jdbcType=INTEGER}, 
+      #{percent,jdbcType=DOUBLE}, #{amount,jdbcType=DOUBLE}, #{tradeTime,jdbcType=VARCHAR}, 
+      #{gmtCreate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.BigVolStatis" >
+  <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.LargeVol" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into big_vol_statis
+    insert into large_vol
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="symbol != null" >
         symbol,
       </if>
-      <if test="sellTotal != null" >
-        sell_total,
+      <if test="vol != null" >
+        vol,
       </if>
-      <if test="buyTotal != null" >
-        buy_total,
+      <if test="tradeType != null" >
+        trade_type,
       </if>
-      <if test="equalTotal != null" >
-        equal_total,
+      <if test="percent != null" >
+        percent,
       </if>
-      <if test="date != null" >
-        date,
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="tradeTime != null" >
+        trade_time,
       </if>
       <if test="gmtCreate != null" >
         gmt_create,
-      </if>
-      <if test="gmtUpdate != null" >
-        gmt_update,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="symbol != null" >
         #{symbol,jdbcType=VARCHAR},
       </if>
-      <if test="sellTotal != null" >
-        #{sellTotal,jdbcType=INTEGER},
+      <if test="vol != null" >
+        #{vol,jdbcType=INTEGER},
       </if>
-      <if test="buyTotal != null" >
-        #{buyTotal,jdbcType=INTEGER},
+      <if test="tradeType != null" >
+        #{tradeType,jdbcType=INTEGER},
       </if>
-      <if test="equalTotal != null" >
-        #{equalTotal,jdbcType=INTEGER},
+      <if test="percent != null" >
+        #{percent,jdbcType=DOUBLE},
       </if>
-      <if test="date != null" >
-        #{date,jdbcType=VARCHAR},
+      <if test="amount != null" >
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="tradeTime != null" >
+        #{tradeTime,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreate != null" >
         #{gmtCreate,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtUpdate != null" >
-        #{gmtUpdate,jdbcType=TIMESTAMP},
-      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.gesangwu.spider.biz.dao.model.BigVolStatisExample" resultType="java.lang.Integer" >
-    select count(*) from big_vol_statis
+  <select id="countByExample" parameterType="com.gesangwu.spider.biz.dao.model.LargeVolExample" resultType="java.lang.Integer" >
+    select count(*) from large_vol
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update big_vol_statis
+    update large_vol
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
@@ -183,23 +183,23 @@
       <if test="record.symbol != null" >
         symbol = #{record.symbol,jdbcType=VARCHAR},
       </if>
-      <if test="record.sellTotal != null" >
-        sell_total = #{record.sellTotal,jdbcType=INTEGER},
+      <if test="record.vol != null" >
+        vol = #{record.vol,jdbcType=INTEGER},
       </if>
-      <if test="record.buyTotal != null" >
-        buy_total = #{record.buyTotal,jdbcType=INTEGER},
+      <if test="record.tradeType != null" >
+        trade_type = #{record.tradeType,jdbcType=INTEGER},
       </if>
-      <if test="record.equalTotal != null" >
-        equal_total = #{record.equalTotal,jdbcType=INTEGER},
+      <if test="record.percent != null" >
+        percent = #{record.percent,jdbcType=DOUBLE},
       </if>
-      <if test="record.date != null" >
-        date = #{record.date,jdbcType=VARCHAR},
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.tradeTime != null" >
+        trade_time = #{record.tradeTime,jdbcType=VARCHAR},
       </if>
       <if test="record.gmtCreate != null" >
         gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtUpdate != null" >
-        gmt_update = #{record.gmtUpdate,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -207,55 +207,55 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update big_vol_statis
+    update large_vol
     set id = #{record.id,jdbcType=BIGINT},
       symbol = #{record.symbol,jdbcType=VARCHAR},
-      sell_total = #{record.sellTotal,jdbcType=INTEGER},
-      buy_total = #{record.buyTotal,jdbcType=INTEGER},
-      equal_total = #{record.equalTotal,jdbcType=INTEGER},
-      date = #{record.date,jdbcType=VARCHAR},
-      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
-      gmt_update = #{record.gmtUpdate,jdbcType=TIMESTAMP}
+      vol = #{record.vol,jdbcType=INTEGER},
+      trade_type = #{record.tradeType,jdbcType=INTEGER},
+      percent = #{record.percent,jdbcType=DOUBLE},
+      amount = #{record.amount,jdbcType=DOUBLE},
+      trade_time = #{record.tradeTime,jdbcType=VARCHAR},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.gesangwu.spider.biz.dao.model.BigVolStatis" >
-    update big_vol_statis
+  <update id="updateByPrimaryKeySelective" parameterType="com.gesangwu.spider.biz.dao.model.LargeVol" >
+    update large_vol
     <set >
       <if test="symbol != null" >
         symbol = #{symbol,jdbcType=VARCHAR},
       </if>
-      <if test="sellTotal != null" >
-        sell_total = #{sellTotal,jdbcType=INTEGER},
+      <if test="vol != null" >
+        vol = #{vol,jdbcType=INTEGER},
       </if>
-      <if test="buyTotal != null" >
-        buy_total = #{buyTotal,jdbcType=INTEGER},
+      <if test="tradeType != null" >
+        trade_type = #{tradeType,jdbcType=INTEGER},
       </if>
-      <if test="equalTotal != null" >
-        equal_total = #{equalTotal,jdbcType=INTEGER},
+      <if test="percent != null" >
+        percent = #{percent,jdbcType=DOUBLE},
       </if>
-      <if test="date != null" >
-        date = #{date,jdbcType=VARCHAR},
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="tradeTime != null" >
+        trade_time = #{tradeTime,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreate != null" >
         gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtUpdate != null" >
-        gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP},
-      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.gesangwu.spider.biz.dao.model.BigVolStatis" >
-    update big_vol_statis
+  <update id="updateByPrimaryKey" parameterType="com.gesangwu.spider.biz.dao.model.LargeVol" >
+    update large_vol
     set symbol = #{symbol,jdbcType=VARCHAR},
-      sell_total = #{sellTotal,jdbcType=INTEGER},
-      buy_total = #{buyTotal,jdbcType=INTEGER},
-      equal_total = #{equalTotal,jdbcType=INTEGER},
-      date = #{date,jdbcType=VARCHAR},
-      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
-      gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP}
+      vol = #{vol,jdbcType=INTEGER},
+      trade_type = #{tradeType,jdbcType=INTEGER},
+      percent = #{percent,jdbcType=DOUBLE},
+      amount = #{amount,jdbcType=DOUBLE},
+      trade_time = #{tradeTime,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

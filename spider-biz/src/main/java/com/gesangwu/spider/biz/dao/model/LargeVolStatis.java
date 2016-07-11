@@ -2,7 +2,7 @@ package com.gesangwu.spider.biz.dao.model;
 
 import java.util.Date;
 
-public class BigVolStatis {
+public class LargeVolStatis {
     private Long id;
 
     private String symbol;
@@ -13,7 +13,7 @@ public class BigVolStatis {
 
     private Integer equalTotal = 0;
 
-    private String date;
+    private Date date;
 
     private Date gmtCreate;
 
@@ -59,12 +59,12 @@ public class BigVolStatis {
         this.equalTotal = equalTotal;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date == null ? null : date.trim();
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Date getGmtCreate() {

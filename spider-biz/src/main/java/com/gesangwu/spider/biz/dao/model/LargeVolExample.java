@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class BigVolStatisExample {
+public class LargeVolExample {
     protected String orderByClause;
 
     protected boolean distinct;
@@ -15,7 +15,7 @@ public class BigVolStatisExample {
 
     protected int rows = -1;
 
-    public BigVolStatisExample() {
+    public LargeVolExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -255,253 +255,313 @@ public class BigVolStatisExample {
             return (Criteria) this;
         }
 
-        public Criteria andSellTotalIsNull() {
-            addCriterion("sell_total is null");
+        public Criteria andVolIsNull() {
+            addCriterion("vol is null");
             return (Criteria) this;
         }
 
-        public Criteria andSellTotalIsNotNull() {
-            addCriterion("sell_total is not null");
+        public Criteria andVolIsNotNull() {
+            addCriterion("vol is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSellTotalEqualTo(Integer value) {
-            addCriterion("sell_total =", value, "sellTotal");
+        public Criteria andVolEqualTo(Integer value) {
+            addCriterion("vol =", value, "vol");
             return (Criteria) this;
         }
 
-        public Criteria andSellTotalNotEqualTo(Integer value) {
-            addCriterion("sell_total <>", value, "sellTotal");
+        public Criteria andVolNotEqualTo(Integer value) {
+            addCriterion("vol <>", value, "vol");
             return (Criteria) this;
         }
 
-        public Criteria andSellTotalGreaterThan(Integer value) {
-            addCriterion("sell_total >", value, "sellTotal");
+        public Criteria andVolGreaterThan(Integer value) {
+            addCriterion("vol >", value, "vol");
             return (Criteria) this;
         }
 
-        public Criteria andSellTotalGreaterThanOrEqualTo(Integer value) {
-            addCriterion("sell_total >=", value, "sellTotal");
+        public Criteria andVolGreaterThanOrEqualTo(Integer value) {
+            addCriterion("vol >=", value, "vol");
             return (Criteria) this;
         }
 
-        public Criteria andSellTotalLessThan(Integer value) {
-            addCriterion("sell_total <", value, "sellTotal");
+        public Criteria andVolLessThan(Integer value) {
+            addCriterion("vol <", value, "vol");
             return (Criteria) this;
         }
 
-        public Criteria andSellTotalLessThanOrEqualTo(Integer value) {
-            addCriterion("sell_total <=", value, "sellTotal");
+        public Criteria andVolLessThanOrEqualTo(Integer value) {
+            addCriterion("vol <=", value, "vol");
             return (Criteria) this;
         }
 
-        public Criteria andSellTotalIn(List<Integer> values) {
-            addCriterion("sell_total in", values, "sellTotal");
+        public Criteria andVolIn(List<Integer> values) {
+            addCriterion("vol in", values, "vol");
             return (Criteria) this;
         }
 
-        public Criteria andSellTotalNotIn(List<Integer> values) {
-            addCriterion("sell_total not in", values, "sellTotal");
+        public Criteria andVolNotIn(List<Integer> values) {
+            addCriterion("vol not in", values, "vol");
             return (Criteria) this;
         }
 
-        public Criteria andSellTotalBetween(Integer value1, Integer value2) {
-            addCriterion("sell_total between", value1, value2, "sellTotal");
+        public Criteria andVolBetween(Integer value1, Integer value2) {
+            addCriterion("vol between", value1, value2, "vol");
             return (Criteria) this;
         }
 
-        public Criteria andSellTotalNotBetween(Integer value1, Integer value2) {
-            addCriterion("sell_total not between", value1, value2, "sellTotal");
+        public Criteria andVolNotBetween(Integer value1, Integer value2) {
+            addCriterion("vol not between", value1, value2, "vol");
             return (Criteria) this;
         }
 
-        public Criteria andBuyTotalIsNull() {
-            addCriterion("buy_total is null");
+        public Criteria andTradeTypeIsNull() {
+            addCriterion("trade_type is null");
             return (Criteria) this;
         }
 
-        public Criteria andBuyTotalIsNotNull() {
-            addCriterion("buy_total is not null");
+        public Criteria andTradeTypeIsNotNull() {
+            addCriterion("trade_type is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBuyTotalEqualTo(Integer value) {
-            addCriterion("buy_total =", value, "buyTotal");
+        public Criteria andTradeTypeEqualTo(Integer value) {
+            addCriterion("trade_type =", value, "tradeType");
             return (Criteria) this;
         }
 
-        public Criteria andBuyTotalNotEqualTo(Integer value) {
-            addCriterion("buy_total <>", value, "buyTotal");
+        public Criteria andTradeTypeNotEqualTo(Integer value) {
+            addCriterion("trade_type <>", value, "tradeType");
             return (Criteria) this;
         }
 
-        public Criteria andBuyTotalGreaterThan(Integer value) {
-            addCriterion("buy_total >", value, "buyTotal");
+        public Criteria andTradeTypeGreaterThan(Integer value) {
+            addCriterion("trade_type >", value, "tradeType");
             return (Criteria) this;
         }
 
-        public Criteria andBuyTotalGreaterThanOrEqualTo(Integer value) {
-            addCriterion("buy_total >=", value, "buyTotal");
+        public Criteria andTradeTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("trade_type >=", value, "tradeType");
             return (Criteria) this;
         }
 
-        public Criteria andBuyTotalLessThan(Integer value) {
-            addCriterion("buy_total <", value, "buyTotal");
+        public Criteria andTradeTypeLessThan(Integer value) {
+            addCriterion("trade_type <", value, "tradeType");
             return (Criteria) this;
         }
 
-        public Criteria andBuyTotalLessThanOrEqualTo(Integer value) {
-            addCriterion("buy_total <=", value, "buyTotal");
+        public Criteria andTradeTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("trade_type <=", value, "tradeType");
             return (Criteria) this;
         }
 
-        public Criteria andBuyTotalIn(List<Integer> values) {
-            addCriterion("buy_total in", values, "buyTotal");
+        public Criteria andTradeTypeIn(List<Integer> values) {
+            addCriterion("trade_type in", values, "tradeType");
             return (Criteria) this;
         }
 
-        public Criteria andBuyTotalNotIn(List<Integer> values) {
-            addCriterion("buy_total not in", values, "buyTotal");
+        public Criteria andTradeTypeNotIn(List<Integer> values) {
+            addCriterion("trade_type not in", values, "tradeType");
             return (Criteria) this;
         }
 
-        public Criteria andBuyTotalBetween(Integer value1, Integer value2) {
-            addCriterion("buy_total between", value1, value2, "buyTotal");
+        public Criteria andTradeTypeBetween(Integer value1, Integer value2) {
+            addCriterion("trade_type between", value1, value2, "tradeType");
             return (Criteria) this;
         }
 
-        public Criteria andBuyTotalNotBetween(Integer value1, Integer value2) {
-            addCriterion("buy_total not between", value1, value2, "buyTotal");
+        public Criteria andTradeTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("trade_type not between", value1, value2, "tradeType");
             return (Criteria) this;
         }
 
-        public Criteria andEqualTotalIsNull() {
-            addCriterion("equal_total is null");
+        public Criteria andPercentIsNull() {
+            addCriterion("percent is null");
             return (Criteria) this;
         }
 
-        public Criteria andEqualTotalIsNotNull() {
-            addCriterion("equal_total is not null");
+        public Criteria andPercentIsNotNull() {
+            addCriterion("percent is not null");
             return (Criteria) this;
         }
 
-        public Criteria andEqualTotalEqualTo(Integer value) {
-            addCriterion("equal_total =", value, "equalTotal");
+        public Criteria andPercentEqualTo(Double value) {
+            addCriterion("percent =", value, "percent");
             return (Criteria) this;
         }
 
-        public Criteria andEqualTotalNotEqualTo(Integer value) {
-            addCriterion("equal_total <>", value, "equalTotal");
+        public Criteria andPercentNotEqualTo(Double value) {
+            addCriterion("percent <>", value, "percent");
             return (Criteria) this;
         }
 
-        public Criteria andEqualTotalGreaterThan(Integer value) {
-            addCriterion("equal_total >", value, "equalTotal");
+        public Criteria andPercentGreaterThan(Double value) {
+            addCriterion("percent >", value, "percent");
             return (Criteria) this;
         }
 
-        public Criteria andEqualTotalGreaterThanOrEqualTo(Integer value) {
-            addCriterion("equal_total >=", value, "equalTotal");
+        public Criteria andPercentGreaterThanOrEqualTo(Double value) {
+            addCriterion("percent >=", value, "percent");
             return (Criteria) this;
         }
 
-        public Criteria andEqualTotalLessThan(Integer value) {
-            addCriterion("equal_total <", value, "equalTotal");
+        public Criteria andPercentLessThan(Double value) {
+            addCriterion("percent <", value, "percent");
             return (Criteria) this;
         }
 
-        public Criteria andEqualTotalLessThanOrEqualTo(Integer value) {
-            addCriterion("equal_total <=", value, "equalTotal");
+        public Criteria andPercentLessThanOrEqualTo(Double value) {
+            addCriterion("percent <=", value, "percent");
             return (Criteria) this;
         }
 
-        public Criteria andEqualTotalIn(List<Integer> values) {
-            addCriterion("equal_total in", values, "equalTotal");
+        public Criteria andPercentIn(List<Double> values) {
+            addCriterion("percent in", values, "percent");
             return (Criteria) this;
         }
 
-        public Criteria andEqualTotalNotIn(List<Integer> values) {
-            addCriterion("equal_total not in", values, "equalTotal");
+        public Criteria andPercentNotIn(List<Double> values) {
+            addCriterion("percent not in", values, "percent");
             return (Criteria) this;
         }
 
-        public Criteria andEqualTotalBetween(Integer value1, Integer value2) {
-            addCriterion("equal_total between", value1, value2, "equalTotal");
+        public Criteria andPercentBetween(Double value1, Double value2) {
+            addCriterion("percent between", value1, value2, "percent");
             return (Criteria) this;
         }
 
-        public Criteria andEqualTotalNotBetween(Integer value1, Integer value2) {
-            addCriterion("equal_total not between", value1, value2, "equalTotal");
+        public Criteria andPercentNotBetween(Double value1, Double value2) {
+            addCriterion("percent not between", value1, value2, "percent");
             return (Criteria) this;
         }
 
-        public Criteria andDateIsNull() {
-            addCriterion("date is null");
+        public Criteria andAmountIsNull() {
+            addCriterion("amount is null");
             return (Criteria) this;
         }
 
-        public Criteria andDateIsNotNull() {
-            addCriterion("date is not null");
+        public Criteria andAmountIsNotNull() {
+            addCriterion("amount is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDateEqualTo(String value) {
-            addCriterion("date =", value, "date");
+        public Criteria andAmountEqualTo(Double value) {
+            addCriterion("amount =", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andDateNotEqualTo(String value) {
-            addCriterion("date <>", value, "date");
+        public Criteria andAmountNotEqualTo(Double value) {
+            addCriterion("amount <>", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andDateGreaterThan(String value) {
-            addCriterion("date >", value, "date");
+        public Criteria andAmountGreaterThan(Double value) {
+            addCriterion("amount >", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andDateGreaterThanOrEqualTo(String value) {
-            addCriterion("date >=", value, "date");
+        public Criteria andAmountGreaterThanOrEqualTo(Double value) {
+            addCriterion("amount >=", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andDateLessThan(String value) {
-            addCriterion("date <", value, "date");
+        public Criteria andAmountLessThan(Double value) {
+            addCriterion("amount <", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andDateLessThanOrEqualTo(String value) {
-            addCriterion("date <=", value, "date");
+        public Criteria andAmountLessThanOrEqualTo(Double value) {
+            addCriterion("amount <=", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andDateLike(String value) {
-            addCriterion("date like", value, "date");
+        public Criteria andAmountIn(List<Double> values) {
+            addCriterion("amount in", values, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andDateNotLike(String value) {
-            addCriterion("date not like", value, "date");
+        public Criteria andAmountNotIn(List<Double> values) {
+            addCriterion("amount not in", values, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andDateIn(List<String> values) {
-            addCriterion("date in", values, "date");
+        public Criteria andAmountBetween(Double value1, Double value2) {
+            addCriterion("amount between", value1, value2, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andDateNotIn(List<String> values) {
-            addCriterion("date not in", values, "date");
+        public Criteria andAmountNotBetween(Double value1, Double value2) {
+            addCriterion("amount not between", value1, value2, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andDateBetween(String value1, String value2) {
-            addCriterion("date between", value1, value2, "date");
+        public Criteria andTradeTimeIsNull() {
+            addCriterion("trade_time is null");
             return (Criteria) this;
         }
 
-        public Criteria andDateNotBetween(String value1, String value2) {
-            addCriterion("date not between", value1, value2, "date");
+        public Criteria andTradeTimeIsNotNull() {
+            addCriterion("trade_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeTimeEqualTo(String value) {
+            addCriterion("trade_time =", value, "tradeTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeTimeNotEqualTo(String value) {
+            addCriterion("trade_time <>", value, "tradeTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeTimeGreaterThan(String value) {
+            addCriterion("trade_time >", value, "tradeTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeTimeGreaterThanOrEqualTo(String value) {
+            addCriterion("trade_time >=", value, "tradeTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeTimeLessThan(String value) {
+            addCriterion("trade_time <", value, "tradeTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeTimeLessThanOrEqualTo(String value) {
+            addCriterion("trade_time <=", value, "tradeTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeTimeLike(String value) {
+            addCriterion("trade_time like", value, "tradeTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeTimeNotLike(String value) {
+            addCriterion("trade_time not like", value, "tradeTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeTimeIn(List<String> values) {
+            addCriterion("trade_time in", values, "tradeTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeTimeNotIn(List<String> values) {
+            addCriterion("trade_time not in", values, "tradeTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeTimeBetween(String value1, String value2) {
+            addCriterion("trade_time between", value1, value2, "tradeTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeTimeNotBetween(String value1, String value2) {
+            addCriterion("trade_time not between", value1, value2, "tradeTime");
             return (Criteria) this;
         }
 
@@ -562,66 +622,6 @@ public class BigVolStatisExample {
 
         public Criteria andGmtCreateNotBetween(Date value1, Date value2) {
             addCriterion("gmt_create not between", value1, value2, "gmtCreate");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtUpdateIsNull() {
-            addCriterion("gmt_update is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtUpdateIsNotNull() {
-            addCriterion("gmt_update is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtUpdateEqualTo(Date value) {
-            addCriterion("gmt_update =", value, "gmtUpdate");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtUpdateNotEqualTo(Date value) {
-            addCriterion("gmt_update <>", value, "gmtUpdate");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtUpdateGreaterThan(Date value) {
-            addCriterion("gmt_update >", value, "gmtUpdate");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtUpdateGreaterThanOrEqualTo(Date value) {
-            addCriterion("gmt_update >=", value, "gmtUpdate");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtUpdateLessThan(Date value) {
-            addCriterion("gmt_update <", value, "gmtUpdate");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtUpdateLessThanOrEqualTo(Date value) {
-            addCriterion("gmt_update <=", value, "gmtUpdate");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtUpdateIn(List<Date> values) {
-            addCriterion("gmt_update in", values, "gmtUpdate");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtUpdateNotIn(List<Date> values) {
-            addCriterion("gmt_update not in", values, "gmtUpdate");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtUpdateBetween(Date value1, Date value2) {
-            addCriterion("gmt_update between", value1, value2, "gmtUpdate");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtUpdateNotBetween(Date value1, Date value2) {
-            addCriterion("gmt_update not between", value1, value2, "gmtUpdate");
             return (Criteria) this;
         }
     }

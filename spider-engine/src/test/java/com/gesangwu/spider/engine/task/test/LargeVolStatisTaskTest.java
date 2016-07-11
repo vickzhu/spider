@@ -4,13 +4,13 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
-import com.gesangwu.spider.engine.task.BigVolStatisTask;
+import com.gesangwu.spider.engine.task.LargeVolTask;
 import com.gesangwu.spider.engine.test.BaseTest;
 
-public class BigVolStatisTaskTest extends BaseTest {
+public class LargeVolStatisTaskTest extends BaseTest {
 	
 	@Resource
-	private BigVolStatisTask task;
+	private LargeVolTask task;
 	
 	@Test
 	public void test(){

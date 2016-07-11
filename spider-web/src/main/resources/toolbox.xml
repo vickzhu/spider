@@ -9,5 +9,6 @@
    		<tool class="org.apache.velocity.tools.generic.DateTool"/>
    		<tool class="org.apache.velocity.tools.generic.NumberTool"/>
    		<tool class="org.apache.velocity.tools.generic.MathTool"/>
+   		<tool class="com.gesangwu.spider.web.velocity.tool.CompanyTool"/>
    	</toolbox>
 </tools>

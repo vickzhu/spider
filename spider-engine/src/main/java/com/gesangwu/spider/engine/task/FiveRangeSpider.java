@@ -38,6 +38,8 @@ public class FiveRangeSpider {
 	private static final String regex = "var hq_str_([\\w]{8})=\"(.*)\";";
 	private static final Pattern r = Pattern.compile(regex);
 	
+	private static final int minVol = 500000;
+	
 	@Resource
 	private CompanyService companyService;
 	@Resource
@@ -83,8 +85,8 @@ public class FiveRangeSpider {
 			String b_3_c = details[14];
 			String b_4_c = details[16];
 			String b_5_c = details[18];
-			if(Integer.valueOf(b_1_c)>=500000||Integer.valueOf(b_2_c)>=500000||Integer.valueOf(b_3_c)>=500000
-					||Integer.valueOf(b_4_c)>=500000||Integer.valueOf(b_5_c)>=500000){
+			if(Integer.valueOf(b_1_c)>=minVol||Integer.valueOf(b_2_c)>=minVol||Integer.valueOf(b_3_c)>=minVol
+					||Integer.valueOf(b_4_c)>=minVol||Integer.valueOf(b_5_c)>=minVol){
 				b = true;
 			}
 			String s_1_c = details[20];
@@ -92,8 +94,8 @@ public class FiveRangeSpider {
 			String s_3_c = details[24];
 			String s_4_c = details[26];
 			String s_5_c = details[28];
-			if(Integer.valueOf(s_1_c)>=500000||Integer.valueOf(s_2_c)>=500000||Integer.valueOf(s_3_c)>=500000
-					||Integer.valueOf(s_4_c)>=500000||Integer.valueOf(s_5_c)>=500000){
+			if(Integer.valueOf(s_1_c)>=minVol||Integer.valueOf(s_2_c)>=minVol||Integer.valueOf(s_3_c)>=minVol
+					||Integer.valueOf(s_4_c)>=minVol||Integer.valueOf(s_5_c)>=minVol){
 				s = true;
 			}
 //			String buy_1_price = details[11];
