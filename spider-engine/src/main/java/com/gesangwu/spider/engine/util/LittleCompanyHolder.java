@@ -20,7 +20,7 @@ public class LittleCompanyHolder {
 		companyList = list;
 		for (Company company : list) {
 			symbolNameMap.put(company.getSymbol(), company.getStockName());
-			codeNameMap.put(company.getSymbol(), company.getStockName());
+			codeNameMap.put(company.getStockCode(), company.getStockName());
 		}
 	}
 	
