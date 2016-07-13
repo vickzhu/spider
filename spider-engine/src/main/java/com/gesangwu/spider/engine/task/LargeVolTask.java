@@ -33,7 +33,7 @@ import com.gesangwu.spider.engine.util.TradeTimeUtil;
 @Component
 public class LargeVolTask {
 	
-	private static final String regex = "\\{\"CODE\"\\:\"\\d*\",\"TRADE_TYPE\"\\:([^,]*),\"PRICE_PRE\"\\:[0-9\\.]*,\"VOLUME_INC\"\\:(\\d*),\"SYMBOL\"\\:\"([0-9]{6})\",\"PERCENT\"\\:([0-9\\.\\-]*),\"NAME\"\\:\"[^\"]*\",\"PRICE\"\\:[0-9\\.]*,\"TURNOVER_INC\"\\:([0-9\\.]*),\"DATE\"\\:\"([^\"]*)\",\"RN\"\\:\\d*\\}";
+	private static final String regex = "\\{\"CODE\"\\:\"\\d*\",\"SYMBOL\"\\:\"([0-9]{6})\",\"TRADE_TYPE\"\\:([^,]*),\"PRICE_PRE\"\\:[0-9\\.]*,\"VOLUME_INC\"\\:(\\d*),\"PERCENT\"\\:([0-9\\.\\-]*),\"NAME\"\\:\"[^\"]*\",\"PRICE\"\\:[0-9\\.]*,\"TURNOVER_INC\"\\:([0-9\\.]*),\"DATE\"\\:\"([^\"]*)\",\"RN\"\\:\\d*\\}";
 	private Pattern r = Pattern.compile(regex);
 	
 	@Resource
@@ -57,9 +57,9 @@ public class LargeVolTask {
 		System.out.println(result);
 		Matcher m = r.matcher(result);
 		while(m.find()){
-			String tradeType = m.group(1);
-			String vol = m.group(2);
-			String code = m.group(3);
+			String tradeType = m.group(2);
+			String vol = m.group(3);
+			String code = m.group(1);
 			String percent = m.group(4);
 			String amount = m.group(5);
 			String time = m.group(6);
