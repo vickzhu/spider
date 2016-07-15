@@ -40,6 +40,7 @@
             <table class="table table-bordered table-striped">
               <thead>
                 <tr>
+				  <th style="width:5%;">序号</th>
                   <th>股票</th>
 				  <th>名称</th>
                   <th>卖</th>
@@ -51,6 +52,7 @@
               <tbody>
 				#foreach($statis in ${list})
                 <tr>
+				  <td>$!{velocityCount}</td>
                   <td>$!{statis.symbol}</td>
                   <td>$!{companyTool.getNameBySymbol($!{statis.symbol})}</td>
 				  <td>$!{statis.sellTotal}</td>
