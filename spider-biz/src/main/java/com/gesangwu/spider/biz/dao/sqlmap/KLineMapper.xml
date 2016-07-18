@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gesangwu.spider.biz.dao.mapper.KLineMapper">
+  <resultMap id="BaseResultMap" type="com.gesangwu.spider.biz.dao.model.KLine">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+    <result column="volume" jdbcType="BIGINT" property="volume" />
+    <result column="open" jdbcType="DOUBLE" property="open" />
+    <result column="close" jdbcType="DOUBLE" property="close" />
+    <result column="high" jdbcType="DOUBLE" property="high" />
+    <result column="low" jdbcType="DOUBLE" property="low" />
+    <result column="change_amount" jdbcType="DOUBLE" property="changeAmount" />
+    <result column="percent" jdbcType="DOUBLE" property="percent" />
+    <result column="ma5" jdbcType="DOUBLE" property="ma5" />
+    <result column="ma10" jdbcType="DOUBLE" property="ma10" />
+    <result column="ma20" jdbcType="DOUBLE" property="ma20" />
+    <result column="ma30" jdbcType="DOUBLE" property="ma30" />
+    <result column="trans_date" jdbcType="DATE" property="transDate" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, symbol, volume, open, close, high, low, change_amount, percent, ma5, ma10, ma20, 
+    ma30, trans_date, gmt_create
+  </sql>
+  <select id="selectByExample" parameterType="com.gesangwu.spider.biz.dao.model.KLineExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from k_line
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="offset != null and offset &gt; -1">
+      limit ${offset},${rows}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from k_line
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from k_line
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gesangwu.spider.biz.dao.model.KLineExample">
+    delete from k_line
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.gesangwu.spider.biz.dao.model.KLine">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into k_line (symbol, volume, open, 
+      close, high, low, change_amount, 
+      percent, ma5, ma10, ma20, 
+      ma30, trans_date, gmt_create
+      )
+    values (#{symbol,jdbcType=VARCHAR}, #{volume,jdbcType=BIGINT}, #{open,jdbcType=DOUBLE}, 
+      #{close,jdbcType=DOUBLE}, #{high,jdbcType=DOUBLE}, #{low,jdbcType=DOUBLE}, #{changeAmount,jdbcType=DOUBLE}, 
+      #{percent,jdbcType=DOUBLE}, #{ma5,jdbcType=DOUBLE}, #{ma10,jdbcType=DOUBLE}, #{ma20,jdbcType=DOUBLE}, 
+      #{ma30,jdbcType=DOUBLE}, #{transDate,jdbcType=DATE}, #{gmtCreate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.KLine">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into k_line
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="symbol != null">
+        symbol,
+      </if>
+      <if test="volume != null">
+        volume,
+      </if>
+      <if test="open != null">
+        open,
+      </if>
+      <if test="close != null">
+        close,
+      </if>
+      <if test="high != null">
+        high,
+      </if>
+      <if test="low != null">
+        low,
+      </if>
+      <if test="changeAmount != null">
+        change_amount,
+      </if>
+      <if test="percent != null">
+        percent,
+      </if>
+      <if test="ma5 != null">
+        ma5,
+      </if>
+      <if test="ma10 != null">
+        ma10,
+      </if>
+      <if test="ma20 != null">
+        ma20,
+      </if>
+      <if test="ma30 != null">
+        ma30,
+      </if>
+      <if test="transDate != null">
+        trans_date,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="symbol != null">
+        #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="volume != null">
+        #{volume,jdbcType=BIGINT},
+      </if>
+      <if test="open != null">
+        #{open,jdbcType=DOUBLE},
+      </if>
+      <if test="close != null">
+        #{close,jdbcType=DOUBLE},
+      </if>
+      <if test="high != null">
+        #{high,jdbcType=DOUBLE},
+      </if>
+      <if test="low != null">
+        #{low,jdbcType=DOUBLE},
+      </if>
+      <if test="changeAmount != null">
+        #{changeAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="percent != null">
+        #{percent,jdbcType=DOUBLE},
+      </if>
+      <if test="ma5 != null">
+        #{ma5,jdbcType=DOUBLE},
+      </if>
+      <if test="ma10 != null">
+        #{ma10,jdbcType=DOUBLE},
+      </if>
+      <if test="ma20 != null">
+        #{ma20,jdbcType=DOUBLE},
+      </if>
+      <if test="ma30 != null">
+        #{ma30,jdbcType=DOUBLE},
+      </if>
+      <if test="transDate != null">
+        #{transDate,jdbcType=DATE},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gesangwu.spider.biz.dao.model.KLineExample" resultType="java.lang.Integer">
+    select count(*) from k_line
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update k_line
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.symbol != null">
+        symbol = #{record.symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="record.volume != null">
+        volume = #{record.volume,jdbcType=BIGINT},
+      </if>
+      <if test="record.open != null">
+        open = #{record.open,jdbcType=DOUBLE},
+      </if>
+      <if test="record.close != null">
+        close = #{record.close,jdbcType=DOUBLE},
+      </if>
+      <if test="record.high != null">
+        high = #{record.high,jdbcType=DOUBLE},
+      </if>
+      <if test="record.low != null">
+        low = #{record.low,jdbcType=DOUBLE},
+      </if>
+      <if test="record.changeAmount != null">
+        change_amount = #{record.changeAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.percent != null">
+        percent = #{record.percent,jdbcType=DOUBLE},
+      </if>
+      <if test="record.ma5 != null">
+        ma5 = #{record.ma5,jdbcType=DOUBLE},
+      </if>
+      <if test="record.ma10 != null">
+        ma10 = #{record.ma10,jdbcType=DOUBLE},
+      </if>
+      <if test="record.ma20 != null">
+        ma20 = #{record.ma20,jdbcType=DOUBLE},
+      </if>
+      <if test="record.ma30 != null">
+        ma30 = #{record.ma30,jdbcType=DOUBLE},
+      </if>
+      <if test="record.transDate != null">
+        trans_date = #{record.transDate,jdbcType=DATE},
+      </if>
+      <if test="record.gmtCreate != null">
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update k_line
+    set id = #{record.id,jdbcType=BIGINT},
+      symbol = #{record.symbol,jdbcType=VARCHAR},
+      volume = #{record.volume,jdbcType=BIGINT},
+      open = #{record.open,jdbcType=DOUBLE},
+      close = #{record.close,jdbcType=DOUBLE},
+      high = #{record.high,jdbcType=DOUBLE},
+      low = #{record.low,jdbcType=DOUBLE},
+      change_amount = #{record.changeAmount,jdbcType=DOUBLE},
+      percent = #{record.percent,jdbcType=DOUBLE},
+      ma5 = #{record.ma5,jdbcType=DOUBLE},
+      ma10 = #{record.ma10,jdbcType=DOUBLE},
+      ma20 = #{record.ma20,jdbcType=DOUBLE},
+      ma30 = #{record.ma30,jdbcType=DOUBLE},
+      trans_date = #{record.transDate,jdbcType=DATE},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gesangwu.spider.biz.dao.model.KLine">
+    update k_line
+    <set>
+      <if test="symbol != null">
+        symbol = #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="volume != null">
+        volume = #{volume,jdbcType=BIGINT},
+      </if>
+      <if test="open != null">
+        open = #{open,jdbcType=DOUBLE},
+      </if>
+      <if test="close != null">
+        close = #{close,jdbcType=DOUBLE},
+      </if>
+      <if test="high != null">
+        high = #{high,jdbcType=DOUBLE},
+      </if>
+      <if test="low != null">
+        low = #{low,jdbcType=DOUBLE},
+      </if>
+      <if test="changeAmount != null">
+        change_amount = #{changeAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="percent != null">
+        percent = #{percent,jdbcType=DOUBLE},
+      </if>
+      <if test="ma5 != null">
+        ma5 = #{ma5,jdbcType=DOUBLE},
+      </if>
+      <if test="ma10 != null">
+        ma10 = #{ma10,jdbcType=DOUBLE},
+      </if>
+      <if test="ma20 != null">
+        ma20 = #{ma20,jdbcType=DOUBLE},
+      </if>
+      <if test="ma30 != null">
+        ma30 = #{ma30,jdbcType=DOUBLE},
+      </if>
+      <if test="transDate != null">
+        trans_date = #{transDate,jdbcType=DATE},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gesangwu.spider.biz.dao.model.KLine">
+    update k_line
+    set symbol = #{symbol,jdbcType=VARCHAR},
+      volume = #{volume,jdbcType=BIGINT},
+      open = #{open,jdbcType=DOUBLE},
+      close = #{close,jdbcType=DOUBLE},
+      high = #{high,jdbcType=DOUBLE},
+      low = #{low,jdbcType=DOUBLE},
+      change_amount = #{changeAmount,jdbcType=DOUBLE},
+      percent = #{percent,jdbcType=DOUBLE},
+      ma5 = #{ma5,jdbcType=DOUBLE},
+      ma10 = #{ma10,jdbcType=DOUBLE},
+      ma20 = #{ma20,jdbcType=DOUBLE},
+      ma30 = #{ma30,jdbcType=DOUBLE},
+      trans_date = #{transDate,jdbcType=DATE},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true">
+    insert into k_line (symbol, volume, open, 
+      close, high, low, change_amount, 
+      percent, ma5, ma10, ma20, 
+      ma30, trans_date, gmt_create
+      )
+    values 
+    <foreach collection="list" index="index" item="kLine" separator=",">
+    (#{kLine.symbol,jdbcType=VARCHAR}, #{kLine.volume,jdbcType=BIGINT}, #{kLine.open,jdbcType=DOUBLE}, 
+      #{kLine.close,jdbcType=DOUBLE}, #{kLine.high,jdbcType=DOUBLE}, #{kLine.low,jdbcType=DOUBLE}, #{kLine.changeAmount,jdbcType=DOUBLE}, 
+      #{kLine.percent,jdbcType=DOUBLE}, #{kLine.ma5,jdbcType=DOUBLE}, #{kLine.ma10,jdbcType=DOUBLE}, #{kLine.ma20,jdbcType=DOUBLE}, 
+      #{kLine.ma30,jdbcType=DOUBLE}, #{kLine.transDate,jdbcType=DATE}, #{kLine.gmtCreate,jdbcType=TIMESTAMP}
+      )
+    </foreach>
+  </insert>
+</mapper>

@@ -60,12 +60,24 @@
 		    <property name="suppressDate" value="true"/>
 		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
 		</table>
-		-->		
+			
 		<table tableName="large_vol_statis" domainObjectName="LargeVolStatis"> 
 			<property name="suppressAllComments" value="true"/> 
 		    <property name="suppressDate" value="true"/>
 		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
 		</table> 
+		
+		<table tableName="k_line" domainObjectName="KLine"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
+		-->	
+		<table tableName="banker_trace" domainObjectName="BankerTrace"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
 	</context>
 	
 </generatorConfiguration> 
