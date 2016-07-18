@@ -65,4 +65,12 @@ public class BankerTraceStatisTask {
 			}
 		}
 	}
+	
+	private boolean milestone(){
+		return Boolean.TRUE;
+	}
+	
+	private boolean launchDate(){
+		return Boolean.TRUE;
+	}
 }
