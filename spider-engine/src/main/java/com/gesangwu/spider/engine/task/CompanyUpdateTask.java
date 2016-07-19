@@ -16,6 +16,7 @@ import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.service.CompanyService;
+import com.gesangwu.spider.engine.util.UnicodeUtil;
 
 /**
  * 公司信息更新
@@ -45,7 +46,7 @@ public class CompanyUpdateTask {
 		if(!matcher.find()){
 			return;
 		}
-		String date = matcher.group(1);
+//		String date = matcher.group(1);
 		String totalCounts = matcher.group(2);
 		int pages = (Integer.valueOf(totalCounts)+cpp-1)/cpp;
 		String detailList = matcher.group(3);
@@ -76,7 +77,7 @@ public class CompanyUpdateTask {
 			String symbol = columns[0];
 			String code = columns[1];
 			String stockName = columns[2];
-			String encodeStockName = decodeUnicode(stockName);
+			String encodeStockName = UnicodeUtil.decodeUnicode(stockName);
 			String marketValue = columns[19];
 			String circMarketValue = columns[20];
 			String lastPrice = columns[8];
@@ -101,68 +102,4 @@ public class CompanyUpdateTask {
 			}
 		}
 	}
-	
-
-	public static String decodeUnicode(String theString) {  
-		char aChar;  
-		int len = theString.length();  
-		StringBuffer outBuffer = new StringBuffer(len);  
-		for (int x = 0; x < len;) {  
-			aChar = theString.charAt(x++);  
-			if (aChar == '\\') {  
-				aChar = theString.charAt(x++);  
-				if (aChar == 'u') {
-					int value = 0;
-					for (int i = 0; i < 4; i++) {
-						aChar = theString.charAt(x++);
-						switch (aChar) {
-						case '0':
-						case '1':
-						case '2':
-						case '3':
-						case '4': 
-						case '5':
-						case '6':
-						case '7':
-						case '8':
-						case '9':
-							value = (value << 4) + aChar - '0';
-							break;  
-						case 'a':  
-						case 'b':  
-						case 'c':  
-						case 'd':  
-						case 'e':  
-						case 'f':  
-							value = (value << 4) + 10 + aChar - 'a';	  
-							break;  
-						case 'A':  
-						case 'B':  
-						case 'C':  
-						case 'D':  
-						case 'E':  
-						case 'F':  
-							value = (value << 4) + 10 + aChar - 'A';  
-							break;  
-						default:  
-							throw new IllegalArgumentException("Malformed   \\uxxxx   encoding.");  
-						}
-					}  
-					outBuffer.append((char) value);  
-				} else {  
-					if (aChar == 't')  
-						aChar = '\t';  
-					else if (aChar == 'r')  
-						aChar = '\r';
-					else if (aChar == 'n')
-						aChar = '\n';  
-					else if (aChar == 'f')  
-						aChar = '\f';  
-					outBuffer.append(aChar);  
-				}
-			} else 
-				outBuffer.append(aChar);
-		}  
-		return outBuffer.toString();  
-	} 
 }

@@ -1,12 +1,9 @@
 package com.gesangwu.spider.engine.task;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +15,7 @@ import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.service.CompanyService;
+import com.gesangwu.spider.engine.util.UnicodeUtil;
 
 /**
  * 公司初始化
@@ -50,7 +48,7 @@ public class CompanyInit {
 		if(!matcher.find()){
 			return;
 		}
-		String date = matcher.group(1);
+//		String date = matcher.group(1);
 		String totalCounts = matcher.group(2);
 		int pages = (Integer.valueOf(totalCounts)+cpp-1)/cpp;
 		String detailList = matcher.group(3);
@@ -78,7 +76,7 @@ public class CompanyInit {
 			String symbol = columns[0];
 			String code = columns[1];
 			String stockName = columns[2];
-			String encodeStockName = new String(stockName.getBytes(Charset.forName("utf-8")));
+			String encodeStockName = UnicodeUtil.decodeUnicode(stockName);
 			String marketValue = columns[19];
 			String circMarketValue = columns[20];
 			String lastPrice = columns[8];
@@ -95,19 +93,5 @@ public class CompanyInit {
 		}
 		return companyList;
 	}
-
-	public static void main(String[] args) throws UnsupportedEncodingException {
-		CompanyInit spider = new CompanyInit();
-		spider.execute();
-	}
-	
-	public static String unicodeToGB(String s) {
-        StringBuffer sb = new StringBuffer();      
-        StringTokenizer st = new StringTokenizer(s, "\\u");      
-        while(st.hasMoreTokens()){
-            sb.append((char)Integer.parseInt(st.nextToken(), 16));      
-        }      
-        return sb.toString();    
-    }  
 
 }
