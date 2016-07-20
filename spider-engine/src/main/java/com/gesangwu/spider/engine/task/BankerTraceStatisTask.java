@@ -22,6 +22,7 @@ import com.gesangwu.spider.engine.exception.LaunchDayException;
 import com.gesangwu.spider.engine.exception.MilestoneException;
 import com.gesangwu.spider.engine.exception.SuiBuException;
 import com.gesangwu.spider.engine.util.LittleCompanyHolder;
+import com.gesangwu.spider.engine.util.ScoreUtil;
 
 /**
  * 主力跟踪统计
@@ -42,15 +43,15 @@ public class BankerTraceStatisTask {
 
 	public void execute(){
 		List<Company> companyList = LittleCompanyHolder.getCompanyList();
-		companyList.clear();
-		Company c = companyService.selectBySymbol("sz000916");
-		companyList.add(c);
+//		companyList.clear();
+//		Company c = companyService.selectBySymbol("sz000785");
+//		companyList.add(c);
 		for (Company company : companyList) {
 			KLineExample example = new KLineExample();
 			KLineExample.Criteria criteria = example.createCriteria();
 			criteria.andSymbolEqualTo(company.getSymbol());
 			example.setOrderByClause("trans_date desc");
-			Page<KLine> page = new Page<KLine>(1,4);
+			Page<KLine> page = new Page<KLine>(1,20);
 			kLineService.selectByPagination(example, page);
 			List<KLine> kLineList = page.getRecords();
 			if(CollectionUtils.isEmpty(kLineList)){
@@ -63,17 +64,20 @@ public class BankerTraceStatisTask {
 			for(int i = kLineList.size() - 2; i >= 0; i--){
 				KLine kLine = kLineList.get(i);
 				try {
-					int milestoneScore = milestone(kLine);
+					int milestoneScore = ScoreUtil.milestone(kLine);
 					KLine preKLine = kLineList.get(i+1);
-					if(kLine.getVolume() <= preKLine.getVolume()){//里程碑日成交量需大于启动日
-						throw new MilestoneException();
-					}
-					int launchScore = launchDate(preKLine, company);
+//					if(kLine.getVolume() <= preKLine.getVolume()){//里程碑日成交量需大于启动日
+//						throw new MilestoneException();
+//					}
+					int launchScore = ScoreUtil.launchDay(preKLine, company);
 					trace = new BankerTrace();//成立的情况下才新建对象
 					trace.setGmtCreate(new Date());
 					trace.setMsDate(kLine.getTransDate());
+					trace.setLaunchDate(preKLine.getTransDate());
 					trace.setScores(milestoneScore + launchScore);
+					trace.setMsScore(milestoneScore + launchScore);
 					trace.setStep(1);
+					trace.setStockName(company.getStockName());
 					trace.setSymbol(kLine.getSymbol());
 					//因为有可能启动日有覆盖的情况，所以需要重置下列参数
 					suibu = 0;//碎步计数器
@@ -158,9 +162,9 @@ public class BankerTraceStatisTask {
 		int score = 10;
 		TreeMap<Double,Integer> tm = sort(kl);
 		double maxMA = tm.lastKey();
-		if(maxMA == kl.getMa5() || maxMA == kl.getMa10()){//五日线或十日线为当日最高均线
-			throw new MilestoneException();
-		}
+//		if(maxMA == kl.getMa5() || maxMA == kl.getMa10()){//五日线或十日线为当日最高均线
+//			throw new MilestoneException();
+//		}
 		if(kl.getClose() < kl.getOpen()){//收盘价低于开盘价，当天收绿柱
 			throw new MilestoneException();
 		}

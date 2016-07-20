@@ -7,7 +7,13 @@ public class BankerTrace {
 
     private String symbol;
 
+    private String stockName;
+
+    private Date launchDate;
+
     private Date msDate;
+
+    private Integer msScore;
 
     private Integer scores;
 
@@ -33,12 +39,36 @@ public class BankerTrace {
         this.symbol = symbol == null ? null : symbol.trim();
     }
 
+    public String getStockName() {
+        return stockName;
+    }
+
+    public void setStockName(String stockName) {
+        this.stockName = stockName == null ? null : stockName.trim();
+    }
+
+    public Date getLaunchDate() {
+        return launchDate;
+    }
+
+    public void setLaunchDate(Date launchDate) {
+        this.launchDate = launchDate;
+    }
+
     public Date getMsDate() {
         return msDate;
     }
 
     public void setMsDate(Date msDate) {
         this.msDate = msDate;
+    }
+
+    public Integer getMsScore() {
+        return msScore;
+    }
+
+    public void setMsScore(Integer msScore) {
+        this.msScore = msScore;
     }
 
     public Integer getScores() {

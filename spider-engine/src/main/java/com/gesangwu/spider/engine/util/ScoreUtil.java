@@ -6,6 +6,7 @@ import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.engine.exception.LaunchDayException;
 import com.gesangwu.spider.engine.exception.MilestoneException;
+import com.gesangwu.spider.engine.exception.SuiBuException;
 
 public class ScoreUtil {
 
@@ -48,11 +49,15 @@ public class ScoreUtil {
 	 * @throws LaunchDayException
 	 */
 	public static int launchDay(KLine kl, Company company) throws LaunchDayException{
-		if(kl.getVolume() * kl.getClose() * 25 > company.getActiveMarketValue() * 10000){//成交量不能超过可流通市值的1/30
+		TreeMap<Double,Integer> tm = sort(kl);
+		if(tm.lastKey() == kl.getMa5()){//五日线为当日最高均线直接排除
 			throw new LaunchDayException();
 		}
-		int stLength = (int)Math.abs((kl.getClose() - kl.getOpen())*100/kl.getClose());
-		if(stLength >= 2){//实体长度过长
+		if(kl.getVolume() * kl.getClose() * 20 > company.getActiveMarketValue() * 10000){//成交量不能超过可流通市值的1/25
+			throw new LaunchDayException();
+		}
+		int stLength = (int)Math.abs((kl.getClose() - kl.getOpen()) * 1000/kl.getClose());
+		if(stLength > 15){//实体长度过长
 			throw new LaunchDayException();
 		}
 		int cpScore = ldClosePosition(kl);
@@ -77,25 +82,31 @@ public class ScoreUtil {
 			throw new LaunchDayException();
 		}
 		if(kl.getClose() > kl.getMa5()){//收盘价高于5日线
-			int diff = (int)((kl.getClose()-kl.getMa5())*1000/kl.getClose());
+			int diff = (int)((kl.getClose()-kl.getMa5()) * 1000 / kl.getClose());
 			if(diff >= 5){
 				throw new LaunchDayException();
 			}
-			score = diff * 2;
+			score = score - diff * 2;
 		}
 		return score;
 	}
 	
+	/**
+	 * 启动日均线分布
+	 * @param kl
+	 * @return
+	 * @throws LaunchDayException
+	 */
 	private static int ldMaDistri(KLine kl) throws LaunchDayException{
 		int score = 10;
 		if(kl.getMa5() <= kl.getMa10()){
 			return score;
 		}
-		int diff = (int)((kl.getMa5()-kl.getMa10())*1000/kl.getMa5());
-		if(diff >= 5){
+		int diff = (int)((kl.getMa5()-kl.getMa10()) * 1000/kl.getMa5());
+		if(diff > 10){//XXX
 			throw new LaunchDayException();
 		}
-		score = diff * 2;
+		score = score - diff;
 		return score;
 	}
 	
@@ -125,5 +136,45 @@ public class ScoreUtil {
 		tm.put(kl.getMa20(), 20);
 		tm.put(kl.getMa30(), 30);
 		return tm;
+	}
+	
+	/**
+	 * 碎步收盘位置
+	 * @return
+	 */
+	public static int sbClosePosition(KLine kLine) throws SuiBuException{
+		if(kLine.getClose() < kLine.getMa5() && kLine.getClose() < kLine.getMa10()){//收盘位置不符合碎步条件
+			throw new SuiBuException();
+		}
+		return kLine.getClose() > kLine.getMa5()?5:3;
+	}
+	
+	/**
+	 * 碎步涨跌幅得分
+	 * @param kLine
+	 * @return
+	 * @throws SuiBuException
+	 */
+	public static int sbPercent(KLine kLine) throws SuiBuException{
+		if(kLine.getPercent() <= -3 || kLine.getPercent() >= 7){//涨跌幅不符合碎步条件，重新查找里程碑
+			throw new SuiBuException();
+		}
+		if(kLine.getPercent() >= 0){//涨的情况
+			if(kLine.getPercent() < 1){
+				return 5;
+			} else if(kLine.getPercent() < 4){
+				return 3;
+			} else {
+				return 1;
+			}
+		} else {//跌的情况
+			if(kLine.getPercent() > -1){
+				return 5;
+			} else if (kLine.getPercent() > -2){
+				return 3;
+			} else {
+				return 1;
+			}
+		}
 	}
 }

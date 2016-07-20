@@ -15,6 +15,7 @@ import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
 import com.gesangwu.spider.biz.service.BankerTraceService;
 import com.gesangwu.spider.biz.service.KLineService;
+import com.gesangwu.spider.engine.common.TraceStepEnum;
 import com.gesangwu.spider.engine.exception.BankerTraceException;
 import com.gesangwu.spider.engine.exception.MilestoneException;
 import com.gesangwu.spider.engine.util.LittleCompanyHolder;
@@ -43,7 +44,7 @@ public class FindMilestoneTask {
 			Page<KLine> page = new Page<KLine>(1,2);
 			kLineService.selectByPagination(example, page);
 			List<KLine> kLineList = page.getRecords();
-			if(CollectionUtils.isEmpty(kLineList) || kLineList.size() != 2){
+			if(CollectionUtils.isEmpty(kLineList) || kLineList.size() < 2){
 				continue;
 			}
 			KLine kLine = kLineList.get(0);
@@ -57,9 +58,12 @@ public class FindMilestoneTask {
 				BankerTrace trace = new BankerTrace();
 				trace.setGmtCreate(new Date());
 				trace.setMsDate(kLine.getTransDate());
+				trace.setLaunchDate(preKLine.getTransDate());
 				trace.setScores(milestoneScore + launchScore);
-				trace.setStep(1);
+				trace.setMsScore(milestoneScore + launchScore);
+				trace.setStep(TraceStepEnum.MILESTONE.getCode());
 				trace.setSymbol(kLine.getSymbol());
+				trace.setStockName(company.getStockName());
 				traceService.insert(trace);
 			} catch (BankerTraceException e) {
 				continue;
