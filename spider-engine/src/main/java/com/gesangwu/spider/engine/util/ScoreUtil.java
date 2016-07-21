@@ -29,6 +29,17 @@ public class ScoreUtil {
 		if(kl.getPercent()<= 2 || kl.getPercent() >= 8){//当天涨幅需在2%至8%之间
 			throw new MilestoneException();
 		}
+		double xyx = kl.getOpen() - kl.getLow();
+		double stx = kl.getClose() -kl.getOpen();
+		double syx = kl.getHigh() - kl.getClose();
+		if(xyx > stx || syx > stx){//上下影线比实体线长
+			throw new MilestoneException(); 
+		}
+		int syPercent = (int)(syx * 1000/kl.getClose());
+		int xyPercent = (int)(xyx * 1000/kl.getClose());
+		if(syPercent > 30 || xyPercent > 30){
+			throw new MilestoneException();
+		}
 		if(kl.getClose() < kl.getMa5()){//收盘价小于5日线
 			throw new MilestoneException();
 		}
@@ -58,6 +69,11 @@ public class ScoreUtil {
 		}
 		int stLength = (int)Math.abs((kl.getClose() - kl.getOpen()) * 1000/kl.getClose());
 		if(stLength > 15){//实体长度过长
+			throw new LaunchDayException();
+		}
+		double diff = kl.getHigh() - kl.getLow();
+		int wave = (int)(diff * 1000 / kl.getClose());
+		if(wave > 50){//价格波动过大
 			throw new LaunchDayException();
 		}
 		int cpScore = ldClosePosition(kl);
@@ -106,7 +122,7 @@ public class ScoreUtil {
 		if(diff > 10){//XXX
 			throw new LaunchDayException();
 		}
-		score = score - diff;
+//		score = score - diff;
 		return score;
 	}
 	

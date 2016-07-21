@@ -76,6 +76,16 @@ public class ShortStepStatisTask {
 					}
 					int sbClosePosiScore = ScoreUtil.sbClosePosition(kLine);
 					int sbPercentScore = ScoreUtil.sbPercent(kLine);
+					double syDiff = 0;
+					if(kLine.getClose() > kLine.getOpen()){//红柱
+						syDiff = kLine.getHigh() - kLine.getClose();
+					} else {//绿柱
+						 syDiff = kLine.getHigh() - kLine.getOpen();
+					}
+					int syPercent = (int)(syDiff * 1000 / kLine.getClose());
+					if(syPercent >= 60 ) {//上影线长度超过了6‰
+						throw new SuiBuException();
+					}
 					int score = sbClosePosiScore + sbPercentScore;
 					suibuScore += score;
 				}

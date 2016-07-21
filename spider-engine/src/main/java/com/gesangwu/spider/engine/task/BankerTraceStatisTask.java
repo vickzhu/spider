@@ -66,9 +66,9 @@ public class BankerTraceStatisTask {
 				try {
 					int milestoneScore = ScoreUtil.milestone(kLine);
 					KLine preKLine = kLineList.get(i+1);
-//					if(kLine.getVolume() <= preKLine.getVolume()){//里程碑日成交量需大于启动日
-//						throw new MilestoneException();
-//					}
+					if(kLine.getVolume() <= preKLine.getVolume()){//里程碑日成交量需大于启动日
+						throw new MilestoneException();
+					}
 					int launchScore = ScoreUtil.launchDay(preKLine, company);
 					trace = new BankerTrace();//成立的情况下才新建对象
 					trace.setGmtCreate(new Date());
