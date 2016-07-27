@@ -25,7 +25,7 @@ import com.gesangwu.spider.engine.util.LittleCompanyHolder;
 import com.gesangwu.spider.engine.util.ScoreUtil;
 
 /**
- * 主力跟踪统计
+ * 主力跟踪统计，这个主要是用来做测试用的，真正流程应该是FindMilestoneTask->ShortStepStatisTask
  * @author zhuxb
  *
  */
@@ -51,7 +51,7 @@ public class BankerTraceStatisTask {
 			KLineExample.Criteria criteria = example.createCriteria();
 			criteria.andSymbolEqualTo(company.getSymbol());
 			example.setOrderByClause("trans_date desc");
-			Page<KLine> page = new Page<KLine>(1,20);
+			Page<KLine> page = new Page<KLine>(1,15);
 			kLineService.selectByPagination(example, page);
 			List<KLine> kLineList = page.getRecords();
 			if(CollectionUtils.isEmpty(kLineList)){
@@ -86,32 +86,32 @@ public class BankerTraceStatisTask {
 				} catch (BankerTraceException e) {//不符合条件，继续判断里程碑日
 					//这不做任何处理？
 				}					
-				if(trace != null){
-					suibu++;
-					if(suibu > suiBuDays){//只判断6天内的碎步吸筹
-						break;
-					}
-					try {
-						if(kLine.getVolume() > ldVol * 5){//成交量大于启动日5倍的
-							highVol++;
-						}
-						if(highVol > 2){//碎步出现两次超大交易量则直接不满足
-							throw new SuiBuException();
-						}
-						int sbClosePosiScore = sbClosePosition(kLine);
-						int sbPercentScore = sbPercent(kLine);
-						int suibuScore = sbClosePosiScore + sbPercentScore;
-						trace.setScores(trace.getScores()+suibuScore);
-						trace.setStep(suibu == suiBuDays?3:2);
-						trace.setGmtUpdate(new Date());
-					} catch (SuiBuException e) {//不满足碎步条件，继续判断里程碑
-						ldVol = 0;
-						highVol = 0;
-						suibu = 0;
-						trace = null;
-						continue;
-					}
-				}
+//				if(trace != null){
+//					suibu++;
+//					if(suibu > suiBuDays){//只判断6天内的碎步吸筹
+//						break;
+//					}
+//					try {
+//						if(kLine.getVolume() > ldVol * 5){//成交量大于启动日5倍的
+//							highVol++;
+//						}
+//						if(highVol > 2){//碎步出现两次超大交易量则直接不满足
+//							throw new SuiBuException();
+//						}
+//						int sbClosePosiScore = sbClosePosition(kLine);
+//						int sbPercentScore = sbPercent(kLine);
+//						int suibuScore = sbClosePosiScore + sbPercentScore;
+//						trace.setScores(trace.getScores()+suibuScore);
+//						trace.setStep(suibu == suiBuDays?3:2);
+//						trace.setGmtUpdate(new Date());
+//					} catch (SuiBuException e) {//不满足碎步条件，继续判断里程碑
+//						ldVol = 0;
+//						highVol = 0;
+//						suibu = 0;
+//						trace = null;
+//						continue;
+//					}
+//				}
 			}
 			if(trace != null){
 				traceService.insert(trace);

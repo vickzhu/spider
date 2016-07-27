@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.web.tool.Page;
@@ -20,7 +21,7 @@ import com.gesangwu.spider.engine.exception.SuiBuException;
 import com.gesangwu.spider.engine.util.ScoreUtil;
 
 /**
- * 碎步统计
+ * 碎步统计，每天下午3:30执行碎步统计
  * @author zhuxb
  *
  */
@@ -32,6 +33,7 @@ public class ShortStepStatisTask {
 	@Resource
 	private KLineService kLineService;
 
+//	@Scheduled(cron = "0 45 15 * * MON-FRI")
 	public void execute(){
 		BankerTraceExample example = new BankerTraceExample();
 		BankerTraceExample.Criteria criteria = example.createCriteria();

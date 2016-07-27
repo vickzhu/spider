@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.web.tool.Page;
@@ -22,7 +23,7 @@ import com.gesangwu.spider.engine.util.LittleCompanyHolder;
 import com.gesangwu.spider.engine.util.ScoreUtil;
 
 /**
- * 寻找里程碑日
+ * 寻找里程碑日，每天下午15:15执行寻找里程碑
  * @author zhuxb
  *
  */
@@ -34,6 +35,7 @@ public class FindMilestoneTask {
 	@Resource
 	private BankerTraceService traceService;
 
+	@Scheduled(cron = "0 30 15 * * MON-FRI")
 	public void execute(){
 		List<Company> companyList = LittleCompanyHolder.getCompanyList();
 		for (Company company : companyList) {

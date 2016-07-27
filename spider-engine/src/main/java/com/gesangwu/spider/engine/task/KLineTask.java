@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.net.HttpTool;
@@ -21,7 +22,7 @@ import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.KLineService;
 import com.gesangwu.spider.engine.util.LittleCompanyHolder;
 /**
- * 用于获取日K线
+ * 用于获取日K线，每天15:10执行
  * url:https://xueqiu.com/stock/forchartk/stocklist.json?symbol=SH600526&period=1day&type=before&begin=1437148330951&end=1468684330951&_=1468684330951
  * @author zhuxb
  *
@@ -38,6 +39,7 @@ public class KLineTask {
 	@Resource
 	private KLineService kLineService;
 	
+//	@Scheduled(cron = "0 10 15 * * MON-FRI")
 	public void execute(long start, long end) {
 		String cookieUrl = "https://xueqiu.com/account/lostpasswd";
 		HttpTool.get(cookieUrl);//这个链接只是为了获得cookie信息，因为后面的请求需要用到cookie
@@ -89,7 +91,7 @@ public class KLineTask {
 				kLineService.batchInsert(kLineList);
 			}
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(600);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
