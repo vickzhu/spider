@@ -72,8 +72,40 @@
 		    <property name="suppressDate" value="true"/>
 		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
 		</table>
-		-->	
+		
 		<table tableName="banker_trace" domainObjectName="BankerTrace"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
+		
+		<table tableName="long_hu" domainObjectName="LongHu"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
+		<table tableName="long_hu_type" domainObjectName="LongHuType"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
+		<table tableName="long_hu_detail" domainObjectName="LongHuDetail"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
+		<table tableName="sec_company" domainObjectName="SecCompany"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
+		<table tableName="province" domainObjectName="Province"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
+		-->	
+		<table tableName="sec_dept" domainObjectName="SecDept"> 
 			<property name="suppressAllComments" value="true"/> 
 		    <property name="suppressDate" value="true"/>
 		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>

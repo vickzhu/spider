@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gesangwu.spider.biz.dao.mapper.LongHuDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.gesangwu.spider.biz.dao.model.LongHuDetail" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="symbol" property="symbol" jdbcType="VARCHAR" />
+    <result column="trade_date" property="tradeDate" jdbcType="DATE" />
+    <result column="is_sr" property="isSr" jdbcType="INTEGER" />
+    <result column="sec_dept_code" property="secDeptCode" jdbcType="INTEGER" />
+    <result column="sec_dept_addr" property="secDeptAddr" jdbcType="VARCHAR" />
+    <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+    <result column="gmt_update" property="gmtUpdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, symbol, trade_date, is_sr, sec_dept_code, sec_dept_addr, gmt_create, gmt_update
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from long_hu_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="offset != null and offset > -1" >
+      limit ${offset},${rows}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from long_hu_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from long_hu_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetailExample" >
+    delete from long_hu_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetail" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into long_hu_detail (symbol, trade_date, is_sr, 
+      sec_dept_code, sec_dept_addr, gmt_create, 
+      gmt_update)
+    values (#{symbol,jdbcType=VARCHAR}, #{tradeDate,jdbcType=DATE}, #{isSr,jdbcType=INTEGER}, 
+      #{secDeptCode,jdbcType=INTEGER}, #{secDeptAddr,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{gmtUpdate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetail" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into long_hu_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="symbol != null" >
+        symbol,
+      </if>
+      <if test="tradeDate != null" >
+        trade_date,
+      </if>
+      <if test="isSr != null" >
+        is_sr,
+      </if>
+      <if test="secDeptCode != null" >
+        sec_dept_code,
+      </if>
+      <if test="secDeptAddr != null" >
+        sec_dept_addr,
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create,
+      </if>
+      <if test="gmtUpdate != null" >
+        gmt_update,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="symbol != null" >
+        #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeDate != null" >
+        #{tradeDate,jdbcType=DATE},
+      </if>
+      <if test="isSr != null" >
+        #{isSr,jdbcType=INTEGER},
+      </if>
+      <if test="secDeptCode != null" >
+        #{secDeptCode,jdbcType=INTEGER},
+      </if>
+      <if test="secDeptAddr != null" >
+        #{secDeptAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null" >
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtUpdate != null" >
+        #{gmtUpdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetailExample" resultType="java.lang.Integer" >
+    select count(*) from long_hu_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update long_hu_detail
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.symbol != null" >
+        symbol = #{record.symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tradeDate != null" >
+        trade_date = #{record.tradeDate,jdbcType=DATE},
+      </if>
+      <if test="record.isSr != null" >
+        is_sr = #{record.isSr,jdbcType=INTEGER},
+      </if>
+      <if test="record.secDeptCode != null" >
+        sec_dept_code = #{record.secDeptCode,jdbcType=INTEGER},
+      </if>
+      <if test="record.secDeptAddr != null" >
+        sec_dept_addr = #{record.secDeptAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreate != null" >
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtUpdate != null" >
+        gmt_update = #{record.gmtUpdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update long_hu_detail
+    set id = #{record.id,jdbcType=BIGINT},
+      symbol = #{record.symbol,jdbcType=VARCHAR},
+      trade_date = #{record.tradeDate,jdbcType=DATE},
+      is_sr = #{record.isSr,jdbcType=INTEGER},
+      sec_dept_code = #{record.secDeptCode,jdbcType=INTEGER},
+      sec_dept_addr = #{record.secDeptAddr,jdbcType=VARCHAR},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      gmt_update = #{record.gmtUpdate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetail" >
+    update long_hu_detail
+    <set >
+      <if test="symbol != null" >
+        symbol = #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeDate != null" >
+        trade_date = #{tradeDate,jdbcType=DATE},
+      </if>
+      <if test="isSr != null" >
+        is_sr = #{isSr,jdbcType=INTEGER},
+      </if>
+      <if test="secDeptCode != null" >
+        sec_dept_code = #{secDeptCode,jdbcType=INTEGER},
+      </if>
+      <if test="secDeptAddr != null" >
+        sec_dept_addr = #{secDeptAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtUpdate != null" >
+        gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetail" >
+    update long_hu_detail
+    set symbol = #{symbol,jdbcType=VARCHAR},
+      trade_date = #{tradeDate,jdbcType=DATE},
+      is_sr = #{isSr,jdbcType=INTEGER},
+      sec_dept_code = #{secDeptCode,jdbcType=INTEGER},
+      sec_dept_addr = #{secDeptAddr,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
