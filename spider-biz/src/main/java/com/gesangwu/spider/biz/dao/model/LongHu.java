@@ -9,7 +9,7 @@ public class LongHu {
 
     private String stockName;
 
-    private Integer longHuType;
+    private String longHuType;
 
     private Date tradeDate;
 
@@ -28,8 +28,6 @@ public class LongHu {
     private Double totalBuy;
 
     private Double totalSell;
-
-    private Integer srType;
 
     private Date gmtCreate;
 
@@ -59,12 +57,12 @@ public class LongHu {
         this.stockName = stockName == null ? null : stockName.trim();
     }
 
-    public Integer getLongHuType() {
+    public String getLongHuType() {
         return longHuType;
     }
 
-    public void setLongHuType(Integer longHuType) {
-        this.longHuType = longHuType;
+    public void setLongHuType(String longHuType) {
+        this.longHuType = longHuType == null ? null : longHuType.trim();
     }
 
     public Date getTradeDate() {
@@ -137,14 +135,6 @@ public class LongHu {
 
     public void setTotalSell(Double totalSell) {
         this.totalSell = totalSell;
-    }
-
-    public Integer getSrType() {
-        return srType;
-    }
-
-    public void setSrType(Integer srType) {
-        this.srType = srType;
     }
 
     public Date getGmtCreate() {

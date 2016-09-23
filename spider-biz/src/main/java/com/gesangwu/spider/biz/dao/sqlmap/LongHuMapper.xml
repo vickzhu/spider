@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="symbol" property="symbol" jdbcType="VARCHAR" />
     <result column="stock_name" property="stockName" jdbcType="VARCHAR" />
-    <result column="long_hu_type" property="longHuType" jdbcType="INTEGER" />
+    <result column="long_hu_type" property="longHuType" jdbcType="VARCHAR" />
     <result column="trade_date" property="tradeDate" jdbcType="DATE" />
     <result column="price" property="price" jdbcType="DOUBLE" />
     <result column="chg" property="chg" jdbcType="DOUBLE" />
@@ -15,7 +15,6 @@
     <result column="neg_mkt_val" property="negMktVal" jdbcType="DOUBLE" />
     <result column="total_buy" property="totalBuy" jdbcType="DOUBLE" />
     <result column="total_sell" property="totalSell" jdbcType="DOUBLE" />
-    <result column="sr_type" property="srType" jdbcType="INTEGER" />
     <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
     <result column="gmt_update" property="gmtUpdate" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -79,7 +78,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, symbol, stock_name, long_hu_type, trade_date, price, chg, chg_percent, turnover, 
-    tot_mkt_val, neg_mkt_val, total_buy, total_sell, sr_type, gmt_create, gmt_update
+    tot_mkt_val, neg_mkt_val, total_buy, total_sell, gmt_create, gmt_update
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.LongHuExample" >
     select
@@ -121,13 +120,13 @@
     insert into long_hu (symbol, stock_name, long_hu_type, 
       trade_date, price, chg, chg_percent, 
       turnover, tot_mkt_val, neg_mkt_val, 
-      total_buy, total_sell, sr_type, 
-      gmt_create, gmt_update)
-    values (#{symbol,jdbcType=VARCHAR}, #{stockName,jdbcType=VARCHAR}, #{longHuType,jdbcType=INTEGER}, 
+      total_buy, total_sell, gmt_create, 
+      gmt_update)
+    values (#{symbol,jdbcType=VARCHAR}, #{stockName,jdbcType=VARCHAR}, #{longHuType,jdbcType=VARCHAR}, 
       #{tradeDate,jdbcType=DATE}, #{price,jdbcType=DOUBLE}, #{chg,jdbcType=DOUBLE}, #{chgPercent,jdbcType=DOUBLE}, 
       #{turnover,jdbcType=DOUBLE}, #{totMktVal,jdbcType=DOUBLE}, #{negMktVal,jdbcType=DOUBLE}, 
-      #{totalBuy,jdbcType=DOUBLE}, #{totalSell,jdbcType=DOUBLE}, #{srType,jdbcType=INTEGER}, 
-      #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP})
+      #{totalBuy,jdbcType=DOUBLE}, #{totalSell,jdbcType=DOUBLE}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{gmtUpdate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.LongHu" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -171,9 +170,6 @@
       <if test="totalSell != null" >
         total_sell,
       </if>
-      <if test="srType != null" >
-        sr_type,
-      </if>
       <if test="gmtCreate != null" >
         gmt_create,
       </if>
@@ -189,7 +185,7 @@
         #{stockName,jdbcType=VARCHAR},
       </if>
       <if test="longHuType != null" >
-        #{longHuType,jdbcType=INTEGER},
+        #{longHuType,jdbcType=VARCHAR},
       </if>
       <if test="tradeDate != null" >
         #{tradeDate,jdbcType=DATE},
@@ -218,9 +214,6 @@
       <if test="totalSell != null" >
         #{totalSell,jdbcType=DOUBLE},
       </if>
-      <if test="srType != null" >
-        #{srType,jdbcType=INTEGER},
-      </if>
       <if test="gmtCreate != null" >
         #{gmtCreate,jdbcType=TIMESTAMP},
       </if>
@@ -248,7 +241,7 @@
         stock_name = #{record.stockName,jdbcType=VARCHAR},
       </if>
       <if test="record.longHuType != null" >
-        long_hu_type = #{record.longHuType,jdbcType=INTEGER},
+        long_hu_type = #{record.longHuType,jdbcType=VARCHAR},
       </if>
       <if test="record.tradeDate != null" >
         trade_date = #{record.tradeDate,jdbcType=DATE},
@@ -277,9 +270,6 @@
       <if test="record.totalSell != null" >
         total_sell = #{record.totalSell,jdbcType=DOUBLE},
       </if>
-      <if test="record.srType != null" >
-        sr_type = #{record.srType,jdbcType=INTEGER},
-      </if>
       <if test="record.gmtCreate != null" >
         gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
       </if>
@@ -296,7 +286,7 @@
     set id = #{record.id,jdbcType=BIGINT},
       symbol = #{record.symbol,jdbcType=VARCHAR},
       stock_name = #{record.stockName,jdbcType=VARCHAR},
-      long_hu_type = #{record.longHuType,jdbcType=INTEGER},
+      long_hu_type = #{record.longHuType,jdbcType=VARCHAR},
       trade_date = #{record.tradeDate,jdbcType=DATE},
       price = #{record.price,jdbcType=DOUBLE},
       chg = #{record.chg,jdbcType=DOUBLE},
@@ -306,7 +296,6 @@
       neg_mkt_val = #{record.negMktVal,jdbcType=DOUBLE},
       total_buy = #{record.totalBuy,jdbcType=DOUBLE},
       total_sell = #{record.totalSell,jdbcType=DOUBLE},
-      sr_type = #{record.srType,jdbcType=INTEGER},
       gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
       gmt_update = #{record.gmtUpdate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -323,7 +312,7 @@
         stock_name = #{stockName,jdbcType=VARCHAR},
       </if>
       <if test="longHuType != null" >
-        long_hu_type = #{longHuType,jdbcType=INTEGER},
+        long_hu_type = #{longHuType,jdbcType=VARCHAR},
       </if>
       <if test="tradeDate != null" >
         trade_date = #{tradeDate,jdbcType=DATE},
@@ -352,9 +341,6 @@
       <if test="totalSell != null" >
         total_sell = #{totalSell,jdbcType=DOUBLE},
       </if>
-      <if test="srType != null" >
-        sr_type = #{srType,jdbcType=INTEGER},
-      </if>
       <if test="gmtCreate != null" >
         gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       </if>
@@ -368,7 +354,7 @@
     update long_hu
     set symbol = #{symbol,jdbcType=VARCHAR},
       stock_name = #{stockName,jdbcType=VARCHAR},
-      long_hu_type = #{longHuType,jdbcType=INTEGER},
+      long_hu_type = #{longHuType,jdbcType=VARCHAR},
       trade_date = #{tradeDate,jdbcType=DATE},
       price = #{price,jdbcType=DOUBLE},
       chg = #{chg,jdbcType=DOUBLE},
@@ -378,7 +364,6 @@
       neg_mkt_val = #{negMktVal,jdbcType=DOUBLE},
       total_buy = #{totalBuy,jdbcType=DOUBLE},
       total_sell = #{totalSell,jdbcType=DOUBLE},
-      sr_type = #{srType,jdbcType=INTEGER},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}

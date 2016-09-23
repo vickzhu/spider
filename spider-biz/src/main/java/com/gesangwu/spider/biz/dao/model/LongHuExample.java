@@ -362,52 +362,62 @@ public class LongHuExample {
             return (Criteria) this;
         }
 
-        public Criteria andLongHuTypeEqualTo(Integer value) {
+        public Criteria andLongHuTypeEqualTo(String value) {
             addCriterion("long_hu_type =", value, "longHuType");
             return (Criteria) this;
         }
 
-        public Criteria andLongHuTypeNotEqualTo(Integer value) {
+        public Criteria andLongHuTypeNotEqualTo(String value) {
             addCriterion("long_hu_type <>", value, "longHuType");
             return (Criteria) this;
         }
 
-        public Criteria andLongHuTypeGreaterThan(Integer value) {
+        public Criteria andLongHuTypeGreaterThan(String value) {
             addCriterion("long_hu_type >", value, "longHuType");
             return (Criteria) this;
         }
 
-        public Criteria andLongHuTypeGreaterThanOrEqualTo(Integer value) {
+        public Criteria andLongHuTypeGreaterThanOrEqualTo(String value) {
             addCriterion("long_hu_type >=", value, "longHuType");
             return (Criteria) this;
         }
 
-        public Criteria andLongHuTypeLessThan(Integer value) {
+        public Criteria andLongHuTypeLessThan(String value) {
             addCriterion("long_hu_type <", value, "longHuType");
             return (Criteria) this;
         }
 
-        public Criteria andLongHuTypeLessThanOrEqualTo(Integer value) {
+        public Criteria andLongHuTypeLessThanOrEqualTo(String value) {
             addCriterion("long_hu_type <=", value, "longHuType");
             return (Criteria) this;
         }
 
-        public Criteria andLongHuTypeIn(List<Integer> values) {
+        public Criteria andLongHuTypeLike(String value) {
+            addCriterion("long_hu_type like", value, "longHuType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLongHuTypeNotLike(String value) {
+            addCriterion("long_hu_type not like", value, "longHuType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLongHuTypeIn(List<String> values) {
             addCriterion("long_hu_type in", values, "longHuType");
             return (Criteria) this;
         }
 
-        public Criteria andLongHuTypeNotIn(List<Integer> values) {
+        public Criteria andLongHuTypeNotIn(List<String> values) {
             addCriterion("long_hu_type not in", values, "longHuType");
             return (Criteria) this;
         }
 
-        public Criteria andLongHuTypeBetween(Integer value1, Integer value2) {
+        public Criteria andLongHuTypeBetween(String value1, String value2) {
             addCriterion("long_hu_type between", value1, value2, "longHuType");
             return (Criteria) this;
         }
 
-        public Criteria andLongHuTypeNotBetween(Integer value1, Integer value2) {
+        public Criteria andLongHuTypeNotBetween(String value1, String value2) {
             addCriterion("long_hu_type not between", value1, value2, "longHuType");
             return (Criteria) this;
         }
@@ -949,66 +959,6 @@ public class LongHuExample {
 
         public Criteria andTotalSellNotBetween(Double value1, Double value2) {
             addCriterion("total_sell not between", value1, value2, "totalSell");
-            return (Criteria) this;
-        }
-
-        public Criteria andSrTypeIsNull() {
-            addCriterion("sr_type is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSrTypeIsNotNull() {
-            addCriterion("sr_type is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSrTypeEqualTo(Integer value) {
-            addCriterion("sr_type =", value, "srType");
-            return (Criteria) this;
-        }
-
-        public Criteria andSrTypeNotEqualTo(Integer value) {
-            addCriterion("sr_type <>", value, "srType");
-            return (Criteria) this;
-        }
-
-        public Criteria andSrTypeGreaterThan(Integer value) {
-            addCriterion("sr_type >", value, "srType");
-            return (Criteria) this;
-        }
-
-        public Criteria andSrTypeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("sr_type >=", value, "srType");
-            return (Criteria) this;
-        }
-
-        public Criteria andSrTypeLessThan(Integer value) {
-            addCriterion("sr_type <", value, "srType");
-            return (Criteria) this;
-        }
-
-        public Criteria andSrTypeLessThanOrEqualTo(Integer value) {
-            addCriterion("sr_type <=", value, "srType");
-            return (Criteria) this;
-        }
-
-        public Criteria andSrTypeIn(List<Integer> values) {
-            addCriterion("sr_type in", values, "srType");
-            return (Criteria) this;
-        }
-
-        public Criteria andSrTypeNotIn(List<Integer> values) {
-            addCriterion("sr_type not in", values, "srType");
-            return (Criteria) this;
-        }
-
-        public Criteria andSrTypeBetween(Integer value1, Integer value2) {
-            addCriterion("sr_type between", value1, value2, "srType");
-            return (Criteria) this;
-        }
-
-        public Criteria andSrTypeNotBetween(Integer value1, Integer value2) {
-            addCriterion("sr_type not between", value1, value2, "srType");
             return (Criteria) this;
         }
 

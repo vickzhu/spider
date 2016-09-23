@@ -79,11 +79,7 @@
 		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
 		</table>
 		
-		<table tableName="long_hu" domainObjectName="LongHu"> 
-			<property name="suppressAllComments" value="true"/> 
-		    <property name="suppressDate" value="true"/>
-		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
-		</table>
+		
 		<table tableName="long_hu_type" domainObjectName="LongHuType"> 
 			<property name="suppressAllComments" value="true"/> 
 		    <property name="suppressDate" value="true"/>
@@ -104,8 +100,15 @@
 		    <property name="suppressDate" value="true"/>
 		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
 		</table>
-		-->	
+		
 		<table tableName="sec_dept" domainObjectName="SecDept"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
+		-->
+		
+		<table tableName="long_hu" domainObjectName="LongHu"> 
 			<property name="suppressAllComments" value="true"/> 
 		    <property name="suppressDate" value="true"/>
 		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
