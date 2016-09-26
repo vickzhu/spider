@@ -184,143 +184,203 @@ public class LongHuTypeExample {
             return (Criteria) this;
         }
 
-        public Criteria andWyTypeIsNull() {
-            addCriterion("wy_type is null");
+        public Criteria andLhTypeIsNull() {
+            addCriterion("lh_type is null");
             return (Criteria) this;
         }
 
-        public Criteria andWyTypeIsNotNull() {
-            addCriterion("wy_type is not null");
+        public Criteria andLhTypeIsNotNull() {
+            addCriterion("lh_type is not null");
             return (Criteria) this;
         }
 
-        public Criteria andWyTypeEqualTo(String value) {
-            addCriterion("wy_type =", value, "wyType");
+        public Criteria andLhTypeEqualTo(String value) {
+            addCriterion("lh_type =", value, "lhType");
             return (Criteria) this;
         }
 
-        public Criteria andWyTypeNotEqualTo(String value) {
-            addCriterion("wy_type <>", value, "wyType");
+        public Criteria andLhTypeNotEqualTo(String value) {
+            addCriterion("lh_type <>", value, "lhType");
             return (Criteria) this;
         }
 
-        public Criteria andWyTypeGreaterThan(String value) {
-            addCriterion("wy_type >", value, "wyType");
+        public Criteria andLhTypeGreaterThan(String value) {
+            addCriterion("lh_type >", value, "lhType");
             return (Criteria) this;
         }
 
-        public Criteria andWyTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("wy_type >=", value, "wyType");
+        public Criteria andLhTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("lh_type >=", value, "lhType");
             return (Criteria) this;
         }
 
-        public Criteria andWyTypeLessThan(String value) {
-            addCriterion("wy_type <", value, "wyType");
+        public Criteria andLhTypeLessThan(String value) {
+            addCriterion("lh_type <", value, "lhType");
             return (Criteria) this;
         }
 
-        public Criteria andWyTypeLessThanOrEqualTo(String value) {
-            addCriterion("wy_type <=", value, "wyType");
+        public Criteria andLhTypeLessThanOrEqualTo(String value) {
+            addCriterion("lh_type <=", value, "lhType");
             return (Criteria) this;
         }
 
-        public Criteria andWyTypeLike(String value) {
-            addCriterion("wy_type like", value, "wyType");
+        public Criteria andLhTypeLike(String value) {
+            addCriterion("lh_type like", value, "lhType");
             return (Criteria) this;
         }
 
-        public Criteria andWyTypeNotLike(String value) {
-            addCriterion("wy_type not like", value, "wyType");
+        public Criteria andLhTypeNotLike(String value) {
+            addCriterion("lh_type not like", value, "lhType");
             return (Criteria) this;
         }
 
-        public Criteria andWyTypeIn(List<String> values) {
-            addCriterion("wy_type in", values, "wyType");
+        public Criteria andLhTypeIn(List<String> values) {
+            addCriterion("lh_type in", values, "lhType");
             return (Criteria) this;
         }
 
-        public Criteria andWyTypeNotIn(List<String> values) {
-            addCriterion("wy_type not in", values, "wyType");
+        public Criteria andLhTypeNotIn(List<String> values) {
+            addCriterion("lh_type not in", values, "lhType");
             return (Criteria) this;
         }
 
-        public Criteria andWyTypeBetween(String value1, String value2) {
-            addCriterion("wy_type between", value1, value2, "wyType");
+        public Criteria andLhTypeBetween(String value1, String value2) {
+            addCriterion("lh_type between", value1, value2, "lhType");
             return (Criteria) this;
         }
 
-        public Criteria andWyTypeNotBetween(String value1, String value2) {
-            addCriterion("wy_type not between", value1, value2, "wyType");
+        public Criteria andLhTypeNotBetween(String value1, String value2) {
+            addCriterion("lh_type not between", value1, value2, "lhType");
             return (Criteria) this;
         }
 
-        public Criteria andRemarkIsNull() {
-            addCriterion("remark is null");
+        public Criteria andLhDescIsNull() {
+            addCriterion("lh_desc is null");
             return (Criteria) this;
         }
 
-        public Criteria andRemarkIsNotNull() {
-            addCriterion("remark is not null");
+        public Criteria andLhDescIsNotNull() {
+            addCriterion("lh_desc is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRemarkEqualTo(String value) {
-            addCriterion("remark =", value, "remark");
+        public Criteria andLhDescEqualTo(String value) {
+            addCriterion("lh_desc =", value, "lhDesc");
             return (Criteria) this;
         }
 
-        public Criteria andRemarkNotEqualTo(String value) {
-            addCriterion("remark <>", value, "remark");
+        public Criteria andLhDescNotEqualTo(String value) {
+            addCriterion("lh_desc <>", value, "lhDesc");
             return (Criteria) this;
         }
 
-        public Criteria andRemarkGreaterThan(String value) {
-            addCriterion("remark >", value, "remark");
+        public Criteria andLhDescGreaterThan(String value) {
+            addCriterion("lh_desc >", value, "lhDesc");
             return (Criteria) this;
         }
 
-        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
-            addCriterion("remark >=", value, "remark");
+        public Criteria andLhDescGreaterThanOrEqualTo(String value) {
+            addCriterion("lh_desc >=", value, "lhDesc");
             return (Criteria) this;
         }
 
-        public Criteria andRemarkLessThan(String value) {
-            addCriterion("remark <", value, "remark");
+        public Criteria andLhDescLessThan(String value) {
+            addCriterion("lh_desc <", value, "lhDesc");
             return (Criteria) this;
         }
 
-        public Criteria andRemarkLessThanOrEqualTo(String value) {
-            addCriterion("remark <=", value, "remark");
+        public Criteria andLhDescLessThanOrEqualTo(String value) {
+            addCriterion("lh_desc <=", value, "lhDesc");
             return (Criteria) this;
         }
 
-        public Criteria andRemarkLike(String value) {
-            addCriterion("remark like", value, "remark");
+        public Criteria andLhDescLike(String value) {
+            addCriterion("lh_desc like", value, "lhDesc");
             return (Criteria) this;
         }
 
-        public Criteria andRemarkNotLike(String value) {
-            addCriterion("remark not like", value, "remark");
+        public Criteria andLhDescNotLike(String value) {
+            addCriterion("lh_desc not like", value, "lhDesc");
             return (Criteria) this;
         }
 
-        public Criteria andRemarkIn(List<String> values) {
-            addCriterion("remark in", values, "remark");
+        public Criteria andLhDescIn(List<String> values) {
+            addCriterion("lh_desc in", values, "lhDesc");
             return (Criteria) this;
         }
 
-        public Criteria andRemarkNotIn(List<String> values) {
-            addCriterion("remark not in", values, "remark");
+        public Criteria andLhDescNotIn(List<String> values) {
+            addCriterion("lh_desc not in", values, "lhDesc");
             return (Criteria) this;
         }
 
-        public Criteria andRemarkBetween(String value1, String value2) {
-            addCriterion("remark between", value1, value2, "remark");
+        public Criteria andLhDescBetween(String value1, String value2) {
+            addCriterion("lh_desc between", value1, value2, "lhDesc");
             return (Criteria) this;
         }
 
-        public Criteria andRemarkNotBetween(String value1, String value2) {
-            addCriterion("remark not between", value1, value2, "remark");
+        public Criteria andLhDescNotBetween(String value1, String value2) {
+            addCriterion("lh_desc not between", value1, value2, "lhDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrTypeIsNull() {
+            addCriterion("sr_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrTypeIsNotNull() {
+            addCriterion("sr_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrTypeEqualTo(Integer value) {
+            addCriterion("sr_type =", value, "srType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrTypeNotEqualTo(Integer value) {
+            addCriterion("sr_type <>", value, "srType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrTypeGreaterThan(Integer value) {
+            addCriterion("sr_type >", value, "srType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("sr_type >=", value, "srType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrTypeLessThan(Integer value) {
+            addCriterion("sr_type <", value, "srType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("sr_type <=", value, "srType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrTypeIn(List<Integer> values) {
+            addCriterion("sr_type in", values, "srType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrTypeNotIn(List<Integer> values) {
+            addCriterion("sr_type not in", values, "srType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrTypeBetween(Integer value1, Integer value2) {
+            addCriterion("sr_type between", value1, value2, "srType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("sr_type not between", value1, value2, "srType");
             return (Criteria) this;
         }
     }

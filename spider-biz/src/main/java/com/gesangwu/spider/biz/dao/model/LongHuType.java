@@ -3,9 +3,11 @@ package com.gesangwu.spider.biz.dao.model;
 public class LongHuType {
     private Long id;
 
-    private String wyType;
+    private String lhType;
 
-    private String remark;
+    private String lhDesc;
+
+    private Integer srType;
 
     public Long getId() {
         return id;
@@ -15,19 +17,27 @@ public class LongHuType {
         this.id = id;
     }
 
-    public String getWyType() {
-        return wyType;
+    public String getLhType() {
+        return lhType;
     }
 
-    public void setWyType(String wyType) {
-        this.wyType = wyType == null ? null : wyType.trim();
+    public void setLhType(String lhType) {
+        this.lhType = lhType == null ? null : lhType.trim();
     }
 
-    public String getRemark() {
-        return remark;
+    public String getLhDesc() {
+        return lhDesc;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+    public void setLhDesc(String lhDesc) {
+        this.lhDesc = lhDesc == null ? null : lhDesc.trim();
+    }
+
+    public Integer getSrType() {
+        return srType;
+    }
+
+    public void setSrType(Integer srType) {
+        this.srType = srType;
     }
 }
