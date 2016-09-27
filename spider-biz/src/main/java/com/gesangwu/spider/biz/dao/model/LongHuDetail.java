@@ -1,5 +1,6 @@
 package com.gesangwu.spider.biz.dao.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class LongHuDetail {
@@ -7,7 +8,13 @@ public class LongHuDetail {
 
     private String symbol;
 
-    private Date tradeDate;
+    private String tradeDate;
+
+    private BigDecimal buyAmt;
+
+    private BigDecimal sellAmt;
+
+    private BigDecimal netBuy;
 
     private Integer isSr;
 
@@ -35,12 +42,36 @@ public class LongHuDetail {
         this.symbol = symbol == null ? null : symbol.trim();
     }
 
-    public Date getTradeDate() {
+    public String getTradeDate() {
         return tradeDate;
     }
 
-    public void setTradeDate(Date tradeDate) {
-        this.tradeDate = tradeDate;
+    public void setTradeDate(String tradeDate) {
+        this.tradeDate = tradeDate == null ? null : tradeDate.trim();
+    }
+
+    public BigDecimal getBuyAmt() {
+        return buyAmt;
+    }
+
+    public void setBuyAmt(BigDecimal buyAmt) {
+        this.buyAmt = buyAmt;
+    }
+
+    public BigDecimal getSellAmt() {
+        return sellAmt;
+    }
+
+    public void setSellAmt(BigDecimal sellAmt) {
+        this.sellAmt = sellAmt;
+    }
+
+    public BigDecimal getNetBuy() {
+        return netBuy;
+    }
+
+    public void setNetBuy(BigDecimal netBuy) {
+        this.netBuy = netBuy;
     }
 
     public Integer getIsSr() {

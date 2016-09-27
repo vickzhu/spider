@@ -4,7 +4,10 @@
   <resultMap id="BaseResultMap" type="com.gesangwu.spider.biz.dao.model.LongHuDetail" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="symbol" property="symbol" jdbcType="VARCHAR" />
-    <result column="trade_date" property="tradeDate" jdbcType="DATE" />
+    <result column="trade_date" property="tradeDate" jdbcType="VARCHAR" />
+    <result column="buy_amt" property="buyAmt" jdbcType="DECIMAL" />
+    <result column="sell_amt" property="sellAmt" jdbcType="DECIMAL" />
+    <result column="net_buy" property="netBuy" jdbcType="DECIMAL" />
     <result column="is_sr" property="isSr" jdbcType="INTEGER" />
     <result column="sec_dept_code" property="secDeptCode" jdbcType="INTEGER" />
     <result column="sec_dept_addr" property="secDeptAddr" jdbcType="VARCHAR" />
@@ -70,7 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, symbol, trade_date, is_sr, sec_dept_code, sec_dept_addr, gmt_create, gmt_update
+    id, symbol, trade_date, buy_amt, sell_amt, net_buy, is_sr, sec_dept_code, sec_dept_addr, 
+    gmt_create, gmt_update
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetailExample" >
     select
@@ -109,10 +113,12 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into long_hu_detail (symbol, trade_date, is_sr, 
+    insert into long_hu_detail (symbol, trade_date, buy_amt, 
+      sell_amt, net_buy, is_sr, 
       sec_dept_code, sec_dept_addr, gmt_create, 
       gmt_update)
-    values (#{symbol,jdbcType=VARCHAR}, #{tradeDate,jdbcType=DATE}, #{isSr,jdbcType=INTEGER}, 
+    values (#{symbol,jdbcType=VARCHAR}, #{tradeDate,jdbcType=VARCHAR}, #{buyAmt,jdbcType=DECIMAL}, 
+      #{sellAmt,jdbcType=DECIMAL}, #{netBuy,jdbcType=DECIMAL}, #{isSr,jdbcType=INTEGER}, 
       #{secDeptCode,jdbcType=INTEGER}, #{secDeptAddr,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
       #{gmtUpdate,jdbcType=TIMESTAMP})
   </insert>
@@ -127,6 +133,15 @@
       </if>
       <if test="tradeDate != null" >
         trade_date,
+      </if>
+      <if test="buyAmt != null" >
+        buy_amt,
+      </if>
+      <if test="sellAmt != null" >
+        sell_amt,
+      </if>
+      <if test="netBuy != null" >
+        net_buy,
       </if>
       <if test="isSr != null" >
         is_sr,
@@ -149,7 +164,16 @@
         #{symbol,jdbcType=VARCHAR},
       </if>
       <if test="tradeDate != null" >
-        #{tradeDate,jdbcType=DATE},
+        #{tradeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="buyAmt != null" >
+        #{buyAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="sellAmt != null" >
+        #{sellAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="netBuy != null" >
+        #{netBuy,jdbcType=DECIMAL},
       </if>
       <if test="isSr != null" >
         #{isSr,jdbcType=INTEGER},
@@ -184,7 +208,16 @@
         symbol = #{record.symbol,jdbcType=VARCHAR},
       </if>
       <if test="record.tradeDate != null" >
-        trade_date = #{record.tradeDate,jdbcType=DATE},
+        trade_date = #{record.tradeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buyAmt != null" >
+        buy_amt = #{record.buyAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sellAmt != null" >
+        sell_amt = #{record.sellAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.netBuy != null" >
+        net_buy = #{record.netBuy,jdbcType=DECIMAL},
       </if>
       <if test="record.isSr != null" >
         is_sr = #{record.isSr,jdbcType=INTEGER},
@@ -210,7 +243,10 @@
     update long_hu_detail
     set id = #{record.id,jdbcType=BIGINT},
       symbol = #{record.symbol,jdbcType=VARCHAR},
-      trade_date = #{record.tradeDate,jdbcType=DATE},
+      trade_date = #{record.tradeDate,jdbcType=VARCHAR},
+      buy_amt = #{record.buyAmt,jdbcType=DECIMAL},
+      sell_amt = #{record.sellAmt,jdbcType=DECIMAL},
+      net_buy = #{record.netBuy,jdbcType=DECIMAL},
       is_sr = #{record.isSr,jdbcType=INTEGER},
       sec_dept_code = #{record.secDeptCode,jdbcType=INTEGER},
       sec_dept_addr = #{record.secDeptAddr,jdbcType=VARCHAR},
@@ -227,7 +263,16 @@
         symbol = #{symbol,jdbcType=VARCHAR},
       </if>
       <if test="tradeDate != null" >
-        trade_date = #{tradeDate,jdbcType=DATE},
+        trade_date = #{tradeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="buyAmt != null" >
+        buy_amt = #{buyAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="sellAmt != null" >
+        sell_amt = #{sellAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="netBuy != null" >
+        net_buy = #{netBuy,jdbcType=DECIMAL},
       </if>
       <if test="isSr != null" >
         is_sr = #{isSr,jdbcType=INTEGER},
@@ -250,7 +295,10 @@
   <update id="updateByPrimaryKey" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetail" >
     update long_hu_detail
     set symbol = #{symbol,jdbcType=VARCHAR},
-      trade_date = #{tradeDate,jdbcType=DATE},
+      trade_date = #{tradeDate,jdbcType=VARCHAR},
+      buy_amt = #{buyAmt,jdbcType=DECIMAL},
+      sell_amt = #{sellAmt,jdbcType=DECIMAL},
+      net_buy = #{netBuy,jdbcType=DECIMAL},
       is_sr = #{isSr,jdbcType=INTEGER},
       sec_dept_code = #{secDeptCode,jdbcType=INTEGER},
       sec_dept_addr = #{secDeptAddr,jdbcType=VARCHAR},
@@ -258,4 +306,20 @@
       gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into long_hu_detail (symbol, trade_date, buy_amt, 
+      sell_amt, net_buy, is_sr, 
+      sec_dept_code, sec_dept_addr, gmt_create, 
+      gmt_update)
+    values 
+    <foreach collection="list" index="index" item="detail" separator=",">
+    (#{detail.symbol,jdbcType=VARCHAR}, #{detail.tradeDate,jdbcType=VARCHAR}, #{detail.buyAmt,jdbcType=DECIMAL}, 
+      #{detail.sellAmt,jdbcType=DECIMAL}, #{detail.netBuy,jdbcType=DECIMAL}, #{detail.isSr,jdbcType=INTEGER}, 
+      #{detail.secDeptCode,jdbcType=INTEGER}, #{detail.secDeptAddr,jdbcType=VARCHAR}, #{detail.gmtCreate,jdbcType=TIMESTAMP}, 
+      #{detail.gmtUpdate,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
 </mapper>

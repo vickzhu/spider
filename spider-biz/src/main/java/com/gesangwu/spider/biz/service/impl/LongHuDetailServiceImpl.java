@@ -1,5 +1,7 @@
 package com.gesangwu.spider.biz.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -21,6 +23,11 @@ public class LongHuDetailServiceImpl extends BaseServiceImpl<LongHuDetail, LongH
 	@Override
 	protected BaseMapper<LongHuDetail, LongHuDetailExample> getMapper() {
 		return mapper;
+	}
+
+	@Override
+	public void batchInsert(List<LongHuDetail> detailList) {
+		mapper.insertBatch(detailList);
 	}
 
 }

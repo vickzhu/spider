@@ -10,4 +10,6 @@ public interface SecDeptService extends BaseService<SecDept, SecDeptExample> {
 
 	public void batchInsert(List<SecDept> secDeptList);
 	
+	public SecDept selectByCode(String code);
+	
 }
