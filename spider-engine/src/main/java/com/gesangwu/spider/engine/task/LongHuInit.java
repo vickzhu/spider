@@ -59,7 +59,7 @@ public class LongHuInit {
 					continue;
 				}
 				for (int i = datesArr.length - 1; i > 0; i--) {
-					getLongHu(company.getSymbol(), company.getStockName(), datesArr[i]);
+					getLongHu(company.getSymbol(), datesArr[i]);
 				}
 			}
 		}
@@ -70,7 +70,7 @@ public class LongHuInit {
 	private static final String r2 = "\"chgtype\"\\:\"([0-9]*)\",\"bizsunitcode\"\\:\"([0-9]*)\",\"bizsunitname\"\\:\"([^\"]*)\",\"amount\"\\:[^,]*,\"buyvol\"\\:[^,]*,\"buyamt\"\\:([^,]*),\"salevol\"\\:[^,]*,\"saleamt\"\\:([^,]*),\"typedesc\"\\:\"([^\"]*)\"";
 	private static Pattern p2 = Pattern.compile(r2);
 	
-	public void getLongHu(String symbol, String stockName, String date){
+	public void getLongHu(String symbol, String date){
 		String url = assembleLongHuUrl(symbol, date);
 		String result = HttpTool.get(url);
 		Matcher m2 = p2.matcher(result);
@@ -125,7 +125,7 @@ public class LongHuInit {
 			checkSecDept(secCode, secName);
 			
 		}
-		LongHu longHu = initLongHu(symbol, stockName, result, typeMap);
+		LongHu longHu = initLongHu(symbol, result, typeMap);
 		longHu.setTradeDate(date);
 		if(drMap.size() > 0){
 			List<LongHuDetail> drList = longHuMap2List(drMap);
@@ -157,7 +157,7 @@ public class LongHuInit {
 		}
 		lhService.insert(longHu);
 		try {
-			Thread.sleep(800);
+			Thread.sleep(600);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -167,6 +167,9 @@ public class LongHuInit {
 	private static final String r3 = "\"tclose\"\\:([^,]*),\"thigh\"\\:([^,]*),\"tlow\"\\:([^,]*),\"vol\"\\:([^,]*),\"amount\"\\:([^,]*),\"change\"\\:([^,]*),\"pchg\"\\:([^,]*),\"amplitude\"\\:([^,]*),\"deals\"\\:([^,]*),\"avgprice\"\\:([^,]*),\"avgvol\"\\:([^,]*),\"avgtramt\"\\:([^,]*),\"turnrate\"\\:([^,]*),\"totmktcap\"\\:([^,]*),\"negotiablemv\"\\:([^\\}]*)";
 	private static Pattern p3 = Pattern.compile(r3);
 	
+	private static final String r4 = ",\"name\"\\:\"([^,]*)\"";
+	private static Pattern p4 = Pattern.compile(r4);
+	
 	/**
 	 * 初始化龙虎数据
 	 * @param symbol
@@ -174,7 +177,12 @@ public class LongHuInit {
 	 * @param result
 	 * @return
 	 */
-	private LongHu initLongHu(String symbol, String stockName, String result, Map<String, LongHuType> typeMap){
+	private LongHu initLongHu(String symbol, String result, Map<String, LongHuType> typeMap){
+		Matcher m4 = p4.matcher(result);
+		String stockName = null;
+		if(m4.find()){
+			stockName = m4.group(1);
+		}
 		LongHu longHu = new LongHu();
 		longHu.setSymbol(symbol);
 		longHu.setStockName(stockName);
