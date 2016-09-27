@@ -9,9 +9,7 @@ public class LongHu {
 
     private String stockName;
 
-    private String longHuType;
-
-    private Date tradeDate;
+    private String tradeDate;
 
     private Double price;
 
@@ -21,13 +19,27 @@ public class LongHu {
 
     private Double turnover;
 
+    private Double amplitude;
+
     private Double totMktVal;
 
     private Double negMktVal;
 
-    private Double totalBuy;
+    private String drLhType;
 
-    private Double totalSell;
+    private Double drBuyAmt;
+
+    private Double drSellAmt;
+
+    private Double drNetBuy;
+
+    private String srLhType;
+
+    private Double srBuyAmt;
+
+    private Double srSellAmt;
+
+    private Double srNetBuy;
 
     private Date gmtCreate;
 
@@ -57,20 +69,12 @@ public class LongHu {
         this.stockName = stockName == null ? null : stockName.trim();
     }
 
-    public String getLongHuType() {
-        return longHuType;
-    }
-
-    public void setLongHuType(String longHuType) {
-        this.longHuType = longHuType == null ? null : longHuType.trim();
-    }
-
-    public Date getTradeDate() {
+    public String getTradeDate() {
         return tradeDate;
     }
 
-    public void setTradeDate(Date tradeDate) {
-        this.tradeDate = tradeDate;
+    public void setTradeDate(String tradeDate) {
+        this.tradeDate = tradeDate == null ? null : tradeDate.trim();
     }
 
     public Double getPrice() {
@@ -105,6 +109,14 @@ public class LongHu {
         this.turnover = turnover;
     }
 
+    public Double getAmplitude() {
+        return amplitude;
+    }
+
+    public void setAmplitude(Double amplitude) {
+        this.amplitude = amplitude;
+    }
+
     public Double getTotMktVal() {
         return totMktVal;
     }
@@ -121,20 +133,68 @@ public class LongHu {
         this.negMktVal = negMktVal;
     }
 
-    public Double getTotalBuy() {
-        return totalBuy;
+    public String getDrLhType() {
+        return drLhType;
     }
 
-    public void setTotalBuy(Double totalBuy) {
-        this.totalBuy = totalBuy;
+    public void setDrLhType(String drLhType) {
+        this.drLhType = drLhType == null ? null : drLhType.trim();
     }
 
-    public Double getTotalSell() {
-        return totalSell;
+    public Double getDrBuyAmt() {
+        return drBuyAmt;
     }
 
-    public void setTotalSell(Double totalSell) {
-        this.totalSell = totalSell;
+    public void setDrBuyAmt(Double drBuyAmt) {
+        this.drBuyAmt = drBuyAmt;
+    }
+
+    public Double getDrSellAmt() {
+        return drSellAmt;
+    }
+
+    public void setDrSellAmt(Double drSellAmt) {
+        this.drSellAmt = drSellAmt;
+    }
+
+    public Double getDrNetBuy() {
+        return drNetBuy;
+    }
+
+    public void setDrNetBuy(Double drNetBuy) {
+        this.drNetBuy = drNetBuy;
+    }
+
+    public String getSrLhType() {
+        return srLhType;
+    }
+
+    public void setSrLhType(String srLhType) {
+        this.srLhType = srLhType == null ? null : srLhType.trim();
+    }
+
+    public Double getSrBuyAmt() {
+        return srBuyAmt;
+    }
+
+    public void setSrBuyAmt(Double srBuyAmt) {
+        this.srBuyAmt = srBuyAmt;
+    }
+
+    public Double getSrSellAmt() {
+        return srSellAmt;
+    }
+
+    public void setSrSellAmt(Double srSellAmt) {
+        this.srSellAmt = srSellAmt;
+    }
+
+    public Double getSrNetBuy() {
+        return srNetBuy;
+    }
+
+    public void setSrNetBuy(Double srNetBuy) {
+        this.srNetBuy = srNetBuy;
     }
 
     public Date getGmtCreate() {

@@ -13,16 +13,19 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.CompanyExample;
+import com.gesangwu.spider.biz.dao.model.LongHu;
 import com.gesangwu.spider.biz.dao.model.LongHuDetail;
 import com.gesangwu.spider.biz.dao.model.LongHuType;
 import com.gesangwu.spider.biz.dao.model.SecDept;
 import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.LongHuDetailService;
+import com.gesangwu.spider.biz.service.LongHuService;
 import com.gesangwu.spider.biz.service.LongHuTypeService;
 import com.gesangwu.spider.biz.service.SecDeptService;
 
@@ -36,7 +39,9 @@ public class LongHuInit {
 	@Resource
 	private SecDeptService secDeptService;
 	@Resource
-	private LongHuDetailService lfDetailService;
+	private LongHuDetailService lhDetailService;
+	@Resource
+	private LongHuService lhService;
 
 	public void execute(){
 		int cpp = 10;
@@ -53,24 +58,22 @@ public class LongHuInit {
 				if(datesArr == null){
 					continue;
 				}
-				for (int i = datesArr.length-1; i > 0; i--) {
-					getLongHu(company.getSymbol(), datesArr[i]);
+				for (int i = datesArr.length - 1; i > 0; i--) {
+					getLongHu(company.getSymbol(), company.getStockName(), datesArr[i]);
 				}
 			}
 		}
 	}
 	
 	private static final String longHuUrl = "https://xueqiu.com/stock/f10/bizunittrdinfo.json";
-	private static final String r2 = "tqQtBizunittrdinfoBuyList\"\\:\\[(.*)\\],\"tqQtBizunittrdinfoSaleList\"\\:\\[(.*)\\]";
+	
+	private static final String r2 = "\"chgtype\"\\:\"([0-9]*)\",\"bizsunitcode\"\\:\"([0-9]*)\",\"bizsunitname\"\\:\"([^\"]*)\",\"amount\"\\:[^,]*,\"buyvol\"\\:[^,]*,\"buyamt\"\\:([^,]*),\"salevol\"\\:[^,]*,\"saleamt\"\\:([^,]*),\"typedesc\"\\:\"([^\"]*)\"";
 	private static Pattern p2 = Pattern.compile(r2);
 	
-	private static final String r3 = "\"chgtype\"\\:\"([0-9]*)\",\"bizsunitcode\"\\:\"([0-9]*)\",\"bizsunitname\"\\:\"([^\"]*)\",\"amount\"\\:[^,]*,\"buyvol\"\\:[^,]*,\"buyamt\"\\:([^,]*),\"salevol\"\\:[^,]*,\"saleamt\"\\:([^,]*),\"typedesc\"\\:\"([^\"]*)\"";
-	private static Pattern p3 = Pattern.compile(r3);
-	
-	public void getLongHu(String symbol, String date){
+	public void getLongHu(String symbol, String stockName, String date){
 		String url = assembleLongHuUrl(symbol, date);
 		String result = HttpTool.get(url);
-		Matcher m2 = p3.matcher(result);
+		Matcher m2 = p2.matcher(result);
 		Map<String, LongHuType> typeMap = new HashMap<String, LongHuType>();
 		Map<String, LongHuDetail> drMap = new HashMap<String, LongHuDetail>();
 		Map<String, LongHuDetail> srMap = new HashMap<String, LongHuDetail>();
@@ -115,22 +118,100 @@ public class LongHuInit {
 			BigDecimal sellAmt = formatAmt(sell);
 			BigDecimal netBuy = buyAmt.subtract(sellAmt);
 			
-			detail.setBuyAmt(buyAmt.equals(BigDecimal.ZERO)?null:buyAmt);
-			detail.setSellAmt(sellAmt.equals(BigDecimal.ZERO)?null:sellAmt);
+			detail.setBuyAmt(buyAmt);
+			detail.setSellAmt(sellAmt);
 			detail.setNetBuy(netBuy);
 			
 			checkSecDept(secCode, secName);
 			
 		}
-		if(drMap.size()>0){
+		LongHu longHu = initLongHu(symbol, stockName, result, typeMap);
+		longHu.setTradeDate(date);
+		if(drMap.size() > 0){
 			List<LongHuDetail> drList = longHuMap2List(drMap);
-			lfDetailService.batchInsert(drList);
+			lhDetailService.batchInsert(drList);
+			BigDecimal buyTotal = BigDecimal.ZERO;
+			BigDecimal sellTotal = BigDecimal.ZERO;
+			for (LongHuDetail longHuDetail : drList) {
+				buyTotal = buyTotal.add(longHuDetail.getBuyAmt());
+				sellTotal = sellTotal.add(longHuDetail.getSellAmt());
+			}
+			double netBuy = buyTotal.subtract(sellTotal).doubleValue();
+			longHu.setDrBuyAmt(buyTotal.doubleValue());
+			longHu.setDrSellAmt(sellTotal.doubleValue());
+			longHu.setDrNetBuy(netBuy);
 		}
-		if(srMap.size()>0){
+		if(srMap.size() > 0){
 			List<LongHuDetail> srList = longHuMap2List(srMap);
-			lfDetailService.batchInsert(srList);
+			lhDetailService.batchInsert(srList);
+			BigDecimal buyTotal = BigDecimal.ZERO;
+			BigDecimal sellTotal = BigDecimal.ZERO;
+			for (LongHuDetail longHuDetail : srList) {
+				buyTotal = buyTotal.add(longHuDetail.getBuyAmt());
+				sellTotal = sellTotal.add(longHuDetail.getSellAmt());
+			}
+			double netBuy = buyTotal.subtract(sellTotal).doubleValue();
+			longHu.setSrBuyAmt(buyTotal.doubleValue());
+			longHu.setSrSellAmt(sellTotal.doubleValue());
+			longHu.setSrNetBuy(netBuy);
 		}
+		lhService.insert(longHu);
 	}
+	
+	
+	private static final String r3 = "\"tclose\"\\:([^,]*),\"thigh\"\\:([^,]*),\"tlow\"\\:([^,]*),\"vol\"\\:([^,]*),\"amount\"\\:([^,]*),\"change\"\\:([^,]*),\"pchg\"\\:([^,]*),\"amplitude\"\\:([^,]*),\"deals\"\\:([^,]*),\"avgprice\"\\:([^,]*),\"avgvol\"\\:([^,]*),\"avgtramt\"\\:([^,]*),\"turnrate\"\\:([^,]*),\"totmktcap\"\\:([^,]*),\"negotiablemv\"\\:([^\\}]*)";
+	private static Pattern p3 = Pattern.compile(r3);
+	
+	/**
+	 * 初始化龙虎数据
+	 * @param symbol
+	 * @param stockName
+	 * @param result
+	 * @return
+	 */
+	private LongHu initLongHu(String symbol, String stockName, String result, Map<String, LongHuType> typeMap){
+		LongHu longHu = new LongHu();
+		longHu.setSymbol(symbol);
+		longHu.setStockName(stockName);
+		longHu.setGmtCreate(new Date());
+		Matcher m3 = p3.matcher(result);
+		if(m3.find()){
+			String close = m3.group(1);//收盘价
+			String change = m3.group(6);//涨跌额
+			String chgPercent = m3.group(7);//涨跌幅
+			String amplitude = m3.group(8);//振幅
+			String turnrate = m3.group(13);//换手率
+			String totmktcap = m3.group(14);//市值
+			String negotiablemv = m3.group(15);//流通市值
+			longHu.setChg(Double.valueOf(change));
+			longHu.setPrice(Double.valueOf(close));
+			longHu.setChgPercent(Double.valueOf(chgPercent));
+			longHu.setAmplitude(Double.valueOf(amplitude));
+			longHu.setTurnover(Double.valueOf(turnrate));
+			longHu.setTotMktVal(Double.valueOf(totmktcap));
+			longHu.setNegMktVal(Double.valueOf(negotiablemv));
+		}
+		StringBuilder drSB = new StringBuilder();
+		StringBuilder srSB = new StringBuilder();
+		for(Map.Entry<String, LongHuType> entry : typeMap.entrySet()){
+			LongHuType longHuType = entry.getValue();
+			if(longHuType.getSrType()==1){//三日类型
+				srSB.append(SymbolConstant.COMMA);
+				srSB.append(longHuType.getLhType());
+			} else {//当日类型
+				drSB.append(SymbolConstant.COMMA);
+				drSB.append(longHuType.getLhType());
+			}
+		}
+		if(drSB.length() > 0){
+			longHu.setDrLhType(drSB.substring(1));
+		}
+		if(srSB.length() > 0){
+			longHu.setSrLhType(srSB.substring(1));
+		}
+		return longHu;
+	}
+	
 	
 	private List<LongHuDetail> longHuMap2List(Map<String, LongHuDetail> drMap){
 		List<LongHuDetail> detailList = new ArrayList<LongHuDetail>();
@@ -198,18 +279,5 @@ public class LongHuInit {
 		BigDecimal buy = new BigDecimal(amt);
 		return buy.divide(new BigDecimal(10000)).setScale(2,BigDecimal.ROUND_HALF_UP);
 	}
-	
-	public static void main(String[] args){
-		LongHuInit init = new LongHuInit();
-		String cookieUrl = "https://xueqiu.com/account/lostpasswd";
-		HttpTool.get(cookieUrl);
-//		getDates("sz002265");
-		init.getLongHu("sz002265", "20160923");
-//		BigDecimal buy = init.formatAmt("3.3151128153E8");
-//		BigDecimal sell = init.formatAmt("3.4151128153E8");
-//		BigDecimal netBuy = buy.subtract(sell);
-//		System.out.println(netBuy.doubleValue());
-//		BigDecimal bd = new BigDecimal("0");
-//		System.out.println(bd.equals(BigDecimal.ZERO));
-	}
+
 }

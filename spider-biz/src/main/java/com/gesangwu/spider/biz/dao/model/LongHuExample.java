@@ -2,7 +2,6 @@ package com.gesangwu.spider.biz.dao.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 public class LongHuExample {
@@ -124,32 +123,6 @@ public class LongHuExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
-        }
-
-        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
-            if (value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Date(value.getTime()), property);
-        }
-
-        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
-            if (values == null || values.size() == 0) {
-                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
-            }
-            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
-            Iterator<Date> iter = values.iterator();
-            while (iter.hasNext()) {
-                dateList.add(new java.sql.Date(iter.next().getTime()));
-            }
-            addCriterion(condition, dateList, property);
-        }
-
-        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
-            if (value1 == null || value2 == null) {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
         public Criteria andIdIsNull() {
@@ -352,76 +325,6 @@ public class LongHuExample {
             return (Criteria) this;
         }
 
-        public Criteria andLongHuTypeIsNull() {
-            addCriterion("long_hu_type is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongHuTypeIsNotNull() {
-            addCriterion("long_hu_type is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongHuTypeEqualTo(String value) {
-            addCriterion("long_hu_type =", value, "longHuType");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongHuTypeNotEqualTo(String value) {
-            addCriterion("long_hu_type <>", value, "longHuType");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongHuTypeGreaterThan(String value) {
-            addCriterion("long_hu_type >", value, "longHuType");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongHuTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("long_hu_type >=", value, "longHuType");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongHuTypeLessThan(String value) {
-            addCriterion("long_hu_type <", value, "longHuType");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongHuTypeLessThanOrEqualTo(String value) {
-            addCriterion("long_hu_type <=", value, "longHuType");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongHuTypeLike(String value) {
-            addCriterion("long_hu_type like", value, "longHuType");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongHuTypeNotLike(String value) {
-            addCriterion("long_hu_type not like", value, "longHuType");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongHuTypeIn(List<String> values) {
-            addCriterion("long_hu_type in", values, "longHuType");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongHuTypeNotIn(List<String> values) {
-            addCriterion("long_hu_type not in", values, "longHuType");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongHuTypeBetween(String value1, String value2) {
-            addCriterion("long_hu_type between", value1, value2, "longHuType");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongHuTypeNotBetween(String value1, String value2) {
-            addCriterion("long_hu_type not between", value1, value2, "longHuType");
-            return (Criteria) this;
-        }
-
         public Criteria andTradeDateIsNull() {
             addCriterion("trade_date is null");
             return (Criteria) this;
@@ -432,53 +335,63 @@ public class LongHuExample {
             return (Criteria) this;
         }
 
-        public Criteria andTradeDateEqualTo(Date value) {
-            addCriterionForJDBCDate("trade_date =", value, "tradeDate");
+        public Criteria andTradeDateEqualTo(String value) {
+            addCriterion("trade_date =", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andTradeDateNotEqualTo(Date value) {
-            addCriterionForJDBCDate("trade_date <>", value, "tradeDate");
+        public Criteria andTradeDateNotEqualTo(String value) {
+            addCriterion("trade_date <>", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andTradeDateGreaterThan(Date value) {
-            addCriterionForJDBCDate("trade_date >", value, "tradeDate");
+        public Criteria andTradeDateGreaterThan(String value) {
+            addCriterion("trade_date >", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andTradeDateGreaterThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("trade_date >=", value, "tradeDate");
+        public Criteria andTradeDateGreaterThanOrEqualTo(String value) {
+            addCriterion("trade_date >=", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andTradeDateLessThan(Date value) {
-            addCriterionForJDBCDate("trade_date <", value, "tradeDate");
+        public Criteria andTradeDateLessThan(String value) {
+            addCriterion("trade_date <", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andTradeDateLessThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("trade_date <=", value, "tradeDate");
+        public Criteria andTradeDateLessThanOrEqualTo(String value) {
+            addCriterion("trade_date <=", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andTradeDateIn(List<Date> values) {
-            addCriterionForJDBCDate("trade_date in", values, "tradeDate");
+        public Criteria andTradeDateLike(String value) {
+            addCriterion("trade_date like", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andTradeDateNotIn(List<Date> values) {
-            addCriterionForJDBCDate("trade_date not in", values, "tradeDate");
+        public Criteria andTradeDateNotLike(String value) {
+            addCriterion("trade_date not like", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andTradeDateBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("trade_date between", value1, value2, "tradeDate");
+        public Criteria andTradeDateIn(List<String> values) {
+            addCriterion("trade_date in", values, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andTradeDateNotBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("trade_date not between", value1, value2, "tradeDate");
+        public Criteria andTradeDateNotIn(List<String> values) {
+            addCriterion("trade_date not in", values, "tradeDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeDateBetween(String value1, String value2) {
+            addCriterion("trade_date between", value1, value2, "tradeDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeDateNotBetween(String value1, String value2) {
+            addCriterion("trade_date not between", value1, value2, "tradeDate");
             return (Criteria) this;
         }
 
@@ -722,6 +635,66 @@ public class LongHuExample {
             return (Criteria) this;
         }
 
+        public Criteria andAmplitudeIsNull() {
+            addCriterion("amplitude is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmplitudeIsNotNull() {
+            addCriterion("amplitude is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmplitudeEqualTo(Double value) {
+            addCriterion("amplitude =", value, "amplitude");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmplitudeNotEqualTo(Double value) {
+            addCriterion("amplitude <>", value, "amplitude");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmplitudeGreaterThan(Double value) {
+            addCriterion("amplitude >", value, "amplitude");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmplitudeGreaterThanOrEqualTo(Double value) {
+            addCriterion("amplitude >=", value, "amplitude");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmplitudeLessThan(Double value) {
+            addCriterion("amplitude <", value, "amplitude");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmplitudeLessThanOrEqualTo(Double value) {
+            addCriterion("amplitude <=", value, "amplitude");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmplitudeIn(List<Double> values) {
+            addCriterion("amplitude in", values, "amplitude");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmplitudeNotIn(List<Double> values) {
+            addCriterion("amplitude not in", values, "amplitude");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmplitudeBetween(Double value1, Double value2) {
+            addCriterion("amplitude between", value1, value2, "amplitude");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmplitudeNotBetween(Double value1, Double value2) {
+            addCriterion("amplitude not between", value1, value2, "amplitude");
+            return (Criteria) this;
+        }
+
         public Criteria andTotMktValIsNull() {
             addCriterion("tot_mkt_val is null");
             return (Criteria) this;
@@ -842,123 +815,503 @@ public class LongHuExample {
             return (Criteria) this;
         }
 
-        public Criteria andTotalBuyIsNull() {
-            addCriterion("total_buy is null");
+        public Criteria andDrLhTypeIsNull() {
+            addCriterion("dr_lh_type is null");
             return (Criteria) this;
         }
 
-        public Criteria andTotalBuyIsNotNull() {
-            addCriterion("total_buy is not null");
+        public Criteria andDrLhTypeIsNotNull() {
+            addCriterion("dr_lh_type is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTotalBuyEqualTo(Double value) {
-            addCriterion("total_buy =", value, "totalBuy");
+        public Criteria andDrLhTypeEqualTo(String value) {
+            addCriterion("dr_lh_type =", value, "drLhType");
             return (Criteria) this;
         }
 
-        public Criteria andTotalBuyNotEqualTo(Double value) {
-            addCriterion("total_buy <>", value, "totalBuy");
+        public Criteria andDrLhTypeNotEqualTo(String value) {
+            addCriterion("dr_lh_type <>", value, "drLhType");
             return (Criteria) this;
         }
 
-        public Criteria andTotalBuyGreaterThan(Double value) {
-            addCriterion("total_buy >", value, "totalBuy");
+        public Criteria andDrLhTypeGreaterThan(String value) {
+            addCriterion("dr_lh_type >", value, "drLhType");
             return (Criteria) this;
         }
 
-        public Criteria andTotalBuyGreaterThanOrEqualTo(Double value) {
-            addCriterion("total_buy >=", value, "totalBuy");
+        public Criteria andDrLhTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("dr_lh_type >=", value, "drLhType");
             return (Criteria) this;
         }
 
-        public Criteria andTotalBuyLessThan(Double value) {
-            addCriterion("total_buy <", value, "totalBuy");
+        public Criteria andDrLhTypeLessThan(String value) {
+            addCriterion("dr_lh_type <", value, "drLhType");
             return (Criteria) this;
         }
 
-        public Criteria andTotalBuyLessThanOrEqualTo(Double value) {
-            addCriterion("total_buy <=", value, "totalBuy");
+        public Criteria andDrLhTypeLessThanOrEqualTo(String value) {
+            addCriterion("dr_lh_type <=", value, "drLhType");
             return (Criteria) this;
         }
 
-        public Criteria andTotalBuyIn(List<Double> values) {
-            addCriterion("total_buy in", values, "totalBuy");
+        public Criteria andDrLhTypeLike(String value) {
+            addCriterion("dr_lh_type like", value, "drLhType");
             return (Criteria) this;
         }
 
-        public Criteria andTotalBuyNotIn(List<Double> values) {
-            addCriterion("total_buy not in", values, "totalBuy");
+        public Criteria andDrLhTypeNotLike(String value) {
+            addCriterion("dr_lh_type not like", value, "drLhType");
             return (Criteria) this;
         }
 
-        public Criteria andTotalBuyBetween(Double value1, Double value2) {
-            addCriterion("total_buy between", value1, value2, "totalBuy");
+        public Criteria andDrLhTypeIn(List<String> values) {
+            addCriterion("dr_lh_type in", values, "drLhType");
             return (Criteria) this;
         }
 
-        public Criteria andTotalBuyNotBetween(Double value1, Double value2) {
-            addCriterion("total_buy not between", value1, value2, "totalBuy");
+        public Criteria andDrLhTypeNotIn(List<String> values) {
+            addCriterion("dr_lh_type not in", values, "drLhType");
             return (Criteria) this;
         }
 
-        public Criteria andTotalSellIsNull() {
-            addCriterion("total_sell is null");
+        public Criteria andDrLhTypeBetween(String value1, String value2) {
+            addCriterion("dr_lh_type between", value1, value2, "drLhType");
             return (Criteria) this;
         }
 
-        public Criteria andTotalSellIsNotNull() {
-            addCriterion("total_sell is not null");
+        public Criteria andDrLhTypeNotBetween(String value1, String value2) {
+            addCriterion("dr_lh_type not between", value1, value2, "drLhType");
             return (Criteria) this;
         }
 
-        public Criteria andTotalSellEqualTo(Double value) {
-            addCriterion("total_sell =", value, "totalSell");
+        public Criteria andDrBuyAmtIsNull() {
+            addCriterion("dr_buy_amt is null");
             return (Criteria) this;
         }
 
-        public Criteria andTotalSellNotEqualTo(Double value) {
-            addCriterion("total_sell <>", value, "totalSell");
+        public Criteria andDrBuyAmtIsNotNull() {
+            addCriterion("dr_buy_amt is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTotalSellGreaterThan(Double value) {
-            addCriterion("total_sell >", value, "totalSell");
+        public Criteria andDrBuyAmtEqualTo(Double value) {
+            addCriterion("dr_buy_amt =", value, "drBuyAmt");
             return (Criteria) this;
         }
 
-        public Criteria andTotalSellGreaterThanOrEqualTo(Double value) {
-            addCriterion("total_sell >=", value, "totalSell");
+        public Criteria andDrBuyAmtNotEqualTo(Double value) {
+            addCriterion("dr_buy_amt <>", value, "drBuyAmt");
             return (Criteria) this;
         }
 
-        public Criteria andTotalSellLessThan(Double value) {
-            addCriterion("total_sell <", value, "totalSell");
+        public Criteria andDrBuyAmtGreaterThan(Double value) {
+            addCriterion("dr_buy_amt >", value, "drBuyAmt");
             return (Criteria) this;
         }
 
-        public Criteria andTotalSellLessThanOrEqualTo(Double value) {
-            addCriterion("total_sell <=", value, "totalSell");
+        public Criteria andDrBuyAmtGreaterThanOrEqualTo(Double value) {
+            addCriterion("dr_buy_amt >=", value, "drBuyAmt");
             return (Criteria) this;
         }
 
-        public Criteria andTotalSellIn(List<Double> values) {
-            addCriterion("total_sell in", values, "totalSell");
+        public Criteria andDrBuyAmtLessThan(Double value) {
+            addCriterion("dr_buy_amt <", value, "drBuyAmt");
             return (Criteria) this;
         }
 
-        public Criteria andTotalSellNotIn(List<Double> values) {
-            addCriterion("total_sell not in", values, "totalSell");
+        public Criteria andDrBuyAmtLessThanOrEqualTo(Double value) {
+            addCriterion("dr_buy_amt <=", value, "drBuyAmt");
             return (Criteria) this;
         }
 
-        public Criteria andTotalSellBetween(Double value1, Double value2) {
-            addCriterion("total_sell between", value1, value2, "totalSell");
+        public Criteria andDrBuyAmtIn(List<Double> values) {
+            addCriterion("dr_buy_amt in", values, "drBuyAmt");
             return (Criteria) this;
         }
 
-        public Criteria andTotalSellNotBetween(Double value1, Double value2) {
-            addCriterion("total_sell not between", value1, value2, "totalSell");
+        public Criteria andDrBuyAmtNotIn(List<Double> values) {
+            addCriterion("dr_buy_amt not in", values, "drBuyAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrBuyAmtBetween(Double value1, Double value2) {
+            addCriterion("dr_buy_amt between", value1, value2, "drBuyAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrBuyAmtNotBetween(Double value1, Double value2) {
+            addCriterion("dr_buy_amt not between", value1, value2, "drBuyAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrSellAmtIsNull() {
+            addCriterion("dr_sell_amt is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrSellAmtIsNotNull() {
+            addCriterion("dr_sell_amt is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrSellAmtEqualTo(Double value) {
+            addCriterion("dr_sell_amt =", value, "drSellAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrSellAmtNotEqualTo(Double value) {
+            addCriterion("dr_sell_amt <>", value, "drSellAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrSellAmtGreaterThan(Double value) {
+            addCriterion("dr_sell_amt >", value, "drSellAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrSellAmtGreaterThanOrEqualTo(Double value) {
+            addCriterion("dr_sell_amt >=", value, "drSellAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrSellAmtLessThan(Double value) {
+            addCriterion("dr_sell_amt <", value, "drSellAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrSellAmtLessThanOrEqualTo(Double value) {
+            addCriterion("dr_sell_amt <=", value, "drSellAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrSellAmtIn(List<Double> values) {
+            addCriterion("dr_sell_amt in", values, "drSellAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrSellAmtNotIn(List<Double> values) {
+            addCriterion("dr_sell_amt not in", values, "drSellAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrSellAmtBetween(Double value1, Double value2) {
+            addCriterion("dr_sell_amt between", value1, value2, "drSellAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrSellAmtNotBetween(Double value1, Double value2) {
+            addCriterion("dr_sell_amt not between", value1, value2, "drSellAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrNetBuyIsNull() {
+            addCriterion("dr_net_buy is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrNetBuyIsNotNull() {
+            addCriterion("dr_net_buy is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrNetBuyEqualTo(Double value) {
+            addCriterion("dr_net_buy =", value, "drNetBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrNetBuyNotEqualTo(Double value) {
+            addCriterion("dr_net_buy <>", value, "drNetBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrNetBuyGreaterThan(Double value) {
+            addCriterion("dr_net_buy >", value, "drNetBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrNetBuyGreaterThanOrEqualTo(Double value) {
+            addCriterion("dr_net_buy >=", value, "drNetBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrNetBuyLessThan(Double value) {
+            addCriterion("dr_net_buy <", value, "drNetBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrNetBuyLessThanOrEqualTo(Double value) {
+            addCriterion("dr_net_buy <=", value, "drNetBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrNetBuyIn(List<Double> values) {
+            addCriterion("dr_net_buy in", values, "drNetBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrNetBuyNotIn(List<Double> values) {
+            addCriterion("dr_net_buy not in", values, "drNetBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrNetBuyBetween(Double value1, Double value2) {
+            addCriterion("dr_net_buy between", value1, value2, "drNetBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrNetBuyNotBetween(Double value1, Double value2) {
+            addCriterion("dr_net_buy not between", value1, value2, "drNetBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrLhTypeIsNull() {
+            addCriterion("sr_lh_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrLhTypeIsNotNull() {
+            addCriterion("sr_lh_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrLhTypeEqualTo(String value) {
+            addCriterion("sr_lh_type =", value, "srLhType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrLhTypeNotEqualTo(String value) {
+            addCriterion("sr_lh_type <>", value, "srLhType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrLhTypeGreaterThan(String value) {
+            addCriterion("sr_lh_type >", value, "srLhType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrLhTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("sr_lh_type >=", value, "srLhType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrLhTypeLessThan(String value) {
+            addCriterion("sr_lh_type <", value, "srLhType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrLhTypeLessThanOrEqualTo(String value) {
+            addCriterion("sr_lh_type <=", value, "srLhType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrLhTypeLike(String value) {
+            addCriterion("sr_lh_type like", value, "srLhType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrLhTypeNotLike(String value) {
+            addCriterion("sr_lh_type not like", value, "srLhType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrLhTypeIn(List<String> values) {
+            addCriterion("sr_lh_type in", values, "srLhType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrLhTypeNotIn(List<String> values) {
+            addCriterion("sr_lh_type not in", values, "srLhType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrLhTypeBetween(String value1, String value2) {
+            addCriterion("sr_lh_type between", value1, value2, "srLhType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrLhTypeNotBetween(String value1, String value2) {
+            addCriterion("sr_lh_type not between", value1, value2, "srLhType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrBuyAmtIsNull() {
+            addCriterion("sr_buy_amt is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrBuyAmtIsNotNull() {
+            addCriterion("sr_buy_amt is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrBuyAmtEqualTo(Double value) {
+            addCriterion("sr_buy_amt =", value, "srBuyAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrBuyAmtNotEqualTo(Double value) {
+            addCriterion("sr_buy_amt <>", value, "srBuyAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrBuyAmtGreaterThan(Double value) {
+            addCriterion("sr_buy_amt >", value, "srBuyAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrBuyAmtGreaterThanOrEqualTo(Double value) {
+            addCriterion("sr_buy_amt >=", value, "srBuyAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrBuyAmtLessThan(Double value) {
+            addCriterion("sr_buy_amt <", value, "srBuyAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrBuyAmtLessThanOrEqualTo(Double value) {
+            addCriterion("sr_buy_amt <=", value, "srBuyAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrBuyAmtIn(List<Double> values) {
+            addCriterion("sr_buy_amt in", values, "srBuyAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrBuyAmtNotIn(List<Double> values) {
+            addCriterion("sr_buy_amt not in", values, "srBuyAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrBuyAmtBetween(Double value1, Double value2) {
+            addCriterion("sr_buy_amt between", value1, value2, "srBuyAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrBuyAmtNotBetween(Double value1, Double value2) {
+            addCriterion("sr_buy_amt not between", value1, value2, "srBuyAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrSellAmtIsNull() {
+            addCriterion("sr_sell_amt is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrSellAmtIsNotNull() {
+            addCriterion("sr_sell_amt is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrSellAmtEqualTo(Double value) {
+            addCriterion("sr_sell_amt =", value, "srSellAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrSellAmtNotEqualTo(Double value) {
+            addCriterion("sr_sell_amt <>", value, "srSellAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrSellAmtGreaterThan(Double value) {
+            addCriterion("sr_sell_amt >", value, "srSellAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrSellAmtGreaterThanOrEqualTo(Double value) {
+            addCriterion("sr_sell_amt >=", value, "srSellAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrSellAmtLessThan(Double value) {
+            addCriterion("sr_sell_amt <", value, "srSellAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrSellAmtLessThanOrEqualTo(Double value) {
+            addCriterion("sr_sell_amt <=", value, "srSellAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrSellAmtIn(List<Double> values) {
+            addCriterion("sr_sell_amt in", values, "srSellAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrSellAmtNotIn(List<Double> values) {
+            addCriterion("sr_sell_amt not in", values, "srSellAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrSellAmtBetween(Double value1, Double value2) {
+            addCriterion("sr_sell_amt between", value1, value2, "srSellAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrSellAmtNotBetween(Double value1, Double value2) {
+            addCriterion("sr_sell_amt not between", value1, value2, "srSellAmt");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrNetBuyIsNull() {
+            addCriterion("sr_net_buy is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrNetBuyIsNotNull() {
+            addCriterion("sr_net_buy is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrNetBuyEqualTo(Double value) {
+            addCriterion("sr_net_buy =", value, "srNetBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrNetBuyNotEqualTo(Double value) {
+            addCriterion("sr_net_buy <>", value, "srNetBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrNetBuyGreaterThan(Double value) {
+            addCriterion("sr_net_buy >", value, "srNetBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrNetBuyGreaterThanOrEqualTo(Double value) {
+            addCriterion("sr_net_buy >=", value, "srNetBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrNetBuyLessThan(Double value) {
+            addCriterion("sr_net_buy <", value, "srNetBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrNetBuyLessThanOrEqualTo(Double value) {
+            addCriterion("sr_net_buy <=", value, "srNetBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrNetBuyIn(List<Double> values) {
+            addCriterion("sr_net_buy in", values, "srNetBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrNetBuyNotIn(List<Double> values) {
+            addCriterion("sr_net_buy not in", values, "srNetBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrNetBuyBetween(Double value1, Double value2) {
+            addCriterion("sr_net_buy between", value1, value2, "srNetBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrNetBuyNotBetween(Double value1, Double value2) {
+            addCriterion("sr_net_buy not between", value1, value2, "srNetBuy");
             return (Criteria) this;
         }
 
