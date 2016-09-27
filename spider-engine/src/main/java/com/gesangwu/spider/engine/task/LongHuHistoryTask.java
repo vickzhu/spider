@@ -15,7 +15,7 @@ import com.gandalf.framework.net.HttpTool;
 "ClosePrice":"7.57",收盘价
 "Chgradio":"10.0291",涨跌幅
 "Dchratio":"7.812",换手率
-"JmMoney":"-4736919.37",净买入
+"JmMoney":"-4736919.37",龙虎榜净买入
 "Turnover":"438853106",总成交额
 "Ntransac":"58929212",总成交量
 "Ctypedes":"连续三个交易日内，涨幅偏离值累计达到20%的证券",
@@ -24,9 +24,9 @@ import com.gandalf.framework.net.HttpTool;
 "Bmoney":"43528450.91",买入
 "ZeMoney":"91793821.19",龙虎榜成交
 "Tdate":"2016-07-21",
-"JmRate":"-1.08",
-"ZeRate":"20.92",
-"Ltsz":"5569122679.41",
+"JmRate":"-1.08",净买额占总成交比
+"ZeRate":"20.92",成交额占总成交比
+"Ltsz":"5569122679.41",流通市值
 "Rchange1dc":"3.963","Rchange1do":"3.4839",
 "Rchange2dc":"5.5482","Rchange2do":"0.9032",
 "Rchange3dc":"3.8309","Rchange3do":"1.5484",

@@ -156,6 +156,11 @@ public class LongHuInit {
 			longHu.setSrNetBuy(netBuy);
 		}
 		lhService.insert(longHu);
+		try {
+			Thread.sleep(800);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
