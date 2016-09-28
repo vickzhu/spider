@@ -41,6 +41,8 @@ public class LongHu {
 
     private Double srNetBuy;
 
+    private Integer secDeptRelation;
+
     private Date gmtCreate;
 
     private Date gmtUpdate;
@@ -195,6 +197,14 @@ public class LongHu {
 
     public void setSrNetBuy(Double srNetBuy) {
         this.srNetBuy = srNetBuy;
+    }
+
+    public Integer getSecDeptRelation() {
+        return secDeptRelation;
+    }
+
+    public void setSecDeptRelation(Integer secDeptRelation) {
+        this.secDeptRelation = secDeptRelation;
     }
 
     public Date getGmtCreate() {

@@ -21,6 +21,7 @@
     <result column="sr_buy_amt" property="srBuyAmt" jdbcType="DOUBLE" />
     <result column="sr_sell_amt" property="srSellAmt" jdbcType="DOUBLE" />
     <result column="sr_net_buy" property="srNetBuy" jdbcType="DOUBLE" />
+    <result column="sec_dept_relation" property="secDeptRelation" jdbcType="INTEGER" />
     <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
     <result column="gmt_update" property="gmtUpdate" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -85,7 +86,7 @@
   <sql id="Base_Column_List" >
     id, symbol, stock_name, trade_date, price, chg, chg_percent, turnover, amplitude, 
     tot_mkt_val, neg_mkt_val, dr_lh_type, dr_buy_amt, dr_sell_amt, dr_net_buy, sr_lh_type, 
-    sr_buy_amt, sr_sell_amt, sr_net_buy, gmt_create, gmt_update
+    sr_buy_amt, sr_sell_amt, sr_net_buy, sec_dept_relation, gmt_create, gmt_update
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.LongHuExample" >
     select
@@ -130,14 +131,16 @@
       neg_mkt_val, dr_lh_type, dr_buy_amt, 
       dr_sell_amt, dr_net_buy, sr_lh_type, 
       sr_buy_amt, sr_sell_amt, sr_net_buy, 
-      gmt_create, gmt_update)
+      sec_dept_relation, gmt_create, gmt_update
+      )
     values (#{symbol,jdbcType=VARCHAR}, #{stockName,jdbcType=VARCHAR}, #{tradeDate,jdbcType=VARCHAR}, 
       #{price,jdbcType=DOUBLE}, #{chg,jdbcType=DOUBLE}, #{chgPercent,jdbcType=DOUBLE}, 
       #{turnover,jdbcType=DOUBLE}, #{amplitude,jdbcType=DOUBLE}, #{totMktVal,jdbcType=DOUBLE}, 
       #{negMktVal,jdbcType=DOUBLE}, #{drLhType,jdbcType=VARCHAR}, #{drBuyAmt,jdbcType=DOUBLE}, 
       #{drSellAmt,jdbcType=DOUBLE}, #{drNetBuy,jdbcType=DOUBLE}, #{srLhType,jdbcType=VARCHAR}, 
       #{srBuyAmt,jdbcType=DOUBLE}, #{srSellAmt,jdbcType=DOUBLE}, #{srNetBuy,jdbcType=DOUBLE}, 
-      #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP})
+      #{secDeptRelation,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.LongHu" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -198,6 +201,9 @@
       </if>
       <if test="srNetBuy != null" >
         sr_net_buy,
+      </if>
+      <if test="secDeptRelation != null" >
+        sec_dept_relation,
       </if>
       <if test="gmtCreate != null" >
         gmt_create,
@@ -260,6 +266,9 @@
       </if>
       <if test="srNetBuy != null" >
         #{srNetBuy,jdbcType=DOUBLE},
+      </if>
+      <if test="secDeptRelation != null" >
+        #{secDeptRelation,jdbcType=INTEGER},
       </if>
       <if test="gmtCreate != null" >
         #{gmtCreate,jdbcType=TIMESTAMP},
@@ -335,6 +344,9 @@
       <if test="record.srNetBuy != null" >
         sr_net_buy = #{record.srNetBuy,jdbcType=DOUBLE},
       </if>
+      <if test="record.secDeptRelation != null" >
+        sec_dept_relation = #{record.secDeptRelation,jdbcType=INTEGER},
+      </if>
       <if test="record.gmtCreate != null" >
         gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
       </if>
@@ -367,6 +379,7 @@
       sr_buy_amt = #{record.srBuyAmt,jdbcType=DOUBLE},
       sr_sell_amt = #{record.srSellAmt,jdbcType=DOUBLE},
       sr_net_buy = #{record.srNetBuy,jdbcType=DOUBLE},
+      sec_dept_relation = #{record.secDeptRelation,jdbcType=INTEGER},
       gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
       gmt_update = #{record.gmtUpdate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -430,6 +443,9 @@
       <if test="srNetBuy != null" >
         sr_net_buy = #{srNetBuy,jdbcType=DOUBLE},
       </if>
+      <if test="secDeptRelation != null" >
+        sec_dept_relation = #{secDeptRelation,jdbcType=INTEGER},
+      </if>
       <if test="gmtCreate != null" >
         gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       </if>
@@ -459,6 +475,7 @@
       sr_buy_amt = #{srBuyAmt,jdbcType=DOUBLE},
       sr_sell_amt = #{srSellAmt,jdbcType=DOUBLE},
       sr_net_buy = #{srNetBuy,jdbcType=DOUBLE},
+      sec_dept_relation = #{secDeptRelation,jdbcType=INTEGER},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}

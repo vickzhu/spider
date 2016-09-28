@@ -1315,6 +1315,66 @@ public class LongHuExample {
             return (Criteria) this;
         }
 
+        public Criteria andSecDeptRelationIsNull() {
+            addCriterion("sec_dept_relation is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptRelationIsNotNull() {
+            addCriterion("sec_dept_relation is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptRelationEqualTo(Integer value) {
+            addCriterion("sec_dept_relation =", value, "secDeptRelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptRelationNotEqualTo(Integer value) {
+            addCriterion("sec_dept_relation <>", value, "secDeptRelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptRelationGreaterThan(Integer value) {
+            addCriterion("sec_dept_relation >", value, "secDeptRelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptRelationGreaterThanOrEqualTo(Integer value) {
+            addCriterion("sec_dept_relation >=", value, "secDeptRelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptRelationLessThan(Integer value) {
+            addCriterion("sec_dept_relation <", value, "secDeptRelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptRelationLessThanOrEqualTo(Integer value) {
+            addCriterion("sec_dept_relation <=", value, "secDeptRelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptRelationIn(List<Integer> values) {
+            addCriterion("sec_dept_relation in", values, "secDeptRelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptRelationNotIn(List<Integer> values) {
+            addCriterion("sec_dept_relation not in", values, "secDeptRelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptRelationBetween(Integer value1, Integer value2) {
+            addCriterion("sec_dept_relation between", value1, value2, "secDeptRelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptRelationNotBetween(Integer value1, Integer value2) {
+            addCriterion("sec_dept_relation not between", value1, value2, "secDeptRelation");
+            return (Criteria) this;
+        }
+
         public Criteria andGmtCreateIsNull() {
             addCriterion("gmt_create is null");
             return (Criteria) this;
