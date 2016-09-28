@@ -47,7 +47,7 @@ public class LongHuInit {
 		int cpp = 10;
 		CompanyExample example = new CompanyExample();
 		CompanyExample.Criteria criteria = example.createCriteria();
-		criteria.andIdGreaterThan(780l);
+		criteria.andIdGreaterThan(1481l);
 		int count = companyService.countByExample(example);
 		int totalPages = (count + cpp -1)/cpp;
 		for(int cur = 1; cur <= totalPages; cur++){
@@ -160,7 +160,7 @@ public class LongHuInit {
 		}
 		lhService.insert(longHu);
 		try {
-			Thread.sleep(400);
+			Thread.sleep(200);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

@@ -22,7 +22,7 @@ public class LongHuInitTest extends BaseTest {
 
 	@Test
 	public void test(){
-//		longHuInit.getLongHu("sz002265", "西仪股份", "20160906");
+//		longHuInit.getLongHu("sh600781", "20160201");
 		longHuInit.execute();
 	}
 }
