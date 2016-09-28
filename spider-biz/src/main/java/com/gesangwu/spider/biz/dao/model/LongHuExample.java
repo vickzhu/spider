@@ -1375,6 +1375,66 @@ public class LongHuExample {
             return (Criteria) this;
         }
 
+        public Criteria andCliqueIdIsNull() {
+            addCriterion("clique_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdIsNotNull() {
+            addCriterion("clique_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdEqualTo(Long value) {
+            addCriterion("clique_id =", value, "cliqueId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdNotEqualTo(Long value) {
+            addCriterion("clique_id <>", value, "cliqueId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdGreaterThan(Long value) {
+            addCriterion("clique_id >", value, "cliqueId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("clique_id >=", value, "cliqueId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdLessThan(Long value) {
+            addCriterion("clique_id <", value, "cliqueId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdLessThanOrEqualTo(Long value) {
+            addCriterion("clique_id <=", value, "cliqueId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdIn(List<Long> values) {
+            addCriterion("clique_id in", values, "cliqueId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdNotIn(List<Long> values) {
+            addCriterion("clique_id not in", values, "cliqueId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdBetween(Long value1, Long value2) {
+            addCriterion("clique_id between", value1, value2, "cliqueId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdNotBetween(Long value1, Long value2) {
+            addCriterion("clique_id not between", value1, value2, "cliqueId");
+            return (Criteria) this;
+        }
+
         public Criteria andGmtCreateIsNull() {
             addCriterion("gmt_create is null");
             return (Criteria) this;

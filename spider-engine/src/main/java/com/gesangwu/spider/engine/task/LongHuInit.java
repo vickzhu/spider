@@ -45,20 +45,23 @@ public class LongHuInit {
 
 	public void execute(){
 		int cpp = 10;
-		int count = companyService.countByExample(null);
+		CompanyExample example = new CompanyExample();
+		CompanyExample.Criteria criteria = example.createCriteria();
+		criteria.andIdGreaterThan(780l);
+		int count = companyService.countByExample(example);
 		int totalPages = (count + cpp -1)/cpp;
 		for(int cur = 1; cur <= totalPages; cur++){
-		String cookieUrl = "https://xueqiu.com/account/lostpasswd";
-		HttpTool.get(cookieUrl);//这个链接只是为了获得cookie信息，因为后面的请求需要用到cookie
-		Page<Company> page = new Page<Company>(cur);
-			companyService.selectByPagination(new CompanyExample(), page);
+			String cookieUrl = "https://xueqiu.com/account/lostpasswd";
+			HttpTool.get(cookieUrl);//这个链接只是为了获得cookie信息，因为后面的请求需要用到cookie
+			Page<Company> page = new Page<Company>(cur);
+			companyService.selectByPagination(example, page);
 			List<Company> companyList = page.getRecords();
 			for (Company company : companyList) {
 				String[] datesArr = getDates(company.getSymbol());
 				if(datesArr == null){
 					continue;
 				}
-				for (int i = datesArr.length - 1; i > 0; i--) {
+				for (int i = datesArr.length - 1; i >= 0; i--) {
 					getLongHu(company.getSymbol(), datesArr[i]);
 				}
 			}
@@ -157,7 +160,7 @@ public class LongHuInit {
 		}
 		lhService.insert(longHu);
 		try {
-			Thread.sleep(600);
+			Thread.sleep(400);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

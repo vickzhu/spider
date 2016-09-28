@@ -7,6 +7,7 @@
     <result column="dept_addr_short" property="deptAddrShort" jdbcType="VARCHAR" />
     <result column="code" property="code" jdbcType="VARCHAR" />
     <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="dept_type" property="deptType" jdbcType="INTEGER" />
     <result column="sec_company" property="secCompany" jdbcType="VARCHAR" />
     <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, dept_addr, dept_addr_short, code, province, sec_company, gmt_create
+    id, dept_addr, dept_addr_short, code, province, dept_type, sec_company, gmt_create
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.SecDeptExample" >
     select
@@ -109,11 +110,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into sec_dept (dept_addr, dept_addr_short, code, 
-      province, sec_company, gmt_create
-      )
+      province, dept_type, sec_company, 
+      gmt_create)
     values (#{deptAddr,jdbcType=VARCHAR}, #{deptAddrShort,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
-      #{province,jdbcType=VARCHAR}, #{secCompany,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}
-      )
+      #{province,jdbcType=VARCHAR}, #{deptType,jdbcType=INTEGER}, #{secCompany,jdbcType=VARCHAR}, 
+      #{gmtCreate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.SecDept" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -132,6 +133,9 @@
       </if>
       <if test="province != null" >
         province,
+      </if>
+      <if test="deptType != null" >
+        dept_type,
       </if>
       <if test="secCompany != null" >
         sec_company,
@@ -152,6 +156,9 @@
       </if>
       <if test="province != null" >
         #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="deptType != null" >
+        #{deptType,jdbcType=INTEGER},
       </if>
       <if test="secCompany != null" >
         #{secCompany,jdbcType=VARCHAR},
@@ -185,6 +192,9 @@
       <if test="record.province != null" >
         province = #{record.province,jdbcType=VARCHAR},
       </if>
+      <if test="record.deptType != null" >
+        dept_type = #{record.deptType,jdbcType=INTEGER},
+      </if>
       <if test="record.secCompany != null" >
         sec_company = #{record.secCompany,jdbcType=VARCHAR},
       </if>
@@ -203,6 +213,7 @@
       dept_addr_short = #{record.deptAddrShort,jdbcType=VARCHAR},
       code = #{record.code,jdbcType=VARCHAR},
       province = #{record.province,jdbcType=VARCHAR},
+      dept_type = #{record.deptType,jdbcType=INTEGER},
       sec_company = #{record.secCompany,jdbcType=VARCHAR},
       gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -224,6 +235,9 @@
       <if test="province != null" >
         province = #{province,jdbcType=VARCHAR},
       </if>
+      <if test="deptType != null" >
+        dept_type = #{deptType,jdbcType=INTEGER},
+      </if>
       <if test="secCompany != null" >
         sec_company = #{secCompany,jdbcType=VARCHAR},
       </if>
@@ -239,11 +253,11 @@
       dept_addr_short = #{deptAddrShort,jdbcType=VARCHAR},
       code = #{code,jdbcType=VARCHAR},
       province = #{province,jdbcType=VARCHAR},
+      dept_type = #{deptType,jdbcType=INTEGER},
       sec_company = #{secCompany,jdbcType=VARCHAR},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  
   <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
@@ -254,7 +268,7 @@
     values
     <foreach collection="list" index="index" item="secDept" separator=",">
      (#{secDept.deptAddr,jdbcType=VARCHAR}, #{secDept.deptAddrShort,jdbcType=VARCHAR}, #{secDept.code,jdbcType=VARCHAR}, 
-      #{secDept.province,jdbcType=VARCHAR}, #{secDept.secCompany,jdbcType=VARCHAR}, #{secDept.gmtCreate,jdbcType=TIMESTAMP}
+      #{secDept.province,jdbcType=VARCHAR}, #{secDept.deptType,jdbcType=INTEGER}, #{secDept.secCompany,jdbcType=VARCHAR}, #{secDept.gmtCreate,jdbcType=TIMESTAMP}
       )
     </foreach>
   </insert>

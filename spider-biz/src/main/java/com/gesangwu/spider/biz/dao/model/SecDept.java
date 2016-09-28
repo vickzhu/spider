@@ -13,6 +13,8 @@ public class SecDept {
 
     private String province;
 
+    private Integer deptType;
+
     private String secCompany;
 
     private Date gmtCreate;
@@ -55,6 +57,14 @@ public class SecDept {
 
     public void setProvince(String province) {
         this.province = province == null ? null : province.trim();
+    }
+
+    public Integer getDeptType() {
+        return deptType;
+    }
+
+    public void setDeptType(Integer deptType) {
+        this.deptType = deptType;
     }
 
     public String getSecCompany() {

@@ -43,6 +43,8 @@ public class LongHu {
 
     private Integer secDeptRelation;
 
+    private Long cliqueId;
+
     private Date gmtCreate;
 
     private Date gmtUpdate;
@@ -205,6 +207,14 @@ public class LongHu {
 
     public void setSecDeptRelation(Integer secDeptRelation) {
         this.secDeptRelation = secDeptRelation;
+    }
+
+    public Long getCliqueId() {
+        return cliqueId;
+    }
+
+    public void setCliqueId(Long cliqueId) {
+        this.cliqueId = cliqueId;
     }
 
     public Date getGmtCreate() {

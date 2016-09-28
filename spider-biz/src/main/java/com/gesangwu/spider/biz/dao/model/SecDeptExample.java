@@ -465,6 +465,66 @@ public class SecDeptExample {
             return (Criteria) this;
         }
 
+        public Criteria andDeptTypeIsNull() {
+            addCriterion("dept_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeIsNotNull() {
+            addCriterion("dept_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeEqualTo(Integer value) {
+            addCriterion("dept_type =", value, "deptType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeNotEqualTo(Integer value) {
+            addCriterion("dept_type <>", value, "deptType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeGreaterThan(Integer value) {
+            addCriterion("dept_type >", value, "deptType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("dept_type >=", value, "deptType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeLessThan(Integer value) {
+            addCriterion("dept_type <", value, "deptType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("dept_type <=", value, "deptType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeIn(List<Integer> values) {
+            addCriterion("dept_type in", values, "deptType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeNotIn(List<Integer> values) {
+            addCriterion("dept_type not in", values, "deptType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeBetween(Integer value1, Integer value2) {
+            addCriterion("dept_type between", value1, value2, "deptType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("dept_type not between", value1, value2, "deptType");
+            return (Criteria) this;
+        }
+
         public Criteria andSecCompanyIsNull() {
             addCriterion("sec_company is null");
             return (Criteria) this;
