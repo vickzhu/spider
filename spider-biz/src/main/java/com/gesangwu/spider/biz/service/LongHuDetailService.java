@@ -10,4 +10,6 @@ public interface LongHuDetailService extends BaseService<LongHuDetail, LongHuDet
 	
 	public void batchInsert(List<LongHuDetail> detailList);
 	
+	public List<LongHuDetail> selectBySymbolAndDate(String symbol, String tradeDate);
+	
 }

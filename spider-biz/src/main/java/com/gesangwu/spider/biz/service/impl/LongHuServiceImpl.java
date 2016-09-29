@@ -1,5 +1,7 @@
 package com.gesangwu.spider.biz.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -21,6 +23,11 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 	@Override
 	protected BaseMapper<LongHu, LongHuExample> getMapper() {
 		return mapper;
+	}
+
+	@Override
+	public List<LongHu> selectByTradeDate(String tradeDate) {
+		return mapper.selectByTradeDate(tradeDate);
 	}
 
 }

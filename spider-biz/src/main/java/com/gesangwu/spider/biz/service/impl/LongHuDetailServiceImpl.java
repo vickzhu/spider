@@ -30,4 +30,15 @@ public class LongHuDetailServiceImpl extends BaseServiceImpl<LongHuDetail, LongH
 		mapper.insertBatch(detailList);
 	}
 
+	@Override
+	public List<LongHuDetail> selectBySymbolAndDate(String symbol,
+			String tradeDate) {
+		LongHuDetailExample example = new LongHuDetailExample();
+		example.setOrderByClause("desc");
+		LongHuDetailExample.Criteria criteria = example.createCriteria();
+		criteria.andSymbolEqualTo(symbol);
+		criteria.andTradeDateEqualTo(tradeDate);
+		return mapper.selectByExample(example);
+	}
+
 }
