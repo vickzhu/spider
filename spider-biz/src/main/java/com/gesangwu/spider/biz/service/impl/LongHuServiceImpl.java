@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import com.gandalf.framework.mybatis.BaseMapper;
@@ -28,6 +29,16 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 	@Override
 	public List<LongHu> selectByTradeDate(String tradeDate) {
 		return mapper.selectByTradeDate(tradeDate);
+	}
+
+	@Override
+	public LongHu selectBySymbolAndTradeDate(String symbol, String tradeDate) {
+		LongHuExample example = new LongHuExample();
+		LongHuExample.Criteria criteria = example.createCriteria();
+		criteria.andSymbolEqualTo(symbol);
+		criteria.andTradeDateEqualTo(tradeDate);
+		List<LongHu> longHuList = mapper.selectByExample(example);
+		return CollectionUtils.isEmpty(longHuList)?null:longHuList.get(0);
 	}
 
 }

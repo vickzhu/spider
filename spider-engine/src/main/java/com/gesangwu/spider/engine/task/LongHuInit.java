@@ -47,7 +47,7 @@ public class LongHuInit {
 		int cpp = 10;
 		CompanyExample example = new CompanyExample();
 		CompanyExample.Criteria criteria = example.createCriteria();
-		criteria.andIdGreaterThan(1662l);
+		criteria.andIdGreaterThan(3309l);
 		 
 		int count = companyService.countByExample(example);
 		int totalPages = (count + cpp -1)/cpp;

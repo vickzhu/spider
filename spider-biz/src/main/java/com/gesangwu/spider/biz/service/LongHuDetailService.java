@@ -3,6 +3,7 @@ package com.gesangwu.spider.biz.service;
 import java.util.List;
 
 import com.gandalf.framework.mybatis.BaseService;
+import com.gesangwu.spider.biz.common.LongHuDetailPair;
 import com.gesangwu.spider.biz.dao.model.LongHuDetail;
 import com.gesangwu.spider.biz.dao.model.LongHuDetailExample;
 
@@ -10,6 +11,6 @@ public interface LongHuDetailService extends BaseService<LongHuDetail, LongHuDet
 	
 	public void batchInsert(List<LongHuDetail> detailList);
 	
-	public List<LongHuDetail> selectBySymbolAndDate(String symbol, String tradeDate);
+	public LongHuDetailPair selectDetailPairs(String symbol, String tradeDate, int isSr);
 	
 }

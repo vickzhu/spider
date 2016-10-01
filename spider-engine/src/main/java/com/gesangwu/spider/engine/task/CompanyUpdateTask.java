@@ -9,7 +9,6 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
@@ -37,7 +36,7 @@ public class CompanyUpdateTask {
 	@Resource
 	private CompanyService companyService;
 
-	@Scheduled(cron="0 0 3 * * ?")
+//	@Scheduled(cron="0 0 3 * * ?")
 	public void execute(){
 		long start = System.currentTimeMillis();
 		String result = HttpTool.get("http://money.finance.sina.com.cn/d/api/openapi_proxy.php/?__s=[[%22hq%22,%22hs_a%22,%22%22,0,1,"+cpp+"]]&callback=FDC_DC.theTableData");
