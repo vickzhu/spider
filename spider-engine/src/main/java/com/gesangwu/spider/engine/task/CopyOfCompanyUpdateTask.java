@@ -11,8 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
-import com.gesangwu.spider.biz.common.StockUtil;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.engine.util.UnicodeUtil;
@@ -23,15 +23,15 @@ import com.gesangwu.spider.engine.util.UnicodeUtil;
  *
  */
 @Component
-public class CompanyUpdateTask {
+public class CopyOfCompanyUpdateTask {
 	
-	private static final Logger logger = LoggerFactory.getLogger(CompanyUpdateTask.class);
-
+	private static final Logger logger = LoggerFactory.getLogger(CopyOfCompanyUpdateTask.class);
 	
-	private static final String r1 = "\"total\"\\:([0-9]*),\"pagecount\"\\:([0-9]*)";
-	private static final String r2 = "\"MCAP\"\\:([0-9\\.]*),\"NAME\"\\:\"([^\"]*)\",\"PRICE\"\\:([0-9\\.]*),\"SYMBOL\"\\:\"([0-9]*)\",\"TCAP\"\\:([0-9\\.]*)";
+	private static final String r1 = "\"day\"\\:\"([0-9\\-]*)\",\"count\"\\:([0-9]*).*\"items\"\\:\\[\\[(.*)\\]\\]\\}\\]\\)";
+	private static final String r2 = "\"items\"\\:\\[\\[(.*)\\]\\]\\}\\]\\)";
 	private static final Pattern p1 = Pattern.compile(r1);
 	private static final Pattern p2 = Pattern.compile(r2);
+	private static int cpp = 80;
 	
 	@Resource
 	private CompanyService companyService;
@@ -39,43 +39,47 @@ public class CompanyUpdateTask {
 //	@Scheduled(cron="0 0 3 * * ?")
 	public void execute(){
 		long start = System.currentTimeMillis();
-		String result = HttpTool.get(buildUrl(0));
+		String result = HttpTool.get("http://money.finance.sina.com.cn/d/api/openapi_proxy.php/?__s=[[%22hq%22,%22hs_a%22,%22%22,0,1,"+cpp+"]]&callback=FDC_DC.theTableData");
 		System.out.println(result);
 		Matcher matcher = p1.matcher(result);
 		if(!matcher.find()){
 			return;
 		}
-		int pages = Integer.valueOf(matcher.group(2));
-		sou(result);
-		for(int curPage = 1; curPage < pages; curPage++){
-			result = HttpTool.get(buildUrl(curPage));
-			sou(result);
+//		String date = matcher.group(1);
+		String totalCounts = matcher.group(2);
+		int pages = (Integer.valueOf(totalCounts)+cpp-1)/cpp;
+		String detailList = matcher.group(3);
+		sou(detailList);
+		for(int curPage = 2; curPage <= pages; curPage++){
+			result = HttpTool.get("http://money.finance.sina.com.cn/d/api/openapi_proxy.php/?__s=[[%22hq%22,%22hs_a%22,%22%22,0,"+curPage+","+cpp+"]]&callback=FDC_DC.theTableData");
+			matcher = p2.matcher(result);
+			if(!matcher.find()){
+				continue;
+			}
+			detailList = matcher.group(1);
+			sou(detailList);
 		}	
 		long end = System.currentTimeMillis();
 		logger.info("Update Company use:" + (end-start)+"ms!");
-	}
-	
-	private String buildUrl(int page){
-		StringBuilder sb = new StringBuilder();
-		sb.append("http://quotes.money.163.com/hs/service/diyrank.php?query=STYPE%3AEQA&fields=NO%2CSYMBOL%2CNAME%2CPRICE%2CTCAP%2CMCAP&sort=SYMBOL&order=asc&count=100&type=query&page="+page);
-		return sb.toString();
 	}
 	
 	/**
 	 * save or update
 	 * @param detailList
 	 */
-	private void sou(String result){
-		Matcher m = p2.matcher(result);
+	private void sou(String detailList){
+		detailList = detailList.replaceAll("\"", "");
+		String[] details = detailList.split("\\],\\[");
 		Date now = new Date();
-		while(m.find()){
-			String code = m.group(4);
-			String symbol = StockUtil.code2Symbol(code);
-			String stockName = m.group(2);
+		for(String detail : details) {
+			String[] columns = detail.split(SymbolConstant.COMMA);
+			String symbol = columns[0];
+			String code = columns[1];
+			String stockName = columns[2];
 			String encodeStockName = UnicodeUtil.decodeUnicode(stockName);
-			String marketValue = m.group(5);
-			String circMarketValue = m.group(1);
-			String lastPrice = m.group(3);
+			String marketValue = columns[19];
+			String circMarketValue = columns[20];
+			String lastPrice = columns[8];
 			Company company = companyService.selectBySymbol(symbol);
 			if(company == null){
 				company = new Company();
@@ -96,7 +100,5 @@ public class CompanyUpdateTask {
 				companyService.updateByPrimaryKey(company);
 			}
 		}
-	
 	}
-
 }

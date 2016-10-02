@@ -15,12 +15,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.util.StringUtil;
+import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.common.LongHuDetailPair;
 import com.gesangwu.spider.biz.dao.model.LongHu;
+import com.gesangwu.spider.biz.dao.model.LongHuDetailExample;
+import com.gesangwu.spider.biz.dao.model.LongHuDetailExt;
 import com.gesangwu.spider.biz.dao.model.LongHuType;
+import com.gesangwu.spider.biz.dao.model.SecDept;
 import com.gesangwu.spider.biz.service.LongHuDetailService;
 import com.gesangwu.spider.biz.service.LongHuService;
 import com.gesangwu.spider.biz.service.LongHuTypeService;
+import com.gesangwu.spider.biz.service.SecDeptService;
 
 @Controller
 @RequestMapping(value="/longhu")
@@ -34,6 +39,8 @@ public class LongHuController {
 	private LongHuDetailService lhDetailService;
 	@Resource
 	private LongHuTypeService lhTypeService;
+	@Resource
+	private SecDeptService secDeptService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request, String tradeDate){
@@ -65,6 +72,30 @@ public class LongHuController {
 		mav.addObject("longHu", longHu);
 		mav.addObject("drTypeList", drTypeList);
 		mav.addObject("mlTypeList", mlTypeList);
+		return mav;
+	}
+	
+	@RequestMapping(value = "/sec-dept", method = RequestMethod.GET)
+	public ModelAndView bySec(HttpServletRequest request){
+		String deptCode = request.getParameter("deptCode");
+		int curPage = 1;
+		String pageStr = request.getParameter("curPage");
+		if(StringUtil.isNotBlank(pageStr)){
+			curPage = Integer.valueOf(pageStr);
+		}
+		Page<LongHuDetailExt> page = new Page<LongHuDetailExt>(curPage, 20);
+		LongHuDetailExample example = new LongHuDetailExample();
+		example.setOrderByClause("trade_date desc");
+		LongHuDetailExample.Criteria criteria = example.createCriteria();
+		criteria.andSecDeptCodeEqualTo(Integer.valueOf(deptCode));
+		lhDetailService.selectDetailExtByExample(example, page);
+		List<LongHuDetailExt> detailList = page.getRecords();
+		SecDept secDept = secDeptService.selectByCode(deptCode);
+		ModelAndView mav = new ModelAndView("longHuDept");
+		mav.addObject("detailList", detailList);
+		mav.addObject("totalPages", page.getTotalPages());
+		mav.addObject("curPage", pageStr);
+		mav.addObject("secDept", secDept);
 		return mav;
 	}
 	

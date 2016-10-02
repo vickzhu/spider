@@ -14,6 +14,17 @@
     <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
     <result column="gmt_update" property="gmtUpdate" jdbcType="TIMESTAMP" />
   </resultMap>
+  <resultMap id="DetailResultMap" type="com.gesangwu.spider.biz.dao.model.LongHuDetailExt" extends="BaseResultMap">
+    <result column="stock_name" property="stockName" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="chg" property="chg" jdbcType="DOUBLE" />
+    <result column="chg_percent" property="chgPercent" jdbcType="DOUBLE" />
+    <result column="turnover" property="turnover" jdbcType="DOUBLE" />
+    <result column="amplitude" property="amplitude" jdbcType="DOUBLE" />
+    <result column="tot_mkt_val" property="totMktVal" jdbcType="DOUBLE" />
+    <result column="neg_mkt_val" property="negMktVal" jdbcType="DOUBLE" />
+    <result column="clique_id" property="cliqueId" jdbcType="BIGINT" />
+  </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -322,4 +333,46 @@
       #{detail.gmtUpdate,jdbcType=TIMESTAMP})
     </foreach>
   </insert>
+  <select id="selectDetailExtByExample" resultMap="DetailResultMap" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    lhd.*, lh.stock_name, lh.price, lh.chg, lh.chg_percent, lh.turnover, lh.amplitude, 
+    lh.tot_mkt_val, lh.neg_mkt_val, lh.clique_id
+    from long_hu_detail lhd, long_hu lh where lhd.symbol=lh.symbol and lhd.trade_date = lh.trade_date 
+    <if test="_parameter != null" >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+	      <if test="criteria.valid" >
+	        <trim prefixOverrides="and" prefix="and" >
+	          <foreach collection="criteria.criteria" item="criterion" >
+	            <choose >
+	              <when test="criterion.noValue" >
+	                and ${criterion.condition}
+	              </when>
+	              <when test="criterion.singleValue" >
+	                and ${criterion.condition} #{criterion.value}
+	              </when>
+	              <when test="criterion.betweenValue" >
+	                and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+	              </when>
+	              <when test="criterion.listValue" >
+	                and ${criterion.condition}
+	                <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+	                  #{listItem}
+	                </foreach>
+	              </when>
+	            </choose>
+	          </foreach>
+	        </trim>
+	      </if>
+	    </foreach>
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="offset != null and offset > -1" >
+      limit ${offset},${rows}
+    </if>
+  </select>
 </mapper>
