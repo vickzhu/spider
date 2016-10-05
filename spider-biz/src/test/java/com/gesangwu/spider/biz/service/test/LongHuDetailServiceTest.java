@@ -22,7 +22,7 @@ public class LongHuDetailServiceTest extends BaseTest {
 		Page<LongHuDetailExt> page = new Page<LongHuDetailExt>(1, 10);
 		LongHuDetailExample example = new LongHuDetailExample();
 		LongHuDetailExample.Criteria criteria = example.createCriteria();
-		criteria.andSecDeptCodeEqualTo(80443987);
+		criteria.andSecDeptCodeEqualTo("80443987");
 		lhDetailService.selectDetailExtByExample(example,page);
 		List<LongHuDetailExt> detailExtList = page.getRecords();
 		for (LongHuDetailExt longHu : detailExtList) {

@@ -13,7 +13,7 @@ public interface LongHuDetailService extends BaseService<LongHuDetail, LongHuDet
 	
 	public void batchInsert(List<LongHuDetail> detailList);
 	
-	public LongHuDetailPair selectDetailPairs(String symbol, String tradeDate, int isSr);
+	public LongHuDetailPair selectDetailPairs(String symbol, String tradeDate, int dateType);
 	
 	public void selectByPagination(LongHuDetailExample example, Page<LongHuDetail> page);
 	

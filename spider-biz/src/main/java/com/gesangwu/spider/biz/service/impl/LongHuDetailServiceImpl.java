@@ -35,13 +35,13 @@ public class LongHuDetailServiceImpl extends BaseServiceImpl<LongHuDetail, LongH
 	}
 
 	@Override
-	public LongHuDetailPair selectDetailPairs(String symbol, String tradeDate, int isSr) {
-		List<LongHuDetail> buyList = getBuyList(symbol, tradeDate, isSr);
-		List<LongHuDetail> sellList = getSellList(symbol, tradeDate, isSr);
+	public LongHuDetailPair selectDetailPairs(String symbol, String tradeDate, int dateType) {
+		List<LongHuDetail> buyList = getBuyList(symbol, tradeDate, dateType);
+		List<LongHuDetail> sellList = getSellList(symbol, tradeDate, dateType);
 		return new LongHuDetailPair(buyList, sellList);
 	}
 	
-	private List<LongHuDetail> getBuyList(String symbol, String tradeDate, int isSr){
+	private List<LongHuDetail> getBuyList(String symbol, String tradeDate, int dateType){
 		LongHuDetailExample example = new LongHuDetailExample();
 		example.setOrderByClause("buy_amt desc");
 		example.setOffset(0);
@@ -50,10 +50,11 @@ public class LongHuDetailServiceImpl extends BaseServiceImpl<LongHuDetail, LongH
 		criteria.andSymbolEqualTo(symbol);
 		criteria.andTradeDateEqualTo(tradeDate);
 		criteria.andBuyAmtGreaterThan(BigDecimal.ZERO);
+		criteria.andDateTypeEqualTo(dateType);
 		return mapper.selectByExample(example);
 	}
 	
-	private List<LongHuDetail> getSellList(String symbol, String tradeDate, int isSr){
+	private List<LongHuDetail> getSellList(String symbol, String tradeDate, int dateType){
 		LongHuDetailExample example = new LongHuDetailExample();
 		example.setOrderByClause("sell_amt desc");
 		example.setOffset(0);
@@ -62,6 +63,7 @@ public class LongHuDetailServiceImpl extends BaseServiceImpl<LongHuDetail, LongH
 		criteria.andSymbolEqualTo(symbol);
 		criteria.andTradeDateEqualTo(tradeDate);
 		criteria.andSellAmtGreaterThan(BigDecimal.ZERO);
+		criteria.andDateTypeEqualTo(dateType);
 		return mapper.selectByExample(example);
 	}
 

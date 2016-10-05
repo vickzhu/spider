@@ -16,11 +16,11 @@ public class LongHuDetail {
 
     private BigDecimal netBuy;
 
-    private Integer isSr;
+    private String secDeptCode;
 
-    private Integer secDeptCode;
+    private String secDeptName;
 
-    private String secDeptAddr;
+    private Integer dateType;
 
     private Date gmtCreate;
 
@@ -74,28 +74,28 @@ public class LongHuDetail {
         this.netBuy = netBuy;
     }
 
-    public Integer getIsSr() {
-        return isSr;
-    }
-
-    public void setIsSr(Integer isSr) {
-        this.isSr = isSr;
-    }
-
-    public Integer getSecDeptCode() {
+    public String getSecDeptCode() {
         return secDeptCode;
     }
 
-    public void setSecDeptCode(Integer secDeptCode) {
-        this.secDeptCode = secDeptCode;
+    public void setSecDeptCode(String secDeptCode) {
+        this.secDeptCode = secDeptCode == null ? null : secDeptCode.trim();
     }
 
-    public String getSecDeptAddr() {
-        return secDeptAddr;
+    public String getSecDeptName() {
+        return secDeptName;
     }
 
-    public void setSecDeptAddr(String secDeptAddr) {
-        this.secDeptAddr = secDeptAddr == null ? null : secDeptAddr.trim();
+    public void setSecDeptName(String secDeptName) {
+        this.secDeptName = secDeptName == null ? null : secDeptName.trim();
+    }
+
+    public Integer getDateType() {
+        return dateType;
+    }
+
+    public void setDateType(Integer dateType) {
+        this.dateType = dateType;
     }
 
     public Date getGmtCreate() {

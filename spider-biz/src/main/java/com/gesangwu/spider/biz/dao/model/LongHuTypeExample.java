@@ -324,63 +324,63 @@ public class LongHuTypeExample {
             return (Criteria) this;
         }
 
-        public Criteria andSrTypeIsNull() {
-            addCriterion("sr_type is null");
+        public Criteria andDateTypeIsNull() {
+            addCriterion("date_type is null");
             return (Criteria) this;
         }
 
-        public Criteria andSrTypeIsNotNull() {
-            addCriterion("sr_type is not null");
+        public Criteria andDateTypeIsNotNull() {
+            addCriterion("date_type is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSrTypeEqualTo(Integer value) {
-            addCriterion("sr_type =", value, "srType");
+        public Criteria andDateTypeEqualTo(Integer value) {
+            addCriterion("date_type =", value, "dateType");
             return (Criteria) this;
         }
 
-        public Criteria andSrTypeNotEqualTo(Integer value) {
-            addCriterion("sr_type <>", value, "srType");
+        public Criteria andDateTypeNotEqualTo(Integer value) {
+            addCriterion("date_type <>", value, "dateType");
             return (Criteria) this;
         }
 
-        public Criteria andSrTypeGreaterThan(Integer value) {
-            addCriterion("sr_type >", value, "srType");
+        public Criteria andDateTypeGreaterThan(Integer value) {
+            addCriterion("date_type >", value, "dateType");
             return (Criteria) this;
         }
 
-        public Criteria andSrTypeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("sr_type >=", value, "srType");
+        public Criteria andDateTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("date_type >=", value, "dateType");
             return (Criteria) this;
         }
 
-        public Criteria andSrTypeLessThan(Integer value) {
-            addCriterion("sr_type <", value, "srType");
+        public Criteria andDateTypeLessThan(Integer value) {
+            addCriterion("date_type <", value, "dateType");
             return (Criteria) this;
         }
 
-        public Criteria andSrTypeLessThanOrEqualTo(Integer value) {
-            addCriterion("sr_type <=", value, "srType");
+        public Criteria andDateTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("date_type <=", value, "dateType");
             return (Criteria) this;
         }
 
-        public Criteria andSrTypeIn(List<Integer> values) {
-            addCriterion("sr_type in", values, "srType");
+        public Criteria andDateTypeIn(List<Integer> values) {
+            addCriterion("date_type in", values, "dateType");
             return (Criteria) this;
         }
 
-        public Criteria andSrTypeNotIn(List<Integer> values) {
-            addCriterion("sr_type not in", values, "srType");
+        public Criteria andDateTypeNotIn(List<Integer> values) {
+            addCriterion("date_type not in", values, "dateType");
             return (Criteria) this;
         }
 
-        public Criteria andSrTypeBetween(Integer value1, Integer value2) {
-            addCriterion("sr_type between", value1, value2, "srType");
+        public Criteria andDateTypeBetween(Integer value1, Integer value2) {
+            addCriterion("date_type between", value1, value2, "dateType");
             return (Criteria) this;
         }
 
-        public Criteria andSrTypeNotBetween(Integer value1, Integer value2) {
-            addCriterion("sr_type not between", value1, value2, "srType");
+        public Criteria andDateTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("date_type not between", value1, value2, "dateType");
             return (Criteria) this;
         }
     }

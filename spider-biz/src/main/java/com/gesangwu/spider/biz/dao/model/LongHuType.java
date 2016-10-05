@@ -7,7 +7,7 @@ public class LongHuType {
 
     private String lhDesc;
 
-    private Integer srType;
+    private Integer dateType;
 
     public Long getId() {
         return id;
@@ -33,11 +33,11 @@ public class LongHuType {
         this.lhDesc = lhDesc == null ? null : lhDesc.trim();
     }
 
-    public Integer getSrType() {
-        return srType;
+    public Integer getDateType() {
+        return dateType;
     }
 
-    public void setSrType(Integer srType) {
-        this.srType = srType;
+    public void setDateType(Integer dateType) {
+        this.dateType = dateType;
     }
 }

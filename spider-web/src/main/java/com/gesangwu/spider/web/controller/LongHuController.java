@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.Page;
+import com.gesangwu.spider.biz.common.LongHuDateType;
 import com.gesangwu.spider.biz.common.LongHuDetailPair;
 import com.gesangwu.spider.biz.dao.model.LongHu;
 import com.gesangwu.spider.biz.dao.model.LongHuDetailExample;
@@ -60,18 +62,29 @@ public class LongHuController {
 			return null;
 		}
 		LongHu longHu = lhService.selectBySymbolAndTradeDate(symbol, tradeDate);
-		String drTypes = longHu.getDrLhType();
-		List<String> drTypeList = getTypeDes(drTypes);
-		String mlTypes = longHu.getSrLhType();
-		List<String> mlTypeList = getTypeDes(mlTypes);
-		LongHuDetailPair pairs = lhDetailService.selectDetailPairs(symbol, tradeDate, 0);
-		
+		List<String> yrTypeList = getTypeDes(longHu.getYrType());
+		List<String> erTypeList = getTypeDes(longHu.getErType());
+		List<String> srTypeList = getTypeDes(longHu.getSrType());
 		ModelAndView mav = new ModelAndView("longHuDetail");
-		mav.addObject("buyList", pairs.getBuyList());
-		mav.addObject("sellList", pairs.getSellList());
+		if(CollectionUtils.isNotEmpty(yrTypeList)){
+			LongHuDetailPair p = lhDetailService.selectDetailPairs(symbol, tradeDate, LongHuDateType.YIRI.getCode());
+			mav.addObject("yrBuyList", p.getBuyList());
+			mav.addObject("yrSellList", p.getSellList());
+		}
+		if(CollectionUtils.isNotEmpty(erTypeList)){
+			LongHuDetailPair p = lhDetailService.selectDetailPairs(symbol, tradeDate, LongHuDateType.ERRI.getCode());
+			mav.addObject("erBuyList", p.getBuyList());
+			mav.addObject("erSellList", p.getSellList());
+		}
+		if(CollectionUtils.isNotEmpty(srTypeList)){
+			LongHuDetailPair p = lhDetailService.selectDetailPairs(symbol, tradeDate, LongHuDateType.SANRI.getCode());
+			mav.addObject("srBuyList", p.getBuyList());
+			mav.addObject("srSellList", p.getSellList());
+		}
 		mav.addObject("longHu", longHu);
-		mav.addObject("drTypeList", drTypeList);
-		mav.addObject("mlTypeList", mlTypeList);
+		mav.addObject("yrTypeList", yrTypeList);
+		mav.addObject("erTypeList", erTypeList);
+		mav.addObject("srTypeList", srTypeList);
 		return mav;
 	}
 	
@@ -87,7 +100,7 @@ public class LongHuController {
 		LongHuDetailExample example = new LongHuDetailExample();
 		example.setOrderByClause("trade_date desc");
 		LongHuDetailExample.Criteria criteria = example.createCriteria();
-		criteria.andSecDeptCodeEqualTo(Integer.valueOf(deptCode));
+		criteria.andSecDeptCodeEqualTo(deptCode);
 		lhDetailService.selectDetailExtByExample(example, page);
 		List<LongHuDetailExt> detailList = page.getRecords();
 		SecDept secDept = secDeptService.selectByCode(deptCode);

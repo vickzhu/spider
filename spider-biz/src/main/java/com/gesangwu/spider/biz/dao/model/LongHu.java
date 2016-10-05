@@ -25,25 +25,21 @@ public class LongHu {
 
     private Double negMktVal;
 
-    private String drLhType;
-
-    private Double drBuyAmt;
-
-    private Double drSellAmt;
-
-    private Double drNetBuy;
-
-    private String srLhType;
-
-    private Double srBuyAmt;
-
-    private Double srSellAmt;
-
-    private Double srNetBuy;
-
     private Integer secDeptRelation;
 
     private Long cliqueId;
+
+    private String yrType;
+
+    private String yrAmt;
+
+    private String erType;
+
+    private String erAmt;
+
+    private String srType;
+
+    private String srAmt;
 
     private Date gmtCreate;
 
@@ -137,70 +133,6 @@ public class LongHu {
         this.negMktVal = negMktVal;
     }
 
-    public String getDrLhType() {
-        return drLhType;
-    }
-
-    public void setDrLhType(String drLhType) {
-        this.drLhType = drLhType == null ? null : drLhType.trim();
-    }
-
-    public Double getDrBuyAmt() {
-        return drBuyAmt;
-    }
-
-    public void setDrBuyAmt(Double drBuyAmt) {
-        this.drBuyAmt = drBuyAmt;
-    }
-
-    public Double getDrSellAmt() {
-        return drSellAmt;
-    }
-
-    public void setDrSellAmt(Double drSellAmt) {
-        this.drSellAmt = drSellAmt;
-    }
-
-    public Double getDrNetBuy() {
-        return drNetBuy;
-    }
-
-    public void setDrNetBuy(Double drNetBuy) {
-        this.drNetBuy = drNetBuy;
-    }
-
-    public String getSrLhType() {
-        return srLhType;
-    }
-
-    public void setSrLhType(String srLhType) {
-        this.srLhType = srLhType == null ? null : srLhType.trim();
-    }
-
-    public Double getSrBuyAmt() {
-        return srBuyAmt;
-    }
-
-    public void setSrBuyAmt(Double srBuyAmt) {
-        this.srBuyAmt = srBuyAmt;
-    }
-
-    public Double getSrSellAmt() {
-        return srSellAmt;
-    }
-
-    public void setSrSellAmt(Double srSellAmt) {
-        this.srSellAmt = srSellAmt;
-    }
-
-    public Double getSrNetBuy() {
-        return srNetBuy;
-    }
-
-    public void setSrNetBuy(Double srNetBuy) {
-        this.srNetBuy = srNetBuy;
-    }
-
     public Integer getSecDeptRelation() {
         return secDeptRelation;
     }
@@ -215,6 +147,54 @@ public class LongHu {
 
     public void setCliqueId(Long cliqueId) {
         this.cliqueId = cliqueId;
+    }
+
+    public String getYrType() {
+        return yrType;
+    }
+
+    public void setYrType(String yrType) {
+        this.yrType = yrType == null ? null : yrType.trim();
+    }
+
+    public String getYrAmt() {
+        return yrAmt;
+    }
+
+    public void setYrAmt(String yrAmt) {
+        this.yrAmt = yrAmt == null ? null : yrAmt.trim();
+    }
+
+    public String getErType() {
+        return erType;
+    }
+
+    public void setErType(String erType) {
+        this.erType = erType == null ? null : erType.trim();
+    }
+
+    public String getErAmt() {
+        return erAmt;
+    }
+
+    public void setErAmt(String erAmt) {
+        this.erAmt = erAmt == null ? null : erAmt.trim();
+    }
+
+    public String getSrType() {
+        return srType;
+    }
+
+    public void setSrType(String srType) {
+        this.srType = srType == null ? null : srType.trim();
+    }
+
+    public String getSrAmt() {
+        return srAmt;
+    }
+
+    public void setSrAmt(String srAmt) {
+        this.srAmt = srAmt == null ? null : srAmt.trim();
     }
 
     public Date getGmtCreate() {

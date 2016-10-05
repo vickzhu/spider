@@ -13,16 +13,14 @@
     <result column="amplitude" property="amplitude" jdbcType="DOUBLE" />
     <result column="tot_mkt_val" property="totMktVal" jdbcType="DOUBLE" />
     <result column="neg_mkt_val" property="negMktVal" jdbcType="DOUBLE" />
-    <result column="dr_lh_type" property="drLhType" jdbcType="VARCHAR" />
-    <result column="dr_buy_amt" property="drBuyAmt" jdbcType="DOUBLE" />
-    <result column="dr_sell_amt" property="drSellAmt" jdbcType="DOUBLE" />
-    <result column="dr_net_buy" property="drNetBuy" jdbcType="DOUBLE" />
-    <result column="sr_lh_type" property="srLhType" jdbcType="VARCHAR" />
-    <result column="sr_buy_amt" property="srBuyAmt" jdbcType="DOUBLE" />
-    <result column="sr_sell_amt" property="srSellAmt" jdbcType="DOUBLE" />
-    <result column="sr_net_buy" property="srNetBuy" jdbcType="DOUBLE" />
     <result column="sec_dept_relation" property="secDeptRelation" jdbcType="INTEGER" />
     <result column="clique_id" property="cliqueId" jdbcType="BIGINT" />
+    <result column="yr_type" property="yrType" jdbcType="VARCHAR" />
+    <result column="yr_amt" property="yrAmt" jdbcType="VARCHAR" />
+    <result column="er_type" property="erType" jdbcType="VARCHAR" />
+    <result column="er_amt" property="erAmt" jdbcType="VARCHAR" />
+    <result column="sr_type" property="srType" jdbcType="VARCHAR" />
+    <result column="sr_amt" property="srAmt" jdbcType="VARCHAR" />
     <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
     <result column="gmt_update" property="gmtUpdate" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -86,8 +84,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, symbol, stock_name, trade_date, price, chg, chg_percent, turnover, amplitude, 
-    tot_mkt_val, neg_mkt_val, dr_lh_type, dr_buy_amt, dr_sell_amt, dr_net_buy, sr_lh_type, 
-    sr_buy_amt, sr_sell_amt, sr_net_buy, sec_dept_relation, clique_id, gmt_create, gmt_update
+    tot_mkt_val, neg_mkt_val, sec_dept_relation, clique_id, yr_type, yr_amt, er_type, 
+    er_amt, sr_type, sr_amt, gmt_create, gmt_update
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.LongHuExample" >
     select
@@ -129,19 +127,17 @@
     insert into long_hu (symbol, stock_name, trade_date, 
       price, chg, chg_percent, 
       turnover, amplitude, tot_mkt_val, 
-      neg_mkt_val, dr_lh_type, dr_buy_amt, 
-      dr_sell_amt, dr_net_buy, sr_lh_type, 
-      sr_buy_amt, sr_sell_amt, sr_net_buy, 
-      sec_dept_relation, clique_id, gmt_create, 
-      gmt_update)
+      neg_mkt_val, sec_dept_relation, clique_id, 
+      yr_type, yr_amt, er_type, 
+      er_amt, sr_type, sr_amt, 
+      gmt_create, gmt_update)
     values (#{symbol,jdbcType=VARCHAR}, #{stockName,jdbcType=VARCHAR}, #{tradeDate,jdbcType=VARCHAR}, 
       #{price,jdbcType=DOUBLE}, #{chg,jdbcType=DOUBLE}, #{chgPercent,jdbcType=DOUBLE}, 
       #{turnover,jdbcType=DOUBLE}, #{amplitude,jdbcType=DOUBLE}, #{totMktVal,jdbcType=DOUBLE}, 
-      #{negMktVal,jdbcType=DOUBLE}, #{drLhType,jdbcType=VARCHAR}, #{drBuyAmt,jdbcType=DOUBLE}, 
-      #{drSellAmt,jdbcType=DOUBLE}, #{drNetBuy,jdbcType=DOUBLE}, #{srLhType,jdbcType=VARCHAR}, 
-      #{srBuyAmt,jdbcType=DOUBLE}, #{srSellAmt,jdbcType=DOUBLE}, #{srNetBuy,jdbcType=DOUBLE}, 
-      #{secDeptRelation,jdbcType=INTEGER}, #{cliqueId,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, 
-      #{gmtUpdate,jdbcType=TIMESTAMP})
+      #{negMktVal,jdbcType=DOUBLE}, #{secDeptRelation,jdbcType=INTEGER}, #{cliqueId,jdbcType=BIGINT}, 
+      #{yrType,jdbcType=VARCHAR}, #{yrAmt,jdbcType=VARCHAR}, #{erType,jdbcType=VARCHAR}, 
+      #{erAmt,jdbcType=VARCHAR}, #{srType,jdbcType=VARCHAR}, #{srAmt,jdbcType=VARCHAR}, 
+      #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.LongHu" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -179,35 +175,29 @@
       <if test="negMktVal != null" >
         neg_mkt_val,
       </if>
-      <if test="drLhType != null" >
-        dr_lh_type,
-      </if>
-      <if test="drBuyAmt != null" >
-        dr_buy_amt,
-      </if>
-      <if test="drSellAmt != null" >
-        dr_sell_amt,
-      </if>
-      <if test="drNetBuy != null" >
-        dr_net_buy,
-      </if>
-      <if test="srLhType != null" >
-        sr_lh_type,
-      </if>
-      <if test="srBuyAmt != null" >
-        sr_buy_amt,
-      </if>
-      <if test="srSellAmt != null" >
-        sr_sell_amt,
-      </if>
-      <if test="srNetBuy != null" >
-        sr_net_buy,
-      </if>
       <if test="secDeptRelation != null" >
         sec_dept_relation,
       </if>
       <if test="cliqueId != null" >
         clique_id,
+      </if>
+      <if test="yrType != null" >
+        yr_type,
+      </if>
+      <if test="yrAmt != null" >
+        yr_amt,
+      </if>
+      <if test="erType != null" >
+        er_type,
+      </if>
+      <if test="erAmt != null" >
+        er_amt,
+      </if>
+      <if test="srType != null" >
+        sr_type,
+      </if>
+      <if test="srAmt != null" >
+        sr_amt,
       </if>
       <if test="gmtCreate != null" >
         gmt_create,
@@ -247,35 +237,29 @@
       <if test="negMktVal != null" >
         #{negMktVal,jdbcType=DOUBLE},
       </if>
-      <if test="drLhType != null" >
-        #{drLhType,jdbcType=VARCHAR},
-      </if>
-      <if test="drBuyAmt != null" >
-        #{drBuyAmt,jdbcType=DOUBLE},
-      </if>
-      <if test="drSellAmt != null" >
-        #{drSellAmt,jdbcType=DOUBLE},
-      </if>
-      <if test="drNetBuy != null" >
-        #{drNetBuy,jdbcType=DOUBLE},
-      </if>
-      <if test="srLhType != null" >
-        #{srLhType,jdbcType=VARCHAR},
-      </if>
-      <if test="srBuyAmt != null" >
-        #{srBuyAmt,jdbcType=DOUBLE},
-      </if>
-      <if test="srSellAmt != null" >
-        #{srSellAmt,jdbcType=DOUBLE},
-      </if>
-      <if test="srNetBuy != null" >
-        #{srNetBuy,jdbcType=DOUBLE},
-      </if>
       <if test="secDeptRelation != null" >
         #{secDeptRelation,jdbcType=INTEGER},
       </if>
       <if test="cliqueId != null" >
         #{cliqueId,jdbcType=BIGINT},
+      </if>
+      <if test="yrType != null" >
+        #{yrType,jdbcType=VARCHAR},
+      </if>
+      <if test="yrAmt != null" >
+        #{yrAmt,jdbcType=VARCHAR},
+      </if>
+      <if test="erType != null" >
+        #{erType,jdbcType=VARCHAR},
+      </if>
+      <if test="erAmt != null" >
+        #{erAmt,jdbcType=VARCHAR},
+      </if>
+      <if test="srType != null" >
+        #{srType,jdbcType=VARCHAR},
+      </if>
+      <if test="srAmt != null" >
+        #{srAmt,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreate != null" >
         #{gmtCreate,jdbcType=TIMESTAMP},
@@ -327,35 +311,29 @@
       <if test="record.negMktVal != null" >
         neg_mkt_val = #{record.negMktVal,jdbcType=DOUBLE},
       </if>
-      <if test="record.drLhType != null" >
-        dr_lh_type = #{record.drLhType,jdbcType=VARCHAR},
-      </if>
-      <if test="record.drBuyAmt != null" >
-        dr_buy_amt = #{record.drBuyAmt,jdbcType=DOUBLE},
-      </if>
-      <if test="record.drSellAmt != null" >
-        dr_sell_amt = #{record.drSellAmt,jdbcType=DOUBLE},
-      </if>
-      <if test="record.drNetBuy != null" >
-        dr_net_buy = #{record.drNetBuy,jdbcType=DOUBLE},
-      </if>
-      <if test="record.srLhType != null" >
-        sr_lh_type = #{record.srLhType,jdbcType=VARCHAR},
-      </if>
-      <if test="record.srBuyAmt != null" >
-        sr_buy_amt = #{record.srBuyAmt,jdbcType=DOUBLE},
-      </if>
-      <if test="record.srSellAmt != null" >
-        sr_sell_amt = #{record.srSellAmt,jdbcType=DOUBLE},
-      </if>
-      <if test="record.srNetBuy != null" >
-        sr_net_buy = #{record.srNetBuy,jdbcType=DOUBLE},
-      </if>
       <if test="record.secDeptRelation != null" >
         sec_dept_relation = #{record.secDeptRelation,jdbcType=INTEGER},
       </if>
       <if test="record.cliqueId != null" >
         clique_id = #{record.cliqueId,jdbcType=BIGINT},
+      </if>
+      <if test="record.yrType != null" >
+        yr_type = #{record.yrType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yrAmt != null" >
+        yr_amt = #{record.yrAmt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.erType != null" >
+        er_type = #{record.erType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.erAmt != null" >
+        er_amt = #{record.erAmt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.srType != null" >
+        sr_type = #{record.srType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.srAmt != null" >
+        sr_amt = #{record.srAmt,jdbcType=VARCHAR},
       </if>
       <if test="record.gmtCreate != null" >
         gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
@@ -381,16 +359,14 @@
       amplitude = #{record.amplitude,jdbcType=DOUBLE},
       tot_mkt_val = #{record.totMktVal,jdbcType=DOUBLE},
       neg_mkt_val = #{record.negMktVal,jdbcType=DOUBLE},
-      dr_lh_type = #{record.drLhType,jdbcType=VARCHAR},
-      dr_buy_amt = #{record.drBuyAmt,jdbcType=DOUBLE},
-      dr_sell_amt = #{record.drSellAmt,jdbcType=DOUBLE},
-      dr_net_buy = #{record.drNetBuy,jdbcType=DOUBLE},
-      sr_lh_type = #{record.srLhType,jdbcType=VARCHAR},
-      sr_buy_amt = #{record.srBuyAmt,jdbcType=DOUBLE},
-      sr_sell_amt = #{record.srSellAmt,jdbcType=DOUBLE},
-      sr_net_buy = #{record.srNetBuy,jdbcType=DOUBLE},
       sec_dept_relation = #{record.secDeptRelation,jdbcType=INTEGER},
       clique_id = #{record.cliqueId,jdbcType=BIGINT},
+      yr_type = #{record.yrType,jdbcType=VARCHAR},
+      yr_amt = #{record.yrAmt,jdbcType=VARCHAR},
+      er_type = #{record.erType,jdbcType=VARCHAR},
+      er_amt = #{record.erAmt,jdbcType=VARCHAR},
+      sr_type = #{record.srType,jdbcType=VARCHAR},
+      sr_amt = #{record.srAmt,jdbcType=VARCHAR},
       gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
       gmt_update = #{record.gmtUpdate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -430,35 +406,29 @@
       <if test="negMktVal != null" >
         neg_mkt_val = #{negMktVal,jdbcType=DOUBLE},
       </if>
-      <if test="drLhType != null" >
-        dr_lh_type = #{drLhType,jdbcType=VARCHAR},
-      </if>
-      <if test="drBuyAmt != null" >
-        dr_buy_amt = #{drBuyAmt,jdbcType=DOUBLE},
-      </if>
-      <if test="drSellAmt != null" >
-        dr_sell_amt = #{drSellAmt,jdbcType=DOUBLE},
-      </if>
-      <if test="drNetBuy != null" >
-        dr_net_buy = #{drNetBuy,jdbcType=DOUBLE},
-      </if>
-      <if test="srLhType != null" >
-        sr_lh_type = #{srLhType,jdbcType=VARCHAR},
-      </if>
-      <if test="srBuyAmt != null" >
-        sr_buy_amt = #{srBuyAmt,jdbcType=DOUBLE},
-      </if>
-      <if test="srSellAmt != null" >
-        sr_sell_amt = #{srSellAmt,jdbcType=DOUBLE},
-      </if>
-      <if test="srNetBuy != null" >
-        sr_net_buy = #{srNetBuy,jdbcType=DOUBLE},
-      </if>
       <if test="secDeptRelation != null" >
         sec_dept_relation = #{secDeptRelation,jdbcType=INTEGER},
       </if>
       <if test="cliqueId != null" >
         clique_id = #{cliqueId,jdbcType=BIGINT},
+      </if>
+      <if test="yrType != null" >
+        yr_type = #{yrType,jdbcType=VARCHAR},
+      </if>
+      <if test="yrAmt != null" >
+        yr_amt = #{yrAmt,jdbcType=VARCHAR},
+      </if>
+      <if test="erType != null" >
+        er_type = #{erType,jdbcType=VARCHAR},
+      </if>
+      <if test="erAmt != null" >
+        er_amt = #{erAmt,jdbcType=VARCHAR},
+      </if>
+      <if test="srType != null" >
+        sr_type = #{srType,jdbcType=VARCHAR},
+      </if>
+      <if test="srAmt != null" >
+        sr_amt = #{srAmt,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreate != null" >
         gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
@@ -481,21 +451,18 @@
       amplitude = #{amplitude,jdbcType=DOUBLE},
       tot_mkt_val = #{totMktVal,jdbcType=DOUBLE},
       neg_mkt_val = #{negMktVal,jdbcType=DOUBLE},
-      dr_lh_type = #{drLhType,jdbcType=VARCHAR},
-      dr_buy_amt = #{drBuyAmt,jdbcType=DOUBLE},
-      dr_sell_amt = #{drSellAmt,jdbcType=DOUBLE},
-      dr_net_buy = #{drNetBuy,jdbcType=DOUBLE},
-      sr_lh_type = #{srLhType,jdbcType=VARCHAR},
-      sr_buy_amt = #{srBuyAmt,jdbcType=DOUBLE},
-      sr_sell_amt = #{srSellAmt,jdbcType=DOUBLE},
-      sr_net_buy = #{srNetBuy,jdbcType=DOUBLE},
       sec_dept_relation = #{secDeptRelation,jdbcType=INTEGER},
       clique_id = #{cliqueId,jdbcType=BIGINT},
+      yr_type = #{yrType,jdbcType=VARCHAR},
+      yr_amt = #{yrAmt,jdbcType=VARCHAR},
+      er_type = #{erType,jdbcType=VARCHAR},
+      er_amt = #{erAmt,jdbcType=VARCHAR},
+      sr_type = #{srType,jdbcType=VARCHAR},
+      sr_amt = #{srAmt,jdbcType=VARCHAR},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  
   <select id="selectByTradeDate" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

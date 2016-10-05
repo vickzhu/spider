@@ -44,25 +44,41 @@
                 <tr symbol="$!{lh.symbol}">
 				  <td>$!{velocityCount}</td>
                   <td><a class="lh_detail" onclick="javascript:;">$!{lh.symbol}</a></td>
-                  <td><a class="lh_detail" onclick="javascript:;">$!{lh.stockName}</a></td>
+                  <td>
+					#if(${lh.erAmt})
+					<span class="label label-info">2日</span>
+					#elseif(${lh.srAmt})
+					<span class="label label-info">3日</span>
+					#end
+					<a class="lh_detail" onclick="javascript:;">$!{lh.stockName}</a>
+				  </td>
 				  <td>$!{lh.price}</td>
-				  <td>$!{lh.chgPercent}</td>
+				  <td style="color:#if($!{lh.chgPercent}>0)red#elseif($!{lh.chgPercent}<0)green#end">$!{lh.chgPercent}</td>
 				  <td>$!{lh.turnover}</td>
-				  <td style="color:red">$!{lh.drBuyAmt}</td>
-				  <td style="color:green">$!{lh.drSellAmt}</td>
-				  <td>$!{lh.drNetBuy}</td>
+				  #if(${lh.yrAmt})
+					#showAmt(${lh.yrAmt})
+				  #elseif(${lh.erAmt})
+					#showAmt(${lh.erAmt})
+				  #elseif(${lh.srAmt})
+					#showAmt(${lh.srAmt})
+				  #end				  
 				  <td></td>
                 </tr>
 				#end
               </tbody>
              </table>
-			 <div id="page_nav"></div>
 			</div>
           </div>
         </div>
     </div>
   </div>
 </div>
+#macro(showAmt $amt)
+	#set($amtArr = ${amt.split(",")})
+	<td style="color:red">$!amtArr[0]</td>
+	<td style="color:green">$!amtArr[1]</td>
+	<td>$!amtArr[2]</td>
+#end
 <script type="text/javascript">
 	$(function(){
 		$(".lh_detail").click(function(){

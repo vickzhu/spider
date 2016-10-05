@@ -6,6 +6,7 @@ package com.gesangwu.spider.engine.common;
  * @author zhuxb
  *
  */
+@Deprecated
 public enum LongHuType {
 	ZFPLZ(1, "01","涨幅偏离值达7%的证券"),
 	DFPLZ(2, "02","跌幅偏离值达7%的证券"),

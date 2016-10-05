@@ -17,6 +17,7 @@ import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.Page;
+import com.gesangwu.spider.biz.common.LongHuDateType;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.CompanyExample;
 import com.gesangwu.spider.biz.dao.model.LongHu;
@@ -74,15 +75,22 @@ public class LongHuInit {
 	private static final String r2 = "\"chgtype\"\\:\"([0-9]*)\",\"bizsunitcode\"\\:\"([0-9]*)\",\"bizsunitname\"\\:\"([^\"]*)\",\"amount\"\\:[^,]*,\"buyvol\"\\:[^,]*,\"buyamt\"\\:([^,]*),\"salevol\"\\:[^,]*,\"saleamt\"\\:([^,]*),\"typedesc\"\\:\"([^\"]*)\"";
 	private static Pattern p2 = Pattern.compile(r2);
 	
+	/**
+	 * 龙虎榜日期类型有三种，可能三种都有上榜，同时每种日期类型可能有多种上榜理由，而我们保存龙虎详情时，针对每种日期类型只需保存一条详情
+	 * @param symbol
+	 * @param date
+	 */
 	public void getLongHu(String symbol, String date){
 		String url = assembleLongHuUrl(symbol, date);
 		String result = HttpTool.get(url);
 		Matcher m2 = p2.matcher(result);
-		Map<String, LongHuType> typeMap = new HashMap<String, LongHuType>();
-		Map<String, LongHuDetail> drMap = new HashMap<String, LongHuDetail>();
+		Map<String, LongHuType> typeMap = new HashMap<String, LongHuType>();//记录所有龙虎榜类型
+		Map<String, LongHuDetail> yrMap = new HashMap<String, LongHuDetail>();
+		Map<String, LongHuDetail> erMap = new HashMap<String, LongHuDetail>();
 		Map<String, LongHuDetail> srMap = new HashMap<String, LongHuDetail>();
+		String yrType = null;
+		String erType = null;
 		String srType = null;
-		String drType = null;
 		Date now = new Date();
 		while(m2.find()){
 			String longHuType = m2.group(1);
@@ -94,27 +102,35 @@ public class LongHuInit {
 			LongHuType lhType = getLongHuType(longHuType, typeDesc);
 			typeMap.put(longHuType, lhType);
 			LongHuDetail detail = new LongHuDetail();
-			if(lhType.getSrType() == 1){//三日
+			if(lhType.getDateType() == LongHuDateType.YIRI.getCode()){//一日
+				if(yrType == null){
+					yrType = lhType.getLhType();
+				} else if (!yrType.equals(lhType.getLhType())){
+					continue;
+				}
+				detail.setDateType(LongHuDateType.YIRI.getCode());
+				yrMap.put(secCode, detail);
+			} else if(lhType.getDateType() == LongHuDateType.ERRI.getCode()){//二日
+				if(erType == null){
+					erType = lhType.getLhType();
+				} else if (!erType.equals(lhType.getLhType())){
+					continue;
+				}
+				detail.setDateType(LongHuDateType.ERRI.getCode());
+				erMap.put(secCode, detail);
+			} else if(lhType.getDateType() == LongHuDateType.SANRI.getCode()){//三日
 				if(srType == null){
 					srType = lhType.getLhType();
 				} else if(!srType.equals(lhType.getLhType())){
 					continue;
 				}
-				detail.setIsSr(1);
+				detail.setDateType(LongHuDateType.SANRI.getCode());
 				srMap.put(secCode, detail);
-			}else{//当日
-				if(drType == null){
-					drType = lhType.getLhType();
-				} else if (!drType.equals(lhType.getLhType())){
-					continue;
-				}
-				detail.setIsSr(0);
-				drMap.put(secCode, detail);
 			}
 			
 			detail.setGmtCreate(now);
-			detail.setSecDeptAddr(secName);
-			detail.setSecDeptCode(Integer.valueOf(secCode));
+			detail.setSecDeptName(secName);
+			detail.setSecDeptCode(secCode);
 			detail.setSymbol(symbol);
 			detail.setTradeDate(date);
 			
@@ -131,33 +147,17 @@ public class LongHuInit {
 		}
 		LongHu longHu = initLongHu(symbol, result, typeMap);
 		longHu.setTradeDate(date);
-		if(drMap.size() > 0){
-			List<LongHuDetail> drList = longHuMap2List(drMap);
-			lhDetailService.batchInsert(drList);
-			BigDecimal buyTotal = BigDecimal.ZERO;
-			BigDecimal sellTotal = BigDecimal.ZERO;
-			for (LongHuDetail longHuDetail : drList) {
-				buyTotal = buyTotal.add(longHuDetail.getBuyAmt());
-				sellTotal = sellTotal.add(longHuDetail.getSellAmt());
-			}
-			double netBuy = buyTotal.subtract(sellTotal).doubleValue();
-			longHu.setDrBuyAmt(buyTotal.doubleValue());
-			longHu.setDrSellAmt(sellTotal.doubleValue());
-			longHu.setDrNetBuy(netBuy);
+		String yrAmt = buildTotalAmt(yrMap);
+		if(StringUtil.isBlank(yrAmt)){
+			longHu.setYrAmt(yrAmt);
 		}
-		if(srMap.size() > 0){
-			List<LongHuDetail> srList = longHuMap2List(srMap);
-			lhDetailService.batchInsert(srList);
-			BigDecimal buyTotal = BigDecimal.ZERO;
-			BigDecimal sellTotal = BigDecimal.ZERO;
-			for (LongHuDetail longHuDetail : srList) {
-				buyTotal = buyTotal.add(longHuDetail.getBuyAmt());
-				sellTotal = sellTotal.add(longHuDetail.getSellAmt());
-			}
-			double netBuy = buyTotal.subtract(sellTotal).doubleValue();
-			longHu.setSrBuyAmt(buyTotal.doubleValue());
-			longHu.setSrSellAmt(sellTotal.doubleValue());
-			longHu.setSrNetBuy(netBuy);
+		String erAmt = buildTotalAmt(erMap);
+		if(StringUtil.isBlank(erAmt)){
+			longHu.setErAmt(erAmt);
+		}
+		String srAmt = buildTotalAmt(srMap);
+		if(StringUtil.isBlank(srAmt)){
+			longHu.setSrAmt(srAmt);
 		}
 		lhService.insert(longHu);
 		try {
@@ -165,6 +165,28 @@ public class LongHuInit {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private String buildTotalAmt(Map<String, LongHuDetail> detailMap){
+		if(detailMap.size() == 0){
+			return StringUtil.EMPTY;
+		}
+		List<LongHuDetail> detailList = longHuMap2List(detailMap);
+		lhDetailService.batchInsert(detailList);
+		BigDecimal buyTotal = BigDecimal.ZERO;
+		BigDecimal sellTotal = BigDecimal.ZERO;
+		for (LongHuDetail longHuDetail : detailList) {
+			buyTotal = buyTotal.add(longHuDetail.getBuyAmt());
+			sellTotal = sellTotal.add(longHuDetail.getSellAmt());
+		}
+		BigDecimal netBuy = buyTotal.subtract(sellTotal);
+		StringBuilder sb = new StringBuilder();
+		sb.append(buyTotal.toString());
+		sb.append(SymbolConstant.COMMA);
+		sb.append(sellTotal.toString());
+		sb.append(SymbolConstant.COMMA);
+		sb.append(netBuy.toString());
+		return sb.toString();
 	}
 	
 	
@@ -208,23 +230,30 @@ public class LongHuInit {
 			longHu.setTotMktVal(Double.valueOf(totmktcap));
 			longHu.setNegMktVal(Double.valueOf(negotiablemv));
 		}
-		StringBuilder drSB = new StringBuilder();
+		StringBuilder yrSB = new StringBuilder();
+		StringBuilder erSB = new StringBuilder();
 		StringBuilder srSB = new StringBuilder();
 		for(Map.Entry<String, LongHuType> entry : typeMap.entrySet()){
 			LongHuType longHuType = entry.getValue();
-			if(longHuType.getSrType()==1){//三日类型
+			if(longHuType.getDateType() == LongHuDateType.YIRI.getCode()){
+				yrSB.append(SymbolConstant.COMMA);
+				yrSB.append(longHuType.getLhType());
+			}else if(longHuType.getDateType() == LongHuDateType.SANRI.getCode()){
 				srSB.append(SymbolConstant.COMMA);
 				srSB.append(longHuType.getLhType());
-			} else {//当日类型
-				drSB.append(SymbolConstant.COMMA);
-				drSB.append(longHuType.getLhType());
+			}else if(longHuType.getDateType() == LongHuDateType.ERRI.getCode()){
+				erSB.append(SymbolConstant.COMMA);
+				erSB.append(longHuType.getLhType());
 			}
 		}
-		if(drSB.length() > 0){
-			longHu.setDrLhType(drSB.substring(1));
+		if(yrSB.length() > 0){
+			longHu.setYrType(yrSB.substring(1));
+		}
+		if(erSB.length() > 0){
+			longHu.setErType(erSB.substring(1));
 		}
 		if(srSB.length() > 0){
-			longHu.setSrLhType(srSB.substring(1));
+			longHu.setSrType(srSB.substring(1));
 		}
 		return longHu;
 	}
@@ -243,11 +272,26 @@ public class LongHuInit {
 		if(lhType == null){
 			lhType = new LongHuType();
 			lhType.setLhType(longHuType);
-			lhType.setSrType(typeDesc.contains("三") ? 1 : 0);
+			lhType.setDateType(judgeDateType(typeDesc));
 			lhType.setLhDesc(typeDesc);
 			longHuTypeService.insert(lhType);
 		}
 		return lhType;
+	}
+	
+	/**
+	 * 判断龙虎榜日期类型
+	 * @param typeDesc
+	 * @return
+	 */
+	private int judgeDateType(String typeDesc){
+		if(typeDesc.contains("三个")){
+			return LongHuDateType.SANRI.getCode();
+		}else if(typeDesc.contains("2个")){
+			return LongHuDateType.ERRI.getCode();
+		} else {
+			return LongHuDateType.YIRI.getCode();
+		}
 	}
 	
 	private void checkSecDept(String secCode, String secName){
@@ -297,4 +341,8 @@ public class LongHuInit {
 		return buy.divide(new BigDecimal(10000)).setScale(2,BigDecimal.ROUND_HALF_UP);
 	}
 
+	public static void main(String[] args){
+		BigDecimal bc = new BigDecimal("200.32");
+		System.out.println(bc.toString());
+	}
 }
