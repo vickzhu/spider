@@ -22,5 +22,6 @@ $screen_content
 <script src="#resources('js/bootstrap.min.js')"></script> 
 <script src="#resources('js/matrix.js')"></script>
 <script src="#resources('js/jquery.uniform.js')"></script>
+<script src="#resources('js/gandalf.js')"></script>
 </body>
 </html>

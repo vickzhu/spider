@@ -1,6 +1,7 @@
 package com.gesangwu.spider.biz.dao.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CliqueDeptExample {
@@ -314,63 +315,193 @@ public class CliqueDeptExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsMainDeptIsNull() {
-            addCriterion("is_main_dept is null");
+        public Criteria andSecDeptNameIsNull() {
+            addCriterion("sec_dept_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andIsMainDeptIsNotNull() {
-            addCriterion("is_main_dept is not null");
+        public Criteria andSecDeptNameIsNotNull() {
+            addCriterion("sec_dept_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIsMainDeptEqualTo(Integer value) {
-            addCriterion("is_main_dept =", value, "isMainDept");
+        public Criteria andSecDeptNameEqualTo(String value) {
+            addCriterion("sec_dept_name =", value, "secDeptName");
             return (Criteria) this;
         }
 
-        public Criteria andIsMainDeptNotEqualTo(Integer value) {
-            addCriterion("is_main_dept <>", value, "isMainDept");
+        public Criteria andSecDeptNameNotEqualTo(String value) {
+            addCriterion("sec_dept_name <>", value, "secDeptName");
             return (Criteria) this;
         }
 
-        public Criteria andIsMainDeptGreaterThan(Integer value) {
-            addCriterion("is_main_dept >", value, "isMainDept");
+        public Criteria andSecDeptNameGreaterThan(String value) {
+            addCriterion("sec_dept_name >", value, "secDeptName");
             return (Criteria) this;
         }
 
-        public Criteria andIsMainDeptGreaterThanOrEqualTo(Integer value) {
-            addCriterion("is_main_dept >=", value, "isMainDept");
+        public Criteria andSecDeptNameGreaterThanOrEqualTo(String value) {
+            addCriterion("sec_dept_name >=", value, "secDeptName");
             return (Criteria) this;
         }
 
-        public Criteria andIsMainDeptLessThan(Integer value) {
-            addCriterion("is_main_dept <", value, "isMainDept");
+        public Criteria andSecDeptNameLessThan(String value) {
+            addCriterion("sec_dept_name <", value, "secDeptName");
             return (Criteria) this;
         }
 
-        public Criteria andIsMainDeptLessThanOrEqualTo(Integer value) {
-            addCriterion("is_main_dept <=", value, "isMainDept");
+        public Criteria andSecDeptNameLessThanOrEqualTo(String value) {
+            addCriterion("sec_dept_name <=", value, "secDeptName");
             return (Criteria) this;
         }
 
-        public Criteria andIsMainDeptIn(List<Integer> values) {
-            addCriterion("is_main_dept in", values, "isMainDept");
+        public Criteria andSecDeptNameLike(String value) {
+            addCriterion("sec_dept_name like", value, "secDeptName");
             return (Criteria) this;
         }
 
-        public Criteria andIsMainDeptNotIn(List<Integer> values) {
-            addCriterion("is_main_dept not in", values, "isMainDept");
+        public Criteria andSecDeptNameNotLike(String value) {
+            addCriterion("sec_dept_name not like", value, "secDeptName");
             return (Criteria) this;
         }
 
-        public Criteria andIsMainDeptBetween(Integer value1, Integer value2) {
-            addCriterion("is_main_dept between", value1, value2, "isMainDept");
+        public Criteria andSecDeptNameIn(List<String> values) {
+            addCriterion("sec_dept_name in", values, "secDeptName");
             return (Criteria) this;
         }
 
-        public Criteria andIsMainDeptNotBetween(Integer value1, Integer value2) {
-            addCriterion("is_main_dept not between", value1, value2, "isMainDept");
+        public Criteria andSecDeptNameNotIn(List<String> values) {
+            addCriterion("sec_dept_name not in", values, "secDeptName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptNameBetween(String value1, String value2) {
+            addCriterion("sec_dept_name between", value1, value2, "secDeptName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptNameNotBetween(String value1, String value2) {
+            addCriterion("sec_dept_name not between", value1, value2, "secDeptName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeIsNull() {
+            addCriterion("dept_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeIsNotNull() {
+            addCriterion("dept_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeEqualTo(Integer value) {
+            addCriterion("dept_type =", value, "deptType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeNotEqualTo(Integer value) {
+            addCriterion("dept_type <>", value, "deptType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeGreaterThan(Integer value) {
+            addCriterion("dept_type >", value, "deptType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("dept_type >=", value, "deptType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeLessThan(Integer value) {
+            addCriterion("dept_type <", value, "deptType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("dept_type <=", value, "deptType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeIn(List<Integer> values) {
+            addCriterion("dept_type in", values, "deptType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeNotIn(List<Integer> values) {
+            addCriterion("dept_type not in", values, "deptType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeBetween(Integer value1, Integer value2) {
+            addCriterion("dept_type between", value1, value2, "deptType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeptTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("dept_type not between", value1, value2, "deptType");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateIsNull() {
+            addCriterion("gmt_create is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateIsNotNull() {
+            addCriterion("gmt_create is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateEqualTo(Date value) {
+            addCriterion("gmt_create =", value, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateNotEqualTo(Date value) {
+            addCriterion("gmt_create <>", value, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateGreaterThan(Date value) {
+            addCriterion("gmt_create >", value, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateGreaterThanOrEqualTo(Date value) {
+            addCriterion("gmt_create >=", value, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateLessThan(Date value) {
+            addCriterion("gmt_create <", value, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateLessThanOrEqualTo(Date value) {
+            addCriterion("gmt_create <=", value, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateIn(List<Date> values) {
+            addCriterion("gmt_create in", values, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateNotIn(List<Date> values) {
+            addCriterion("gmt_create not in", values, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateBetween(Date value1, Date value2) {
+            addCriterion("gmt_create between", value1, value2, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreateNotBetween(Date value1, Date value2) {
+            addCriterion("gmt_create not between", value1, value2, "gmtCreate");
             return (Criteria) this;
         }
     }

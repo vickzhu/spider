@@ -22,4 +22,23 @@ $(document).ready(function(){
 			}
 		}
 	});
+	
+	$('.datepicker').datepicker({format: 'yyyy-mm-dd',
+        weekStart: 1,
+        autoclose: true,
+        todayBtn: 'linked',
+        language: 'zh-CN'});
+	
+	//------------- Datepicker -------------//
+	if($('#datepicker').length) {
+		$("#datepicker").datepicker({
+			showOtherMonths:true
+		});
+	}
+	if($('#datepicker-inline').length) {
+		$('#datepicker-inline').datepicker({
+	        inline: true,
+			showOtherMonths:true
+	    });
+	}
 })

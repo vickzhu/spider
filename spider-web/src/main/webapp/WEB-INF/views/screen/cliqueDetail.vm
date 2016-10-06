@@ -47,7 +47,7 @@
 				#foreach($cliqueDept in ${cdPage.getRecords()})
                 <tr>
                   <td>${velocityCount}</td>
-                  <td>${cliqueDept.secDeptCode}</td>
+                  <td>${cliqueDept.secDeptName}</td>
                 </tr>
 				#end
                 <tr>

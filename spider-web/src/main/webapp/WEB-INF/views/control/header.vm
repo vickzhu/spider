@@ -34,6 +34,6 @@
 
 <!--start-top-serch-->
 <div id="search">
-  <input type="text" placeholder="Search here..."/>
+  <input type="text" placeholder="股票代码/名称"/>
   <button type="submit" class="tip-bottom" title="搜索"><i class="icon-search icon-white"></i></button>
 </div>

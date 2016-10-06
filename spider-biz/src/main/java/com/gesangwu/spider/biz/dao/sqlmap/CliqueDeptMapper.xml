@@ -5,7 +5,9 @@
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="clique_id" property="cliqueId" jdbcType="BIGINT" />
     <result column="sec_dept_code" property="secDeptCode" jdbcType="VARCHAR" />
-    <result column="is_main_dept" property="isMainDept" jdbcType="INTEGER" />
+    <result column="sec_dept_name" property="secDeptName" jdbcType="VARCHAR" />
+    <result column="dept_type" property="deptType" jdbcType="INTEGER" />
+    <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -66,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, clique_id, sec_dept_code, is_main_dept
+    id, clique_id, sec_dept_code, sec_dept_name, dept_type, gmt_create
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.CliqueDeptExample" >
     select
@@ -105,10 +107,10 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into clique_dept (clique_id, sec_dept_code, is_main_dept
-      )
-    values (#{cliqueId,jdbcType=BIGINT}, #{secDeptCode,jdbcType=VARCHAR}, #{isMainDept,jdbcType=INTEGER}
-      )
+    insert into clique_dept (clique_id, sec_dept_code, sec_dept_name, 
+      dept_type, gmt_create)
+    values (#{cliqueId,jdbcType=BIGINT}, #{secDeptCode,jdbcType=VARCHAR}, #{secDeptName,jdbcType=VARCHAR}, 
+      #{deptType,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.CliqueDept" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -122,8 +124,14 @@
       <if test="secDeptCode != null" >
         sec_dept_code,
       </if>
-      <if test="isMainDept != null" >
-        is_main_dept,
+      <if test="secDeptName != null" >
+        sec_dept_name,
+      </if>
+      <if test="deptType != null" >
+        dept_type,
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -133,8 +141,14 @@
       <if test="secDeptCode != null" >
         #{secDeptCode,jdbcType=VARCHAR},
       </if>
-      <if test="isMainDept != null" >
-        #{isMainDept,jdbcType=INTEGER},
+      <if test="secDeptName != null" >
+        #{secDeptName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptType != null" >
+        #{deptType,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null" >
+        #{gmtCreate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -156,8 +170,14 @@
       <if test="record.secDeptCode != null" >
         sec_dept_code = #{record.secDeptCode,jdbcType=VARCHAR},
       </if>
-      <if test="record.isMainDept != null" >
-        is_main_dept = #{record.isMainDept,jdbcType=INTEGER},
+      <if test="record.secDeptName != null" >
+        sec_dept_name = #{record.secDeptName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deptType != null" >
+        dept_type = #{record.deptType,jdbcType=INTEGER},
+      </if>
+      <if test="record.gmtCreate != null" >
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -169,7 +189,9 @@
     set id = #{record.id,jdbcType=BIGINT},
       clique_id = #{record.cliqueId,jdbcType=BIGINT},
       sec_dept_code = #{record.secDeptCode,jdbcType=VARCHAR},
-      is_main_dept = #{record.isMainDept,jdbcType=INTEGER}
+      sec_dept_name = #{record.secDeptName,jdbcType=VARCHAR},
+      dept_type = #{record.deptType,jdbcType=INTEGER},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -183,8 +205,14 @@
       <if test="secDeptCode != null" >
         sec_dept_code = #{secDeptCode,jdbcType=VARCHAR},
       </if>
-      <if test="isMainDept != null" >
-        is_main_dept = #{isMainDept,jdbcType=INTEGER},
+      <if test="secDeptName != null" >
+        sec_dept_name = #{secDeptName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptType != null" >
+        dept_type = #{deptType,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -193,7 +221,9 @@
     update clique_dept
     set clique_id = #{cliqueId,jdbcType=BIGINT},
       sec_dept_code = #{secDeptCode,jdbcType=VARCHAR},
-      is_main_dept = #{isMainDept,jdbcType=INTEGER}
+      sec_dept_name = #{secDeptName,jdbcType=VARCHAR},
+      dept_type = #{deptType,jdbcType=INTEGER},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
