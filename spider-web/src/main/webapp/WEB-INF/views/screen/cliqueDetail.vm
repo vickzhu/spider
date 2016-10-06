@@ -1,0 +1,87 @@
+
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">资讯管理</a> <a href="#" class="current">龙虎榜管理</a> </div>
+	<h1>${clique.name}</h1>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+		<div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-list"></i> </span>
+            <h5>简介</h5>
+          </div>
+          <div class="widget-content">
+			$!{clique.profile}
+		  </div>
+        </div>
+          <div class="widget-box">
+            <div class="widget-title"> <span class="icon"> <i class="icon-play-circle"></i> </span>
+              <h5>历史操作股票</h5>
+            </div>
+            <div class="widget-content">
+              <div class="row-fluid">
+                <div class="span12 clique-stock-pg">
+                  <ul>
+					#foreach($cliqueStock in ${csPage.getRecords()})
+                    <li><a href="#">${!cliqueStock.stockName}</a></li>
+					#end
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+		  <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
+            <h5>$!{clique.name}营业部</h5>
+          </div>
+          <div class="widget-content nopadding">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>营业部名称</th>
+                </tr>
+              </thead>
+              <tbody>
+				#foreach($cliqueDept in ${cdPage.getRecords()})
+                <tr>
+                  <td>${velocityCount}</td>
+                  <td>${cliqueDept.secDeptCode}</td>
+                </tr>
+				#end
+                <tr>
+                  <td>2</td>
+                  <td>john</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        </div>
+    </div>
+  </div>
+</div>
+<style type="text/css">
+.clique-stock-pg ul {
+    margin: 0px;
+    padding: 0px;
+}
+.clique-stock-pg ul li {
+    margin: 5px;
+    padding: 5px;
+    list-style: none;
+    display: inline-block;
+    border: 1px solid #dadada;
+    min-width: 100px;
+    cursor: pointer;
+}
+</style>
+<script type="text/javascript">
+	$(function(){
+		$(".lh_detail").click(function(){
+			var symbol = $(this).parent().parent().attr("symbol");
+			window.location.href="#springUrl('/longhu/detail')?symbol="+symbol+"&tradeDate=${tradeDate}";
+		});
+	});
+</script>

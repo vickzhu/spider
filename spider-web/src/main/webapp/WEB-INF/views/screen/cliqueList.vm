@@ -1,0 +1,41 @@
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">资讯管理</a> <a href="#" class="current">龙虎榜管理</a> </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span8">
+        <div class="widget-box">
+          <div class="widget-title"> 
+			<span class="icon"><i class="icon-file"></i> </span>
+            <h5>帮派</h5>
+          </div>
+          <div class="widget-content nopadding">
+            <ul class="recent-posts">
+			  #foreach($clique in $cliqueList)
+              <li>
+                <div class="user-thumb"> 
+                    <span class="badge badge-info">$velocityCount</span>
+				</div>
+                <div class="article-post">
+                  <div class="fr"><a href="#" class="btn btn-primary btn-mini">编辑</a> <a href="#" class="btn btn-success btn-mini">查看</a> <a href="#" class="btn btn-danger btn-mini">删除</a></div>
+                  <span class="user-info" style="font-size:18px;">$!{clique.name}</span>
+                  <p><a class="clique-detail" cid="$!{clique.id}" href="#">$!{clique.profile}</a> </p>
+                </div>
+              </li>
+			  #end
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$(".clique-detail").click(function(){
+			var cid=$(this).attr("cid");
+			window.location.href="#springUrl('/clique/detail')?cliqueId="+cid;
+		});
+	});
+</script>
