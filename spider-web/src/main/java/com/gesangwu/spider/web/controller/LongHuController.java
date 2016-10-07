@@ -102,7 +102,7 @@ public class LongHuController {
 		}
 	}
 	
-	@RequestMapping(value = "/sec-dept", method = RequestMethod.GET)
+	@RequestMapping(value = "/dept", method = RequestMethod.GET)
 	public ModelAndView bySec(HttpServletRequest request){
 		String deptCode = request.getParameter("deptCode");
 		int curPage = 1;

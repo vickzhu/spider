@@ -132,7 +132,7 @@ public class LongHuInit {
 			detail.setSecDeptName(secName);
 			detail.setSecDeptCode(secCode);
 			detail.setSymbol(symbol);
-			detail.setTradeDate(date);
+			detail.setTradeDate(formatDate(date));
 			
 			BigDecimal buyAmt = formatAmt(buy);
 			BigDecimal sellAmt = formatAmt(sell);
@@ -146,7 +146,7 @@ public class LongHuInit {
 			
 		}
 		LongHu longHu = initLongHu(symbol, result, typeMap);
-		longHu.setTradeDate(date);
+		longHu.setTradeDate(formatDate(date));
 		String yrAmt = buildTotalAmt(yrMap);
 		if(StringUtil.isBlank(yrAmt)){
 			longHu.setYrAmt(yrAmt);
@@ -340,9 +340,19 @@ public class LongHuInit {
 		BigDecimal buy = new BigDecimal(amt);
 		return buy.divide(new BigDecimal(10000)).setScale(2,BigDecimal.ROUND_HALF_UP);
 	}
-
-	public static void main(String[] args){
-		BigDecimal bc = new BigDecimal("200.32");
-		System.out.println(bc.toString());
+	
+	/**
+	 * 将雪球的日期类型"yyyyMMdd"格式为"yyyy-MM-dd"
+	 * @param date
+	 * @return
+	 */
+	private static String formatDate(String date){
+		StringBuilder sb = new StringBuilder();
+		sb.append(date.substring(0, 4));
+		sb.append(SymbolConstant.H_LINE);
+		sb.append(date.substring(4, 6));
+		sb.append(SymbolConstant.H_LINE);
+		sb.append(date.substring(6));
+		return sb.toString();
 	}
 }

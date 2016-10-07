@@ -97,7 +97,7 @@
 	$(function(){
 		$(".sec-dept").click(function(){
 			var deptCode = $(this).attr("code");
-			window.location.href="#springUrl('/longhu/sec-dept')?deptCode="+deptCode;
+			window.location.href="#springUrl('/longhu/dept')?deptCode="+deptCode;
 		});
 		$(".date-list").val('${longHu.tradeDate}');
 		$(".date-list").change(function(){

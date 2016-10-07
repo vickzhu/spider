@@ -50,10 +50,6 @@
                   <td>${cliqueDept.secDeptName}</td>
                 </tr>
 				#end
-                <tr>
-                  <td>2</td>
-                  <td>john</td>
-                </tr>
               </tbody>
             </table>
           </div>
