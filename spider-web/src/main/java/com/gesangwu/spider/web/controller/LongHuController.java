@@ -57,27 +57,32 @@ public class LongHuController {
 	public ModelAndView detail(HttpServletRequest request){
 		String symbol = request.getParameter("symbol");
 		String tradeDate = request.getParameter("tradeDate");
-		if(StringUtil.isBlank(symbol) || StringUtil.isBlank(tradeDate)){
-			logger.error("Miss symbol or tradeDate!");
+		if(StringUtil.isBlank(symbol)){
+			logger.error("Miss symbol!");
 			return null;
 		}
-		LongHu longHu = lhService.selectBySymbolAndTradeDate(symbol, tradeDate);
+		LongHu longHu = selectLongHu(symbol, tradeDate);
+		if(longHu == null){
+			logger.error("Can't find LongHu with given symbol ["+symbol+"] and tradeDate ["+tradeDate+"]!");
+			return null;
+		}
 		List<String> yrTypeList = getTypeDes(longHu.getYrType());
 		List<String> erTypeList = getTypeDes(longHu.getErType());
 		List<String> srTypeList = getTypeDes(longHu.getSrType());
+		List<String> dateList = lhService.selectTradeDate(symbol);
 		ModelAndView mav = new ModelAndView("longHuDetail");
 		if(CollectionUtils.isNotEmpty(yrTypeList)){
-			LongHuDetailPair p = lhDetailService.selectDetailPairs(symbol, tradeDate, LongHuDateType.YIRI.getCode());
+			LongHuDetailPair p = lhDetailService.selectDetailPairs(symbol, longHu.getTradeDate(), LongHuDateType.YIRI.getCode());
 			mav.addObject("yrBuyList", p.getBuyList());
 			mav.addObject("yrSellList", p.getSellList());
 		}
 		if(CollectionUtils.isNotEmpty(erTypeList)){
-			LongHuDetailPair p = lhDetailService.selectDetailPairs(symbol, tradeDate, LongHuDateType.ERRI.getCode());
+			LongHuDetailPair p = lhDetailService.selectDetailPairs(symbol, longHu.getTradeDate(), LongHuDateType.ERRI.getCode());
 			mav.addObject("erBuyList", p.getBuyList());
 			mav.addObject("erSellList", p.getSellList());
 		}
 		if(CollectionUtils.isNotEmpty(srTypeList)){
-			LongHuDetailPair p = lhDetailService.selectDetailPairs(symbol, tradeDate, LongHuDateType.SANRI.getCode());
+			LongHuDetailPair p = lhDetailService.selectDetailPairs(symbol, longHu.getTradeDate(), LongHuDateType.SANRI.getCode());
 			mav.addObject("srBuyList", p.getBuyList());
 			mav.addObject("srSellList", p.getSellList());
 		}
@@ -85,7 +90,16 @@ public class LongHuController {
 		mav.addObject("yrTypeList", yrTypeList);
 		mav.addObject("erTypeList", erTypeList);
 		mav.addObject("srTypeList", srTypeList);
+		mav.addObject("dateList", dateList);
 		return mav;
+	}
+	
+	private LongHu selectLongHu(String symbol, String tradeDate){
+		if(StringUtil.isBlank(tradeDate)){
+			return lhService.selectLatestBySymbol(symbol);
+		} else {
+			return lhService.selectBySymbolAndTradeDate(symbol, tradeDate);
+		}
 	}
 	
 	@RequestMapping(value = "/sec-dept", method = RequestMethod.GET)

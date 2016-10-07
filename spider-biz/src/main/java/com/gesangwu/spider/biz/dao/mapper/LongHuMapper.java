@@ -12,4 +12,6 @@ public interface LongHuMapper extends BaseMapper<LongHu, LongHuExample> {
 	
 	List<LongHu> selectByTradeDate(@Param("tradeDate")String tradeDate);
 	
+	List<String> selectTradeDate(@Param("symbol")String symbol);
+	
 }

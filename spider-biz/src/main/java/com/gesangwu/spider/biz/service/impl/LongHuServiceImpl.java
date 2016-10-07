@@ -41,4 +41,21 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 		return CollectionUtils.isEmpty(longHuList)?null:longHuList.get(0);
 	}
 
+	@Override
+	public List<String> selectTradeDate(String symbol) {
+		return mapper.selectTradeDate(symbol);
+	}
+
+	@Override
+	public LongHu selectLatestBySymbol(String symbol) {
+		LongHuExample example = new LongHuExample();
+		example.setOffset(0);
+		example.setRows(1);
+		example.setOrderByClause("trade_date desc");
+		LongHuExample.Criteria criteria = example.createCriteria();
+		criteria.andSymbolEqualTo(symbol);
+		List<LongHu> longHuList = mapper.selectByExample(example);
+		return CollectionUtils.isEmpty(longHuList) ? null : longHuList.get(0);
+	}
+
 }

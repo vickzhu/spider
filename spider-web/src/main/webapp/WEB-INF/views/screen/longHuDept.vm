@@ -1,14 +1,17 @@
 <div id="content">
   <div id="content-header">
-    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">资讯管理</a> <a href="#" class="current">营业部历史龙虎榜</a> </div>
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">龙虎榜</a> <a href="#" class="current">营业部历史龙虎榜</a> </div>
+	<h1>$!{secDept.deptAddr}</h1>
   </div>
   <div class="container-fluid">
     <div class="row-fluid">
       <div class="span12">
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-            <h5>$!{secDept.deptAddr}</h5>
-			<a class="label label-info" style="line-height:20px;"></a>
+            <h5>历史龙虎榜</h5>
+			<div class="buttons"> 
+				<a id="add-event" target="_blank" href="#springUrl('/sec-dept/edit')?deptId=$!{secDept.id}" class="btn btn-inverse btn-mini"><i class="icon-edit icon-white"></i> 编辑营业部</a>
+            </div>
           </div>
           <div class="widget-content">
             <table class="table table-bordered table-striped">
@@ -32,7 +35,14 @@
                 <tr symbol="$!{detail.symbol}">
 				  <td>$!{velocityCount}</td>
                   <td><a class="lh_detail" onclick="javascript:;">$!{detail.symbol}</a></td>
-                  <td><a class="lh_detail" onclick="javascript:;">$!{detail.stockName}</a></td>
+                  <td>
+					#if(${detail.dateType}==2)
+					<span class="label label-info">2日</span>
+					#elseif(${detail.dateType}==3)
+					<span class="label label-info">3日</span>
+					#end
+					<a data-toggle="modal" href="#modal-add-event" class="lh_detail" onclick="javascript:;">$!{detail.stockName}</a>
+				  </td>
 				  <td>$!{detail.tradeDate}</td>
 				  <td>$!{detail.price}</td>
 				  <td>$!{detail.chgPercent}</td>
@@ -52,6 +62,16 @@
     </div>
   </div>
 </div>
+  <div class="modal hide" id="modal-add-event" style="width:1000px;margin-left:-500px">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">×</button>
+      <h3>$!{secDept.deptAddr}</h3>
+    </div>
+    <div class="modal-body">
+		<img src="http://html54stock.outofmemory.cn/imgs/k-controller.JPG"/>
+    </div>
+    <div class="modal-footer"> <a href="#" class="btn" data-dismiss="modal">取消</a> <a href="#" id="add-event-submit" class="btn btn-primary">确定</a> </div>
+  </div>
 <script type="text/javascript">
 	$(function(){
 		$(".lh_detail").click(function(){

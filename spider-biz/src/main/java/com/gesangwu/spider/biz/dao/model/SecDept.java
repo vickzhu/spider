@@ -19,6 +19,8 @@ public class SecDept {
 
     private Date gmtCreate;
 
+    private Date gmtUpdate;
+
     public Long getId() {
         return id;
     }
@@ -81,5 +83,13 @@ public class SecDept {
 
     public void setGmtCreate(Date gmtCreate) {
         this.gmtCreate = gmtCreate;
+    }
+
+    public Date getGmtUpdate() {
+        return gmtUpdate;
+    }
+
+    public void setGmtUpdate(Date gmtUpdate) {
+        this.gmtUpdate = gmtUpdate;
     }
 }

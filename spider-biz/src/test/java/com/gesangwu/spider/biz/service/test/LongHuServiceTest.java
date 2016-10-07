@@ -17,10 +17,17 @@ public class LongHuServiceTest extends BaseTest {
 
 	@Test
 	public void selectByTradeDate(){
-		
 		List<LongHu> lhList = lhService.selectByTradeDate(null);
 		for (LongHu longHu : lhList) {
 			System.out.println(longHu.getStockName());
+		}
+	}
+	
+	@Test
+	public void selectTradeDate(){
+		List<String> dateList = lhService.selectTradeDate("sz000798");
+		for (String date : dateList) {
+			System.out.println(date);
 		}
 	}
 }

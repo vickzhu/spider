@@ -38,7 +38,7 @@ public class CliqueController {
 	}
 	
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
-	public ModelAndView detail(HttpServletRequest request,long cliqueId){
+	public ModelAndView detail(HttpServletRequest request, long cliqueId){
 		Clique clique = cliqueService.selectByPrimaryKey(cliqueId);
 		Page<CliqueDept> cdPage = new Page<CliqueDept>(1, 20);
 		cdService.selectByCliqueId(cliqueId, cdPage);
@@ -48,6 +48,17 @@ public class CliqueController {
 		mav.addObject("clique", clique);
 		mav.addObject("cdPage", cdPage);
 		mav.addObject("csPage", csPage);
+		return mav;
+	}
+	
+	/**
+	 * 将营业部加入帮派
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/sec-dept/add", method = RequestMethod.GET)
+	public ModelAndView addSecDept(HttpServletRequest request, long secDeptId){
+		ModelAndView mav = new ModelAndView();
 		return mav;
 	}
 }

@@ -12,5 +12,8 @@ public interface LongHuService extends BaseService<LongHu, LongHuExample> {
 	
 	LongHu selectBySymbolAndTradeDate(String symbol, String tradeDate);
 	
+	List<String> selectTradeDate(String symbol);
+	
+	LongHu selectLatestBySymbol(String symbol);
 	
 }

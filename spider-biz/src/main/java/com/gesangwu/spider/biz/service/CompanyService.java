@@ -17,4 +17,6 @@ public interface CompanyService extends BaseService<Company, CompanyExample> {
 	
 	public List<Company> loadLittleCompany();
 	
+	public Company selectByName(String stockName);
+	
 }

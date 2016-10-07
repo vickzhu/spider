@@ -478,4 +478,7 @@
     </choose>
     order by sec_dept_relation DESC
   </select>
+  <select id="selectTradeDate" resultType="java.lang.String" parameterType="java.lang.String">
+  	select trade_date from long_hu where symbol = #{symbol,jdbcType=VARCHAR} order by trade_date DESC
+  </select>
 </mapper>

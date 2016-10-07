@@ -3,8 +3,10 @@
     <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">龙虎榜</a> <a href="#" class="current">${longHu.stockName}</a> </div>
 	<h1>
 		${longHu.stockName}
-        <select class="span2">
-			<option value="1">2015-10-11</option>
+        <select class="span2 date-list">
+			#foreach($tDate in $dateList)
+			<option value="$tDate">$tDate</option>
+			#end
 		</select>
 	</h1>
   </div>
@@ -12,27 +14,28 @@
     <div class="row-fluid">
       <div class="span8">
 		#if($yrTypeList)
-			#showDetail($yrTypeList $yrBuyList $yrSellList)
+			#showDetail(${longHu.yrAmt} $yrTypeList $yrBuyList $yrSellList)
 		#end
 		#if($erTypeList)
-			#showDetail($erTypeList $erBuyList $erSellList)
+			#showDetail(${longHu.erAmt} $erTypeList $erBuyList $erSellList)
 		#end
 		#if($srTypeList)
-			#showDetail($srTypeList $srBuyList $srSellList)
+			#showDetail(${longHu.srAmt} $srTypeList $srBuyList $srSellList)
 		#end
       </div>
     </div>
   </div>
 </div>
-#macro(showDetail $typeList $buyList $sellList)
+#macro(showDetail $amt $typeList $buyList $sellList)
 <div class="widget-box">
   #foreach($lhType in $typeList)
   <div class="widget-title">
     <h5>上榜理由$!{velocityCount}：$lhType</h5>
   </div>
   #end
+  #set($amtArr = $amt.split(","))
   <div class="widget-title"> 
-	<span class="label label-important">买入总计：</span>
+	<span class="label label-important">买入总计：$amtArr[0]</span>
 	<h5>买入营业部</h5>
   </div>
   <div class="widget-content nopadding">
@@ -60,7 +63,7 @@
     </table>
   </div>
   <div class="widget-title">
-	<span class="label label-success">卖出总计：</span>
+	<span class="label label-success">卖出总计：$amtArr[1]</span>
     <h5>卖出营业部</h5>
   </div>
   <div class="widget-content nopadding">
@@ -96,5 +99,10 @@
 			var deptCode = $(this).attr("code");
 			window.location.href="#springUrl('/longhu/sec-dept')?deptCode="+deptCode;
 		});
-	})
+		$(".date-list").val('${longHu.tradeDate}');
+		$(".date-list").change(function(){
+			var tradeDate = $(this).val();
+			window.location.href="#springUrl('/longhu/detail')?symbol=$!{longHu.symbol}&tradeDate="+tradeDate;
+		});
+    })
 </script>

@@ -1,5 +1,7 @@
 package com.gesangwu.spider.biz.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -37,6 +39,11 @@ public class CliqueDeptServiceImpl extends BaseServiceImpl<CliqueDept, CliqueDep
         page.setRecords(mapper.selectByExample(example));		
 	}
 
-	
-
+	@Override
+	public List<CliqueDept> selectByDeptCode(String deptCode) {
+		CliqueDeptExample example = new CliqueDeptExample();
+		CliqueDeptExample.Criteria criteria = example.createCriteria();
+		criteria.andSecDeptCodeEqualTo(deptCode);
+		return mapper.selectByExample(example);
+	}
 }

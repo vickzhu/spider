@@ -59,4 +59,13 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company, CompanyExample>
 		return mapper.selectByExample(example);
 	}
 
+	@Override
+	public Company selectByName(String stockName) {
+		CompanyExample example = new CompanyExample();
+		CompanyExample.Criteria criteria = example.createCriteria();
+		criteria.andStockNameEqualTo(stockName);
+		List<Company> companyList = mapper.selectByExample(example);
+		return CollectionUtils.isEmpty(companyList)?null:companyList.get(0);
+	}
+
 }
