@@ -21,4 +21,13 @@ public interface LongHuDetailService extends BaseService<LongHuDetail, LongHuDet
 	public void selectDetailExtByExample(LongHuDetailExample example, Page<LongHuDetailExt> page);
 	
 	public List<LongHuDetailDept> selectDetailDeptByExample(LongHuDetailExample example);
+	
+	/**
+	 * 查询指定时间内的详情
+	 * @param deptCode	营业部
+	 * @param longHuCliqueId	龙虎榜的帮派类型
+	 * @param startDate	起始时间
+	 * @return
+	 */
+	public List<LongHuDetail> selectDetail(String deptCode, long longHuCliqueId, String startDate);
 }

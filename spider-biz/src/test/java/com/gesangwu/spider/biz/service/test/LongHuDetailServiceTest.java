@@ -31,7 +31,7 @@ public class LongHuDetailServiceTest extends BaseTest {
 		}
 	}
 	
-	@Test
+//	@Test
 	public void selectDetailDeptByExample(){
 		LongHuDetailExample example = new LongHuDetailExample();
 		LongHuDetailExample.Criteria criteria = example.createCriteria();
@@ -40,5 +40,10 @@ public class LongHuDetailServiceTest extends BaseTest {
 		for (LongHuDetailDept longHuDetailDept : detailDeptList) {
 			System.out.println(longHuDetailDept.getCode()+":"+longHuDetailDept.getDeptAddr());
 		}
+	}
+	
+	@Test
+	public void selectDetailExt(){
+		lhDetailService.selectDetail("80000000", 1001, "2016-01-01");
 	}
 }

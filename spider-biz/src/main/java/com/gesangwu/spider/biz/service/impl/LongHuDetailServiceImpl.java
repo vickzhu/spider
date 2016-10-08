@@ -93,4 +93,10 @@ public class LongHuDetailServiceImpl extends BaseServiceImpl<LongHuDetail, LongH
 		return mapper.selectDetailDeptByExample(example);
 	}
 
+	@Override
+	public List<LongHuDetail> selectDetail(String deptCode,
+			long longHuCliqueId, String startDate) {
+		return mapper.selectDetail(deptCode, longHuCliqueId, startDate);
+	}
+
 }
