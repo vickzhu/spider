@@ -25,12 +25,12 @@ import com.gesangwu.spider.biz.service.LongHuDetailService;
 import com.gesangwu.spider.biz.service.LongHuService;
 
 /**
- * 完善帮派
+ * 查找帮派操作的股票
  * @author zhuxb
  *
  */
 @Component
-public class PerfectCliqueTask {
+public class CliqueStockTask {
 	
 	@Resource
 	private CliqueService cliqueService;
@@ -53,7 +53,7 @@ public class PerfectCliqueTask {
 			}
 			List<LongHu> lhList = getLongHuList();
 			for (LongHu longHu : lhList) {//每天龙虎榜
-				Date date = new Date();
+				Date now = new Date();
 				Map<Long,List<LongHuDetail>> detailMap = new HashMap<Long,List<LongHuDetail>>();
 				List<LongHuDetail> detailList = getLongHuDetailList(longHu.getSymbol(), longHu.getTradeDate());
 				for (LongHuDetail longHuDetail : detailList) {//每条龙虎详情
@@ -73,10 +73,12 @@ public class PerfectCliqueTask {
 						List<LongHuDetail> lhdList = entry.getValue();
 						longHu.setCliqueId(entry.getKey());
 						longHu.setSecDeptRelation(lhdList.size());
-						longHu.setGmtUpdate(date);
+						longHu.setGmtUpdate(now);
 						lhService.updateByPrimaryKey(longHu);
 						for (LongHuDetail longHuDetail : lhdList) {
-							
+							longHuDetail.setCliqueId(entry.getKey());
+							longHuDetail.setGmtUpdate(now);
+							lhdService.updateByPrimaryKey(longHuDetail);
 						}
 						break;
 					}
@@ -89,6 +91,7 @@ public class PerfectCliqueTask {
 		LongHuExample lhExample = new LongHuExample();
 		LongHuExample.Criteria criteria = lhExample.createCriteria();
 		criteria.andTradeDateGreaterThanOrEqualTo("2015-01-01");
+		criteria.andCliqueIdIsNull();
 		return lhService.selectByExample(lhExample);
 	}
 	

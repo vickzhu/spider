@@ -129,7 +129,6 @@ public class LongHuInit {
 			}
 			
 			detail.setGmtCreate(now);
-			detail.setSecDeptName(secName);
 			detail.setSecDeptCode(secCode);
 			detail.setSymbol(symbol);
 			detail.setTradeDate(formatDate(date));

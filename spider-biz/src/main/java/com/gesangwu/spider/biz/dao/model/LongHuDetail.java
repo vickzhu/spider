@@ -18,9 +18,9 @@ public class LongHuDetail {
 
     private String secDeptCode;
 
-    private String secDeptName;
-
     private Integer dateType;
+
+    private Long cliqueId;
 
     private Date gmtCreate;
 
@@ -82,20 +82,20 @@ public class LongHuDetail {
         this.secDeptCode = secDeptCode == null ? null : secDeptCode.trim();
     }
 
-    public String getSecDeptName() {
-        return secDeptName;
-    }
-
-    public void setSecDeptName(String secDeptName) {
-        this.secDeptName = secDeptName == null ? null : secDeptName.trim();
-    }
-
     public Integer getDateType() {
         return dateType;
     }
 
     public void setDateType(Integer dateType) {
         this.dateType = dateType;
+    }
+
+    public Long getCliqueId() {
+        return cliqueId;
+    }
+
+    public void setCliqueId(Long cliqueId) {
+        this.cliqueId = cliqueId;
     }
 
     public Date getGmtCreate() {

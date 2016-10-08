@@ -576,76 +576,6 @@ public class LongHuDetailExample {
             return (Criteria) this;
         }
 
-        public Criteria andSecDeptNameIsNull() {
-            addCriterion("sec_dept_name is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSecDeptNameIsNotNull() {
-            addCriterion("sec_dept_name is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSecDeptNameEqualTo(String value) {
-            addCriterion("sec_dept_name =", value, "secDeptName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSecDeptNameNotEqualTo(String value) {
-            addCriterion("sec_dept_name <>", value, "secDeptName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSecDeptNameGreaterThan(String value) {
-            addCriterion("sec_dept_name >", value, "secDeptName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSecDeptNameGreaterThanOrEqualTo(String value) {
-            addCriterion("sec_dept_name >=", value, "secDeptName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSecDeptNameLessThan(String value) {
-            addCriterion("sec_dept_name <", value, "secDeptName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSecDeptNameLessThanOrEqualTo(String value) {
-            addCriterion("sec_dept_name <=", value, "secDeptName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSecDeptNameLike(String value) {
-            addCriterion("sec_dept_name like", value, "secDeptName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSecDeptNameNotLike(String value) {
-            addCriterion("sec_dept_name not like", value, "secDeptName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSecDeptNameIn(List<String> values) {
-            addCriterion("sec_dept_name in", values, "secDeptName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSecDeptNameNotIn(List<String> values) {
-            addCriterion("sec_dept_name not in", values, "secDeptName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSecDeptNameBetween(String value1, String value2) {
-            addCriterion("sec_dept_name between", value1, value2, "secDeptName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSecDeptNameNotBetween(String value1, String value2) {
-            addCriterion("sec_dept_name not between", value1, value2, "secDeptName");
-            return (Criteria) this;
-        }
-
         public Criteria andDateTypeIsNull() {
             addCriterion("date_type is null");
             return (Criteria) this;
@@ -703,6 +633,66 @@ public class LongHuDetailExample {
 
         public Criteria andDateTypeNotBetween(Integer value1, Integer value2) {
             addCriterion("date_type not between", value1, value2, "dateType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdIsNull() {
+            addCriterion("clique_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdIsNotNull() {
+            addCriterion("clique_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdEqualTo(Long value) {
+            addCriterion("clique_id =", value, "cliqueId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdNotEqualTo(Long value) {
+            addCriterion("clique_id <>", value, "cliqueId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdGreaterThan(Long value) {
+            addCriterion("clique_id >", value, "cliqueId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("clique_id >=", value, "cliqueId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdLessThan(Long value) {
+            addCriterion("clique_id <", value, "cliqueId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdLessThanOrEqualTo(Long value) {
+            addCriterion("clique_id <=", value, "cliqueId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdIn(List<Long> values) {
+            addCriterion("clique_id in", values, "cliqueId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdNotIn(List<Long> values) {
+            addCriterion("clique_id not in", values, "cliqueId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdBetween(Long value1, Long value2) {
+            addCriterion("clique_id between", value1, value2, "cliqueId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCliqueIdNotBetween(Long value1, Long value2) {
+            addCriterion("clique_id not between", value1, value2, "cliqueId");
             return (Criteria) this;
         }
 
