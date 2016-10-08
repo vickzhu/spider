@@ -11,6 +11,8 @@ public interface CliqueDeptService extends BaseService<CliqueDept, CliqueDeptExa
 	
 	public void selectByCliqueId(long cliqueId, Page<CliqueDept> page);
 	
+	public List<CliqueDept> selectByCliqueId(long cliqueId);
+	
 	public List<CliqueDept> selectByDeptCode(String deptCode);
 	
 }

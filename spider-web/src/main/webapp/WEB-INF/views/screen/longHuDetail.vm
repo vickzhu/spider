@@ -67,39 +67,41 @@
       </tbody>
     </table>
   </div>
-  <div class="widget-title">
-	<span class="label label-success">卖出总计：$amtArr[1]</span>
-    <h5>卖出营业部</h5>
-  </div>
-  <div class="widget-content nopadding">
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-		  <th>编号</th>	
-          <th>营业部</th>
-		  <th>卖出</th>
-          <th>买入</th>
-		  <th>帮派</th>
-        </tr>
-      </thead>
-      <tbody>
-		#foreach($sellDetail in ${sellList})
-        <tr>
-          <td>$!{velocityCount}</td>
-		  <td>
-			<a class="sec-dept" href="javascript:;" code="${sellDetail.code}">$!{sellDetail.deptAddr}</a>
-			#if(${sellDetail.deptType})
-			<span class="label label-info">${longHuTool.getDeptType(${sellDetail.deptType})}</span>
-			#end
-		  </td>
-		  <td style="color:green">$!{sellDetail.sellAmt}</td>
-		  <td style="color:red">$!{sellDetail.buyAmt}</td>
-		  <td></td>
-        </tr>
-        #end
-      </tbody>
-    </table>
-  </div>		  
+  #if(${sellList.size()}>0)
+      <div class="widget-title">
+    	<span class="label label-success">卖出总计：$amtArr[1]</span>
+        <h5>卖出营业部</h5>
+      </div>
+      <div class="widget-content nopadding">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+    		  <th>编号</th>	
+              <th>营业部</th>
+    		  <th>卖出</th>
+              <th>买入</th>
+    		  <th>帮派</th>
+            </tr>
+          </thead>
+          <tbody>
+    		#foreach($sellDetail in ${sellList})
+            <tr>
+              <td>$!{velocityCount}</td>
+    		  <td>
+    			<a class="sec-dept" href="javascript:;" code="${sellDetail.code}">$!{sellDetail.deptAddr}</a>
+    			#if(${sellDetail.deptType})
+    			<span class="label label-info">${longHuTool.getDeptType(${sellDetail.deptType})}</span>
+    			#end
+    		  </td>
+    		  <td style="color:green">$!{sellDetail.sellAmt}</td>
+    		  <td style="color:red">$!{sellDetail.buyAmt}</td>
+    		  <td></td>
+            </tr>
+            #end
+          </tbody>
+        </table>
+      </div>
+  #end
 </div>
 #end
 <script src="#resources('layer/layer.js')"></script>
@@ -107,7 +109,7 @@
 	$(function(){
 		$(".sec-dept").click(function(){
 			var deptCode = $(this).attr("code");
-			window.location.href="#springUrl('/longhu/dept')?deptCode="+deptCode;
+			window.open("#springUrl('/longhu/dept')?deptCode="+deptCode);
 		});
 		$(".date-list").val('${longHu.tradeDate}');
 		$(".date-list").change(function(){

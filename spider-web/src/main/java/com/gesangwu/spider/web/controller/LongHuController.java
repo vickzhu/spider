@@ -19,11 +19,13 @@ import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.common.LongHuDateType;
 import com.gesangwu.spider.biz.common.LongHuDetailPair;
+import com.gesangwu.spider.biz.dao.model.CliqueDept;
 import com.gesangwu.spider.biz.dao.model.LongHu;
 import com.gesangwu.spider.biz.dao.model.LongHuDetailExample;
 import com.gesangwu.spider.biz.dao.model.LongHuDetailExt;
 import com.gesangwu.spider.biz.dao.model.LongHuType;
 import com.gesangwu.spider.biz.dao.model.SecDept;
+import com.gesangwu.spider.biz.service.CliqueDeptService;
 import com.gesangwu.spider.biz.service.LongHuDetailService;
 import com.gesangwu.spider.biz.service.LongHuService;
 import com.gesangwu.spider.biz.service.LongHuTypeService;
@@ -43,6 +45,8 @@ public class LongHuController {
 	private LongHuTypeService lhTypeService;
 	@Resource
 	private SecDeptService secDeptService;
+	@Resource
+	private CliqueDeptService cliqueDeptService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request, String tradeDate){
@@ -117,9 +121,11 @@ public class LongHuController {
 		criteria.andSecDeptCodeEqualTo(deptCode);
 		lhDetailService.selectDetailExtByExample(example, page);
 		SecDept secDept = secDeptService.selectByCode(deptCode);
+		List<CliqueDept> cliqueDeptList = cliqueDeptService.selectByDeptCode(deptCode);
 		ModelAndView mav = new ModelAndView("longHuDept");
 		mav.addObject("page", page);
 		mav.addObject("secDept", secDept);
+		mav.addObject("cliqueDeptList", cliqueDeptList);
 		return mav;
 	}
 	

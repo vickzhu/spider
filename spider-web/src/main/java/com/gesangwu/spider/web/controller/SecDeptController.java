@@ -65,9 +65,10 @@ public class SecDeptController {
 			}
 			String cliqueId = request.getParameter("cliqueId");
 			if(StringUtil.isNotBlank(cliqueId)){
+				String cliqueType = request.getParameter("cliqueType");
 				CliqueDept cliqueDept = new CliqueDept();
 				cliqueDept.setCliqueId(Long.valueOf(cliqueId));
-				cliqueDept.setDeptType(1);
+				cliqueDept.setDeptType(Integer.valueOf(cliqueType));
 				cliqueDept.setGmtCreate(new Date());
 				cliqueDept.setSecDeptCode(dept.getCode());
 				cliqueDept.setSecDeptName(dept.getDeptAddr());

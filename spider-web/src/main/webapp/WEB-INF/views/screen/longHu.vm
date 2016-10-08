@@ -49,12 +49,12 @@
 				  <td>$!{velocityCount}</td>
                   <td><a class="lh_detail" onclick="javascript:;">$!{lh.symbol}</a></td>
                   <td>
+					<a class="lh_detail" onclick="javascript:;">$!{lh.stockName}</a>
 					#if(${lh.erAmt})
 					<span class="label label-info">2日</span>
 					#elseif(${lh.srAmt})
 					<span class="label label-info">3日</span>
 					#end
-					<a class="lh_detail" onclick="javascript:;">$!{lh.stockName}</a>
 				  </td>
 				  <td>$!{lh.price}</td>
 				  <td style="color:#if($!{lh.chgPercent}>0)red#elseif($!{lh.chgPercent}<0)green#end">$!{lh.chgPercent}</td>

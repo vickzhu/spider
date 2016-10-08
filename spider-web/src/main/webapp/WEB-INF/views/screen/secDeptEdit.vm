@@ -15,7 +15,7 @@
 				$!{tokenTool.hiddenField}
 				<input type="hidden" name="deptId" value="$!{secDept.id}"/>
                 <div class="control-group">
-                  <label class="control-label">新加帮派</label>
+                  <label class="control-label">新加帮派:</label>
                   <div class="controls">
                     <select name="cliqueId">
 						<option value="">==请选择==</option>
@@ -23,23 +23,27 @@
 						<option value="$!{clique.id}">$!{clique.name}</option>
 						#end
                     </select>
+					<select name="cliqueType">
+						<option value="1">主营部</option>
+						<option value="2">辅营部</option>
+                    </select>
                   </div>
                 </div>
 				#if(${cliqueList.size()}>0)
 				<div class="control-group">
-                  <label class="control-label">已加帮派</label>
+                  <label class="control-label">已加帮派:</label>
                   <div class="controls">
 					#foreach($clique in $cliqueList)
-                    <a href="#">$!{clique.name}</a>
+                    <label style="margin-bottom:0px;">$!{clique.name}</label>
 					#end
                   </div>
                 </div>	
 				#end
                 <div class="control-group">
-                  <label class="control-label">类型</label>
+                  <label class="control-label">类型:</label>
                   <div class="controls">
 					#foreach($deptType in $deptTypeArr)
-					<label>
+					<label style="margin-bottom:0px;">
                       <input type="radio" name="deptType" value="$!{deptType.code}" #if($!{secDept.deptType}==$!{deptType.code})checked #end/>$!{deptType.desc}
 					</label>
 					#end

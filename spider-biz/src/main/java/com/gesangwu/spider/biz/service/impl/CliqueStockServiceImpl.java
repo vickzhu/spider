@@ -8,7 +8,6 @@ import com.gandalf.framework.mybatis.BaseMapper;
 import com.gandalf.framework.mybatis.BaseServiceImpl;
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.dao.mapper.CliqueStockMapper;
-import com.gesangwu.spider.biz.dao.model.CliqueDeptExample;
 import com.gesangwu.spider.biz.dao.model.CliqueStock;
 import com.gesangwu.spider.biz.dao.model.CliqueStockExample;
 import com.gesangwu.spider.biz.service.CliqueStockService;

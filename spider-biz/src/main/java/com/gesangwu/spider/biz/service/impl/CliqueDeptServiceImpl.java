@@ -46,4 +46,12 @@ public class CliqueDeptServiceImpl extends BaseServiceImpl<CliqueDept, CliqueDep
 		criteria.andSecDeptCodeEqualTo(deptCode);
 		return mapper.selectByExample(example);
 	}
+
+	@Override
+	public List<CliqueDept> selectByCliqueId(long cliqueId) {
+		CliqueDeptExample example = new CliqueDeptExample();
+		CliqueDeptExample.Criteria criteria = example.createCriteria();
+		criteria.andCliqueIdEqualTo(cliqueId);
+		return mapper.selectByExample(example);
+	}
 }

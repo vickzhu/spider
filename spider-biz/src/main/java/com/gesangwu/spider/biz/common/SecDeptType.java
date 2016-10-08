@@ -2,6 +2,11 @@ package com.gesangwu.spider.biz.common;
 
 import com.gandalf.framework.util.StringUtil;
 
+/**
+ * 敢死队也是一线游资
+ * @author zhuxb
+ *
+ */
 public enum SecDeptType {
 	
 	GSD(2,"敢死队"),YXYZ(1,"一线游资");

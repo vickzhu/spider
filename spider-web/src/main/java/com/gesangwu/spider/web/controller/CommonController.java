@@ -38,7 +38,9 @@ public class CommonController {
 			symbol = keyword;
 		} else {
 			Company company = companyService.selectByName(keyword);
-			symbol = company.getSymbol();
+			if(company != null){
+				symbol = company.getSymbol();
+			}
 		}
 		return "forward:/longhu/detail?symbol="+symbol;
 	}
