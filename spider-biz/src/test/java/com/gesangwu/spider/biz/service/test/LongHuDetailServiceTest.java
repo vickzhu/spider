@@ -44,6 +44,6 @@ public class LongHuDetailServiceTest extends BaseTest {
 	
 	@Test
 	public void selectDetailExt(){
-		lhDetailService.selectDetail("80000000", 1001, "2016-01-01");
+		lhDetailService.selectDetail("80000000", 1001, "2016-01-01", "2016-02-25");
 	}
 }

@@ -426,6 +426,6 @@
     select
     	lhd.*
     from long_hu_detail lhd, long_hu lh where lhd.symbol=lh.symbol and lhd.trade_date = lh.trade_date 
-    and lhd.trade_date>${startDate} and lhd.sec_dept_code=${deptCode} and lh.clique_id=${cliqueId}
+    and lhd.trade_date &gt; ${startDate} and lhd.trade_date &lt; ${endDate} and lhd.sec_dept_code=${deptCode} and lh.clique_id=${cliqueId}
   </select>
 </mapper>

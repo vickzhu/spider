@@ -29,5 +29,5 @@ public interface LongHuDetailService extends BaseService<LongHuDetail, LongHuDet
 	 * @param startDate	起始时间
 	 * @return
 	 */
-	public List<LongHuDetail> selectDetail(String deptCode, long longHuCliqueId, String startDate);
+	public List<LongHuDetail> selectDetail(String deptCode, long longHuCliqueId, String startDate, String endDate);
 }

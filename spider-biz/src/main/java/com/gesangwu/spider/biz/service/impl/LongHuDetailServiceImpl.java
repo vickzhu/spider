@@ -95,8 +95,8 @@ public class LongHuDetailServiceImpl extends BaseServiceImpl<LongHuDetail, LongH
 
 	@Override
 	public List<LongHuDetail> selectDetail(String deptCode,
-			long longHuCliqueId, String startDate) {
-		return mapper.selectDetail(deptCode, longHuCliqueId, startDate);
+			long longHuCliqueId, String startDate, String endDate) {
+		return mapper.selectDetail(deptCode, longHuCliqueId, startDate, endDate);
 	}
 
 }

@@ -19,5 +19,5 @@ public interface LongHuDetailMapper extends BaseMapper<LongHuDetail, LongHuDetai
 	List<LongHuDetailDept> selectDetailDeptByExample(LongHuDetailExample example);
 	
 	List<LongHuDetail> selectDetail(@Param("deptCode")String deptCode, 
-			@Param("cliqueId")Long longHuCliqueId, @Param("startDate")String startDate);
+			@Param("cliqueId")Long longHuCliqueId, @Param("startDate")String startDate, @Param("endDate")String endDate);
 }

@@ -16,6 +16,7 @@ import javax.annotation.Resource;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Component;
 
+import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.dao.model.Clique;
 import com.gesangwu.spider.biz.dao.model.CliqueDept;
 import com.gesangwu.spider.biz.dao.model.LongHu;
@@ -50,54 +51,54 @@ public class CliqueStockTask {
 	
 	private Set<String> memberSet;//保存现有的帮派成员
 	
-	//TODO 需要排除机构数据
 	public void execute(){
-		List<Clique> cliqueList = cliqueService.selectByExample(null);
-		for (Clique clique : cliqueList) {
-			List<CliqueDept> deptList = cliqueDeptService.selectByCliqueId(clique.getId());
-			memberSet = new HashSet<String>();
-			for (CliqueDept dept : deptList) {
-				memberSet.add(dept.getSecDeptCode());
-			}
+//		List<Clique> cliqueList = cliqueService.selectByExample(null);
+//		for (Clique clique : cliqueList) {
+//			List<CliqueDept> deptList = cliqueDeptService.selectByCliqueId(clique.getId());
+//			memberSet = new HashSet<String>();
+//			for (CliqueDept dept : deptList) {
+//				memberSet.add(dept.getSecDeptCode());
+//			}
 			List<LongHu> lhList = getLongHuList();
 			for (LongHu longHu : lhList) {//每天龙虎榜
 				Date now = new Date();
-				Map<Long,List<LongHuDetail>> detailMap = new HashMap<Long,List<LongHuDetail>>();
-				List<LongHuDetail> detailList = getLongHuDetailList(longHu.getSymbol(), longHu.getTradeDate());
-				for (LongHuDetail longHuDetail : detailList) {//每条龙虎详情
-					List<CliqueDept> cliqueDeptList = cliqueDeptService.selectByDeptCode(longHuDetail.getSecDeptCode());
-					for (CliqueDept cliqueDept : cliqueDeptList) {//每个营业部属于哪些帮派
-						List<LongHuDetail> cliqueDetailList = detailMap.get(cliqueDept.getCliqueId());
-						if(CollectionUtils.isEmpty(cliqueDetailList)){
-							cliqueDetailList = new ArrayList<LongHuDetail>();
-							detailMap.put(cliqueDept.getCliqueId(), cliqueDetailList);
+				List<List<LongHuDetail>> resultList = getLongHuDetailList(longHu);
+				for (List<LongHuDetail> detailList : resultList) {
+					Map<Long,List<LongHuDetail>> detailMap = new HashMap<Long,List<LongHuDetail>>();
+					for (LongHuDetail longHuDetail : detailList) {//每条龙虎详情
+						List<CliqueDept> cliqueDeptList = cliqueDeptService.selectByDeptCode(longHuDetail.getSecDeptCode());
+						for (CliqueDept cliqueDept : cliqueDeptList) {//每个营业部属于哪些帮派
+							List<LongHuDetail> cliqueDetailList = detailMap.get(cliqueDept.getCliqueId());
+							if(CollectionUtils.isEmpty(cliqueDetailList)){
+								cliqueDetailList = new ArrayList<LongHuDetail>();
+								detailMap.put(cliqueDept.getCliqueId(), cliqueDetailList);
+							}
+							cliqueDetailList.add(longHuDetail);
 						}
-						cliqueDetailList.add(longHuDetail);
 					}
-				}
-				//TODO clique_stock数据没有保存
-				for(Map.Entry<Long,List<LongHuDetail>> entry : detailMap.entrySet()){//遍历所有数据，统计帮派
-					if(entry.getValue().size() > 2){//同一帮派大于两个营业部介入才算
-						//XXX 有可能两个帮派同时大于3个营业部介入，先不管这种情况
-						long cliqueId = entry.getKey();
-						List<LongHuDetail> lhdList = entry.getValue();
-						longHu.setCliqueId(cliqueId);
-						longHu.setSecDeptRelation(lhdList.size());
-						longHu.setGmtUpdate(now);
-						lhService.updateByPrimaryKey(longHu);
-						for (LongHuDetail longHuDetail : lhdList) {
-							longHuDetail.setCliqueId(cliqueId);
-							longHuDetail.setGmtUpdate(now);
-							lhdService.updateByPrimaryKey(longHuDetail);
+					//TODO clique_stock数据没有保存
+					for(Map.Entry<Long,List<LongHuDetail>> entry : detailMap.entrySet()){//遍历所有数据，统计帮派
+						if(entry.getValue().size() > 2){//同一帮派大于两个营业部介入才算
+							//XXX 有可能两个帮派同时大于3个营业部介入，先不管这种情况
+							long cliqueId = entry.getKey();
+							List<LongHuDetail> lhdList = entry.getValue();
+							longHu.setCliqueId(cliqueId);
+							longHu.setSecDeptRelation(lhdList.size());
+							longHu.setGmtUpdate(now);
+							lhService.updateByPrimaryKey(longHu);
+							for (LongHuDetail longHuDetail : lhdList) {
+								longHuDetail.setCliqueId(cliqueId);
+								longHuDetail.setGmtUpdate(now);
+								lhdService.updateByPrimaryKey(longHuDetail);
+							}
+							detailList.removeAll(lhdList);
+							calcOtherDept(cliqueId, detailList);
+							break;
 						}
-						detailList.removeAll(lhdList);
-						calcOtherDept(cliqueId, detailList);
-						break;
-						
 					}
 				}
 			}
-		}
+//		}
 	}
 	
 	
@@ -109,10 +110,13 @@ public class CliqueStockTask {
 	private void calcOtherDept(long cliqueId, List<LongHuDetail> lhdList){
 		Date now = new Date();
 		for (LongHuDetail longHuDetail : lhdList) {
+			if(!longHuDetail.getSecDeptCode().startsWith("8")){
+				continue;
+			}
 			String deptCode = longHuDetail.getSecDeptCode();
 			String tradeDate = longHuDetail.getTradeDate();
 			String startDate = getStartDate(tradeDate);
-			List<LongHuDetail> detailList = lhdService.selectDetail(deptCode, cliqueId, startDate);
+			List<LongHuDetail> detailList = lhdService.selectDetail(deptCode, cliqueId, startDate, tradeDate);
 			if(CollectionUtils.isNotEmpty(detailList)){//之前也操作过这个帮派的股票
 				longHuDetail.setCliqueId(cliqueId);
 				longHuDetail.setGmtUpdate(now);
@@ -129,7 +133,6 @@ public class CliqueStockTask {
 				cliqueDept.setSecDeptCode(deptCode);
 //				cliqueDept.setSecDeptName("");
 				cliqueDeptService.insert(cliqueDept);
-				
 			}
 		}
 		
@@ -159,11 +162,31 @@ public class CliqueStockTask {
 		return lhService.selectByExample(lhExample);
 	}
 	
-	private List<LongHuDetail> getLongHuDetailList(String symbol, String tradeDate){
+	/**
+	 * 返回一日，二日，三日龙虎榜
+	 * @param longHu
+	 * @return
+	 */
+	private List<List<LongHuDetail>> getLongHuDetailList(LongHu longHu){
+		List<List<LongHuDetail>> resultList = new ArrayList<List<LongHuDetail>>();
+		String symbol = longHu.getSymbol();
+		String tradeDate = longHu.getTradeDate();
+		resultList.add(getLongHuDetailList(symbol, tradeDate, 1));
+		if(StringUtil.isNotBlank(longHu.getErType())){
+			resultList.add(getLongHuDetailList(symbol, tradeDate, 2));
+		}
+		if(StringUtil.isNotBlank(longHu.getSrType())){
+			resultList.add(getLongHuDetailList(symbol, tradeDate, 3));
+		}
+		return resultList;
+	}
+	
+	private List<LongHuDetail> getLongHuDetailList(String symbol, String tradeDate, int dateType){
 		LongHuDetailExample lhdExample = new LongHuDetailExample();
 		LongHuDetailExample.Criteria criteria = lhdExample.createCriteria();
 		criteria.andSymbolEqualTo(symbol);
 		criteria.andTradeDateEqualTo(tradeDate);
+		criteria.andDateTypeEqualTo(dateType);
 		return lhdService.selectByExample(lhdExample);
 	}
 
