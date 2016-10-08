@@ -53,7 +53,12 @@
 		#foreach($buyDetail in ${buyList})
         <tr>
           <td>$!{velocityCount}</td>
-          <td><a class="sec-dept" href="javascript:;" code="${buyDetail.secDeptCode}">$!{buyDetail.secDeptName}</a></td>
+          <td>
+			<a class="sec-dept" href="javascript:;" code="${buyDetail.code}">$!{buyDetail.deptAddr}</a>
+			#if(${buyDetail.deptType})
+			<span class="label label-info">${longHuTool.getDeptType(${buyDetail.deptType})}</span>
+			#end
+		  </td>
 		  <td style="color:red">$!{buyDetail.buyAmt}</td>
 		  <td style="color:green">$!{buyDetail.sellAmt}</td>
 		  <td></td>
@@ -81,7 +86,12 @@
 		#foreach($sellDetail in ${sellList})
         <tr>
           <td>$!{velocityCount}</td>
-          <td><a class="sec-dept" href="javascript:;" code="${sellDetail.secDeptCode}">$!{sellDetail.secDeptName}</a></td>
+		  <td>
+			<a class="sec-dept" href="javascript:;" code="${sellDetail.code}">$!{sellDetail.deptAddr}</a>
+			#if(${sellDetail.deptType})
+			<span class="label label-info">${longHuTool.getDeptType(${sellDetail.deptType})}</span>
+			#end
+		  </td>
 		  <td style="color:green">$!{sellDetail.sellAmt}</td>
 		  <td style="color:red">$!{sellDetail.buyAmt}</td>
 		  <td></td>

@@ -38,12 +38,11 @@
                 <div class="control-group">
                   <label class="control-label">类型</label>
                   <div class="controls">
-                    <label>
-                      <input type="radio" name="deptType" />一线游资
+					#foreach($deptType in $deptTypeArr)
+					<label>
+                      <input type="radio" name="deptType" value="$!{deptType.code}" #if($!{secDept.deptType}==$!{deptType.code})checked #end/>$!{deptType.desc}
 					</label>
-                    <label>
-                      <input type="radio" name="deptType" />敢死队
-                    </label>
+					#end
                   </div>
                 </div>
                 <div class="form-actions">

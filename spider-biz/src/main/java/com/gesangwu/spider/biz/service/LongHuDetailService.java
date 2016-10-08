@@ -8,6 +8,7 @@ import com.gesangwu.spider.biz.common.LongHuDetailPair;
 import com.gesangwu.spider.biz.dao.model.LongHuDetail;
 import com.gesangwu.spider.biz.dao.model.LongHuDetailExample;
 import com.gesangwu.spider.biz.dao.model.LongHuDetailExt;
+import com.gesangwu.spider.biz.dao.model.ext.LongHuDetailDept;
 
 public interface LongHuDetailService extends BaseService<LongHuDetail, LongHuDetailExample> {
 	
@@ -18,4 +19,6 @@ public interface LongHuDetailService extends BaseService<LongHuDetail, LongHuDet
 	public void selectByPagination(LongHuDetailExample example, Page<LongHuDetail> page);
 	
 	public void selectDetailExtByExample(LongHuDetailExample example, Page<LongHuDetailExt> page);
+	
+	public List<LongHuDetailDept> selectDetailDeptByExample(LongHuDetailExample example);
 }

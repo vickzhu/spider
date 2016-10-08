@@ -15,6 +15,7 @@ import com.gesangwu.spider.biz.dao.mapper.LongHuDetailMapper;
 import com.gesangwu.spider.biz.dao.model.LongHuDetail;
 import com.gesangwu.spider.biz.dao.model.LongHuDetailExample;
 import com.gesangwu.spider.biz.dao.model.LongHuDetailExt;
+import com.gesangwu.spider.biz.dao.model.ext.LongHuDetailDept;
 import com.gesangwu.spider.biz.service.LongHuDetailService;
 
 @Service
@@ -36,12 +37,12 @@ public class LongHuDetailServiceImpl extends BaseServiceImpl<LongHuDetail, LongH
 
 	@Override
 	public LongHuDetailPair selectDetailPairs(String symbol, String tradeDate, int dateType) {
-		List<LongHuDetail> buyList = getBuyList(symbol, tradeDate, dateType);
-		List<LongHuDetail> sellList = getSellList(symbol, tradeDate, dateType);
+		List<LongHuDetailDept> buyList = getBuyList(symbol, tradeDate, dateType);
+		List<LongHuDetailDept> sellList = getSellList(symbol, tradeDate, dateType);
 		return new LongHuDetailPair(buyList, sellList);
 	}
 	
-	private List<LongHuDetail> getBuyList(String symbol, String tradeDate, int dateType){
+	private List<LongHuDetailDept> getBuyList(String symbol, String tradeDate, int dateType){
 		LongHuDetailExample example = new LongHuDetailExample();
 		example.setOrderByClause("buy_amt desc");
 		example.setOffset(0);
@@ -51,10 +52,10 @@ public class LongHuDetailServiceImpl extends BaseServiceImpl<LongHuDetail, LongH
 		criteria.andTradeDateEqualTo(tradeDate);
 		criteria.andBuyAmtGreaterThan(BigDecimal.ZERO);
 		criteria.andDateTypeEqualTo(dateType);
-		return mapper.selectByExample(example);
+		return mapper.selectDetailDeptByExample(example);
 	}
 	
-	private List<LongHuDetail> getSellList(String symbol, String tradeDate, int dateType){
+	private List<LongHuDetailDept> getSellList(String symbol, String tradeDate, int dateType){
 		LongHuDetailExample example = new LongHuDetailExample();
 		example.setOrderByClause("sell_amt desc");
 		example.setOffset(0);
@@ -64,7 +65,7 @@ public class LongHuDetailServiceImpl extends BaseServiceImpl<LongHuDetail, LongH
 		criteria.andTradeDateEqualTo(tradeDate);
 		criteria.andSellAmtGreaterThan(BigDecimal.ZERO);
 		criteria.andDateTypeEqualTo(dateType);
-		return mapper.selectByExample(example);
+		return mapper.selectDetailDeptByExample(example);
 	}
 
 	@Override
@@ -84,6 +85,12 @@ public class LongHuDetailServiceImpl extends BaseServiceImpl<LongHuDetail, LongH
         int totalCounts = mapper.countByExample(example);
         page.setTotalCounts(totalCounts);
         page.setRecords(mapper.selectDetailExtByExample(example));
+	}
+
+	@Override
+	public List<LongHuDetailDept> selectDetailDeptByExample(
+			LongHuDetailExample example) {
+		return mapper.selectDetailDeptByExample(example);
 	}
 
 }

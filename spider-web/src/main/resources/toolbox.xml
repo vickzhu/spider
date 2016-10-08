@@ -10,5 +10,6 @@
    		<tool class="org.apache.velocity.tools.generic.NumberTool"/>
    		<tool class="org.apache.velocity.tools.generic.MathTool"/>
    		<tool class="com.gesangwu.spider.web.velocity.tool.CompanyTool"/>
+   		<tool class="com.gesangwu.spider.web.velocity.tool.LongHuTool"/>
    	</toolbox>
 </tools>

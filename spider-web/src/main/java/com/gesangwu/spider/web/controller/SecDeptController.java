@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.AjaxResult;
+import com.gesangwu.spider.biz.common.SecDeptType;
 import com.gesangwu.spider.biz.dao.model.Clique;
 import com.gesangwu.spider.biz.dao.model.CliqueDept;
 import com.gesangwu.spider.biz.dao.model.SecDept;
@@ -47,6 +48,7 @@ public class SecDeptController {
 		mav.addObject("secDept", dept);
 		mav.addObject("cliqueList", cliqueList);
 		mav.addObject("allCliqueList", allCliqueList);
+		mav.addObject("deptTypeArr", SecDeptType.values());
 		return mav;
 	}
 	

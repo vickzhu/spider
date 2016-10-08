@@ -116,12 +116,9 @@ public class LongHuController {
 		LongHuDetailExample.Criteria criteria = example.createCriteria();
 		criteria.andSecDeptCodeEqualTo(deptCode);
 		lhDetailService.selectDetailExtByExample(example, page);
-		List<LongHuDetailExt> detailList = page.getRecords();
 		SecDept secDept = secDeptService.selectByCode(deptCode);
 		ModelAndView mav = new ModelAndView("longHuDept");
-		mav.addObject("detailList", detailList);
-		mav.addObject("totalPages", page.getTotalPages());
-		mav.addObject("curPage", pageStr);
+		mav.addObject("page", page);
 		mav.addObject("secDept", secDept);
 		return mav;
 	}

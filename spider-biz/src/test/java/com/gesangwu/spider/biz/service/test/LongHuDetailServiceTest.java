@@ -9,6 +9,7 @@ import org.junit.Test;
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.dao.model.LongHuDetailExample;
 import com.gesangwu.spider.biz.dao.model.LongHuDetailExt;
+import com.gesangwu.spider.biz.dao.model.ext.LongHuDetailDept;
 import com.gesangwu.spider.biz.service.LongHuDetailService;
 import com.gesangwu.spider.biz.test.BaseTest;
 
@@ -17,7 +18,7 @@ public class LongHuDetailServiceTest extends BaseTest {
 	@Resource
 	private LongHuDetailService lhDetailService;
 
-	@Test
+//	@Test
 	public void selectByTradeDate(){
 		Page<LongHuDetailExt> page = new Page<LongHuDetailExt>(1, 10);
 		LongHuDetailExample example = new LongHuDetailExample();
@@ -27,6 +28,17 @@ public class LongHuDetailServiceTest extends BaseTest {
 		List<LongHuDetailExt> detailExtList = page.getRecords();
 		for (LongHuDetailExt longHu : detailExtList) {
 			System.out.println(longHu.getStockName());
+		}
+	}
+	
+	@Test
+	public void selectDetailDeptByExample(){
+		LongHuDetailExample example = new LongHuDetailExample();
+		LongHuDetailExample.Criteria criteria = example.createCriteria();
+		criteria.andIdLessThan(10000l);
+		List<LongHuDetailDept> detailDeptList = lhDetailService.selectDetailDeptByExample(example);
+		for (LongHuDetailDept longHuDetailDept : detailDeptList) {
+			System.out.println(longHuDetailDept.getCode()+":"+longHuDetailDept.getDeptAddr());
 		}
 	}
 }

@@ -41,6 +41,7 @@
                 <tr>
                   <th>#</th>
                   <th>营业部名称</th>
+				  <th>类型</th>
                 </tr>
               </thead>
               <tbody>
@@ -48,6 +49,7 @@
                 <tr>
                   <td>${velocityCount}</td>
                   <td>${cliqueDept.secDeptName}</td>
+                  <td>${cliqueDept.deptType}</td>
                 </tr>
 				#end
               </tbody>
