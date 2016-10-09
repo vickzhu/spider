@@ -99,4 +99,10 @@ public class LongHuDetailServiceImpl extends BaseServiceImpl<LongHuDetail, LongH
 		return mapper.selectDetail(deptCode, longHuCliqueId, startDate, endDate);
 	}
 
+	@Override
+	public int count4Clique(String deptCode, String symbol,
+			long cliqueId, String startDate, String endDate) {
+		return mapper.count4Clique(deptCode, symbol, cliqueId, startDate, endDate);
+	}
+
 }

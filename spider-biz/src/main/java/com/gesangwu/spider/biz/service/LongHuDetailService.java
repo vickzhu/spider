@@ -30,4 +30,14 @@ public interface LongHuDetailService extends BaseService<LongHuDetail, LongHuDet
 	 * @return
 	 */
 	public List<LongHuDetail> selectDetail(String deptCode, long longHuCliqueId, String startDate, String endDate);
+	/**
+	 * 用于计算帮派时统计指定时间内操作过其他股票的次数
+	 * @param deptCode
+	 * @param symbol
+	 * @param cliqueId
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	public int count4Clique(String deptCode, String symbol, long cliqueId, String startDate, String endDate);
 }

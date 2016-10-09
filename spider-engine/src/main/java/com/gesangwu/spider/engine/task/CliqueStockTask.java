@@ -103,7 +103,24 @@ public class CliqueStockTask {
 			}
 			String deptCode = longHuDetail.getSecDeptCode();
 			String tradeDate = longHuDetail.getTradeDate();
-			String startDate = getStartDate(tradeDate);
+			String startDate = getStartDate(tradeDate, 3);
+			int count = lhdService.count4Clique(deptCode, longHuDetail.getSymbol(), cliqueId, startDate, tradeDate);
+			int upCount = countDept(deptCode, tradeDate);
+			if(upCount > 30){//两个月个月内上榜次数太频繁，为一线游资或敢死队
+				int least = upCount / 5;
+				if(count < least) {//三个月之内操作温州帮股票过少
+					continue;
+				}
+			} else if(upCount > 15){//三个月上榜15次以上，但小于30次
+				if(count < 3){//
+					continue;
+				}
+			} else {//三个月内上榜15次及以下
+				if(count == 0){//三个月内操作温州帮股票过少
+					continue;
+				}
+			}
+			
 			List<LongHuDetail> detailList = lhdService.selectDetail(deptCode, cliqueId, startDate, tradeDate);
 			if(CollectionUtils.isNotEmpty(detailList)){//之前也操作过这个帮派的股票
 				longHuDetail.setCliqueId(cliqueId);
@@ -126,14 +143,31 @@ public class CliqueStockTask {
 		
 	}
 	
+	/**
+	 * 查找指定时间段内上榜次数
+	 * @param deptCode
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	private int countDept(String deptCode, String tradeDate){
+		String startDate = getStartDate(tradeDate, 2);
+		LongHuDetailExample example = new LongHuDetailExample();
+		LongHuDetailExample.Criteria criteria = example.createCriteria();
+		criteria.andSecDeptCodeEqualTo(deptCode);
+		criteria.andTradeDateGreaterThan(startDate);
+		criteria.andTradeDateLessThan(tradeDate);
+		return lhdService.countByExample(example);
+	}
+	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
-	private static String getStartDate(String tradeDate){
+	private static String getStartDate(String tradeDate, int gap){
 		try {
 			Date date = sdf.parse(tradeDate);
 			Calendar c = Calendar.getInstance();
 			c.setTime(date);
-			c.set(Calendar.MONTH, c.get(Calendar.MONTH)-3);
+			c.set(Calendar.MONTH, c.get(Calendar.MONTH) - gap);
 			return sdf.format(c.getTime());
 		} catch (ParseException e) {
 			e.printStackTrace();

@@ -147,15 +147,15 @@ public class LongHuInit {
 		LongHu longHu = initLongHu(symbol, result, typeMap);
 		longHu.setTradeDate(formatDate(date));
 		String yrAmt = buildTotalAmt(yrMap);
-		if(StringUtil.isBlank(yrAmt)){
+		if(StringUtil.isNotBlank(yrAmt)){
 			longHu.setYrAmt(yrAmt);
 		}
 		String erAmt = buildTotalAmt(erMap);
-		if(StringUtil.isBlank(erAmt)){
+		if(StringUtil.isNotBlank(erAmt)){
 			longHu.setErAmt(erAmt);
 		}
 		String srAmt = buildTotalAmt(srMap);
-		if(StringUtil.isBlank(srAmt)){
+		if(StringUtil.isNotBlank(srAmt)){
 			longHu.setSrAmt(srAmt);
 		}
 		lhService.insert(longHu);
