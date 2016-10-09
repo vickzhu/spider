@@ -18,7 +18,7 @@ public class LongHuDetailServiceTest extends BaseTest {
 	@Resource
 	private LongHuDetailService lhDetailService;
 
-//	@Test
+	@Test
 	public void selectByTradeDate(){
 		Page<LongHuDetailExt> page = new Page<LongHuDetailExt>(1, 10);
 		LongHuDetailExample example = new LongHuDetailExample();
@@ -42,7 +42,7 @@ public class LongHuDetailServiceTest extends BaseTest {
 		}
 	}
 	
-	@Test
+//	@Test
 	public void selectDetailExt(){
 		lhDetailService.selectDetail("80000000", 1001, "2016-01-01", "2016-02-25");
 	}

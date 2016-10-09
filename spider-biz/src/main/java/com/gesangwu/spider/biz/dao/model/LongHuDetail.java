@@ -6,6 +6,8 @@ import java.util.Date;
 public class LongHuDetail {
     private Long id;
 
+    private Long longHuId;
+
     private String symbol;
 
     private String tradeDate;
@@ -32,6 +34,14 @@ public class LongHuDetail {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getLongHuId() {
+        return longHuId;
+    }
+
+    public void setLongHuId(Long longHuId) {
+        this.longHuId = longHuId;
     }
 
     public String getSymbol() {

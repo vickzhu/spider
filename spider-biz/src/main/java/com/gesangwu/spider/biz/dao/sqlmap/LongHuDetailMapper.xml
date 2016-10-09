@@ -3,6 +3,7 @@
 <mapper namespace="com.gesangwu.spider.biz.dao.mapper.LongHuDetailMapper" >
   <resultMap id="BaseResultMap" type="com.gesangwu.spider.biz.dao.model.LongHuDetail" >
     <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="long_hu_id" property="longHuId" jdbcType="BIGINT" />
     <result column="symbol" property="symbol" jdbcType="VARCHAR" />
     <result column="trade_date" property="tradeDate" jdbcType="VARCHAR" />
     <result column="buy_amt" property="buyAmt" jdbcType="DECIMAL" />
@@ -89,8 +90,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, symbol, trade_date, buy_amt, sell_amt, net_buy, sec_dept_code, date_type, clique_id, 
-    gmt_create, gmt_update
+    id, long_hu_id, symbol, trade_date, buy_amt, sell_amt, net_buy, sec_dept_code, date_type, 
+    clique_id, gmt_create, gmt_update
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetailExample" >
     select
@@ -129,14 +130,14 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into long_hu_detail (symbol, trade_date, buy_amt, 
-      sell_amt, net_buy, sec_dept_code, 
-      date_type, clique_id, gmt_create, 
-      gmt_update)
-    values (#{symbol,jdbcType=VARCHAR}, #{tradeDate,jdbcType=VARCHAR}, #{buyAmt,jdbcType=DECIMAL}, 
-      #{sellAmt,jdbcType=DECIMAL}, #{netBuy,jdbcType=DECIMAL}, #{secDeptCode,jdbcType=VARCHAR}, 
-      #{dateType,jdbcType=INTEGER}, #{cliqueId,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, 
-      #{gmtUpdate,jdbcType=TIMESTAMP})
+    insert into long_hu_detail (long_hu_id, symbol, trade_date, 
+      buy_amt, sell_amt, net_buy, 
+      sec_dept_code, date_type, clique_id, 
+      gmt_create, gmt_update)
+    values (#{longHuId,jdbcType=BIGINT}, #{symbol,jdbcType=VARCHAR}, #{tradeDate,jdbcType=VARCHAR}, 
+      #{buyAmt,jdbcType=DECIMAL}, #{sellAmt,jdbcType=DECIMAL}, #{netBuy,jdbcType=DECIMAL}, 
+      #{secDeptCode,jdbcType=VARCHAR}, #{dateType,jdbcType=INTEGER}, #{cliqueId,jdbcType=BIGINT}, 
+      #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetail" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -144,6 +145,9 @@
     </selectKey>
     insert into long_hu_detail
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="longHuId != null" >
+        long_hu_id,
+      </if>
       <if test="symbol != null" >
         symbol,
       </if>
@@ -176,6 +180,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="longHuId != null" >
+        #{longHuId,jdbcType=BIGINT},
+      </if>
       <if test="symbol != null" >
         #{symbol,jdbcType=VARCHAR},
       </if>
@@ -220,6 +227,9 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
       </if>
+      <if test="record.longHuId != null" >
+        long_hu_id = #{record.longHuId,jdbcType=BIGINT},
+      </if>
       <if test="record.symbol != null" >
         symbol = #{record.symbol,jdbcType=VARCHAR},
       </if>
@@ -258,6 +268,7 @@
   <update id="updateByExample" parameterType="map" >
     update long_hu_detail
     set id = #{record.id,jdbcType=BIGINT},
+      long_hu_id = #{record.longHuId,jdbcType=BIGINT},
       symbol = #{record.symbol,jdbcType=VARCHAR},
       trade_date = #{record.tradeDate,jdbcType=VARCHAR},
       buy_amt = #{record.buyAmt,jdbcType=DECIMAL},
@@ -275,6 +286,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetail" >
     update long_hu_detail
     <set >
+      <if test="longHuId != null" >
+        long_hu_id = #{longHuId,jdbcType=BIGINT},
+      </if>
       <if test="symbol != null" >
         symbol = #{symbol,jdbcType=VARCHAR},
       </if>
@@ -310,7 +324,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetail" >
     update long_hu_detail
-    set symbol = #{symbol,jdbcType=VARCHAR},
+    set long_hu_id = #{longHuId,jdbcType=BIGINT},
+      symbol = #{symbol,jdbcType=VARCHAR},
       trade_date = #{tradeDate,jdbcType=VARCHAR},
       buy_amt = #{buyAmt,jdbcType=DECIMAL},
       sell_amt = #{sellAmt,jdbcType=DECIMAL},
@@ -327,16 +342,16 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into long_hu_detail (symbol, trade_date, buy_amt, 
-      sell_amt, net_buy, sec_dept_code, 
-      sec_dept_name, date_type, gmt_create, 
+    insert into long_hu_detail (long_hu_id, symbol, trade_date, buy_amt, 
+      sell_amt, net_buy, sec_dept_code, date_type, clique_id, gmt_create, 
       gmt_update)
     values 
     <foreach collection="list" index="index" item="detail" separator=",">
-    (#{detail.symbol,jdbcType=VARCHAR}, #{detail.tradeDate,jdbcType=VARCHAR}, #{detail.buyAmt,jdbcType=DECIMAL}, 
-      #{detail.sellAmt,jdbcType=DECIMAL}, #{detail.netBuy,jdbcType=DECIMAL}, #{detail.secDeptCode,jdbcType=INTEGER}, 
-      #{detail.secDeptName,jdbcType=VARCHAR}, #{detail.dateType,jdbcType=INTEGER},#{detail.gmtCreate,jdbcType=TIMESTAMP}, 
-      #{detail.gmtUpdate,jdbcType=TIMESTAMP})
+    (#{detail.longHuId,jdbcType=BIGINT}, #{detail.symbol,jdbcType=VARCHAR},
+      #{detail.tradeDate,jdbcType=VARCHAR}, #{detail.buyAmt,jdbcType=DECIMAL}, 
+      #{detail.sellAmt,jdbcType=DECIMAL}, #{detail.netBuy,jdbcType=DECIMAL}, #{detail.secDeptCode,jdbcType=VARCHAR}, 
+      #{detail.dateType,jdbcType=INTEGER}, #{detail.cliqueId,jdbcType=BIGINT},
+      #{detail.gmtCreate,jdbcType=TIMESTAMP}, #{detail.gmtUpdate,jdbcType=TIMESTAMP})
     </foreach>
   </insert>
   <select id="selectDetailExtByExample" resultMap="DetailResultMap" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetailExample" >
@@ -425,7 +440,11 @@
   <select id="selectDetail" resultMap="BaseResultMap" parameterType="map" >
     select
     	lhd.*
-    from long_hu_detail lhd, long_hu lh where lhd.symbol=lh.symbol and lhd.trade_date = lh.trade_date 
-    and lhd.trade_date &gt; ${startDate} and lhd.trade_date &lt; ${endDate} and lhd.sec_dept_code=${deptCode} and lh.clique_id=${cliqueId}
+    from 
+    	long_hu_detail lhd, long_hu lh 
+    where 
+    	lhd.symbol=lh.symbol and lhd.trade_date = lh.trade_date 
+    	and lhd.trade_date &gt; #{startDate,jdbcType=VARCHAR} and lhd.trade_date &lt; #{endDate,jdbcType=VARCHAR} 
+    	and lhd.sec_dept_code=#{deptCode,jdbcType=VARCHAR} and lh.clique_id=#{cliqueId,jdbcType=BIGINT}
   </select>
 </mapper>

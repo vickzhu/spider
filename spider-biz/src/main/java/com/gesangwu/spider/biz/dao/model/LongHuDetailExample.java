@@ -186,6 +186,66 @@ public class LongHuDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andLongHuIdIsNull() {
+            addCriterion("long_hu_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLongHuIdIsNotNull() {
+            addCriterion("long_hu_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLongHuIdEqualTo(Long value) {
+            addCriterion("long_hu_id =", value, "longHuId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLongHuIdNotEqualTo(Long value) {
+            addCriterion("long_hu_id <>", value, "longHuId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLongHuIdGreaterThan(Long value) {
+            addCriterion("long_hu_id >", value, "longHuId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLongHuIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("long_hu_id >=", value, "longHuId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLongHuIdLessThan(Long value) {
+            addCriterion("long_hu_id <", value, "longHuId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLongHuIdLessThanOrEqualTo(Long value) {
+            addCriterion("long_hu_id <=", value, "longHuId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLongHuIdIn(List<Long> values) {
+            addCriterion("long_hu_id in", values, "longHuId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLongHuIdNotIn(List<Long> values) {
+            addCriterion("long_hu_id not in", values, "longHuId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLongHuIdBetween(Long value1, Long value2) {
+            addCriterion("long_hu_id between", value1, value2, "longHuId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLongHuIdNotBetween(Long value1, Long value2) {
+            addCriterion("long_hu_id not between", value1, value2, "longHuId");
+            return (Criteria) this;
+        }
+
         public Criteria andSymbolIsNull() {
             addCriterion("symbol is null");
             return (Criteria) this;

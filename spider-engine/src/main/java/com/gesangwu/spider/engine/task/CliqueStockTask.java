@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -17,7 +15,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.util.StringUtil;
-import com.gesangwu.spider.biz.dao.model.Clique;
 import com.gesangwu.spider.biz.dao.model.CliqueDept;
 import com.gesangwu.spider.biz.dao.model.LongHu;
 import com.gesangwu.spider.biz.dao.model.LongHuDetail;
@@ -49,56 +46,47 @@ public class CliqueStockTask {
 	@Resource
 	private LongHuDetailService lhdService;
 	
-	private Set<String> memberSet;//保存现有的帮派成员
 	
 	public void execute(){
-//		List<Clique> cliqueList = cliqueService.selectByExample(null);
-//		for (Clique clique : cliqueList) {
-//			List<CliqueDept> deptList = cliqueDeptService.selectByCliqueId(clique.getId());
-//			memberSet = new HashSet<String>();
-//			for (CliqueDept dept : deptList) {
-//				memberSet.add(dept.getSecDeptCode());
-//			}
-			List<LongHu> lhList = getLongHuList();
-			for (LongHu longHu : lhList) {//每天龙虎榜
-				Date now = new Date();
-				List<List<LongHuDetail>> resultList = getLongHuDetailList(longHu);
-				for (List<LongHuDetail> detailList : resultList) {
-					Map<Long,List<LongHuDetail>> detailMap = new HashMap<Long,List<LongHuDetail>>();
-					for (LongHuDetail longHuDetail : detailList) {//每条龙虎详情
-						List<CliqueDept> cliqueDeptList = cliqueDeptService.selectByDeptCode(longHuDetail.getSecDeptCode());
-						for (CliqueDept cliqueDept : cliqueDeptList) {//每个营业部属于哪些帮派
-							List<LongHuDetail> cliqueDetailList = detailMap.get(cliqueDept.getCliqueId());
-							if(CollectionUtils.isEmpty(cliqueDetailList)){
-								cliqueDetailList = new ArrayList<LongHuDetail>();
-								detailMap.put(cliqueDept.getCliqueId(), cliqueDetailList);
-							}
-							cliqueDetailList.add(longHuDetail);
+		List<LongHu> lhList = getLongHuList();
+		for (LongHu longHu : lhList) {//每天龙虎榜
+			Date now = new Date();
+			List<List<LongHuDetail>> resultList = getLongHuDetailList(longHu);
+			for (List<LongHuDetail> detailList : resultList) {
+				Map<Long,List<LongHuDetail>> detailMap = new HashMap<Long,List<LongHuDetail>>();
+				for (LongHuDetail longHuDetail : detailList) {//每条龙虎详情
+					List<CliqueDept> cliqueDeptList = cliqueDeptService.selectByDeptCode(longHuDetail.getSecDeptCode());
+					for (CliqueDept cliqueDept : cliqueDeptList) {//每个营业部属于哪些帮派
+						List<LongHuDetail> cliqueDetailList = detailMap.get(cliqueDept.getCliqueId());
+						if(CollectionUtils.isEmpty(cliqueDetailList)){
+							cliqueDetailList = new ArrayList<LongHuDetail>();
+							detailMap.put(cliqueDept.getCliqueId(), cliqueDetailList);
 						}
+						cliqueDetailList.add(longHuDetail);
 					}
-					//TODO clique_stock数据没有保存
-					for(Map.Entry<Long,List<LongHuDetail>> entry : detailMap.entrySet()){//遍历所有数据，统计帮派
-						if(entry.getValue().size() > 2){//同一帮派大于两个营业部介入才算
-							//XXX 有可能两个帮派同时大于3个营业部介入，先不管这种情况
-							long cliqueId = entry.getKey();
-							List<LongHuDetail> lhdList = entry.getValue();
-							longHu.setCliqueId(cliqueId);
-							longHu.setSecDeptRelation(lhdList.size());
-							longHu.setGmtUpdate(now);
-							lhService.updateByPrimaryKey(longHu);
-							for (LongHuDetail longHuDetail : lhdList) {
-								longHuDetail.setCliqueId(cliqueId);
-								longHuDetail.setGmtUpdate(now);
-								lhdService.updateByPrimaryKey(longHuDetail);
-							}
-							detailList.removeAll(lhdList);
-							calcOtherDept(cliqueId, detailList);
-							break;
+				}
+				//TODO clique_stock数据没有保存
+				for(Map.Entry<Long,List<LongHuDetail>> entry : detailMap.entrySet()){//遍历所有数据，统计帮派
+					if(entry.getValue().size() > 2){//同一帮派大于两个营业部介入才算
+						//XXX 有可能两个帮派同时大于3个营业部介入，先不管这种情况
+						long cliqueId = entry.getKey();
+						List<LongHuDetail> lhdList = entry.getValue();
+						longHu.setCliqueId(cliqueId);
+						longHu.setSecDeptRelation(lhdList.size());
+						longHu.setGmtUpdate(now);
+						lhService.updateByPrimaryKey(longHu);
+						for (LongHuDetail longHuDetail : lhdList) {
+							longHuDetail.setCliqueId(cliqueId);
+							longHuDetail.setGmtUpdate(now);
+							lhdService.updateByPrimaryKey(longHuDetail);
 						}
+						detailList.removeAll(lhdList);
+						calcOtherDept(cliqueId, detailList);
+						break;
 					}
 				}
 			}
-//		}
+		}
 	}
 	
 	
@@ -157,7 +145,7 @@ public class CliqueStockTask {
 		LongHuExample lhExample = new LongHuExample();
 		lhExample.setOrderByClause("trade_date asc");
 		LongHuExample.Criteria criteria = lhExample.createCriteria();
-		criteria.andTradeDateGreaterThanOrEqualTo("2015-03-01");
+		criteria.andTradeDateGreaterThan("2015-03-01");
 		criteria.andCliqueIdIsNull();
 		return lhService.selectByExample(lhExample);
 	}
