@@ -66,24 +66,33 @@ public class CliqueStockTask {
 					}
 				}
 				//TODO clique_stock数据没有保存
+				long cliqueId = 0;
+				int cliqueSize = 0;
 				for(Map.Entry<Long,List<LongHuDetail>> entry : detailMap.entrySet()){//遍历所有数据，统计帮派
-					if(entry.getValue().size() > 2){//同一帮派大于两个营业部介入才算
-						//XXX 有可能两个帮派同时大于3个营业部介入，先不管这种情况
-						long cliqueId = entry.getKey();
-						List<LongHuDetail> lhdList = entry.getValue();
-						longHu.setCliqueId(cliqueId);
-						longHu.setSecDeptRelation(lhdList.size());
-						longHu.setGmtUpdate(now);
-						lhService.updateByPrimaryKey(longHu);
-						for (LongHuDetail longHuDetail : lhdList) {
-							longHuDetail.setCliqueId(cliqueId);
-							longHuDetail.setGmtUpdate(now);
-							lhdService.updateByPrimaryKey(longHuDetail);
-						}
-						detailList.removeAll(lhdList);
-						calcOtherDept(cliqueId, detailList);
-						break;
+					int size = entry.getValue().size();
+					if(size > cliqueSize){
+						cliqueId = entry.getKey();
 					}
+				}
+				if(cliqueSize > 2){//已成帮派
+					
+				} else {
+					//TODO 判断其他营业部是否操作过相应的帮派，如果操作过，则也生效
+				}
+				if(cliqueId > 0){
+					List<LongHuDetail> lhdList = detailMap.get(cliqueId);
+					longHu.setCliqueId(cliqueId);
+					longHu.setSecDeptRelation(lhdList.size());
+					longHu.setGmtUpdate(now);
+					lhService.updateByPrimaryKey(longHu);
+					for (LongHuDetail longHuDetail : lhdList) {
+						longHuDetail.setCliqueId(cliqueId);
+						longHuDetail.setGmtUpdate(now);
+						lhdService.updateByPrimaryKey(longHuDetail);
+					}
+					detailList.removeAll(lhdList);
+					calcOtherDept(cliqueId, detailList);
+					break;
 				}
 			}
 		}
@@ -106,7 +115,9 @@ public class CliqueStockTask {
 			String startDate = getStartDate(tradeDate, 3);
 			int count = lhdService.count4Clique(deptCode, longHuDetail.getSymbol(), cliqueId, startDate, tradeDate);
 			int upCount = countDept(deptCode, tradeDate);
-			if(upCount > 30){//两个月个月内上榜次数太频繁，为一线游资或敢死队
+			if(upCount > 60){//三个月内上榜次数频繁，为一线游资或敢死队
+				continue;
+			}else if(upCount > 30){
 				int least = upCount / 5;
 				if(count < least) {//三个月之内操作温州帮股票过少
 					continue;
