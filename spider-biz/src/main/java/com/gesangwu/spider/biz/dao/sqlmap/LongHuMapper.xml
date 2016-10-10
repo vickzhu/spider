@@ -481,4 +481,26 @@
   <select id="selectTradeDate" resultType="java.lang.String" parameterType="java.lang.String">
   	select trade_date from long_hu where symbol = #{symbol,jdbcType=VARCHAR} order by trade_date DESC
   </select>
+  <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true">
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into long_hu (symbol, stock_name, trade_date, 
+      price, chg, chg_percent, 
+      turnover, amplitude, tot_mkt_val, 
+      neg_mkt_val, sec_dept_relation, operate_clique, 
+      yr_type, yr_amt, er_type, 
+      er_amt, sr_type, sr_amt, 
+      gmt_create, gmt_update)
+    values 
+    <foreach collection="list" index="index" item="longHu" separator=",">
+    (#{longHu.symbol,jdbcType=VARCHAR}, #{longHu.stockName,jdbcType=VARCHAR}, #{longHu.tradeDate,jdbcType=VARCHAR}, 
+      #{longHu.price,jdbcType=DOUBLE}, #{longHu.chg,jdbcType=DOUBLE}, #{longHu.chgPercent,jdbcType=DOUBLE}, 
+      #{longHu.turnover,jdbcType=DOUBLE}, #{longHu.amplitude,jdbcType=DOUBLE}, #{longHu.totMktVal,jdbcType=DOUBLE}, 
+      #{longHu.negMktVal,jdbcType=DOUBLE}, #{longHu.secDeptRelation,jdbcType=INTEGER}, #{longHu.operateClique,jdbcType=BIGINT}, 
+      #{longHu.yrType,jdbcType=VARCHAR}, #{longHu.yrAmt,jdbcType=VARCHAR}, #{longHu.erType,jdbcType=VARCHAR}, 
+      #{longHu.erAmt,jdbcType=VARCHAR}, #{longHu.srType,jdbcType=VARCHAR}, #{longHu.srAmt,jdbcType=VARCHAR}, 
+      #{longHu.gmtCreate,jdbcType=TIMESTAMP}, #{longHu.gmtUpdate,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
 </mapper>

@@ -16,4 +16,6 @@ public interface LongHuService extends BaseService<LongHu, LongHuExample> {
 	
 	LongHu selectLatestBySymbol(String symbol);
 	
+	void insertBatch(List<LongHu> longHuList);
+	
 }

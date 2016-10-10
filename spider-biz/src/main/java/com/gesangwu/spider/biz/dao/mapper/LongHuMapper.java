@@ -14,4 +14,6 @@ public interface LongHuMapper extends BaseMapper<LongHu, LongHuExample> {
 	
 	List<String> selectTradeDate(@Param("symbol")String symbol);
 	
+	void insertBatch(List<LongHu> longHuList);
+	
 }

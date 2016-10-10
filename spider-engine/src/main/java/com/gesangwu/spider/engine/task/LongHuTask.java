@@ -1,7 +1,9 @@
 package com.gesangwu.spider.engine.task;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -64,6 +66,8 @@ public class LongHuTask {
 	
 	private void parse(String content){
 		Matcher m =  p1.matcher(content);
+		Date now = new Date();
+		List<LongHu> longHuList = new ArrayList<LongHu>();
 		while(m.find()){
 			LongHu longHu = new LongHu();
 			String code = m.group(1);
@@ -76,10 +80,19 @@ public class LongHuTask {
 			longHu.setPrice(Double.valueOf(price));
 			longHu.setChgPercent(Double.valueOf(chg));
 			longHu.setTurnover(Double.valueOf(turnover));
-			longHu.setGmtCreate(new Date());
+			longHu.setGmtCreate(now);
+			longHuList.add(longHu);
+		}
+		lhService.insertBatch(longHuList);
+		for (LongHu longHu : longHuList) {
+			
 		}
 	}
-	
+	private String buildDetailUrl(){
+		StringBuilder sb = new StringBuilder();
+		sb.append("http://vip.stock.finance.sina.com.cn/q/api/jsonp.php/var%20details=/InvestConsultService.getLHBComBSData?symbol=000518&tradedate=2016-10-10&type=05");
+		return sb.toString();
+	}
 	public static void main(String[] args){
 		LongHuTask task = new LongHuTask();
 		task.execute();

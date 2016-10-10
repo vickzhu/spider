@@ -58,4 +58,9 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 		return CollectionUtils.isEmpty(longHuList) ? null : longHuList.get(0);
 	}
 
+	@Override
+	public void insertBatch(List<LongHu> longHuList) {
+		mapper.insertBatch(longHuList);
+	}
+
 }
