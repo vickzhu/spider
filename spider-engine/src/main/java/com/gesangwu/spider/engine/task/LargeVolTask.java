@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
@@ -41,7 +40,7 @@ public class LargeVolTask {
 	@Resource
 	private LargeVolStatisService statisService;
 	
-	@Scheduled(cron = "0 0/1 9-14 * * MON-FRI")
+//	@Scheduled(cron = "0 0/1 9-14 * * MON-FRI")
 	public void execute(){
 		if(!TradeTimeUtil.checkTime()){
 			return;

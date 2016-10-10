@@ -34,7 +34,7 @@ public class FLoatShareCalc {
 	@Resource
 	private ShareHolderService holderService;
 	
-	@Scheduled(cron = "0 0 4 * * MON-FRI")
+//	@Scheduled(cron = "0 0 4 * * MON-FRI")
 	public void execute(){
 		int cpp = 20;
 		int count = companyService.countByExample(null);

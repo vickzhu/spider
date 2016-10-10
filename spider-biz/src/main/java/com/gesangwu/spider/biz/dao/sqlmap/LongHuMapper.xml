@@ -14,7 +14,7 @@
     <result column="tot_mkt_val" property="totMktVal" jdbcType="DOUBLE" />
     <result column="neg_mkt_val" property="negMktVal" jdbcType="DOUBLE" />
     <result column="sec_dept_relation" property="secDeptRelation" jdbcType="INTEGER" />
-    <result column="clique_id" property="cliqueId" jdbcType="BIGINT" />
+    <result column="operate_clique" property="operateClique" jdbcType="BIGINT" />
     <result column="yr_type" property="yrType" jdbcType="VARCHAR" />
     <result column="yr_amt" property="yrAmt" jdbcType="VARCHAR" />
     <result column="er_type" property="erType" jdbcType="VARCHAR" />
@@ -84,7 +84,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, symbol, stock_name, trade_date, price, chg, chg_percent, turnover, amplitude, 
-    tot_mkt_val, neg_mkt_val, sec_dept_relation, clique_id, yr_type, yr_amt, er_type, 
+    tot_mkt_val, neg_mkt_val, sec_dept_relation, operate_clique, yr_type, yr_amt, er_type, 
     er_amt, sr_type, sr_amt, gmt_create, gmt_update
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.LongHuExample" >
@@ -127,14 +127,14 @@
     insert into long_hu (symbol, stock_name, trade_date, 
       price, chg, chg_percent, 
       turnover, amplitude, tot_mkt_val, 
-      neg_mkt_val, sec_dept_relation, clique_id, 
+      neg_mkt_val, sec_dept_relation, operate_clique, 
       yr_type, yr_amt, er_type, 
       er_amt, sr_type, sr_amt, 
       gmt_create, gmt_update)
     values (#{symbol,jdbcType=VARCHAR}, #{stockName,jdbcType=VARCHAR}, #{tradeDate,jdbcType=VARCHAR}, 
       #{price,jdbcType=DOUBLE}, #{chg,jdbcType=DOUBLE}, #{chgPercent,jdbcType=DOUBLE}, 
       #{turnover,jdbcType=DOUBLE}, #{amplitude,jdbcType=DOUBLE}, #{totMktVal,jdbcType=DOUBLE}, 
-      #{negMktVal,jdbcType=DOUBLE}, #{secDeptRelation,jdbcType=INTEGER}, #{cliqueId,jdbcType=BIGINT}, 
+      #{negMktVal,jdbcType=DOUBLE}, #{secDeptRelation,jdbcType=INTEGER}, #{operateClique,jdbcType=BIGINT}, 
       #{yrType,jdbcType=VARCHAR}, #{yrAmt,jdbcType=VARCHAR}, #{erType,jdbcType=VARCHAR}, 
       #{erAmt,jdbcType=VARCHAR}, #{srType,jdbcType=VARCHAR}, #{srAmt,jdbcType=VARCHAR}, 
       #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP})
@@ -178,8 +178,8 @@
       <if test="secDeptRelation != null" >
         sec_dept_relation,
       </if>
-      <if test="cliqueId != null" >
-        clique_id,
+      <if test="operateClique != null" >
+        operate_clique,
       </if>
       <if test="yrType != null" >
         yr_type,
@@ -240,8 +240,8 @@
       <if test="secDeptRelation != null" >
         #{secDeptRelation,jdbcType=INTEGER},
       </if>
-      <if test="cliqueId != null" >
-        #{cliqueId,jdbcType=BIGINT},
+      <if test="operateClique != null" >
+        #{operateClique,jdbcType=BIGINT},
       </if>
       <if test="yrType != null" >
         #{yrType,jdbcType=VARCHAR},
@@ -314,8 +314,8 @@
       <if test="record.secDeptRelation != null" >
         sec_dept_relation = #{record.secDeptRelation,jdbcType=INTEGER},
       </if>
-      <if test="record.cliqueId != null" >
-        clique_id = #{record.cliqueId,jdbcType=BIGINT},
+      <if test="record.operateClique != null" >
+        operate_clique = #{record.operateClique,jdbcType=BIGINT},
       </if>
       <if test="record.yrType != null" >
         yr_type = #{record.yrType,jdbcType=VARCHAR},
@@ -360,7 +360,7 @@
       tot_mkt_val = #{record.totMktVal,jdbcType=DOUBLE},
       neg_mkt_val = #{record.negMktVal,jdbcType=DOUBLE},
       sec_dept_relation = #{record.secDeptRelation,jdbcType=INTEGER},
-      clique_id = #{record.cliqueId,jdbcType=BIGINT},
+      operate_clique = #{record.operateClique,jdbcType=BIGINT},
       yr_type = #{record.yrType,jdbcType=VARCHAR},
       yr_amt = #{record.yrAmt,jdbcType=VARCHAR},
       er_type = #{record.erType,jdbcType=VARCHAR},
@@ -409,8 +409,8 @@
       <if test="secDeptRelation != null" >
         sec_dept_relation = #{secDeptRelation,jdbcType=INTEGER},
       </if>
-      <if test="cliqueId != null" >
-        clique_id = #{cliqueId,jdbcType=BIGINT},
+      <if test="operateClique != null" >
+        operate_clique = #{operateClique,jdbcType=BIGINT},
       </if>
       <if test="yrType != null" >
         yr_type = #{yrType,jdbcType=VARCHAR},
@@ -452,7 +452,7 @@
       tot_mkt_val = #{totMktVal,jdbcType=DOUBLE},
       neg_mkt_val = #{negMktVal,jdbcType=DOUBLE},
       sec_dept_relation = #{secDeptRelation,jdbcType=INTEGER},
-      clique_id = #{cliqueId,jdbcType=BIGINT},
+      operate_clique = #{operateClique,jdbcType=BIGINT},
       yr_type = #{yrType,jdbcType=VARCHAR},
       yr_amt = #{yrAmt,jdbcType=VARCHAR},
       er_type = #{erType,jdbcType=VARCHAR},

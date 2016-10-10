@@ -6,7 +6,6 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.web.tool.Page;
@@ -35,7 +34,7 @@ public class FindMilestoneTask {
 	@Resource
 	private BankerTraceService traceService;
 
-	@Scheduled(cron = "0 30 15 * * MON-FRI")
+//	@Scheduled(cron = "0 30 15 * * MON-FRI")
 	public void execute(){
 		List<Company> companyList = LittleCompanyHolder.getCompanyList();
 		for (Company company : companyList) {

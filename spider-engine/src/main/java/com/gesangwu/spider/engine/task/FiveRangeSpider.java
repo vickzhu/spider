@@ -1,6 +1,5 @@
 package com.gesangwu.spider.engine.task;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -45,7 +44,7 @@ public class FiveRangeSpider {
 	@Resource
 	private FiveRangeStatisService statisService;
 	
-	@Scheduled(cron = "0 0/1 9-14 * * MON-FRI")
+//	@Scheduled(cron = "0 0/1 9-14 * * MON-FRI")
 	public void execute(){
 		if(!TradeTimeUtil.checkTime()){
 			return;

@@ -27,7 +27,7 @@ public class LongHu {
 
     private Integer secDeptRelation;
 
-    private Long cliqueId;
+    private Long operateClique;
 
     private String yrType;
 
@@ -141,12 +141,12 @@ public class LongHu {
         this.secDeptRelation = secDeptRelation;
     }
 
-    public Long getCliqueId() {
-        return cliqueId;
+    public Long getOperateClique() {
+        return operateClique;
     }
 
-    public void setCliqueId(Long cliqueId) {
-        this.cliqueId = cliqueId;
+    public void setOperateClique(Long operateClique) {
+        this.operateClique = operateClique;
     }
 
     public String getYrType() {

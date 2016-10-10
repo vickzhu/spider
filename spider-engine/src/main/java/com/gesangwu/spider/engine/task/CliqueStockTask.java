@@ -50,52 +50,82 @@ public class CliqueStockTask {
 	public void execute(){
 		List<LongHu> lhList = getLongHuList();
 		for (LongHu longHu : lhList) {//每天龙虎榜
-			Date now = new Date();
 			List<List<LongHuDetail>> resultList = getLongHuDetailList(longHu);
-			for (List<LongHuDetail> detailList : resultList) {
-				Map<Long,List<LongHuDetail>> detailMap = new HashMap<Long,List<LongHuDetail>>();
-				for (LongHuDetail longHuDetail : detailList) {//每条龙虎详情
-					List<CliqueDept> cliqueDeptList = cliqueDeptService.selectByDeptCode(longHuDetail.getSecDeptCode());
-					for (CliqueDept cliqueDept : cliqueDeptList) {//每个营业部属于哪些帮派
-						List<LongHuDetail> cliqueDetailList = detailMap.get(cliqueDept.getCliqueId());
-						if(CollectionUtils.isEmpty(cliqueDetailList)){
-							cliqueDetailList = new ArrayList<LongHuDetail>();
-							detailMap.put(cliqueDept.getCliqueId(), cliqueDetailList);
-						}
-						cliqueDetailList.add(longHuDetail);
-					}
-				}
+			for (List<LongHuDetail> detailList : resultList) {//不同日期类型的龙虎榜详情(一日，二日，三日)
+				Map<Long,List<LongHuDetail>> detailMap = listToCliqueMap(detailList);
 				//TODO clique_stock数据没有保存
 				long cliqueId = 0;
 				int cliqueSize = 0;
 				for(Map.Entry<Long,List<LongHuDetail>> entry : detailMap.entrySet()){//遍历所有数据，统计帮派
 					int size = entry.getValue().size();
 					if(size > cliqueSize){
+						cliqueSize = size;
 						cliqueId = entry.getKey();
 					}
 				}
 				if(cliqueSize > 2){//已成帮派
-					
-				} else {
-					//TODO 判断其他营业部是否操作过相应的帮派，如果操作过，则也生效
-				}
-				if(cliqueId > 0){
 					List<LongHuDetail> lhdList = detailMap.get(cliqueId);
-					longHu.setCliqueId(cliqueId);
-					longHu.setSecDeptRelation(lhdList.size());
-					longHu.setGmtUpdate(now);
-					lhService.updateByPrimaryKey(longHu);
-					for (LongHuDetail longHuDetail : lhdList) {
-						longHuDetail.setCliqueId(cliqueId);
-						longHuDetail.setGmtUpdate(now);
-						lhdService.updateByPrimaryKey(longHuDetail);
-					}
+					updateCliqueOperate(cliqueId, longHu, lhdList);
 					detailList.removeAll(lhdList);
 					calcOtherDept(cliqueId, detailList);
-					break;
+				} else if(cliqueSize > 0) {// 判断其他营业部是否操作过相应的帮派，如果操作过，则也生效
+					List<LongHuDetail> lhdList = detailMap.get(cliqueId);
+					detailList.removeAll(lhdList);
+					List<LongHuDetail> tmpList = new ArrayList<LongHuDetail>();
+					for (LongHuDetail detail : lhdList) {
+						String deptCode = detail.getSecDeptCode();
+						String tradeDate = detail.getTradeDate();
+						String startDate = getStartDate(tradeDate, 3);
+						int cliqueCount = lhdService.count4Clique(deptCode, detail.getSymbol(), cliqueId, startDate, tradeDate);
+						int upCount = countDept(deptCode, tradeDate, 3);
+						if(cliqueCount * 2 >= upCount){//跟帮操作次数占总上榜次数50%及以上
+							tmpList.add(detail);
+						}
+					}
+					if(cliqueSize + tmpList.size() > 3){//可以判断为一个帮派操作
+						updateCliqueOperate(cliqueId, longHu, tmpList);
+						detailList.removeAll(tmpList);
+						calcOtherDept(cliqueId, detailList);
+					}
+				} else {
+					continue;
 				}
 			}
 		}
+	}
+	
+	private void updateCliqueOperate(long cliqueId, LongHu longHu, List<LongHuDetail> lhdList){
+		Date now = new Date();
+		longHu.setOperateClique(cliqueId);
+		longHu.setSecDeptRelation(lhdList.size());
+		longHu.setGmtUpdate(now);
+		lhService.updateByPrimaryKey(longHu);
+		for (LongHuDetail longHuDetail : lhdList) {
+			longHuDetail.setCliqueId(cliqueId);
+			longHuDetail.setGmtUpdate(now);
+			lhdService.updateByPrimaryKey(longHuDetail);
+		}
+	}
+	
+	/**
+	 * 根据营业部所属帮派讲详情转换为map，key为帮派，value为详情中该帮派操作过的记录
+	 * @param detailList
+	 * @return
+	 */
+	private Map<Long,List<LongHuDetail>> listToCliqueMap(List<LongHuDetail> detailList){
+		Map<Long,List<LongHuDetail>> detailMap = new HashMap<Long,List<LongHuDetail>>();
+		for (LongHuDetail longHuDetail : detailList) {//每条龙虎详情
+			List<CliqueDept> cliqueDeptList = cliqueDeptService.selectByDeptCode(longHuDetail.getSecDeptCode());
+			for (CliqueDept cliqueDept : cliqueDeptList) {//每个营业部属于哪些帮派
+				List<LongHuDetail> cliqueDetailList = detailMap.get(cliqueDept.getCliqueId());
+				if(CollectionUtils.isEmpty(cliqueDetailList)){
+					cliqueDetailList = new ArrayList<LongHuDetail>();
+					detailMap.put(cliqueDept.getCliqueId(), cliqueDetailList);
+				}
+				cliqueDetailList.add(longHuDetail);
+			}
+		}
+		return detailMap;
 	}
 	
 	
@@ -104,40 +134,20 @@ public class CliqueStockTask {
 	 * @param cliqueId
 	 * @param lhdList
 	 */
-	private void calcOtherDept(long cliqueId, List<LongHuDetail> lhdList){
+	public void calcOtherDept(long cliqueId, List<LongHuDetail> lhdList){
 		Date now = new Date();
-		for (LongHuDetail longHuDetail : lhdList) {
-			if(!longHuDetail.getSecDeptCode().startsWith("8")){
+		for (LongHuDetail detail : lhdList) {
+			if(!detail.getSecDeptCode().startsWith("8")){
 				continue;
 			}
-			String deptCode = longHuDetail.getSecDeptCode();
-			String tradeDate = longHuDetail.getTradeDate();
-			String startDate = getStartDate(tradeDate, 3);
-			int count = lhdService.count4Clique(deptCode, longHuDetail.getSymbol(), cliqueId, startDate, tradeDate);
-			int upCount = countDept(deptCode, tradeDate);
-			if(upCount > 60){//三个月内上榜次数频繁，为一线游资或敢死队
-				continue;
-			}else if(upCount > 30){
-				int least = upCount / 5;
-				if(count < least) {//三个月之内操作温州帮股票过少
-					continue;
-				}
-			} else if(upCount > 15){//三个月上榜15次以上，但小于30次
-				if(count < 3){//
-					continue;
-				}
-			} else {//三个月内上榜15次及以下
-				if(count == 0){//三个月内操作温州帮股票过少
-					continue;
-				}
-			}
-			
-			List<LongHuDetail> detailList = lhdService.selectDetail(deptCode, cliqueId, startDate, tradeDate);
+			String deptCode = detail.getSecDeptCode();
+			String tradeDate = detail.getTradeDate();
+			List<LongHuDetail> detailList = cliqueOperateList(cliqueId, deptCode, tradeDate, detail.getSymbol());
 			if(CollectionUtils.isNotEmpty(detailList)){//之前也操作过这个帮派的股票
-				longHuDetail.setCliqueId(cliqueId);
-				longHuDetail.setGmtUpdate(now);
-				lhdService.updateByPrimaryKey(longHuDetail);
-				for (LongHuDetail detailHistory : detailList) {
+				detail.setCliqueId(cliqueId);
+				detail.setGmtUpdate(now);
+				lhdService.updateByPrimaryKey(detail);
+				for (LongHuDetail detailHistory : detailList) {//把找出来的历史数据也更新为相应帮派
 					detailHistory.setCliqueId(cliqueId);
 					detailHistory.setGmtUpdate(now);
 					lhdService.updateByPrimaryKey(detailHistory);
@@ -147,11 +157,42 @@ public class CliqueStockTask {
 				cliqueDept.setDeptType(2);
 				cliqueDept.setGmtCreate(now);
 				cliqueDept.setSecDeptCode(deptCode);
-//				cliqueDept.setSecDeptName("");
+				cliqueDept.setSecDeptName(detail.getId().toString());//XXX 实验用，必须去掉
 				cliqueDeptService.insert(cliqueDept);
 			}
 		}
 		
+	}
+	
+	/**
+	 * 返回指定营业部指定时间内操作过的帮派其他股票
+	 * @param cliqueId
+	 * @param deptCode
+	 * @param tradeDate
+	 * @param excludeSymbol	要排除的股票
+	 * @return
+	 */
+	private List<LongHuDetail> cliqueOperateList(long cliqueId, String deptCode, String tradeDate, String excludeSymbol){
+		String startDate = getStartDate(tradeDate, 3);
+		int count = lhdService.count4Clique(deptCode, excludeSymbol, cliqueId, startDate, tradeDate);
+		int upCount = countDept(deptCode, tradeDate, 3);
+		if(upCount > 60){//三个月内上榜次数频繁，为一线游资或敢死队
+			return null;
+		}else if(upCount > 30){
+			int least = upCount / 5;
+			if(count < least) {//三个月之内操作温州帮股票过少
+				return null;
+			}
+		} else if(upCount > 15){//三个月上榜15次以上，但小于30次
+			if(count < 2){//
+				return null;
+			}
+		} else {//三个月内上榜15次及以下
+			if(count == 0){//三个月内操作温州帮股票过少
+				return null;
+			}
+		}
+		return lhdService.selectDetail(deptCode, cliqueId, startDate, tradeDate);
 	}
 	
 	/**
@@ -161,8 +202,8 @@ public class CliqueStockTask {
 	 * @param endDate
 	 * @return
 	 */
-	private int countDept(String deptCode, String tradeDate){
-		String startDate = getStartDate(tradeDate, 2);
+	private int countDept(String deptCode, String tradeDate, int gap){
+		String startDate = getStartDate(tradeDate, gap);
 		LongHuDetailExample example = new LongHuDetailExample();
 		LongHuDetailExample.Criteria criteria = example.createCriteria();
 		criteria.andSecDeptCodeEqualTo(deptCode);
@@ -191,7 +232,7 @@ public class CliqueStockTask {
 		lhExample.setOrderByClause("trade_date asc");
 		LongHuExample.Criteria criteria = lhExample.createCriteria();
 		criteria.andTradeDateGreaterThan("2015-03-01");
-		criteria.andCliqueIdIsNull();
+		criteria.andOperateCliqueIsNull();
 		return lhService.selectByExample(lhExample);
 	}
 	

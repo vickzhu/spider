@@ -55,7 +55,7 @@
 				  <td style="color:red">$!{detail.buyAmt}</td>
 				  <td style="color:green">$!{detail.sellAmt}</td>
 				  <td>$!{detail.netBuy}</td>
-				  <td>$!{detail.cliqueId}</td>
+				  <td>$!{detail.operateClique}</td>
                 </tr>
 				#end
               </tbody>

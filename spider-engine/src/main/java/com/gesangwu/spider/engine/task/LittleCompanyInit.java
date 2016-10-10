@@ -23,7 +23,7 @@ public class LittleCompanyInit {
 	@Resource
 	private CompanyService companyService;
 	
-	@Scheduled(cron = "0 0 8 * * MON-FRI")
+//	@Scheduled(cron = "0 0 8 * * MON-FRI")
 	public void load(){
 		List<Company> list = companyService.loadLittleCompany();
 		LittleCompanyHolder.setCompanyList(list);

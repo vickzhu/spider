@@ -19,7 +19,7 @@ public class LongHuDetailExt extends LongHuDetail {
 
     private Double negMktVal;
 
-    private Long cliqueId;
+    private Long operateClique;
 
 	public String getStockName() {
 		return stockName;
@@ -85,13 +85,12 @@ public class LongHuDetailExt extends LongHuDetail {
 		this.negMktVal = negMktVal;
 	}
 
-	public Long getCliqueId() {
-		return cliqueId;
+	public Long getOperateClique() {
+		return operateClique;
 	}
 
-	public void setCliqueId(Long cliqueId) {
-		this.cliqueId = cliqueId;
+	public void setOperateClique(Long operateClique) {
+		this.operateClique = operateClique;
 	}
-
     
 }
