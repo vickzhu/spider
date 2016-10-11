@@ -17,6 +17,7 @@ import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.Page;
+import com.gesangwu.spider.biz.common.DecimalUtil;
 import com.gesangwu.spider.biz.common.LongHuDateType;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.CompanyExample;
@@ -48,7 +49,7 @@ public class LongHuInit {
 		int cpp = 10;
 		CompanyExample example = new CompanyExample();
 		CompanyExample.Criteria criteria = example.createCriteria();
-		criteria.andIdGreaterThan(3312l);
+//		criteria.andIdGreaterThan(3312l);
 		 
 		int count = companyService.countByExample(example);
 		int totalPages = (count + cpp -1)/cpp;
@@ -81,6 +82,7 @@ public class LongHuInit {
 	 * @param date
 	 */
 	public void getLongHu(String symbol, String date){
+		date = date.replaceAll(SymbolConstant.H_LINE, StringUtil.EMPTY);
 		String url = assembleLongHuUrl(symbol, date);
 		String result = HttpTool.get(url);
 		Matcher m2 = p2.matcher(result);
@@ -133,8 +135,8 @@ public class LongHuInit {
 			detail.setSymbol(symbol);
 			detail.setTradeDate(formatDate(date));
 			
-			BigDecimal buyAmt = formatAmt(buy);
-			BigDecimal sellAmt = formatAmt(sell);
+			BigDecimal buyAmt = DecimalUtil.toUnitWan(buy);
+			BigDecimal sellAmt = DecimalUtil.toUnitWan(sell);
 			BigDecimal netBuy = buyAmt.subtract(sellAmt);
 			
 			detail.setBuyAmt(buyAmt);
@@ -223,11 +225,11 @@ public class LongHuInit {
 			String negotiablemv = m3.group(15);//流通市值
 			longHu.setChg(Double.valueOf(change));
 			longHu.setPrice(Double.valueOf(close));
-			longHu.setChgPercent(Double.valueOf(chgPercent));
-			longHu.setAmplitude(Double.valueOf(amplitude));
-			longHu.setTurnover(Double.valueOf(turnrate));
-			longHu.setTotMktVal(Double.valueOf(totmktcap));
-			longHu.setNegMktVal(Double.valueOf(negotiablemv));
+			longHu.setChgPercent(DecimalUtil.parse(chgPercent).doubleValue());
+			longHu.setAmplitude(DecimalUtil.parse(amplitude).doubleValue());
+			longHu.setTurnover(DecimalUtil.parse(turnrate).doubleValue());
+			longHu.setTotMktVal(DecimalUtil.toUnitWan(totmktcap).doubleValue());
+			longHu.setNegMktVal(DecimalUtil.toUnitWan(negotiablemv).doubleValue());
 		}
 		StringBuilder yrSB = new StringBuilder();
 		StringBuilder erSB = new StringBuilder();
@@ -330,14 +332,6 @@ public class LongHuInit {
 			return StringUtil.split(dates,"\",\"");
 		}
 		return null;
-	}
-	
-	private BigDecimal formatAmt(String amt){
-		if("null".equals(amt)){
-			return BigDecimal.ZERO;
-		}
-		BigDecimal buy = new BigDecimal(amt);
-		return buy.divide(new BigDecimal(10000)).setScale(2,BigDecimal.ROUND_HALF_UP);
 	}
 	
 	/**

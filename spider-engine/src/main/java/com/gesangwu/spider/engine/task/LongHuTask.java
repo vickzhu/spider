@@ -1,9 +1,13 @@
 package com.gesangwu.spider.engine.task;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,11 +15,19 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
+import com.gandalf.framework.util.StringUtil;
+import com.gesangwu.spider.biz.common.DecimalUtil;
+import com.gesangwu.spider.biz.common.StockUtil;
 import com.gesangwu.spider.biz.dao.model.LongHu;
+import com.gesangwu.spider.biz.dao.model.LongHuDetail;
+import com.gesangwu.spider.biz.dao.model.LongHuType;
 import com.gesangwu.spider.biz.service.LongHuDetailService;
 import com.gesangwu.spider.biz.service.LongHuService;
+import com.gesangwu.spider.biz.service.LongHuTypeService;
 import com.gesangwu.spider.engine.util.StockTool;
+import com.gesangwu.spider.engine.util.XinLangLongHuTool;
 
 /**
  * <ul>
@@ -33,13 +45,15 @@ import com.gesangwu.spider.engine.util.StockTool;
 public class LongHuTask {
 
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	private static final String r1 = "\"SCode\"\\:\"([0-9]*)\",\"SName\"\\:\"([^\"]*)\",\"ClosePrice\"\\:\"([0-9\\.]*)\",\"Chgradio\"\\:\"([\\-0-9\\.]*)\",\"Dchratio\"\\:\"([0-9\\.]*)\",\"JmMoney\"\\:\"[\\-0-9\\.]*\",\"Turnover\"\\:\"([\\-0-9\\.]*)\",\"Ntransac\"\\:\"([\\-0-9\\.]*)\",\"Ctypedes\"\\:\"[^\"]*\",\"Oldid\"\\:\"[\\-0-9\\.]*\",\"Smoney\"\\:\"([0-9\\.]*)\",\"Bmoney\"\\:\"([0-9\\.]*)\",\"ZeMoney\"\\:\"[^\"]*\",\"Tdate\"\\:\"[^\"]*\",\"JmRate\"\\:\"[^\"]*\",\"ZeRate\"\\:\"[^\"]*\",\"Ltsz\"\\:\"([^\"]*)\"";
+	private static final String r1 = "\"SCode\"\\:\"([0-9]*)\",\"SName\"\\:\"([^\"]*)\",\"ClosePrice\"\\:\"([0-9\\.]*)\",\"Chgradio\"\\:\"([\\-0-9\\.]*)\",\"Dchratio\"\\:\"([0-9\\.]*)\",\"JmMoney\"\\:\"[\\-0-9\\.]*\",\"Turnover\"\\:\"([\\-0-9\\.]*)\",\"Ntransac\"\\:\"([\\-0-9\\.]*)\",\"Ctypedes\"\\:\"[^\"]*\",\"Oldid\"\\:\"[\\-0-9\\.]*\",\"Smoney\"\\:\"([0-9\\.]*)\",\"Bmoney\"\\:\"([0-9\\.]*)\",\"ZeMoney\"\\:\"[^\"]*\",\"Tdate\"\\:\"([^\"]*)\",\"JmRate\"\\:\"[^\"]*\",\"ZeRate\"\\:\"[^\"]*\",\"Ltsz\"\\:\"([^\"]*)\"";
 	private static Pattern p1 = Pattern.compile(r1);
 	
 	@Resource
 	private LongHuService lhService;
 	@Resource
-	private LongHuDetailService lhDetailService;
+	private LongHuDetailService lhdService;
+	@Resource
+	private LongHuTypeService typeService;
 	
 	/**
 	 * gpfw:0-全部，1-上证，2-深证
@@ -47,7 +61,7 @@ public class LongHuTask {
 	public void execute(){
 		Date now = new Date();
 		String date = sdf.format(now);
-		String url = buildUrl(date, 1);
+		String url = buildUrl(date, 0);
 		String result = HttpTool.get(url);
 		parse(result);
 	}
@@ -68,6 +82,7 @@ public class LongHuTask {
 		Matcher m =  p1.matcher(content);
 		Date now = new Date();
 		List<LongHu> longHuList = new ArrayList<LongHu>();
+		Map<String,List<String>> typeMap = XinLangLongHuTool.getLongHuType();
 		while(m.find()){
 			LongHu longHu = new LongHu();
 			String code = m.group(1);
@@ -75,24 +90,124 @@ public class LongHuTask {
 			String price = m.group(3);
 			String chg = m.group(4);
 			String turnover = m.group(5);
+			String tradeDate = m.group(10);
 			longHu.setSymbol(StockTool.codeToSymbol(code));
 			longHu.setStockName(stockName);
 			longHu.setPrice(Double.valueOf(price));
 			longHu.setChgPercent(Double.valueOf(chg));
 			longHu.setTurnover(Double.valueOf(turnover));
+			longHu.setTradeDate(tradeDate);
 			longHu.setGmtCreate(now);
+			List<String> typeList = typeMap.get(code);
+			List<String> yrList = new ArrayList<String>();
+			List<String> erList = new ArrayList<String>();
+			List<String> srList = new ArrayList<String>();
+			buildLhType(yrList, erList, srList, typeList);
+			if(yrList.size() > 0){
+				String typeArr = StringUtil.join(yrList.iterator(), SymbolConstant.COMMA);
+				longHu.setYrType(typeArr);
+			}
+			if(erList.size() > 0){
+				String typeArr = StringUtil.join(erList.iterator(), SymbolConstant.COMMA);
+				longHu.setErType(typeArr);		
+			}
+			if(srList.size() > 0){
+				String typeArr = StringUtil.join(srList.iterator(), SymbolConstant.COMMA);
+				longHu.setSrType(typeArr);
+			}
 			longHuList.add(longHu);
 		}
 		lhService.insertBatch(longHuList);
 		for (LongHu longHu : longHuList) {
-			
+			fetchDetail(longHu);
 		}
 	}
-	private String buildDetailUrl(){
+	
+	private void fetchDetail(LongHu longHu){
+		if(StringUtil.isNotBlank(longHu.getYrType())){
+			fetchDetail(1, longHu.getYrType(), longHu);
+		}
+		if(StringUtil.isNotBlank(longHu.getErType())){
+			fetchDetail(2, longHu.getErType(), longHu);
+		}
+		if(StringUtil.isNotBlank(longHu.getSrType())){
+			fetchDetail(3, longHu.getSrType(), longHu);
+		}
+	}
+	
+	private static final String r2 = "SYMBOL\\:\"([0-9]{6})\",type\\:\"([0-9]{2})\",comCode\\:\"([0-9]*)\",comName\\:\"([^\"]*)\",buyAmount\\:\"([0-9\\.]*)\",sellAmount\\:\"([0-9\\.]*)\",netAmount\\:([0-9\\.\\-]*)";
+	private Pattern p2 = Pattern.compile(r2);
+	
+	private void fetchDetail(int dateType, String lhType, LongHu longHu){
+		int index = lhType.indexOf(SymbolConstant.COMMA);
+		if(index > 0){
+			lhType.subSequence(0, index);
+		}
+		String code = StockUtil.symbol2Code(longHu.getSymbol());
+		String date = longHu.getTradeDate();
+		String url = buildDetailUrl(lhType, code, date);
+		String result = HttpTool.get(url);
+		Matcher m = p2.matcher(result);
+		List<LongHuDetail> lhdList = new ArrayList<LongHuDetail>();
+		BigDecimal buyTotal = BigDecimal.ZERO;
+		BigDecimal sellTotal = BigDecimal.ZERO;
+		Set<String> detpCodeSet = new HashSet<String>();
+		Date now = new Date();
+		while(m.find()){
+			String deptCode = m.group(3);
+			String deptName = m.group(4);//TODO 这里是否需要更新营业部的名称
+			String buyAmtStr = m.group(5);
+			String sellAmtStr = m.group(6);
+			String netAmtStr = m.group(7);
+			if(detpCodeSet.contains(deptCode)){//重复了
+				continue;
+			} else {
+				detpCodeSet.add(deptCode);
+			}
+			BigDecimal buyAmt = DecimalUtil.parse(buyAmtStr);
+			BigDecimal sellAmt = DecimalUtil.parse(sellAmtStr);
+			BigDecimal netAmt = DecimalUtil.parse(netAmtStr);
+			buyTotal = buyTotal.add(buyAmt);
+			sellTotal = sellTotal.add(sellAmt);
+			LongHuDetail detail = new LongHuDetail();
+			detail.setLongHuId(longHu.getId());
+			detail.setBuyAmt(buyAmt);
+			detail.setSellAmt(sellAmt);
+			detail.setNetBuy(netAmt);
+			detail.setDateType(dateType);
+			detail.setGmtCreate(now);
+			detail.setSecDeptCode(deptCode);
+			detail.setSymbol(StockUtil.code2Symbol(code));
+			detail.setTradeDate(date);
+			lhdList.add(detail);
+		}
+		lhdService.batchInsert(lhdList);
+	}
+	
+	private void buildLhType(List<String> yrList, List<String> erList, List<String> srList, List<String> typeList){
+		for (String type : typeList) {
+			LongHuType lhType = typeService.selectByType(type);
+			if(lhType.getDateType() == 1){//一日
+				yrList.add(type);
+			} else if(lhType.getDateType() == 3){//三日
+				srList.add(type);
+			} else if(lhType.getDateType() == 2){//二日
+				erList.add(type);
+			}
+		}
+	}
+	
+	private String buildDetailUrl(String type, String code, String date){
 		StringBuilder sb = new StringBuilder();
-		sb.append("http://vip.stock.finance.sina.com.cn/q/api/jsonp.php/var%20details=/InvestConsultService.getLHBComBSData?symbol=000518&tradedate=2016-10-10&type=05");
+		sb.append("http://vip.stock.finance.sina.com.cn/q/api/jsonp.php/var%20details=/InvestConsultService.getLHBComBSData?symbol=");
+		sb.append(code);
+		sb.append("&tradedate=");
+		sb.append(date);
+		sb.append("&type=");
+		sb.append(type);
 		return sb.toString();
 	}
+	
 	public static void main(String[] args){
 		LongHuTask task = new LongHuTask();
 		task.execute();

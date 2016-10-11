@@ -6,11 +6,15 @@ public class StockUtil {
 
 	public static String code2Symbol(String code){
 		String prefix = StringUtil.EMPTY;
-		if(code.startsWith("60")){
+		if(code.startsWith("60")||code.startsWith("90")){
 			prefix = "sh";
-		} else if(code.startsWith("00")||code.startsWith("30")){
+		} else if(code.startsWith("00")||code.startsWith("30")||code.startsWith("20")){
 			prefix = "sz";
 		}
 		return prefix + code;
+	}
+	
+	public static String symbol2Code(String symbol){
+		return symbol.substring(2);
 	}
 }
