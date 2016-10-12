@@ -1,9 +1,11 @@
 package com.gesangwu.spider.engine.task;
 
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +15,7 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
@@ -58,12 +61,14 @@ public class LongHuTask {
 	/**
 	 * gpfw:0-全部，1-上证，2-深证
 	 */
-	public void execute(){
-		Date now = new Date();
-		String date = sdf.format(now);
-		String url = buildUrl(date, 0);
+	public void execute(String tradeDate){
+		if(StringUtil.isBlank(tradeDate)){
+			Date now = new Date();
+			tradeDate = sdf.format(now);
+		}
+		String url = buildUrl(tradeDate, 0);
 		String result = HttpTool.get(url);
-		parse(result);
+		parse(result, tradeDate);
 	}
 	
 	private String buildUrl(String date, int bazaar){
@@ -78,11 +83,11 @@ public class LongHuTask {
 		return sb.toString();
 	}
 	
-	private void parse(String content){
+	private void parse(String content, String tradeDate){
 		Matcher m =  p1.matcher(content);
 		Date now = new Date();
 		List<LongHu> longHuList = new ArrayList<LongHu>();
-		Map<String,List<String>> typeMap = XinLangLongHuTool.getLongHuType();
+		Map<String,List<String>> typeMap = XinLangLongHuTool.getLongHuType(tradeDate);
 		while(m.find()){
 			LongHu longHu = new LongHu();
 			String code = m.group(1);
@@ -90,7 +95,6 @@ public class LongHuTask {
 			String price = m.group(3);
 			String chg = m.group(4);
 			String turnover = m.group(5);
-			String tradeDate = m.group(10);
 			longHu.setSymbol(StockTool.codeToSymbol(code));
 			longHu.setStockName(stockName);
 			longHu.setPrice(Double.valueOf(price));
@@ -138,22 +142,28 @@ public class LongHuTask {
 	private static final String r2 = "SYMBOL\\:\"([0-9]{6})\",type\\:\"([0-9]{2})\",comCode\\:\"([0-9]*)\",comName\\:\"([^\"]*)\",buyAmount\\:\"([0-9\\.]*)\",sellAmount\\:\"([0-9\\.]*)\",netAmount\\:([0-9\\.\\-]*)";
 	private Pattern p2 = Pattern.compile(r2);
 	
-	private void fetchDetail(int dateType, String lhType, LongHu longHu){
+	public void fetchDetail(int dateType, String lhType, LongHu longHu){
 		int index = lhType.indexOf(SymbolConstant.COMMA);
 		if(index > 0){
-			lhType.subSequence(0, index);
+			lhType = lhType.substring(0, index);
 		}
 		String code = StockUtil.symbol2Code(longHu.getSymbol());
 		String date = longHu.getTradeDate();
 		String url = buildDetailUrl(lhType, code, date);
-		String result = HttpTool.get(url);
+		Map<String, String> headerMap = new HashMap<String, String>();
+		headerMap.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36");
+		headerMap.put("Accept-Encoding", "gzip, deflate, sdch");
+		String result = HttpTool.get(url, headerMap, Charset.forName("utf-8"));
 		Matcher m = p2.matcher(result);
-		List<LongHuDetail> lhdList = new ArrayList<LongHuDetail>();
 		BigDecimal buyTotal = BigDecimal.ZERO;
 		BigDecimal sellTotal = BigDecimal.ZERO;
 		Set<String> detpCodeSet = new HashSet<String>();
 		Date now = new Date();
+		List<LongHuDetail> lhdList = new ArrayList<LongHuDetail>();
 		while(m.find()){
+			if(longHu.getSymbol().equals("sh600908")){
+				System.out.println(longHu.getSymbol());
+			}
 			String deptCode = m.group(3);
 			String deptName = m.group(4);//TODO 这里是否需要更新营业部的名称
 			String buyAmtStr = m.group(5);
@@ -181,7 +191,9 @@ public class LongHuTask {
 			detail.setTradeDate(date);
 			lhdList.add(detail);
 		}
-		lhdService.batchInsert(lhdList);
+		if(CollectionUtils.isNotEmpty(lhdList)){
+			lhdService.batchInsert(lhdList);
+		}
 	}
 	
 	private void buildLhType(List<String> yrList, List<String> erList, List<String> srList, List<String> typeList){
@@ -210,6 +222,6 @@ public class LongHuTask {
 	
 	public static void main(String[] args){
 		LongHuTask task = new LongHuTask();
-		task.execute();
+		task.execute("2016-10-11");
 	}
 }

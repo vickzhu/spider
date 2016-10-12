@@ -107,10 +107,6 @@ public class XinLangLongHuTask {
 		}
 	}
 	
-	private void saveLongHu(int dateType, String lhTypeArr, String code, String tradeDate){
-		
-	}
-	
 	private static final String r1 = "SYMBOL\\:\"([0-9]{6})\",type\\:\"([0-9]{2})\",comCode\\:\"([0-9]*)\",comName\\:\"(\"*)\",buyAmount\\:\"([0-9\\.]*)\",sellAmount\\:\"([0-9\\.]*)\",netAmount\\:([0-9\\.\\-]*)";
 	private Pattern p1 = Pattern.compile(r1);
 	

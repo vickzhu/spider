@@ -1,5 +1,6 @@
 package com.gesangwu.spider.engine.util;
 
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,14 +19,14 @@ public class XinLangLongHuTool {
 	/**
 	 * 该方法只能获得最近的龙虎榜类型
 	 */
-	public static Map<String,List<String>> getLongHuType(){
-		String url="http://vip.stock.finance.sina.com.cn/q/go.php/vInvestConsult/kind/lhb/index.phtml";
-		Date now = new Date();
-		String date = sdf.format(now);
-		String r = "showDetail\\('([0-9]{2})','([0-9]{6})','" + date + "',this\\)";
+	public static Map<String,List<String>> getLongHuType(String tradeDate){
+		String url="http://vip.stock.finance.sina.com.cn/q/go.php/vInvestConsult/kind/lhb/index.phtml?tradedate="+tradeDate;
+		String r = "showDetail\\('([0-9]{2})','([0-9]{6})','" + tradeDate + "',this\\)";
 		Pattern p = Pattern.compile(r);
-		String result = HttpTool.get(url);
-		System.out.println(result);
+		Map<String, String> headerMap = new HashMap<String, String>();
+		headerMap.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36");
+		headerMap.put("Accept-Encoding", "gzip, deflate, sdch");
+		String result = HttpTool.get(url, headerMap, Charset.forName("utf-8"));
 		Matcher m = p.matcher(result);
 		Map<String,List<String>> longHuMap = new HashMap<String,List<String>>();
 		while(m.find()){
@@ -42,11 +43,14 @@ public class XinLangLongHuTool {
 	}
 	
 	public static void main(String[] args){
-		HttpTool.get("http://corp.sina.com.cn/chn/sina_intr.html");
 		String url="http://vip.stock.finance.sina.com.cn/q/go.php/vInvestConsult/kind/lhb/index.phtml";
 		long start = System.currentTimeMillis();
-		String result = HttpTool.get(url);
+		Map<String, String> headerMap = new HashMap<String, String>();
+//		headerMap.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36");
+		headerMap.put("Accept-Encoding", "gzip, deflate, sdch");
+		String result = HttpTool.get(url, headerMap, Charset.forName("utf-8"));
 		long end = System.currentTimeMillis();
+		System.out.println(result);
 		System.out.println(result.length()/1024);
 		System.out.println(end-start);
 	}

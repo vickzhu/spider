@@ -1,8 +1,5 @@
 package com.gesangwu.spider.engine.task;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,9 +8,12 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.net.HttpTool;
-import com.gesangwu.spider.biz.dao.model.LongHu;
 import com.gesangwu.spider.engine.util.StockTool;
-
+/**
+ * 读取某一天的龙虎榜，有个问题，龙虎详情中没有longHuId
+ * @author zhuxb
+ *
+ */
 @Component
 public class DanRiLongHu {
 	
