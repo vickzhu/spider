@@ -87,14 +87,20 @@ public class LongHuTask {
 		Matcher m =  p1.matcher(content);
 		Date now = new Date();
 		List<LongHu> longHuList = new ArrayList<LongHu>();
+		Set<String> lhCodeSet = new HashSet<String>();
 		Map<String,List<String>> typeMap = XinLangLongHuTool.getLongHuType(tradeDate);
 		while(m.find()){
-			LongHu longHu = new LongHu();
 			String code = m.group(1);
 			String stockName = m.group(2);
 			String price = m.group(3);
 			String chg = m.group(4);
 			String turnover = m.group(5);
+			if(lhCodeSet.contains(lhCodeSet)){//已经存在了
+				continue;
+			}else {
+				lhCodeSet.add(code);
+			}
+			LongHu longHu = new LongHu();
 			longHu.setSymbol(StockTool.codeToSymbol(code));
 			longHu.setStockName(stockName);
 			longHu.setPrice(Double.valueOf(price));
@@ -161,9 +167,6 @@ public class LongHuTask {
 		Date now = new Date();
 		List<LongHuDetail> lhdList = new ArrayList<LongHuDetail>();
 		while(m.find()){
-			if(longHu.getSymbol().equals("sh600908")){
-				System.out.println(longHu.getSymbol());
-			}
 			String deptCode = m.group(3);
 			String deptName = m.group(4);//TODO 这里是否需要更新营业部的名称
 			String buyAmtStr = m.group(5);

@@ -49,6 +49,10 @@ public class CliqueStockTask {
 	
 	public void execute(){
 		List<LongHu> lhList = getLongHuList();
+		calc(lhList);
+	}
+	
+	public void calc(List<LongHu> lhList){
 		for (LongHu longHu : lhList) {//每天龙虎榜
 			List<List<LongHuDetail>> resultList = getLongHuDetailList(longHu);
 			for (List<LongHuDetail> detailList : resultList) {//不同日期类型的龙虎榜详情(一日，二日，三日)
