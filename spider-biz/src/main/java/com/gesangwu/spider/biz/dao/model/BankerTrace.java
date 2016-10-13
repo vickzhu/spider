@@ -9,9 +9,9 @@ public class BankerTrace {
 
     private String stockName;
 
-    private Date launchDate;
+    private String launchDate;
 
-    private Date msDate;
+    private String msDate;
 
     private Integer msScore;
 
@@ -47,20 +47,20 @@ public class BankerTrace {
         this.stockName = stockName == null ? null : stockName.trim();
     }
 
-    public Date getLaunchDate() {
+    public String getLaunchDate() {
         return launchDate;
     }
 
-    public void setLaunchDate(Date launchDate) {
-        this.launchDate = launchDate;
+    public void setLaunchDate(String launchDate) {
+        this.launchDate = launchDate == null ? null : launchDate.trim();
     }
 
-    public Date getMsDate() {
+    public String getMsDate() {
         return msDate;
     }
 
-    public void setMsDate(Date msDate) {
-        this.msDate = msDate;
+    public void setMsDate(String msDate) {
+        this.msDate = msDate == null ? null : msDate.trim();
     }
 
     public Integer getMsScore() {

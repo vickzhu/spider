@@ -21,6 +21,8 @@ public class KLine {
 
     private Double percent;
 
+    private Double turnrate;
+
     private Double ma5;
 
     private Double ma10;
@@ -29,7 +31,7 @@ public class KLine {
 
     private Double ma30;
 
-    private Date transDate;
+    private String transDate;
 
     private Date gmtCreate;
 
@@ -105,6 +107,14 @@ public class KLine {
         this.percent = percent;
     }
 
+    public Double getTurnrate() {
+        return turnrate;
+    }
+
+    public void setTurnrate(Double turnrate) {
+        this.turnrate = turnrate;
+    }
+
     public Double getMa5() {
         return ma5;
     }
@@ -137,12 +147,12 @@ public class KLine {
         this.ma30 = ma30;
     }
 
-    public Date getTransDate() {
+    public String getTransDate() {
         return transDate;
     }
 
-    public void setTransDate(Date transDate) {
-        this.transDate = transDate;
+    public void setTransDate(String transDate) {
+        this.transDate = transDate == null ? null : transDate.trim();
     }
 
     public Date getGmtCreate() {

@@ -2,7 +2,6 @@ package com.gesangwu.spider.biz.dao.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 public class KLineExample {
@@ -124,32 +123,6 @@ public class KLineExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
-        }
-
-        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
-            if (value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Date(value.getTime()), property);
-        }
-
-        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
-            if (values == null || values.size() == 0) {
-                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
-            }
-            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
-            Iterator<Date> iter = values.iterator();
-            while (iter.hasNext()) {
-                dateList.add(new java.sql.Date(iter.next().getTime()));
-            }
-            addCriterion(condition, dateList, property);
-        }
-
-        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
-            if (value1 == null || value2 == null) {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
         public Criteria andIdIsNull() {
@@ -702,6 +675,66 @@ public class KLineExample {
             return (Criteria) this;
         }
 
+        public Criteria andTurnrateIsNull() {
+            addCriterion("turnrate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTurnrateIsNotNull() {
+            addCriterion("turnrate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTurnrateEqualTo(Double value) {
+            addCriterion("turnrate =", value, "turnrate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTurnrateNotEqualTo(Double value) {
+            addCriterion("turnrate <>", value, "turnrate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTurnrateGreaterThan(Double value) {
+            addCriterion("turnrate >", value, "turnrate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTurnrateGreaterThanOrEqualTo(Double value) {
+            addCriterion("turnrate >=", value, "turnrate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTurnrateLessThan(Double value) {
+            addCriterion("turnrate <", value, "turnrate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTurnrateLessThanOrEqualTo(Double value) {
+            addCriterion("turnrate <=", value, "turnrate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTurnrateIn(List<Double> values) {
+            addCriterion("turnrate in", values, "turnrate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTurnrateNotIn(List<Double> values) {
+            addCriterion("turnrate not in", values, "turnrate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTurnrateBetween(Double value1, Double value2) {
+            addCriterion("turnrate between", value1, value2, "turnrate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTurnrateNotBetween(Double value1, Double value2) {
+            addCriterion("turnrate not between", value1, value2, "turnrate");
+            return (Criteria) this;
+        }
+
         public Criteria andMa5IsNull() {
             addCriterion("ma5 is null");
             return (Criteria) this;
@@ -952,53 +985,63 @@ public class KLineExample {
             return (Criteria) this;
         }
 
-        public Criteria andTransDateEqualTo(Date value) {
-            addCriterionForJDBCDate("trans_date =", value, "transDate");
+        public Criteria andTransDateEqualTo(String value) {
+            addCriterion("trans_date =", value, "transDate");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateNotEqualTo(Date value) {
-            addCriterionForJDBCDate("trans_date <>", value, "transDate");
+        public Criteria andTransDateNotEqualTo(String value) {
+            addCriterion("trans_date <>", value, "transDate");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateGreaterThan(Date value) {
-            addCriterionForJDBCDate("trans_date >", value, "transDate");
+        public Criteria andTransDateGreaterThan(String value) {
+            addCriterion("trans_date >", value, "transDate");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateGreaterThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("trans_date >=", value, "transDate");
+        public Criteria andTransDateGreaterThanOrEqualTo(String value) {
+            addCriterion("trans_date >=", value, "transDate");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateLessThan(Date value) {
-            addCriterionForJDBCDate("trans_date <", value, "transDate");
+        public Criteria andTransDateLessThan(String value) {
+            addCriterion("trans_date <", value, "transDate");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateLessThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("trans_date <=", value, "transDate");
+        public Criteria andTransDateLessThanOrEqualTo(String value) {
+            addCriterion("trans_date <=", value, "transDate");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateIn(List<Date> values) {
-            addCriterionForJDBCDate("trans_date in", values, "transDate");
+        public Criteria andTransDateLike(String value) {
+            addCriterion("trans_date like", value, "transDate");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateNotIn(List<Date> values) {
-            addCriterionForJDBCDate("trans_date not in", values, "transDate");
+        public Criteria andTransDateNotLike(String value) {
+            addCriterion("trans_date not like", value, "transDate");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("trans_date between", value1, value2, "transDate");
+        public Criteria andTransDateIn(List<String> values) {
+            addCriterion("trans_date in", values, "transDate");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateNotBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("trans_date not between", value1, value2, "transDate");
+        public Criteria andTransDateNotIn(List<String> values) {
+            addCriterion("trans_date not in", values, "transDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransDateBetween(String value1, String value2) {
+            addCriterion("trans_date between", value1, value2, "transDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransDateNotBetween(String value1, String value2) {
+            addCriterion("trans_date not between", value1, value2, "transDate");
             return (Criteria) this;
         }
 

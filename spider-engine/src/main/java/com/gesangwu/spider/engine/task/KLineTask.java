@@ -59,12 +59,12 @@ public class KLineTask {
 				String low = m.group(5);
 				String chg = m.group(6);
 				String percent = m.group(7);
-				String turnrate = m.group();
-				String ma5 = m.group(8);
-				String ma10 = m.group(9);
-				String ma20 = m.group(10);
-				String ma30 = m.group(11);
-				String date = m.group(12);
+				String turnrate = m.group(8);
+				String ma5 = m.group(9);
+				String ma10 = m.group(10);
+				String ma20 = m.group(11);
+				String ma30 = m.group(12);
+				String date = m.group(13);
 				KLine kLine = new KLine();
 				kLine.setSymbol(symbol);
 				kLine.setChangeAmount(Double.valueOf(chg));
@@ -72,19 +72,15 @@ public class KLineTask {
 				kLine.setGmtCreate(new Date());
 				kLine.setHigh(Double.valueOf(high));
 				kLine.setLow(Double.valueOf(low));
+				kLine.setPercent(Double.valueOf(percent));
+				kLine.setTurnrate(Double.valueOf(turnrate));
 				kLine.setMa10(Double.valueOf(ma10));
 				kLine.setMa20(Double.valueOf(ma20));
 				kLine.setMa30(Double.valueOf(ma30));
 				kLine.setMa5(Double.valueOf(ma5));
 				kLine.setOpen(Double.valueOf(open));
-				kLine.setPercent(Double.valueOf(percent));
-				try {
-					kLine.setTransDate(sdf.parse(date));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
+				kLine.setTransDate(sdf.format(date));
 				kLine.setVolume(Long.valueOf(volumn));
-//				kLineService.insert(kLine);
 				kLineList.add(kLine);
 			}
 			if(CollectionUtils.isNotEmpty(kLineList)){
