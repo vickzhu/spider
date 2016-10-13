@@ -21,6 +21,7 @@ import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.common.DecimalUtil;
+import com.gesangwu.spider.biz.common.SecDeptType;
 import com.gesangwu.spider.biz.common.StockUtil;
 import com.gesangwu.spider.biz.dao.model.LongHu;
 import com.gesangwu.spider.biz.dao.model.LongHuDetail;
@@ -229,6 +230,7 @@ public class LongHuTask {
 		if(dept == null){
 			dept = new SecDept();
 			dept.setCode(deptCode);
+			dept.setDeptType(SecDeptType.NONE.getCode());
 			dept.setDeptAddr(deptName);
 			dept.setGmtCreate(new Date());
 			deptService.insert(dept);

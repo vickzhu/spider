@@ -17,9 +17,10 @@ public class LongHuTaskTest extends BaseTest {
 	
 	@Test
 	public void execute(){
-		task.execute("2016-10-10");
-		task.execute("2016-10-11");
-		task.execute("2016-10-12");
+		task.execute(null);
+//		task.execute("2016-10-10");
+//		task.execute("2016-10-11");
+//		task.execute("2016-10-12");
 //		LongHu longHu = lhService.selectByPrimaryKey(82156l);
 //		task.fetchDetail(3, "05", longHu);
 	}

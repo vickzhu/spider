@@ -12,6 +12,7 @@ import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.dao.mapper.CliqueDeptMapper;
 import com.gesangwu.spider.biz.dao.model.CliqueDept;
 import com.gesangwu.spider.biz.dao.model.CliqueDeptExample;
+import com.gesangwu.spider.biz.dao.model.ext.CliqueDeptExt;
 import com.gesangwu.spider.biz.service.CliqueDeptService;
 
 @Service
@@ -54,4 +55,31 @@ public class CliqueDeptServiceImpl extends BaseServiceImpl<CliqueDept, CliqueDep
 		criteria.andCliqueIdEqualTo(cliqueId);
 		return mapper.selectByExample(example);
 	}
+
+	public List<CliqueDeptExt> selectExtByExample(CliqueDeptExample example) {
+		return mapper.selectExtByExample(example);
+	}
+	
+	@Override
+	public void selectExtByCliqueId(long cliqueId, Page<CliqueDeptExt> page) {
+		CliqueDeptExample example = new CliqueDeptExample();
+		example.setOffset(page.getOffset());
+        example.setRows(page.getPageSize());
+        example.setOrderByClause("id desc");
+        CliqueDeptExample.Criteria criteria = example.createCriteria();
+        criteria.andCliqueIdEqualTo(cliqueId);
+        int totalCounts = mapper.countByExample(example);
+        page.setTotalCounts(totalCounts);
+        page.setRecords(mapper.selectExtByExample(example));		
+	}
+
+	@Override
+	public void delete(long cliqueId, String deptCode) {
+		CliqueDeptExample example = new CliqueDeptExample();
+		CliqueDeptExample.Criteria criteria = example.createCriteria();
+		criteria.andCliqueIdEqualTo(cliqueId);
+		criteria.andSecDeptCodeEqualTo(deptCode);
+		mapper.deleteByExample(example);
+	}
+	
 }

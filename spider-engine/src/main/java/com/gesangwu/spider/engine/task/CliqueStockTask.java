@@ -165,7 +165,6 @@ public class CliqueStockTask {
 				cliqueDept.setDeptType(2);
 				cliqueDept.setGmtCreate(now);
 				cliqueDept.setSecDeptCode(deptCode);
-				cliqueDept.setSecDeptName(detail.getId().toString());//XXX 实验用，必须去掉
 				cliqueDeptService.insert(cliqueDept);
 			}
 		}

@@ -9,8 +9,6 @@ public class CliqueDept {
 
     private String secDeptCode;
 
-    private String secDeptName;
-
     private Integer deptType;
 
     private Date gmtCreate;
@@ -37,14 +35,6 @@ public class CliqueDept {
 
     public void setSecDeptCode(String secDeptCode) {
         this.secDeptCode = secDeptCode == null ? null : secDeptCode.trim();
-    }
-
-    public String getSecDeptName() {
-        return secDeptName;
-    }
-
-    public void setSecDeptName(String secDeptName) {
-        this.secDeptName = secDeptName == null ? null : secDeptName.trim();
     }
 
     public Integer getDeptType() {

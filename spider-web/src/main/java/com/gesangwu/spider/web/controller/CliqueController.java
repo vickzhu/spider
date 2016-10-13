@@ -12,8 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.dao.model.Clique;
-import com.gesangwu.spider.biz.dao.model.CliqueDept;
 import com.gesangwu.spider.biz.dao.model.CliqueStock;
+import com.gesangwu.spider.biz.dao.model.ext.CliqueDeptExt;
 import com.gesangwu.spider.biz.service.CliqueDeptService;
 import com.gesangwu.spider.biz.service.CliqueService;
 import com.gesangwu.spider.biz.service.CliqueStockService;
@@ -40,8 +40,8 @@ public class CliqueController {
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
 	public ModelAndView detail(HttpServletRequest request, long cliqueId){
 		Clique clique = cliqueService.selectByPrimaryKey(cliqueId);
-		Page<CliqueDept> cdPage = new Page<CliqueDept>(1, 20);
-		cdService.selectByCliqueId(cliqueId, cdPage);
+		Page<CliqueDeptExt> cdPage = new Page<CliqueDeptExt>(1, 20);
+		cdService.selectExtByCliqueId(cliqueId, cdPage);
 		Page<CliqueStock> csPage = new Page<CliqueStock>(1, 20);
 		csService.selectByCliqueId(cliqueId, csPage);
 		ModelAndView mav = new ModelAndView("cliqueDetail");

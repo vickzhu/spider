@@ -13,15 +13,16 @@
             <div class="widget-content nopadding">
               <form id="dept-form" class="form-horizontal">
 				$!{tokenTool.hiddenField}
-				<input type="hidden" name="deptId" value="$!{secDept.id}"/>
+				<input type="hidden" id="deptId" name="deptId" value="$!{secDept.id}"/>
+				<input type="hidden" id="deptCode" name="deptCode" value="$!{secDept.code}"/>
 				<div class="control-group">
                   <label class="control-label">类型:</label>
                   <div class="controls">
-					#foreach($deptType in $deptTypeArr)
-					<label style="margin-bottom:0px;">
-                      <input type="radio" name="deptType" value="$!{deptType.code}" #if($!{secDept.deptType}==$!{deptType.code})checked #end/>$!{deptType.desc}
-					</label>
-					#end
+					<select name="deptType">
+						#foreach($deptType in $deptTypeArr)
+						<option value="$!{deptType.code}" #if($!{secDept.deptType}==$!{deptType.code})selected #end >$!{deptType.desc}</option>
+						#end
+                    </select>
                   </div>
                 </div>
                 <div class="control-group">
@@ -29,7 +30,7 @@
                   <div class="controls">
                     <select name="cliqueId">
 						<option value="">==请选择==</option>
-						#foreach($clique in $allCliqueList)
+						#foreach($clique in ${allCliqueMap.values()})
 						<option value="$!{clique.id}">$!{clique.name}</option>
 						#end
                     </select>
@@ -62,8 +63,10 @@
 					#foreach($clique in $cliqueList)
 					<tr>
                       <td>${velocityCount}</td>
-                      <td>${clique.name}</td>
-            		  <td><a href="javascript:;">退帮保平安</a></td>
+                      <td>$!{clique.name}</td>
+            		  <td>
+						<a cliqueId="$!{clique.id}" cliqueName="$!{clique.name}" href="#delete-clique" data-toggle="modal" class="btn btn-danger btn-mini exit-clique">退帮</a>
+					  </td>
                     </tr>
 					#end
 				  </tbody>
@@ -74,6 +77,19 @@
     </div>
   </div>
 </div>
+<div class="modal hide" id="delete-clique" aria-hidden="true" style="display: none;">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+		<h3>退出帮派</h3>
+	</div>
+	<div class="modal-body">
+		<p id="delete-content" style="font-size:15px;">确定退出</p>
+	</div>
+	<div class="modal-footer"> 
+		<a href="javascript:;" class="btn" data-dismiss="modal">取消</a> 
+		<a href="javascript:;" id="delete-submit" cliqueId data-dismiss="modal" class="btn btn-primary">确定</a> 
+	</div>
+</div>
 <script type="text/javascript">
 	$(function(){
 		$(".btn-success").click(function(){
@@ -83,6 +99,16 @@
 				}else {
 					alert("保存失败");
 				}
+			});			
+		});
+		$(".exit-clique").click(function(){
+			$("#delete-content").text("确定退出["+$(this).attr("cliqueName")+"]?");
+			$("#delete-submit").attr("cliqueId",$(this).attr("cliqueId"));
+		})
+		$("#delete-submit").click(function(){
+			var param={deptCode:$("#deptCode").val(),cliqueId:$(this).attr("cliqueId"),$!{tokenTool.tokenKey}:"$!{tokenTool.token}"};
+			jQuery.post("#springUrl('/sec-dept/exit-clique')",param,function(result){
+				window.location.reload();
 			});
 		});
 	});

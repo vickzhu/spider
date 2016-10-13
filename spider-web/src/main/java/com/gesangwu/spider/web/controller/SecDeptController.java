@@ -3,6 +3,7 @@ package com.gesangwu.spider.web.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.AjaxResult;
 import com.gesangwu.spider.biz.common.SecDeptType;
+import com.gesangwu.spider.biz.dao.cache.CliqueCache;
 import com.gesangwu.spider.biz.dao.model.Clique;
 import com.gesangwu.spider.biz.dao.model.CliqueDept;
 import com.gesangwu.spider.biz.dao.model.SecDept;
@@ -43,11 +45,11 @@ public class SecDeptController {
 			Clique clique = cliqueService.selectByPrimaryKey(cliqueDept.getCliqueId());
 			cliqueList.add(clique);
 		}
-		List<Clique> allCliqueList = cliqueService.selectByExample(null);
+		Map<Long,Clique> allCliqueMap = CliqueCache.getCliqueMap();
 		ModelAndView mav = new ModelAndView("secDeptEdit");
 		mav.addObject("secDept", dept);
 		mav.addObject("cliqueList", cliqueList);
-		mav.addObject("allCliqueList", allCliqueList);
+		mav.addObject("allCliqueMap", allCliqueMap);
 		mav.addObject("deptTypeArr", SecDeptType.values());
 		return mav;
 	}
@@ -71,14 +73,23 @@ public class SecDeptController {
 				cliqueDept.setDeptType(Integer.valueOf(cliqueType));
 				cliqueDept.setGmtCreate(new Date());
 				cliqueDept.setSecDeptCode(dept.getCode());
-				cliqueDept.setSecDeptName(dept.getDeptAddr());
 				cliqueDeptService.insert(cliqueDept);
 			}
 		} catch (Exception e) {
 			return new AjaxResult(false, e.getMessage());
 		}
 		return new AjaxResult(true, null);
-				
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/exit-clique", method = RequestMethod.POST)
+	public AjaxResult exitClique(HttpServletRequest request,Long cliqueId, String deptCode){
+		try{			
+			cliqueDeptService.delete(cliqueId, deptCode);
+		}catch(Exception e){
+			return new AjaxResult(false, e.getMessage());
+		}
+		return new AjaxResult(true, null);
 	}
 	
 }
