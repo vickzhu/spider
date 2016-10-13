@@ -11,7 +11,9 @@ import com.gandalf.framework.mybatis.BaseMapper;
 import com.gandalf.framework.mybatis.BaseServiceImpl;
 import com.gesangwu.spider.biz.dao.mapper.LongHuMapper;
 import com.gesangwu.spider.biz.dao.model.LongHu;
+import com.gesangwu.spider.biz.dao.model.LongHuDetail;
 import com.gesangwu.spider.biz.dao.model.LongHuExample;
+import com.gesangwu.spider.biz.service.LongHuDetailService;
 import com.gesangwu.spider.biz.service.LongHuService;
 
 @Service
@@ -20,6 +22,8 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 	
 	@Resource
 	private LongHuMapper mapper;
+	@Resource
+	private LongHuDetailService detailService;
 
 	@Override
 	protected BaseMapper<LongHu, LongHuExample> getMapper() {
@@ -61,6 +65,15 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 	@Override
 	public void insertBatch(List<LongHu> longHuList) {
 		mapper.insertBatch(longHuList);
+	}
+
+	@Override
+	public void insert(LongHu longHu, List<LongHuDetail> detailList) {
+		mapper.insert(longHu);
+		for (LongHuDetail detail : detailList) {
+			detail.setLongHuId(longHu.getId());
+		}
+		detailService.batchInsert(detailList);
 	}
 
 }

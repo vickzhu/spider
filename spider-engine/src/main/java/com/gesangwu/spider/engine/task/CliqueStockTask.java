@@ -52,49 +52,53 @@ public class CliqueStockTask {
 		calc(lhList);
 	}
 	
-	public void calc(List<LongHu> lhList){
-		for (LongHu longHu : lhList) {//每天龙虎榜
-			List<List<LongHuDetail>> resultList = getLongHuDetailList(longHu);
-			for (List<LongHuDetail> detailList : resultList) {//不同日期类型的龙虎榜详情(一日，二日，三日)
-				Map<Long,List<LongHuDetail>> detailMap = listToCliqueMap(detailList);
-				//TODO clique_stock数据没有保存
-				long cliqueId = 0;
-				int cliqueSize = 0;
-				for(Map.Entry<Long,List<LongHuDetail>> entry : detailMap.entrySet()){//遍历所有数据，统计帮派
-					int size = entry.getValue().size();
-					if(size > cliqueSize){
-						cliqueSize = size;
-						cliqueId = entry.getKey();
-					}
-				}
-				if(cliqueSize > 2){//已成帮派
-					List<LongHuDetail> lhdList = detailMap.get(cliqueId);
-					updateCliqueOperate(cliqueId, longHu, lhdList);
-					detailList.removeAll(lhdList);
-					calcOtherDept(cliqueId, detailList);
-				} else if(cliqueSize > 0) {// 判断其他营业部是否操作过相应的帮派，如果操作过，则也生效
-					List<LongHuDetail> lhdList = detailMap.get(cliqueId);
-					detailList.removeAll(lhdList);
-					List<LongHuDetail> tmpList = new ArrayList<LongHuDetail>();
-					for (LongHuDetail detail : lhdList) {
-						String deptCode = detail.getSecDeptCode();
-						String tradeDate = detail.getTradeDate();
-						String startDate = getStartDate(tradeDate, 3);
-						int cliqueCount = lhdService.count4Clique(deptCode, detail.getSymbol(), cliqueId, startDate, tradeDate);
-						int upCount = countDept(deptCode, tradeDate, 3);
-						if(cliqueCount * 2 >= upCount){//跟帮操作次数占总上榜次数50%及以上
-							tmpList.add(detail);
-						}
-					}
-					if(cliqueSize + tmpList.size() > 3){//可以判断为一个帮派操作
-						updateCliqueOperate(cliqueId, longHu, tmpList);
-						detailList.removeAll(tmpList);
-						calcOtherDept(cliqueId, detailList);
-					}
-				} else {
-					continue;
+	public void calc(LongHu longHu){
+		List<List<LongHuDetail>> resultList = getLongHuDetailList(longHu);
+		for (List<LongHuDetail> detailList : resultList) {//不同日期类型的龙虎榜详情(一日，二日，三日)
+			Map<Long,List<LongHuDetail>> detailMap = listToCliqueMap(detailList);
+			//TODO clique_stock数据没有保存
+			long cliqueId = 0;
+			int cliqueSize = 0;
+			for(Map.Entry<Long,List<LongHuDetail>> entry : detailMap.entrySet()){//遍历所有数据，统计帮派
+				int size = entry.getValue().size();
+				if(size > cliqueSize){
+					cliqueSize = size;
+					cliqueId = entry.getKey();
 				}
 			}
+			if(cliqueSize > 2){//已成帮派
+				List<LongHuDetail> lhdList = detailMap.get(cliqueId);
+				updateCliqueOperate(cliqueId, longHu, lhdList);
+				detailList.removeAll(lhdList);
+				calcOtherDept(cliqueId, detailList);
+			} else if(cliqueSize > 0) {// 判断其他营业部是否操作过相应的帮派，如果操作过，则也生效
+				List<LongHuDetail> lhdList = detailMap.get(cliqueId);
+				detailList.removeAll(lhdList);
+				List<LongHuDetail> tmpList = new ArrayList<LongHuDetail>();
+				for (LongHuDetail detail : lhdList) {
+					String deptCode = detail.getSecDeptCode();
+					String tradeDate = detail.getTradeDate();
+					String startDate = getStartDate(tradeDate, 3);
+					int cliqueCount = lhdService.count4Clique(deptCode, detail.getSymbol(), cliqueId, startDate, tradeDate);
+					int upCount = countDept(deptCode, tradeDate, 3);
+					if(cliqueCount * 2 >= upCount){//跟帮操作次数占总上榜次数50%及以上
+						tmpList.add(detail);
+					}
+				}
+				if(cliqueSize + tmpList.size() > 3){//可以判断为一个帮派操作
+					updateCliqueOperate(cliqueId, longHu, tmpList);
+					detailList.removeAll(tmpList);
+					calcOtherDept(cliqueId, detailList);
+				}
+			} else {
+				continue;
+			}
+		}
+	}
+	
+	public void calc(List<LongHu> lhList){
+		for (LongHu longHu : lhList) {//每天龙虎榜
+			calc(longHu);
 		}
 	}
 	

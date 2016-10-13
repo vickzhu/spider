@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
@@ -57,6 +56,8 @@ public class LongHuTask {
 	private LongHuDetailService lhdService;
 	@Resource
 	private LongHuTypeService typeService;
+	@Resource
+	private CliqueStockTask cliqueTask;
 	
 	/**
 	 * gpfw:0-全部，1-上证，2-深证
@@ -95,7 +96,7 @@ public class LongHuTask {
 			String price = m.group(3);
 			String chg = m.group(4);
 			String turnover = m.group(5);
-			if(lhCodeSet.contains(lhCodeSet)){//已经存在了
+			if(lhCodeSet.contains(code)){//已经存在了
 				continue;
 			}else {
 				lhCodeSet.add(code);
@@ -104,8 +105,8 @@ public class LongHuTask {
 			longHu.setSymbol(StockTool.codeToSymbol(code));
 			longHu.setStockName(stockName);
 			longHu.setPrice(Double.valueOf(price));
-			longHu.setChgPercent(Double.valueOf(chg));
-			longHu.setTurnover(Double.valueOf(turnover));
+			longHu.setChgPercent(DecimalUtil.parse(chg).doubleValue());
+			longHu.setTurnover(DecimalUtil.parse(turnover).doubleValue());
 			longHu.setTradeDate(tradeDate);
 			longHu.setGmtCreate(now);
 			List<String> typeList = typeMap.get(code);
@@ -127,39 +128,37 @@ public class LongHuTask {
 			}
 			longHuList.add(longHu);
 		}
-		lhService.insertBatch(longHuList);
 		for (LongHu longHu : longHuList) {
 			fetchDetail(longHu);
 		}
 	}
 	
 	private void fetchDetail(LongHu longHu){
+		List<LongHuDetail> lhdList = new ArrayList<LongHuDetail>();
 		if(StringUtil.isNotBlank(longHu.getYrType())){
-			fetchDetail(1, longHu.getYrType(), longHu);
+			lhdList.addAll(fetchDetail(1, longHu.getYrType(), longHu));
 		}
 		if(StringUtil.isNotBlank(longHu.getErType())){
-			fetchDetail(2, longHu.getErType(), longHu);
+			lhdList.addAll(fetchDetail(2, longHu.getErType(), longHu));
 		}
 		if(StringUtil.isNotBlank(longHu.getSrType())){
-			fetchDetail(3, longHu.getSrType(), longHu);
+			lhdList.addAll(fetchDetail(3, longHu.getSrType(), longHu));
 		}
+		lhService.insert(longHu, lhdList);
+//		cliqueTask.calc(longHu);
 	}
 	
 	private static final String r2 = "SYMBOL\\:\"([0-9]{6})\",type\\:\"([0-9]{2})\",comCode\\:\"([0-9]*)\",comName\\:\"([^\"]*)\",buyAmount\\:\"([0-9\\.]*)\",sellAmount\\:\"([0-9\\.]*)\",netAmount\\:([0-9\\.\\-]*)";
 	private Pattern p2 = Pattern.compile(r2);
 	
-	public void fetchDetail(int dateType, String lhType, LongHu longHu){
+	public List<LongHuDetail> fetchDetail(int dateType, String lhType, LongHu longHu){
 		int index = lhType.indexOf(SymbolConstant.COMMA);
 		if(index > 0){
 			lhType = lhType.substring(0, index);
 		}
 		String code = StockUtil.symbol2Code(longHu.getSymbol());
-		String date = longHu.getTradeDate();
-		String url = buildDetailUrl(lhType, code, date);
-		Map<String, String> headerMap = new HashMap<String, String>();
-		headerMap.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36");
-		headerMap.put("Accept-Encoding", "gzip, deflate, sdch");
-		String result = HttpTool.get(url, headerMap, Charset.forName("utf-8"));
+		String tradeDate = longHu.getTradeDate();
+		String result = getDetailContent(lhType, code, tradeDate);
 		Matcher m = p2.matcher(result);
 		BigDecimal buyTotal = BigDecimal.ZERO;
 		BigDecimal sellTotal = BigDecimal.ZERO;
@@ -191,12 +190,36 @@ public class LongHuTask {
 			detail.setGmtCreate(now);
 			detail.setSecDeptCode(deptCode);
 			detail.setSymbol(StockUtil.code2Symbol(code));
-			detail.setTradeDate(date);
+			detail.setTradeDate(tradeDate);
 			lhdList.add(detail);
 		}
-		if(CollectionUtils.isNotEmpty(lhdList)){
-			lhdService.batchInsert(lhdList);
+		if(dateType == 1){
+			longHu.setYrAmt(buildAmt(buyTotal, sellTotal));
+		} else if(dateType == 2){
+			longHu.setErAmt(buildAmt(buyTotal, sellTotal));
+		} else if (dateType == 3){
+			longHu.setSrAmt(buildAmt(buyTotal, sellTotal));
 		}
+		return lhdList;
+	}
+	
+	private String getDetailContent(String lhType, String code, String tradeDate){
+		String url = buildDetailUrl(lhType, code, tradeDate);
+		Map<String, String> headerMap = new HashMap<String, String>();
+		headerMap.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36");
+		headerMap.put("Accept-Encoding", "gzip, deflate, sdch");
+		return HttpTool.get(url, headerMap, Charset.forName("utf-8"));
+	}
+	
+	private String buildAmt(BigDecimal buyTotal, BigDecimal sellTotal){
+		BigDecimal netBuy = buyTotal.subtract(sellTotal);
+		StringBuilder sb = new StringBuilder();
+		sb.append(buyTotal.toString());
+		sb.append(SymbolConstant.COMMA);
+		sb.append(sellTotal.toString());
+		sb.append(SymbolConstant.COMMA);
+		sb.append(netBuy.toString());
+		return sb.toString();
 	}
 	
 	private void buildLhType(List<String> yrList, List<String> erList, List<String> srList, List<String> typeList){

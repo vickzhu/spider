@@ -57,8 +57,12 @@
 					#end
 				  </td>
 				  <td>$!{lh.price}</td>
-				  <td style="color:#if($!{lh.chgPercent}>0)red#elseif($!{lh.chgPercent}<0)green#end">$!{lh.chgPercent}</td>
-				  <td>$!{lh.turnover}</td>
+				  <td style="color:#if($!{lh.chgPercent}>0)red#elseif($!{lh.chgPercent}<0)green#end">
+					${number.format("0.00",${lh.chgPercent})}%
+				  </td>
+				  <td>
+					${number.format("0.00",$!{lh.turnover})}%
+				  </td>
 				  #if(${lh.yrAmt})
 					#showAmt(${lh.yrAmt})
 				  #elseif(${lh.erAmt})

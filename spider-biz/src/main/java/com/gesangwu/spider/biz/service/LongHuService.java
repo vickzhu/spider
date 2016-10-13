@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.gandalf.framework.mybatis.BaseService;
 import com.gesangwu.spider.biz.dao.model.LongHu;
+import com.gesangwu.spider.biz.dao.model.LongHuDetail;
 import com.gesangwu.spider.biz.dao.model.LongHuExample;
 
 public interface LongHuService extends BaseService<LongHu, LongHuExample> {
@@ -17,5 +18,7 @@ public interface LongHuService extends BaseService<LongHu, LongHuExample> {
 	LongHu selectLatestBySymbol(String symbol);
 	
 	void insertBatch(List<LongHu> longHuList);
+	
+	void insert(LongHu longHu, List<LongHuDetail> detailList);
 	
 }

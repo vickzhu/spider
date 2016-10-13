@@ -339,9 +339,6 @@
   </update>
   
   <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true" >
-    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into long_hu_detail (long_hu_id, symbol, trade_date, buy_amt, 
       sell_amt, net_buy, sec_dept_code, date_type, clique_id, gmt_create, 
       gmt_update)

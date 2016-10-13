@@ -482,9 +482,6 @@
   	select trade_date from long_hu where symbol = #{symbol,jdbcType=VARCHAR} order by trade_date DESC
   </select>
   <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true">
-    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into long_hu (symbol, stock_name, trade_date, 
       price, chg, chg_percent, 
       turnover, amplitude, tot_mkt_val, 
