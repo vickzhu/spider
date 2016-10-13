@@ -25,9 +25,11 @@ import com.gesangwu.spider.biz.common.StockUtil;
 import com.gesangwu.spider.biz.dao.model.LongHu;
 import com.gesangwu.spider.biz.dao.model.LongHuDetail;
 import com.gesangwu.spider.biz.dao.model.LongHuType;
+import com.gesangwu.spider.biz.dao.model.SecDept;
 import com.gesangwu.spider.biz.service.LongHuDetailService;
 import com.gesangwu.spider.biz.service.LongHuService;
 import com.gesangwu.spider.biz.service.LongHuTypeService;
+import com.gesangwu.spider.biz.service.SecDeptService;
 import com.gesangwu.spider.engine.util.StockTool;
 import com.gesangwu.spider.engine.util.XinLangLongHuTool;
 
@@ -58,6 +60,8 @@ public class LongHuTask {
 	private LongHuTypeService typeService;
 	@Resource
 	private CliqueStockTask cliqueTask;
+	@Resource
+	private SecDeptService deptService;
 	
 	/**
 	 * gpfw:0-全部，1-上证，2-深证
@@ -162,36 +166,44 @@ public class LongHuTask {
 		Matcher m = p2.matcher(result);
 		BigDecimal buyTotal = BigDecimal.ZERO;
 		BigDecimal sellTotal = BigDecimal.ZERO;
-		Set<String> detpCodeSet = new HashSet<String>();
 		Date now = new Date();
-		List<LongHuDetail> lhdList = new ArrayList<LongHuDetail>();
+		Map<String,LongHuDetail> detailMap = new HashMap<String,LongHuDetail>();
 		while(m.find()){
 			String deptCode = m.group(3);
 			String deptName = m.group(4);//TODO 这里是否需要更新营业部的名称
 			String buyAmtStr = m.group(5);
 			String sellAmtStr = m.group(6);
 			String netAmtStr = m.group(7);
-			if(detpCodeSet.contains(deptCode)){//重复了
-				continue;
-			} else {
-				detpCodeSet.add(deptCode);
-			}
+			souDept(deptCode, deptName);
+			LongHuDetail detail = detailMap.get(deptCode);
 			BigDecimal buyAmt = DecimalUtil.parse(buyAmtStr);
 			BigDecimal sellAmt = DecimalUtil.parse(sellAmtStr);
-			BigDecimal netAmt = DecimalUtil.parse(netAmtStr);
+			BigDecimal netBuy = DecimalUtil.parse(netAmtStr);
+			if(detail != null){
+				if(detail.getSellAmt().compareTo(sellAmt) < 0){
+					detail.setSellAmt(sellAmt);
+					netBuy = detail.getBuyAmt().subtract(sellAmt);
+					detail.setNetBuy(netBuy);
+					sellTotal = sellTotal.subtract(detail.getSellAmt()).add(sellAmt);
+				}
+				continue;
+			} else {
+				detail = new LongHuDetail(); 
+				detailMap.put(deptCode, detail);
+			}
+			
 			buyTotal = buyTotal.add(buyAmt);
 			sellTotal = sellTotal.add(sellAmt);
-			LongHuDetail detail = new LongHuDetail();
+
 			detail.setLongHuId(longHu.getId());
 			detail.setBuyAmt(buyAmt);
 			detail.setSellAmt(sellAmt);
-			detail.setNetBuy(netAmt);
+			detail.setNetBuy(netBuy);
 			detail.setDateType(dateType);
 			detail.setGmtCreate(now);
 			detail.setSecDeptCode(deptCode);
 			detail.setSymbol(StockUtil.code2Symbol(code));
-			detail.setTradeDate(tradeDate);
-			lhdList.add(detail);
+			detail.setTradeDate(tradeDate);	
 		}
 		if(dateType == 1){
 			longHu.setYrAmt(buildAmt(buyTotal, sellTotal));
@@ -200,7 +212,31 @@ public class LongHuTask {
 		} else if (dateType == 3){
 			longHu.setSrAmt(buildAmt(buyTotal, sellTotal));
 		}
+		List<LongHuDetail> lhdList = new ArrayList<LongHuDetail>();
+		for (LongHuDetail detail : detailMap.values()) {
+			lhdList.add(detail);
+		}
 		return lhdList;
+	}
+	
+	/**
+	 * 保存或更新营业部信息
+	 * @param secCode
+	 * @param secName
+	 */
+	private void souDept(String deptCode, String deptName){
+		SecDept dept = deptService.selectByCode(deptCode);
+		if(dept == null){
+			dept = new SecDept();
+			dept.setCode(deptCode);
+			dept.setDeptAddr(deptName);
+			dept.setGmtCreate(new Date());
+			deptService.insert(dept);
+		} else {
+			dept.setDeptAddr(deptName);
+			dept.setGmtUpdate(new Date());
+			deptService.updateByPrimaryKey(dept);
+		}
 	}
 	
 	private String getDetailContent(String lhType, String code, String tradeDate){
@@ -208,7 +244,7 @@ public class LongHuTask {
 		Map<String, String> headerMap = new HashMap<String, String>();
 		headerMap.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36");
 		headerMap.put("Accept-Encoding", "gzip, deflate, sdch");
-		return HttpTool.get(url, headerMap, Charset.forName("utf-8"));
+		return HttpTool.get(url, headerMap, Charset.forName("GBK"));
 	}
 	
 	private String buildAmt(BigDecimal buyTotal, BigDecimal sellTotal){

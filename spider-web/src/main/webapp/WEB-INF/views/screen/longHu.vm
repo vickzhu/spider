@@ -70,7 +70,7 @@
 				  #elseif(${lh.srAmt})
 					#showAmt(${lh.srAmt})
 				  #end				  
-				  <td>$!{lh.operateClique}</td>
+				  <td>$!{longHuTool.getClique($!{lh.operateClique})}</td>
                 </tr>
 				#end
               </tbody>

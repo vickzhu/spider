@@ -14,6 +14,16 @@
               <form id="dept-form" class="form-horizontal">
 				$!{tokenTool.hiddenField}
 				<input type="hidden" name="deptId" value="$!{secDept.id}"/>
+				<div class="control-group">
+                  <label class="control-label">类型:</label>
+                  <div class="controls">
+					#foreach($deptType in $deptTypeArr)
+					<label style="margin-bottom:0px;">
+                      <input type="radio" name="deptType" value="$!{deptType.code}" #if($!{secDept.deptType}==$!{deptType.code})checked #end/>$!{deptType.desc}
+					</label>
+					#end
+                  </div>
+                </div>
                 <div class="control-group">
                   <label class="control-label">新加帮派:</label>
                   <div class="controls">
@@ -28,31 +38,36 @@
 						<option value="2">辅营部</option>
                     </select>
                   </div>
-                </div>
-				#if(${cliqueList.size()}>0)
-				<div class="control-group">
-                  <label class="control-label">已加帮派:</label>
-                  <div class="controls">
-					#foreach($clique in $cliqueList)
-                    <label style="margin-bottom:0px;">$!{clique.name}</label>
-					#end
-                  </div>
-                </div>	
-				#end
-                <div class="control-group">
-                  <label class="control-label">类型:</label>
-                  <div class="controls">
-					#foreach($deptType in $deptTypeArr)
-					<label style="margin-bottom:0px;">
-                      <input type="radio" name="deptType" value="$!{deptType.code}" #if($!{secDept.deptType}==$!{deptType.code})checked #end/>$!{deptType.desc}
-					</label>
-					#end
-                  </div>
-                </div>
+                </div>                
                 <div class="form-actions">
                   <button type="button" class="btn btn-success">保存</button>
                 </div>
               </form>
+            </div>
+          </div>
+		  <div class="widget-box">
+            <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+              <h5>已入帮派</h5>
+            </div>
+            <div class="widget-content nopadding">
+              <table class="table table-bordered">
+                  <thead>
+                    <tr>
+            		  <th>编号</th>	
+                      <th>帮派名</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+					#foreach($clique in $cliqueList)
+					<tr>
+                      <td>${velocityCount}</td>
+                      <td>${clique.name}</td>
+            		  <td><a href="javascript:;">退帮保平安</a></td>
+                    </tr>
+					#end
+				  </tbody>
+                </table>
             </div>
           </div>
       </div>

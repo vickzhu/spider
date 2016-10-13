@@ -61,7 +61,7 @@
 		  </td>
 		  <td style="color:red">$!{buyDetail.buyAmt}</td>
 		  <td style="color:green">$!{buyDetail.sellAmt}</td>
-		  <td>$!{buyDetail.cliqueId}</td>
+		  <td>$!{longHuTool.getClique($!{buyDetail.cliqueId})}</td>
         </tr>
         #end
       </tbody>
@@ -95,7 +95,7 @@
     		  </td>
     		  <td style="color:green">$!{sellDetail.sellAmt}</td>
     		  <td style="color:red">$!{sellDetail.buyAmt}</td>
-    		  <td>$!{sellDetail.cliqueId}</td>
+    		  <td>$!{longHuTool.getClique($!{sellDetail.cliqueId})}</td>
             </tr>
             #end
           </tbody>

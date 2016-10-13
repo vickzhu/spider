@@ -18,7 +18,10 @@
                     <span class="badge badge-info">$velocityCount</span>
 				</div>
                 <div class="article-post">
-                  <div class="fr"><a href="#" class="btn btn-primary btn-mini">编辑</a> <a href="#" class="btn btn-success btn-mini">查看</a> <a href="#" class="btn btn-danger btn-mini">删除</a></div>
+                  <div class="fr">
+					<a href="#" class="btn btn-primary btn-mini">编辑</a> 
+					<a href="#" class="btn btn-success btn-mini">查看</a>
+				  </div>
                   <span class="user-info" style="font-size:18px;">$!{clique.name}</span>
                   <p><a class="clique-detail" cid="$!{clique.id}" href="#">$!{clique.profile}</a> </p>
                 </div>

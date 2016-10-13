@@ -4,7 +4,9 @@
 	<h1>
 		$!{secDept.deptAddr}
 		#foreach($cliqueDept in $cliqueDeptList)
-		<span class="label label-info">$!{cliqueDept.cliqueId}</span>
+		<span class="label label-info">
+			$!{longHuTool.getClique($!{cliqueDept.cliqueId})}
+		</span>
 		#end
 	</h1>
   </div>
