@@ -3,7 +3,7 @@
   "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd"> 
 <generatorConfiguration> 
 
-	<classPathEntry location="C:\Users\zhuxb\.m2\repository\mysql\mysql-connector-java\5.1.9\mysql-connector-java-5.1.9.jar"/>
+	<classPathEntry location="C:\Users\zhuxb\.m2\repository\mysql\mysql-connector-java\5.1.32\mysql-connector-java-5.1.32.jar"/>
 	<context id="spider-biz" targetRuntime="MyBatis3"> 
 		<plugin type="com.gandalf.mybatis.plugin.PaginationPlugin"></plugin>
 		<commentGenerator>   
