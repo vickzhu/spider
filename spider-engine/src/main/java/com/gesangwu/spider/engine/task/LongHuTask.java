@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
@@ -64,6 +65,12 @@ public class LongHuTask {
 	@Resource
 	private SecDeptService deptService;
 	
+	@Scheduled(cron = "0 32 16 * * MON-FRI")
+	public void execute(){
+		Date now= new Date();
+		String tradeDate = sdf.format(now);
+		execute(tradeDate);
+	}
 	/**
 	 * gpfw:0-全部，1-上证，2-深证
 	 */
@@ -150,7 +157,7 @@ public class LongHuTask {
 			lhdList.addAll(fetchDetail(3, longHu.getSrType(), longHu));
 		}
 		lhService.insert(longHu, lhdList);
-//		cliqueTask.calc(longHu);
+		cliqueTask.calc(longHu);
 	}
 	
 	private static final String r2 = "SYMBOL\\:\"([0-9]{6})\",type\\:\"([0-9]{2})\",comCode\\:\"([0-9]*)\",comName\\:\"([^\"]*)\",buyAmount\\:\"([0-9\\.]*)\",sellAmount\\:\"([0-9\\.]*)\",netAmount\\:([0-9\\.\\-]*)";

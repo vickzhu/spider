@@ -3,6 +3,7 @@ package com.gesangwu.spider.engine.task;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -12,6 +13,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.net.HttpTool;
@@ -31,18 +33,32 @@ public class KLineTask {
 	
 	private static final String r = "\\{\"volume\"\\:([0-9]*),\"open\"\\:([0-9\\.]*),\"high\"\\:([0-9\\.]*),\"close\"\\:([0-9\\.]*),\"low\"\\:([0-9\\.]*),\"chg\"\\:(\\-?[0-9\\.]*),\"percent\"\\:(\\-?[0-9\\.]*),\"turnrate\"\\:([0-9\\.]*),\"ma5\"\\:([0-9\\.]*),\"ma10\"\\:([0-9\\.]*),\"ma20\"\\:([0-9\\.]*),\"ma30\"\\:([0-9\\.]*),\"dif\"\\:\\-?[0-9\\.]*,\"dea\"\\:\\-?[0-9\\.]*,\"macd\"\\:\\-?[0-9\\.]*,\"time\"\\:\"([^\"]*)\"\\}";
 	private static Pattern p = Pattern.compile(r);
-	private static SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy",Locale.US);
+	private static SimpleDateFormat sdf1 = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy",Locale.US);
+	private static SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
 	
 	@Resource
 	private CompanyService companyService;
 	@Resource
 	private KLineService kLineService;
 	
-//	@Scheduled(cron = "0 10 15 * * MON-FRI")
+	@Scheduled(cron = "0 15 15 * * MON-FRI")
+	public void execute(){
+		Calendar c = Calendar.getInstance();
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+		long start = c.getTimeInMillis();
+		c.set(Calendar.HOUR_OF_DAY, 23);
+		c.set(Calendar.MINUTE, 59);
+		c.set(Calendar.SECOND, 59);
+		long end = c.getTimeInMillis();
+		execute(start, end);
+	}
+	
 	public void execute(long start, long end) {
 		String cookieUrl = "https://xueqiu.com/account/lostpasswd";
 		HttpTool.get(cookieUrl);//这个链接只是为了获得cookie信息，因为后面的请求需要用到cookie
-		
 		List<Company> companyList = LittleCompanyHolder.getCompanyList();
 		for (Company company : companyList) {
 			String symbol = company.getSymbol();
@@ -79,7 +95,12 @@ public class KLineTask {
 				kLine.setMa30(Double.valueOf(ma30));
 				kLine.setMa5(Double.valueOf(ma5));
 				kLine.setOpen(Double.valueOf(open));
-				kLine.setTransDate(sdf.format(date));
+				try {
+					Date tradeDate = sdf1.parse(date);
+					kLine.setTransDate(sdf2.format(tradeDate));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 				kLine.setVolume(Long.valueOf(volumn));
 				kLineList.add(kLine);
 			}
@@ -103,25 +124,5 @@ public class KLineTask {
 		sb.append("&end=");
 		sb.append(end);
 		return sb.toString();
-	}
-	
-	public static void main(String[] args){
-//		Calendar c = Calendar.getInstance();
-//		c.set(Calendar.MILLISECOND, 0);
-//		c.set(2016, 6, 16, 0, 0, 0);
-//		
-//		c.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH)-1);
-//		long start = c.getTimeInMillis();
-//		System.out.println(c.getTimeInMillis());
-//		
-//		c.set(Calendar.HOUR, 23);
-//		c.set(Calendar.MINUTE, 59);
-//		c.set(Calendar.SECOND, 59);
-//		long end = c.getTimeInMillis();
-//		System.out.println(c.getTimeInMillis());
-//		KLineTask klt = new KLineTask();
-//		klt.execute(start, end);
-		System.out.println(new Date(1468512000000l));
-		System.out.println(new Date(1466524799000l));
 	}
 }

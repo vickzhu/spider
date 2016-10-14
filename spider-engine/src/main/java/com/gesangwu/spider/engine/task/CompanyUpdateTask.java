@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.net.HttpTool;
@@ -36,7 +37,7 @@ public class CompanyUpdateTask {
 	@Resource
 	private CompanyService companyService;
 
-//	@Scheduled(cron="0 0 3 * * ?")
+	@Scheduled(cron="0 0 3 * * ?")
 	public void execute(){
 		long start = System.currentTimeMillis();
 		String result = HttpTool.get(buildUrl(0));
