@@ -1,9 +1,7 @@
 package com.gesangwu.spider.engine.util;
 
 import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,8 +11,6 @@ import java.util.regex.Pattern;
 import com.gandalf.framework.net.HttpTool;
 
 public class XinLangLongHuTool {
-	
-	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 	/**
 	 * 该方法只能获得最近的龙虎榜类型
@@ -26,7 +22,7 @@ public class XinLangLongHuTool {
 		Map<String, String> headerMap = new HashMap<String, String>();
 		headerMap.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36");
 		headerMap.put("Accept-Encoding", "gzip, deflate, sdch");
-		String result = HttpTool.get(url, headerMap, Charset.forName("utf-8"));
+		String result = HttpTool.get(url, headerMap, Charset.forName("GBK"));
 		Matcher m = p.matcher(result);
 		Map<String,List<String>> longHuMap = new HashMap<String,List<String>>();
 		while(m.find()){
@@ -46,9 +42,9 @@ public class XinLangLongHuTool {
 		String url="http://vip.stock.finance.sina.com.cn/q/go.php/vInvestConsult/kind/lhb/index.phtml";
 		long start = System.currentTimeMillis();
 		Map<String, String> headerMap = new HashMap<String, String>();
-//		headerMap.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36");
+		headerMap.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36");
 		headerMap.put("Accept-Encoding", "gzip, deflate, sdch");
-		String result = HttpTool.get(url, headerMap, Charset.forName("utf-8"));
+		String result = HttpTool.get(url, headerMap, Charset.forName("GBK"));
 		long end = System.currentTimeMillis();
 		System.out.println(result);
 		System.out.println(result.length()/1024);
