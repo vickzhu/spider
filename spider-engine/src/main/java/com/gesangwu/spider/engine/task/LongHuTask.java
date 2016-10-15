@@ -15,6 +15,8 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -36,6 +38,7 @@ import com.gesangwu.spider.engine.util.StockTool;
 import com.gesangwu.spider.engine.util.XinLangLongHuTool;
 
 /**
+ * TODO 没有对龙虎类型检查数据库中是否存在
  * <ul>
  * 	<li>东方财富</li>
  *  <li>http://data.eastmoney.com/stock/tradedetail.html</li>
@@ -49,6 +52,8 @@ import com.gesangwu.spider.engine.util.XinLangLongHuTool;
  */
 @Component
 public class LongHuTask {
+	
+	private static final Logger logger = LoggerFactory.getLogger(LongHuTask.class);
 
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	private static final String r1 = "\"SCode\"\\:\"([0-9]*)\",\"SName\"\\:\"([^\"]*)\",\"ClosePrice\"\\:\"([0-9\\.]*)\",\"Chgradio\"\\:\"([\\-0-9\\.]*)\",\"Dchratio\"\\:\"([0-9\\.]*)\",\"JmMoney\"\\:\"[\\-0-9\\.]*\",\"Turnover\"\\:\"([\\-0-9\\.]*)\",\"Ntransac\"\\:\"([\\-0-9\\.]*)\",\"Ctypedes\"\\:\"[^\"]*\",\"Oldid\"\\:\"[\\-0-9\\.]*\",\"Smoney\"\\:\"([0-9\\.]*)\",\"Bmoney\"\\:\"([0-9\\.]*)\",\"ZeMoney\"\\:\"[^\"]*\",\"Tdate\"\\:\"([^\"]*)\",\"JmRate\"\\:\"[^\"]*\",\"ZeRate\"\\:\"[^\"]*\",\"Ltsz\"\\:\"([^\"]*)\"";
@@ -102,6 +107,10 @@ public class LongHuTask {
 		List<LongHu> longHuList = new ArrayList<LongHu>();
 		Set<String> lhCodeSet = new HashSet<String>();
 		Map<String,List<String>> typeMap = XinLangLongHuTool.getLongHuType(tradeDate);
+		if(typeMap == null || typeMap.size() == 0){
+			logger.error("No type Map fund from XinLang!");
+			return;
+		}
 		while(m.find()){
 			String code = m.group(1);
 			String stockName = m.group(2);
@@ -145,7 +154,7 @@ public class LongHuTask {
 		}
 	}
 	
-	private void fetchDetail(LongHu longHu){
+	public void fetchDetail(LongHu longHu){
 		List<LongHuDetail> lhdList = new ArrayList<LongHuDetail>();
 		if(StringUtil.isNotBlank(longHu.getYrType())){
 			lhdList.addAll(fetchDetail(1, longHu.getYrType(), longHu));

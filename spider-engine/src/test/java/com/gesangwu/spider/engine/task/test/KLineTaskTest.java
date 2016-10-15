@@ -18,12 +18,12 @@ public class KLineTaskTest extends BaseTest {
 	public void executTest(){
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.MILLISECOND, 0);
-		c.set(2016, 6, 16, 0, 0, 0);
+		c.set(2015, 0, 1, 0, 0, 0);
 		
 //		c.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH)-1);
 		long start = c.getTimeInMillis();
 		System.out.println(c.getTimeInMillis());
-		c.set(2016, 6, 26, 15, 15, 59);
+		c.set(2016, 9, 14, 23, 59, 59);
 //		c.set(Calendar.HOUR, 23);
 //		c.set(Calendar.MINUTE, 59);
 //		c.set(Calendar.SECOND, 59);
