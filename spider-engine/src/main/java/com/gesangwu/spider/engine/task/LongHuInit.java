@@ -19,7 +19,6 @@ import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.common.DecimalUtil;
 import com.gesangwu.spider.biz.common.LongHuDateType;
-import com.gesangwu.spider.biz.common.SecDeptType;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.CompanyExample;
 import com.gesangwu.spider.biz.dao.model.LongHu;
@@ -301,7 +300,6 @@ public class LongHuInit {
 		if(secDept == null){
 			secDept = new SecDept();
 			secDept.setCode(secCode);
-			secDept.setDeptType(SecDeptType.NONE.getCode());
 			secDept.setDeptAddr(secName);
 			secDept.setGmtCreate(new Date());
 			secDeptService.insert(secDept);

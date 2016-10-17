@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.dao.model.Clique;
 import com.gesangwu.spider.biz.dao.model.CliqueStock;
@@ -39,8 +40,13 @@ public class CliqueController {
 	
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
 	public ModelAndView detail(HttpServletRequest request, long cliqueId){
+		String pageStr = request.getParameter("curPage");
+		int curPage = 1;
+		if(StringUtil.isNotBlank(pageStr)){
+			curPage = Integer.valueOf(pageStr);
+		}
 		Clique clique = cliqueService.selectByPrimaryKey(cliqueId);
-		Page<CliqueDeptExt> cdPage = new Page<CliqueDeptExt>(1, 20);
+		Page<CliqueDeptExt> cdPage = new Page<CliqueDeptExt>(curPage, 20);
 		cdService.selectExtByCliqueId(cliqueId, cdPage);
 		Page<CliqueStock> csPage = new Page<CliqueStock>(1, 20);
 		csService.selectByCliqueId(cliqueId, csPage);

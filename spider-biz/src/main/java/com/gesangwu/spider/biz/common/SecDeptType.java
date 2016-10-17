@@ -9,7 +9,7 @@ import com.gandalf.framework.util.StringUtil;
  */
 public enum SecDeptType {
 	
-	NONE(0,"无"),GSD(2,"敢死队"),YXYZ(1,"一线游资");
+	GSD(2,"敢死队"),YXYZ(1,"一线游资");
 	
 	private int code;
 	private String desc;

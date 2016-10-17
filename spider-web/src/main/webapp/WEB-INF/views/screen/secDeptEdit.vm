@@ -19,6 +19,7 @@
                   <label class="control-label">类型:</label>
                   <div class="controls">
 					<select name="deptType">
+						<option value="">==请选择==</option>
 						#foreach($deptType in $deptTypeArr)
 						<option value="$!{deptType.code}" #if($!{secDept.deptType}==$!{deptType.code})selected #end >$!{deptType.desc}</option>
 						#end

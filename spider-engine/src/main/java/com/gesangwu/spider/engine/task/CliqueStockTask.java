@@ -66,7 +66,7 @@ public class CliqueStockTask {
 					cliqueId = entry.getKey();
 				}
 			}
-			if(cliqueSize > 2){//已成帮派
+			if(cliqueSize > 3){//已成帮派
 				List<LongHuDetail> lhdList = detailMap.get(cliqueId);
 				updateCliqueOperate(cliqueId, longHu, lhdList);
 				detailList.removeAll(lhdList);
@@ -75,7 +75,7 @@ public class CliqueStockTask {
 				List<LongHuDetail> lhdList = detailMap.get(cliqueId);
 				detailList.removeAll(lhdList);
 				List<LongHuDetail> tmpList = new ArrayList<LongHuDetail>();
-				for (LongHuDetail detail : lhdList) {
+				for (LongHuDetail detail : detailList) {
 					String deptCode = detail.getSecDeptCode();
 					String tradeDate = detail.getTradeDate();
 					String startDate = getStartDate(tradeDate, 3);
@@ -145,7 +145,7 @@ public class CliqueStockTask {
 	public void calcOtherDept(long cliqueId, List<LongHuDetail> lhdList){
 		Date now = new Date();
 		for (LongHuDetail detail : lhdList) {
-			if(!detail.getSecDeptCode().startsWith("8")){
+			if(!detail.getSecDeptCode().startsWith("8")){//排除机构
 				continue;
 			}
 			String deptCode = detail.getSecDeptCode();

@@ -24,7 +24,6 @@ import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.common.DecimalUtil;
-import com.gesangwu.spider.biz.common.SecDeptType;
 import com.gesangwu.spider.biz.common.StockUtil;
 import com.gesangwu.spider.biz.dao.model.LongHu;
 import com.gesangwu.spider.biz.dao.model.LongHuDetail;
@@ -70,7 +69,7 @@ public class LongHuTask {
 	@Resource
 	private SecDeptService deptService;
 	
-	@Scheduled(cron = "0 32 16 * * MON-FRI")
+	@Scheduled(cron = "0 56 17 * * MON-FRI")
 	public void execute(){
 		Date now= new Date();
 		String tradeDate = sdf.format(now);
@@ -201,7 +200,7 @@ public class LongHuTask {
 					detail.setSellAmt(sellAmt);
 					netBuy = detail.getBuyAmt().subtract(sellAmt);
 					detail.setNetBuy(netBuy);
-					sellTotal = sellTotal.subtract(detail.getSellAmt()).add(sellAmt);
+					sellTotal = sellTotal.add(sellAmt);
 				}
 				continue;
 			} else {
@@ -246,7 +245,6 @@ public class LongHuTask {
 		if(dept == null){
 			dept = new SecDept();
 			dept.setCode(deptCode);
-			dept.setDeptType(SecDeptType.NONE.getCode());
 			dept.setDeptAddr(deptName);
 			dept.setGmtCreate(new Date());
 			deptService.insert(dept);
