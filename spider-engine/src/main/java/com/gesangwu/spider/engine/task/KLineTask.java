@@ -40,7 +40,7 @@ public class KLineTask {
 	@Resource
 	private KLineService kLineService;
 	
-	@Scheduled(cron = "0 15 15 * * MON-FRI")
+	@Scheduled(cron = "0 22 15 * * MON-FRI")
 	public void execute(){
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.HOUR_OF_DAY, 0);

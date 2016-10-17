@@ -574,6 +574,66 @@ public class FiveRangeStatisExample {
             addCriterion("gmt_create not between", value1, value2, "gmtCreate");
             return (Criteria) this;
         }
+
+        public Criteria andGmtUpdateIsNull() {
+            addCriterion("gmt_update is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateIsNotNull() {
+            addCriterion("gmt_update is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateEqualTo(Date value) {
+            addCriterion("gmt_update =", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateNotEqualTo(Date value) {
+            addCriterion("gmt_update <>", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateGreaterThan(Date value) {
+            addCriterion("gmt_update >", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateGreaterThanOrEqualTo(Date value) {
+            addCriterion("gmt_update >=", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateLessThan(Date value) {
+            addCriterion("gmt_update <", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateLessThanOrEqualTo(Date value) {
+            addCriterion("gmt_update <=", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateIn(List<Date> values) {
+            addCriterion("gmt_update in", values, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateNotIn(List<Date> values) {
+            addCriterion("gmt_update not in", values, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateBetween(Date value1, Date value2) {
+            addCriterion("gmt_update between", value1, value2, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateNotBetween(Date value1, Date value2) {
+            addCriterion("gmt_update not between", value1, value2, "gmtUpdate");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

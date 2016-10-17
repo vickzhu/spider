@@ -19,6 +19,7 @@
 				  <th>名称</th>
                   <th>压</th>
 				  <th>托</th>
+				  <th>更新时间</th>
                 </tr>
               </thead>
               <tbody>
@@ -29,6 +30,7 @@
                   <td>$!{statis.stockName}</td>
 				  <td>$!{statis.bigSell}</td>
 				  <td>$!{statis.bigBuy}</td>
+				  <td>$!{statis.gmtUpdate}</td>
                 </tr>
 				#end
               </tbody>

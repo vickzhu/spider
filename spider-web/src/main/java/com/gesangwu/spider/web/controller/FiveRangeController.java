@@ -35,7 +35,7 @@ public class FiveRangeController {
 		FiveRangeStatisExample example = new FiveRangeStatisExample();
 		FiveRangeStatisExample.Criteria criteria = example.createCriteria();
 		criteria.andDateEqualTo(date);
-//		example.setOrderByClause("big_sell,big_buy asc");
+		example.setOrderByClause("gmt_update desc");
 		List<FiveRangeStatis> statisList = frss.selectByExample(example);
 		ModelAndView mav = new ModelAndView("fiveRangeList");
 		mav.addObject("list", statisList);

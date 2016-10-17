@@ -9,13 +9,15 @@ public class FiveRangeStatis {
 
     private String stockName;
 
-    private Integer bigSell = 0;
+    private Integer bigSell;
 
-    private Integer bigBuy = 0;
+    private Integer bigBuy;
 
     private String date;
 
     private Date gmtCreate;
+
+    private Date gmtUpdate;
 
     public Long getId() {
         return id;
@@ -71,5 +73,13 @@ public class FiveRangeStatis {
 
     public void setGmtCreate(Date gmtCreate) {
         this.gmtCreate = gmtCreate;
+    }
+
+    public Date getGmtUpdate() {
+        return gmtUpdate;
+    }
+
+    public void setGmtUpdate(Date gmtUpdate) {
+        this.gmtUpdate = gmtUpdate;
     }
 }

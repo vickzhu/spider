@@ -71,6 +71,7 @@ public class FiveRangeSpider {
 	private void fetch(String symbolArr){
 		String result = HttpTool.get("http://hq.sinajs.cn/etag.php?list=" + symbolArr);
 		Matcher matcher = r.matcher(result);
+		Date now = new Date();
 		while(matcher.find()){
 			boolean b = false;
 			boolean s = false;
@@ -104,7 +105,8 @@ public class FiveRangeSpider {
 					statis.setDate(date);
 					statis.setStockName(details[0]);
 					statis.setSymbol(symbol);
-					statis.setGmtCreate(new Date());
+					statis.setGmtCreate(now);
+					statis.setGmtUpdate(now);
 					statisService.insert(statis);
 				} else {
 					if(b){
@@ -113,6 +115,7 @@ public class FiveRangeSpider {
 					if(s){
 						statis.setBigSell(statis.getBigSell()+1);
 					}
+					statis.setGmtUpdate(now);
 					statisService.updateByPrimaryKey(statis);
 				}
 			}
