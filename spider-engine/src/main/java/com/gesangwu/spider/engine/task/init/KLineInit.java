@@ -1,4 +1,4 @@
-package com.gesangwu.spider.engine.task;
+package com.gesangwu.spider.engine.task.init;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,13 +22,13 @@ import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.KLineService;
 /**
- * 用于获取日K线，每天15:10执行
+ * 由于新浪数据部分缺失，所以需要雪球的数据来做修复
  * url:https://xueqiu.com/stock/forchartk/stocklist.json?symbol=SH600526&period=1day&type=before&begin=1437148330951&end=1468684330951&_=1468684330951
  * @author zhuxb
  *
  */
 @Component
-public class KLineTask {
+public class KLineInit {
 	
 	private static final String r = "\\{\"volume\"\\:([0-9]*),\"open\"\\:([0-9\\.]*),\"high\"\\:([0-9\\.]*),\"close\"\\:([0-9\\.]*),\"low\"\\:([0-9\\.]*),\"chg\"\\:(\\-?[0-9\\.]*),\"percent\"\\:(\\-?[0-9\\.]*),\"turnrate\"\\:([0-9\\.]*),\"ma5\"\\:([0-9\\.]*),\"ma10\"\\:([0-9\\.]*),\"ma20\"\\:([0-9\\.]*),\"ma30\"\\:([0-9\\.]*),\"dif\"\\:\\-?[0-9\\.]*,\"dea\"\\:\\-?[0-9\\.]*,\"macd\"\\:\\-?[0-9\\.]*,\"time\"\\:\"([^\"]*)\"\\}";
 	private static Pattern p = Pattern.compile(r);
