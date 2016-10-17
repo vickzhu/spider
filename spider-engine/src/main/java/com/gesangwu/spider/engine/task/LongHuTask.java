@@ -69,7 +69,7 @@ public class LongHuTask {
 	@Resource
 	private SecDeptService deptService;
 	
-	@Scheduled(cron = "0 56 17 * * MON-FRI")
+	@Scheduled(cron = "0 12 22 * * MON-FRI")
 	public void execute(){
 		Date now= new Date();
 		String tradeDate = sdf.format(now);

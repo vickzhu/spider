@@ -71,7 +71,7 @@ public class CliqueStockTask {
 				updateCliqueOperate(cliqueId, longHu, lhdList);
 				detailList.removeAll(lhdList);
 				calcOtherDept(cliqueId, detailList);
-			} else if(cliqueSize > 0) {// 判断其他营业部是否操作过相应的帮派，如果操作过，则也生效
+			} else if(cliqueSize > 0) {// 判断其他营业部是否操作过相应的帮派，有的营业部可能操作过温州帮的标的，但是还没有加入到温州帮来
 				List<LongHuDetail> lhdList = detailMap.get(cliqueId);
 				detailList.removeAll(lhdList);
 				List<LongHuDetail> tmpList = new ArrayList<LongHuDetail>();
@@ -81,12 +81,13 @@ public class CliqueStockTask {
 					String startDate = getStartDate(tradeDate, 3);
 					int cliqueCount = lhdService.count4Clique(deptCode, detail.getSymbol(), cliqueId, startDate, tradeDate);
 					int upCount = countDept(deptCode, tradeDate, 3);
-					if(cliqueCount * 2 >= upCount){//跟帮操作次数占总上榜次数50%及以上
+					if(cliqueCount > 0 && cliqueCount * 2 >= upCount){//跟帮操作次数占总上榜次数50%及以上
 						tmpList.add(detail);
 					}
 				}
 				if(cliqueSize + tmpList.size() > 3){//可以判断为一个帮派操作
-					updateCliqueOperate(cliqueId, longHu, tmpList);
+					lhdList.addAll(tmpList);
+					updateCliqueOperate(cliqueId, longHu, lhdList);
 					detailList.removeAll(tmpList);
 					calcOtherDept(cliqueId, detailList);
 				}
@@ -185,9 +186,9 @@ public class CliqueStockTask {
 		int upCount = countDept(deptCode, tradeDate, 3);
 		if(upCount > 60){//三个月内上榜次数频繁，为一线游资或敢死队
 			return null;
-		}else if(upCount > 30){
+		} else if(upCount > 30){
 			int least = upCount / 5;
-			if(count < least) {//三个月之内操作温州帮股票过少
+			if(count < least) {//三个月之内操作帮派股票过少
 				return null;
 			}
 		} else if(upCount > 15){//三个月上榜15次以上，但小于30次
@@ -195,7 +196,7 @@ public class CliqueStockTask {
 				return null;
 			}
 		} else {//三个月内上榜15次及以下
-			if(count == 0){//三个月内操作温州帮股票过少
+			if(count == 0){//三个月内操作帮派股票过少
 				return null;
 			}
 		}
