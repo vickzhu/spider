@@ -7,12 +7,12 @@ import javax.annotation.Resource;
 import org.junit.Test;
 
 import com.gesangwu.spider.engine.test.BaseTest;
-import com.gesangwu.spider.engine.task.KLineUpdateTask;
+import com.gesangwu.spider.engine.task.KLineTask;
 
 public class KLineTaskTest extends BaseTest {
 
 	@Resource
-	private KLineUpdateTask task;
+	private KLineTask task;
 	
 	@Test
 	public void executTest(){

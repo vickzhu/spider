@@ -20,11 +20,6 @@ public class InitContext implements InitializingBean {
 	@Resource
 	private ProvinceService provinceService;
 
-//	public void init() {
-//		List<Company> list = companyService.loadLittleCompany();
-//		LittleCompanyHolder.setCompanyList(list);
-//	}
-
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		List<Company> list = companyService.loadLittleCompany();

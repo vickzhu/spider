@@ -28,7 +28,7 @@ import com.gesangwu.spider.biz.service.KLineService;
  *
  */
 @Component
-public class KLineUpdateTask {
+public class KLineTask {
 	
 	private static final String r = "\\{\"volume\"\\:([0-9]*),\"open\"\\:([0-9\\.]*),\"high\"\\:([0-9\\.]*),\"close\"\\:([0-9\\.]*),\"low\"\\:([0-9\\.]*),\"chg\"\\:(\\-?[0-9\\.]*),\"percent\"\\:(\\-?[0-9\\.]*),\"turnrate\"\\:([0-9\\.]*),\"ma5\"\\:([0-9\\.]*),\"ma10\"\\:([0-9\\.]*),\"ma20\"\\:([0-9\\.]*),\"ma30\"\\:([0-9\\.]*),\"dif\"\\:\\-?[0-9\\.]*,\"dea\"\\:\\-?[0-9\\.]*,\"macd\"\\:\\-?[0-9\\.]*,\"time\"\\:\"([^\"]*)\"\\}";
 	private static Pattern p = Pattern.compile(r);
@@ -40,7 +40,7 @@ public class KLineUpdateTask {
 	@Resource
 	private KLineService kLineService;
 	
-	@Scheduled(cron = "0 22 15 * * MON-FRI")
+	@Scheduled(cron = "0 15 15 * * MON-FRI")
 	public void execute(){
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.HOUR_OF_DAY, 0);
@@ -63,7 +63,6 @@ public class KLineUpdateTask {
 			String symbol = company.getSymbol();
 			String url = buildUrl(symbol, start, end);
 			String result = HttpTool.get(url);
-			System.out.println(result);
 			Matcher m = p.matcher(result);
 			List<KLine> kLineList = new ArrayList<KLine>();
 			while (m.find()){
@@ -107,7 +106,7 @@ public class KLineUpdateTask {
 				kLineService.batchInsert(kLineList);
 			}
 			try {
-				Thread.sleep(600);
+				Thread.sleep(300);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

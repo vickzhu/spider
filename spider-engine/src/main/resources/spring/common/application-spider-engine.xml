@@ -15,7 +15,5 @@
 	</context:component-scan>
 	
 	<task:annotation-driven/>
-	<!-- 
-	<bean class="com.gesangwu.spider.engine.util.InitContext" init-method="init"></bean>
-	 -->
+
 </beans>
