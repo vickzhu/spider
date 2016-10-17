@@ -1,40 +1,14 @@
 <div id="content">
   <div id="content-header">
-    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">资讯管理</a> <a href="#" class="current">资讯管理</a> </div>
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">股票</a> <a href="#" class="current">大单成交</a> </div>
   </div>
   <div class="container-fluid">
     <div class="row-fluid">
       <div class="span12">
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-            <h5>资讯列表</h5>
+            <h5>大单成交列表</h5>
 			<a class="label label-info" style="line-height:20px;"></a>
-          </div>
-		  <div class="widget-content nopadding">
-			<form id="searchForm" action="#springUrl('/news')" method="get" class="form-horizontal">
-				<input type="hidden" id="curPage" name="curPage" value="$!{curPage}" />
-                <div class="search_option">
-					<div>
-                        <label>标题：</label>
-                        <span><input id="title" style="width:100%" name="title" type="text" value="$!{title}"/></span>
-					</div>
-					<div>
-						<label>资讯类别：</label>
-						<span>
-    						<select name="categoryId">
-    							<option value="">请选择</option>
-    							#foreach($entry in $categoryMap.entrySet())
-    								<option value="$!{entry.key}" #if($categoryId == ${entry.key})selected#end>${entry.value}</option>	
-    							#end
-    						</select>
-                        </span>
-					</div>
-                    <div>
-                        <button type="button" class="btn btn-success" onclick="gotoPage(1)">搜索</button>
-                        <button type="button" class="btn btn-primary" onclick="location.href='#springUrl("/news/add")'">添加资讯</button>
-                    </div>
-                </div>
-			</form>
           </div>
           <div class="widget-content">
             <table class="table table-bordered table-striped">
@@ -46,7 +20,8 @@
                   <th>卖</th>
 				  <th>买</th>
 				  <th>平</th>
-                  <th>主力筹码</th>
+				  <th>更新时间</th>
+                  <th>操作</th>
                 </tr>
               </thead>
               <tbody>
@@ -58,7 +33,9 @@
 				  <td>$!{statis.sellTotal}</td>
 				  <td>$!{statis.buyTotal}</td>
 				  <td>$!{statis.equalTotal}</td>
-                  <td><a class="zlcm" s="$!{statis.symbol}" href="javascript:;">主力筹码</a></td>
+				  <td>
+					$!{date.format("HH:mm:ss",$!{statis.gmtUpdate})}</td>
+                  <td><a class="zlcm" s="$!{statis.symbol}" href="javascript:;">查看详情</a></td>
                 </tr>
 				#end
               </tbody>

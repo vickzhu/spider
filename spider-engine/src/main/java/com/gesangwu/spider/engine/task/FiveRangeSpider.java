@@ -24,7 +24,7 @@ import com.gesangwu.spider.engine.util.TradeTimeUtil;
 /**
  * 五档
  * <pre>
- * 这里的定时时间最长一分钟
+ * 这里的定时时间最长一分钟，涨跌幅7个点以上，不予计算
  * </pre>
  * @author zhuxb
  *
@@ -37,14 +37,12 @@ public class FiveRangeSpider {
 	private static final String regex = "var hq_str_([\\w]{8})=\"(.*)\";";
 	private static final Pattern r = Pattern.compile(regex);
 	
-	private static final int minVol = 500000;
-	
 	@Resource
 	private CompanyService companyService;
 	@Resource
 	private FiveRangeStatisService statisService;
 	
-//	@Scheduled(cron = "0 0/1 9-14 * * MON-FRI")
+	@Scheduled(cron = "0 0/1 9-14 * * MON-FRI")
 	public void execute(){
 		if(!TradeTimeUtil.checkTime()){
 			return;
@@ -79,34 +77,19 @@ public class FiveRangeSpider {
 			String symbol = matcher.group(1);
 			String detail = matcher.group(2);
 			String[] details = detail.split(SymbolConstant.COMMA);
-			String b_1_c = details[10];
-			String b_2_c = details[12];
-			String b_3_c = details[14];
-			String b_4_c = details[16];
-			String b_5_c = details[18];
-			if(Integer.valueOf(b_1_c)>=minVol||Integer.valueOf(b_2_c)>=minVol||Integer.valueOf(b_3_c)>=minVol
-					||Integer.valueOf(b_4_c)>=minVol||Integer.valueOf(b_5_c)>=minVol){
+			String zs = details[2];
+			String xj = details[3];
+			double chgPercent = calcChgPercent(zs, xj);
+			if(chgPercent >= 0.07){//涨跌幅过大，不予计算
+				continue;
+			}
+			if(checkBuy(details)){
 				b = true;
 			}
-			String s_1_c = details[20];
-			String s_2_c = details[22];
-			String s_3_c = details[24];
-			String s_4_c = details[26];
-			String s_5_c = details[28];
-			if(Integer.valueOf(s_1_c)>=minVol||Integer.valueOf(s_2_c)>=minVol||Integer.valueOf(s_3_c)>=minVol
-					||Integer.valueOf(s_4_c)>=minVol||Integer.valueOf(s_5_c)>=minVol){
+
+			if(checkSell(details)){
 				s = true;
 			}
-//			String buy_1_price = details[11];
-//			String buy_2_price = details[13];
-//			String buy_3_price = details[15];
-//			String buy_4_price = details[17];
-//			String buy_5_price = details[19];
-//			String sell_1_price = details[21];
-//			String sell_2_price = details[23];
-//			String sell_3_price = details[25];
-//			String sell_4_price = details[27];
-//			String sell_5_price = details[29];
 			String date = details[30];
 			if(b||s){
 				FiveRangeStatis statis = statisService.selectBySymbolAndDate(symbol, date);
@@ -134,6 +117,101 @@ public class FiveRangeSpider {
 				}
 			}
 		}
+	}
+	
+	private static int min_price = 500;
+	
+	private boolean checkBuy(String[] details){
+		String b_1_c = details[10];
+		String b_2_c = details[12];
+		String b_3_c = details[14];
+		String b_4_c = details[16];
+		String b_5_c = details[18];
+		String buy_1_price = details[11];
+		String buy_2_price = details[13];
+		String buy_3_price = details[15];
+		String buy_4_price = details[17];
+		String buy_5_price = details[19];
+		double b1amt = calcAmt(b_1_c, buy_1_price);
+		if(b1amt >= min_price){
+			return true;
+		}
+		double b2amt = calcAmt(b_2_c, buy_2_price);
+		if(b2amt >= min_price){
+			return true;
+		}
+		double b3amt = calcAmt(b_3_c, buy_3_price);
+		if(b3amt >= min_price){
+			return true;
+		}
+		double b4amt = calcAmt(b_4_c, buy_4_price);
+		if(b4amt >= min_price){
+			return true;
+		}
+		double b5amt = calcAmt(b_5_c, buy_5_price);
+		if(b5amt >= min_price){
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean checkSell(String[] details){
+		String s_1_c = details[20];
+		String s_2_c = details[22];
+		String s_3_c = details[24];
+		String s_4_c = details[26];
+		String s_5_c = details[28];
+		String sell_1_price = details[21];
+		String sell_2_price = details[23];
+		String sell_3_price = details[25];
+		String sell_4_price = details[27];
+		String sell_5_price = details[29];
+		double b1amt = calcAmt(s_1_c, sell_1_price);
+		if(b1amt >= min_price){
+			return true;
+		}
+		double b2amt = calcAmt(s_2_c, sell_2_price);
+		if(b2amt >= min_price){
+			return true;
+		}
+		double b3amt = calcAmt(s_3_c, sell_3_price);
+		if(b3amt >= min_price){
+			return true;
+		}
+		double b4amt = calcAmt(s_4_c, sell_4_price);
+		if(b4amt >= min_price){
+			return true;
+		}
+		double b5amt = calcAmt(s_5_c, sell_5_price);
+		if(b5amt >= min_price){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * 计算涨跌幅
+	 * @param zs	昨收
+	 * @param xj	现价
+	 * @return
+	 */
+	private double calcChgPercent(String zs, String xj){
+		double zuoshou = Double.valueOf(zs);
+		double xianjia = Double.valueOf(xj);
+		double change = Math.abs(xianjia - zuoshou);
+		return change/zuoshou;
+	}
+	
+	/**
+	 * 计算挂单价格，单位万
+	 * @param volStr
+	 * @param priceStr
+	 * @return
+	 */
+	private double calcAmt(String volStr, String priceStr){
+		double vol = Double.valueOf(volStr);
+		double price = Double.valueOf(priceStr);
+		return vol * price / 10000;
 	}
 
 }

@@ -4,13 +4,13 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
-import com.gesangwu.spider.engine.task.ShareHolderSpider;
+import com.gesangwu.spider.engine.task.ShareHolderTask;
 import com.gesangwu.spider.engine.test.BaseTest;
 
 public class ShareHolderTest extends BaseTest {
 	
 	@Resource
-	private ShareHolderSpider spider;
+	private ShareHolderTask spider;
 
 	@Test
 	public void test(){

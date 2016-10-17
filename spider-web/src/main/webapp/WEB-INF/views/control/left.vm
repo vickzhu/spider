@@ -2,11 +2,12 @@
 
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> Dashboard2</a>
   <ul>
-	<li class="submenu active open"> <a href="#"><i class="icon icon-file"></i> <span>股票</span> <span class="label label-important">2</span></a>
+	<li class="submenu active open"> <a href="#"><i class="icon icon-file"></i> <span>股票</span> <span class="label label-important">6</span></a>
       <ul>
         <li><a href="#springUrl('/longhu/')">龙虎榜</a></li>
 		<li><a href="#springUrl('/clique/')">帮派</a></li>
 		<li><a href="#springUrl('/fiverange/')">压托大单</a></li>
+		<li><a href="#springUrl('/largeVol/')">大单成交</a></li>
 		<li><a href="#springUrl('/fiverange/')">股本股东</a></li>
 		<li><a href="#springUrl('/fiverange/')">股东人数</a></li>
       </ul>

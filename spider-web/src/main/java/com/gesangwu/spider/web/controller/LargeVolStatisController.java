@@ -36,7 +36,7 @@ public class LargeVolStatisController {
 		LargeVolStatisExample example = new LargeVolStatisExample();
 		LargeVolStatisExample.Criteria criteria = example.createCriteria();
 		criteria.andDateEqualTo(time);
-		example.setOrderByClause("id desc");
+		example.setOrderByClause("gmt_update desc");
 		List<LargeVolStatis> statisList = lvsService.selectByExample(example);
 		ModelAndView mav = new ModelAndView("largeVolStatisList");
 		mav.addObject("list", statisList);

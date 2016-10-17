@@ -7,11 +7,13 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.util.StringUtil;
+import com.gesangwu.spider.biz.common.StockUtil;
 import com.gesangwu.spider.biz.dao.model.LargeVol;
 import com.gesangwu.spider.biz.dao.model.LargeVolStatis;
 import com.gesangwu.spider.biz.service.LargeVolService;
@@ -39,8 +41,9 @@ public class LargeVolTask {
 	private LargeVolService service;
 	@Resource
 	private LargeVolStatisService statisService;
+	private static final int volMin = 1000;
 	
-//	@Scheduled(cron = "0 0/1 9-14 * * MON-FRI")
+	@Scheduled(cron = "0 0/1 9-14 * * MON-FRI")
 	public void execute(){
 		if(!TradeTimeUtil.checkTime()){
 			return;
@@ -48,7 +51,7 @@ public class LargeVolTask {
 		long start = System.currentTimeMillis();
 		Date now = new Date();
 		int page = 0;
-		int volMin = 3000;
+		
 		String timePeriod = getTimePeriod();
 		System.out.println(timePeriod);
 		String url = buildUrl(page, timePeriod, volMin);
@@ -60,16 +63,20 @@ public class LargeVolTask {
 			String vol = m.group(3);
 			String code = m.group(1);
 			String percent = m.group(4);
-			String amount = m.group(5);
+			String amountStr = m.group(5);
 			String time = m.group(6);
 			if(StringUtil.isBlank(LittleCompanyHolder.getNameByCode(code))){//大市值企业不需要
 				continue;
 			}
+			double amount = Double.valueOf(amountStr);
+			if(amount < 5000000){
+				continue;
+			}
 			LargeVol lv = new LargeVol();
-			lv.setAmount(Double.valueOf(amount));
+			lv.setAmount(amount);
 			lv.setGmtCreate(now);
 			lv.setPercent(Double.valueOf(percent));
-			String symbol = code.startsWith("60")?"sh"+code:"sz"+code;
+			String symbol = StockUtil.code2Symbol(code);
 			lv.setSymbol(symbol);
 			lv.setTradeTime(time);
 			lv.setVol(Integer.valueOf(vol));
@@ -84,6 +91,7 @@ public class LargeVolTask {
 				statis.setEqualTotal(0);
 				statis.setBuyTotal(0);
 				statis.setGmtCreate(now);
+				statis.setGmtUpdate(now);
 				statisService.insert(statis);
 			}
 			if("-1".equals(tradeType)){

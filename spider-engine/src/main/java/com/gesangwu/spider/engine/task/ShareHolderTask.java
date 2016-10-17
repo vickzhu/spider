@@ -27,7 +27,7 @@ import com.gesangwu.spider.biz.service.ShareHolderService;
  *
  */
 @Component
-public class ShareHolderSpider {
+public class ShareHolderTask {
 	
 	private static final String r = "\"publishdate\"\\:\"[0-9]*\",\"enddate\"\\:\"([0-9]*)\",\"compcode\"\\:\"[0-9]*\",\"shholdercode\"\\:(\"[0-9]*\"|null),\"shholdername\"\\:\"([^\"]*)\",\"shholdertype\"\\:\"[^\"]*\",\"rank1\":null,\"rank2\"\\:([0-9]{1,2}),\"holderamt\"\\:([0-9E\\.]*),\"holderrto\"\\:[0-9\\.]*,\"pctoffloatshares\"\\:([0-9\\.]*),";
 
@@ -46,7 +46,6 @@ public class ShareHolderSpider {
 		int totalPages = (count + cpp -1)/cpp;
 		Date now = new Date();
 		for(int cur = 1; cur<=totalPages; cur++){
-			System.out.println(cur);
 			Page<Company> page = new Page<Company>(cur);
 			companyService.selectByPagination(new CompanyExample(), page);
 			List<Company> companyList = page.getRecords();
@@ -86,7 +85,7 @@ public class ShareHolderSpider {
 	}
 
 	public static void main(String[] args) { 
-		ShareHolderSpider spider = new ShareHolderSpider();
+		ShareHolderTask spider = new ShareHolderTask();
 		spider.execute();
 	}
 
