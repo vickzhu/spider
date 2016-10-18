@@ -30,7 +30,7 @@
                   <td>$!{statis.stockName}</td>
 				  <td>$!{statis.bigSell}</td>
 				  <td>$!{statis.bigBuy}</td>
-				  <td>$!{statis.gmtUpdate}</td>
+				  <td>$!{date.format("HH:mm:ss",$!{statis.gmtUpdate})}</td>
                 </tr>
 				#end
               </tbody>

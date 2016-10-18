@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -34,6 +35,7 @@ import com.gesangwu.spider.biz.service.LongHuService;
 import com.gesangwu.spider.biz.service.LongHuTypeService;
 import com.gesangwu.spider.biz.service.SecDeptService;
 import com.gesangwu.spider.engine.util.StockTool;
+import com.gesangwu.spider.engine.util.TradeTimeUtil;
 import com.gesangwu.spider.engine.util.XinLangLongHuTool;
 
 /**
@@ -69,8 +71,11 @@ public class LongHuTask {
 	@Resource
 	private SecDeptService deptService;
 	
-	@Scheduled(cron = "0 12 22 * * MON-FRI")
+	@Scheduled(cron = "0 0/3 16-17 * * MON-FRI")
 	public void execute(){
+		if(!TradeTimeUtil.checkLongHuTime()){
+			return;
+		}
 		Date now= new Date();
 		String tradeDate = sdf.format(now);
 		execute(tradeDate);
@@ -101,6 +106,7 @@ public class LongHuTask {
 	}
 	
 	private void parse(String content, String tradeDate){
+		Set<String> lhSet = completedLongHuMap(tradeDate);
 		Matcher m =  p1.matcher(content);
 		Date now = new Date();
 		List<LongHu> longHuList = new ArrayList<LongHu>();
@@ -112,6 +118,10 @@ public class LongHuTask {
 		}
 		while(m.find()){
 			String code = m.group(1);
+			String symbol = StockTool.codeToSymbol(code);
+			if(lhSet.contains(symbol)){
+				continue;
+			}
 			String stockName = m.group(2);
 			String price = m.group(3);
 			String chg = m.group(4);
@@ -122,7 +132,7 @@ public class LongHuTask {
 				lhCodeSet.add(code);
 			}
 			LongHu longHu = new LongHu();
-			longHu.setSymbol(StockTool.codeToSymbol(code));
+			longHu.setSymbol(symbol);
 			longHu.setStockName(stockName);
 			longHu.setPrice(Double.valueOf(price));
 			longHu.setChgPercent(DecimalUtil.parse(chg).doubleValue());
@@ -130,6 +140,9 @@ public class LongHuTask {
 			longHu.setTradeDate(tradeDate);
 			longHu.setGmtCreate(now);
 			List<String> typeList = typeMap.get(code);
+			if(CollectionUtils.isEmpty(typeList)){
+				continue;
+			}
 			List<String> yrList = new ArrayList<String>();
 			List<String> erList = new ArrayList<String>();
 			List<String> srList = new ArrayList<String>();
@@ -151,6 +164,19 @@ public class LongHuTask {
 		for (LongHu longHu : longHuList) {
 			fetchDetail(longHu);
 		}
+	}
+	
+	/**
+	 * 已完成的龙虎榜
+	 * @return
+	 */
+	private Set<String> completedLongHuMap(String tradeDate){
+		Set<String> lhSet = new HashSet<String>();
+		List<LongHu> lhList = lhService.selectByTradeDate(tradeDate);
+		for (LongHu longHu : lhList) {
+			lhSet.add(longHu.getSymbol());
+		}
+		return lhSet;
 	}
 	
 	public void fetchDetail(LongHu longHu){

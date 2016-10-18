@@ -98,9 +98,11 @@ public class FiveRangeSpider {
 					statis = new FiveRangeStatis();
 					if(b){
 						statis.setBigBuy(1);
+						statis.setBigSell(0);
 					}
 					if(s){
 						statis.setBigSell(1);
+						statis.setBigBuy(0);
 					}
 					statis.setDate(date);
 					statis.setStockName(details[0]);
@@ -122,7 +124,7 @@ public class FiveRangeSpider {
 		}
 	}
 	
-	private static int min_price = 500;
+	private static int min_price = 1000;
 	
 	private boolean checkBuy(String[] details){
 		String b_1_c = details[10];

@@ -12,7 +12,7 @@
             </div>
             <div class="widget-content nopadding">
               <form id="dept-form" class="form-horizontal">
-				$!{tokenTool.hiddenField}
+				<input type="hidden" id="stock_token" name="$!{tokenTool.tokenKey}" value="$!{tokenTool.token}" />
 				<input type="hidden" id="deptId" name="deptId" value="$!{secDept.id}"/>
 				<input type="hidden" id="deptCode" name="deptCode" value="$!{secDept.code}"/>
 				<div class="control-group">
@@ -57,6 +57,7 @@
                     <tr>
             		  <th>编号</th>	
                       <th>帮派名</th>
+					  <th>类型</th>
                       <th>操作</th>
                     </tr>
                   </thead>
@@ -65,7 +66,14 @@
 					<tr>
                       <td>${velocityCount}</td>
                       <td>$!{clique.name}</td>
+					  <td>
+						<select name="cliqueType" style="width:80px;margin:auto;">
+    						<option value="1" #if($!{clique.deptType}==1)selected #end>主营部</option>
+    						<option value="2" #if($!{clique.deptType}==2)selected #end>辅营部</option>
+                        </select>
+					  </td>
             		  <td>
+						<a href="javascript:;" class="btn btn-warn btn-mini">更新</a>&nbsp;
 						<a cliqueId="$!{clique.id}" cliqueName="$!{clique.name}" href="#delete-clique" data-toggle="modal" class="btn btn-danger btn-mini exit-clique">退帮</a>
 					  </td>
                     </tr>
@@ -81,7 +89,7 @@
 <div class="modal hide" id="delete-clique" aria-hidden="true" style="display: none;">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal">×</button>
-		<h3>退出帮派</h3>
+		<h3>${secDept.deptAddr}</h3>
 	</div>
 	<div class="modal-body">
 		<p id="delete-content" style="font-size:15px;">确定退出</p>
@@ -107,7 +115,7 @@
 			$("#delete-submit").attr("cliqueId",$(this).attr("cliqueId"));
 		})
 		$("#delete-submit").click(function(){
-			var param={deptCode:$("#deptCode").val(),cliqueId:$(this).attr("cliqueId"),$!{tokenTool.tokenKey}:"$!{tokenTool.token}"};
+			var param={deptCode:$("#deptCode").val(),cliqueId:$(this).attr("cliqueId"),$!{tokenTool.tokenKey}:$("#stock_token").val()};
 			jQuery.post("#springUrl('/sec-dept/exit-clique')",param,function(result){
 				window.location.reload();
 			});

@@ -43,7 +43,7 @@ public class LargeVolTask {
 	private LargeVolStatisService statisService;
 	private static final int volMin = 1000;
 	
-	@Scheduled(cron = "0 0/1 9-14 * * MON-FRI")
+	@Scheduled(cron = "59 0/1 9-14 * * MON-FRI")
 	public void execute(){
 		if(!TradeTimeUtil.checkTime()){
 			return;
@@ -69,7 +69,7 @@ public class LargeVolTask {
 				continue;
 			}
 			double amount = Double.valueOf(amountStr);
-			if(amount < 5000000){
+			if(amount < 8000000){
 				continue;
 			}
 			LargeVol lv = new LargeVol();
