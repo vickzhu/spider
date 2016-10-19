@@ -78,6 +78,9 @@ public class FiveRangeSpider {
 			String symbol = matcher.group(1);
 			String detail = matcher.group(2);
 			String[] details = detail.split(SymbolConstant.COMMA);
+			if(details.length < 30){
+				continue;
+			}
 			String zs = details[2];
 			String xj = details[3];
 			double chgPercent = calcChgPercent(zs, xj);
