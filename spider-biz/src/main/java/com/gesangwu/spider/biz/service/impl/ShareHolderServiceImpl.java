@@ -27,15 +27,22 @@ public class ShareHolderServiceImpl extends BaseServiceImpl<ShareHolder, ShareHo
 	}
 
 	@Override
-	public void insertShareHolderBatch(List<ShareHolder> shareHolderList) {
-		if(!CollectionUtils.isEmpty(shareHolderList)){			
-			mapper.insertShareHolderBatch(shareHolderList);		
-		}
+	public ShareHolder selectByHoldCode(String holderCode) {
+		ShareHolderExample example = new ShareHolderExample();
+		ShareHolderExample.Criteria criteria = example.createCriteria();
+		criteria.andHolderCodeEqualTo(holderCode);
+		List<ShareHolder> shList = mapper.selectByExample(example);
+		return CollectionUtils.isEmpty(shList) ? null : shList.get(0);
 	}
 
 	@Override
-	public Double calcFloatRate(String symbol) {
-		return mapper.calcFloatRate(symbol);
+	public ShareHolder selectPersonByName(String holderName) {
+		ShareHolderExample example = new ShareHolderExample();
+		ShareHolderExample.Criteria criteria = example.createCriteria();
+		criteria.andHolderTypeEqualTo(1);
+		criteria.andHolderNameEqualTo(holderName);
+		List<ShareHolder> shList = mapper.selectByExample(example);
+		return CollectionUtils.isEmpty(shList) ? null : shList.get(0);
 	}
 
 }

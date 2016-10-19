@@ -5,23 +5,19 @@ import java.util.Date;
 public class ShareHolder {
     private Long id;
 
-    private String stockCode;
-
-    private String endDate;
-
     private String holderName;
 
     private String holderCode;
 
-    private Integer ranking;
+    private Integer holderType;
 
-    private Double holdCount;
+    private Long cliqueId;
 
-    private Double holdRate;
-
-    private Double holdFloatRate;
+    private String remark;
 
     private Date gmtCreate;
+
+    private Date gmtUpdate;
 
     public Long getId() {
         return id;
@@ -29,22 +25,6 @@ public class ShareHolder {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getStockCode() {
-        return stockCode;
-    }
-
-    public void setStockCode(String stockCode) {
-        this.stockCode = stockCode == null ? null : stockCode.trim();
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate == null ? null : endDate.trim();
     }
 
     public String getHolderName() {
@@ -63,36 +43,28 @@ public class ShareHolder {
         this.holderCode = holderCode == null ? null : holderCode.trim();
     }
 
-    public Integer getRanking() {
-        return ranking;
+    public Integer getHolderType() {
+        return holderType;
     }
 
-    public void setRanking(Integer ranking) {
-        this.ranking = ranking;
+    public void setHolderType(Integer holderType) {
+        this.holderType = holderType;
     }
 
-    public Double getHoldCount() {
-        return holdCount;
+    public Long getCliqueId() {
+        return cliqueId;
     }
 
-    public void setHoldCount(Double holdCount) {
-        this.holdCount = holdCount;
+    public void setCliqueId(Long cliqueId) {
+        this.cliqueId = cliqueId;
     }
 
-    public Double getHoldRate() {
-        return holdRate;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setHoldRate(Double holdRate) {
-        this.holdRate = holdRate;
-    }
-
-    public Double getHoldFloatRate() {
-        return holdFloatRate;
-    }
-
-    public void setHoldFloatRate(Double holdFloatRate) {
-        this.holdFloatRate = holdFloatRate;
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
     public Date getGmtCreate() {
@@ -101,5 +73,13 @@ public class ShareHolder {
 
     public void setGmtCreate(Date gmtCreate) {
         this.gmtCreate = gmtCreate;
+    }
+
+    public Date getGmtUpdate() {
+        return gmtUpdate;
+    }
+
+    public void setGmtUpdate(Date gmtUpdate) {
+        this.gmtUpdate = gmtUpdate;
     }
 }

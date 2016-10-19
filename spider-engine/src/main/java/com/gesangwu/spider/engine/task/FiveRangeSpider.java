@@ -24,7 +24,7 @@ import com.gesangwu.spider.engine.util.TradeTimeUtil;
 /**
  * 五档
  * <pre>
- * 这里的定时时间最长一分钟，涨跌幅7个点以上，不予计算
+ * 这里的定时时间最长一分钟，涨跌幅7个点以上，不予计算, TODO ST股票涨跌幅只有5个点
  * </pre>
  * @author zhuxb
  *
@@ -52,7 +52,12 @@ public class FiveRangeSpider {
 		int size = companyList.size();
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < size; i++) {
-			sb.append(companyList.get(i).getSymbol());
+			Company company = companyList.get(i);
+			String stockName = company.getStockName();
+			if(stockName.startsWith("*ST") || stockName.startsWith("ST")){
+				continue;
+			}
+			sb.append(company.getSymbol());
 			sb.append(SymbolConstant.COMMA);
 			if(i == size - 1){
 				fetch(sb.toString());

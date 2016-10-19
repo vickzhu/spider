@@ -185,146 +185,6 @@ public class ShareHolderExample {
             return (Criteria) this;
         }
 
-        public Criteria andStockCodeIsNull() {
-            addCriterion("stock_code is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStockCodeIsNotNull() {
-            addCriterion("stock_code is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStockCodeEqualTo(String value) {
-            addCriterion("stock_code =", value, "stockCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andStockCodeNotEqualTo(String value) {
-            addCriterion("stock_code <>", value, "stockCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andStockCodeGreaterThan(String value) {
-            addCriterion("stock_code >", value, "stockCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andStockCodeGreaterThanOrEqualTo(String value) {
-            addCriterion("stock_code >=", value, "stockCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andStockCodeLessThan(String value) {
-            addCriterion("stock_code <", value, "stockCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andStockCodeLessThanOrEqualTo(String value) {
-            addCriterion("stock_code <=", value, "stockCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andStockCodeLike(String value) {
-            addCriterion("stock_code like", value, "stockCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andStockCodeNotLike(String value) {
-            addCriterion("stock_code not like", value, "stockCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andStockCodeIn(List<String> values) {
-            addCriterion("stock_code in", values, "stockCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andStockCodeNotIn(List<String> values) {
-            addCriterion("stock_code not in", values, "stockCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andStockCodeBetween(String value1, String value2) {
-            addCriterion("stock_code between", value1, value2, "stockCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andStockCodeNotBetween(String value1, String value2) {
-            addCriterion("stock_code not between", value1, value2, "stockCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andEndDateIsNull() {
-            addCriterion("end_date is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andEndDateIsNotNull() {
-            addCriterion("end_date is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andEndDateEqualTo(String value) {
-            addCriterion("end_date =", value, "endDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andEndDateNotEqualTo(String value) {
-            addCriterion("end_date <>", value, "endDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andEndDateGreaterThan(String value) {
-            addCriterion("end_date >", value, "endDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andEndDateGreaterThanOrEqualTo(String value) {
-            addCriterion("end_date >=", value, "endDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andEndDateLessThan(String value) {
-            addCriterion("end_date <", value, "endDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andEndDateLessThanOrEqualTo(String value) {
-            addCriterion("end_date <=", value, "endDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andEndDateLike(String value) {
-            addCriterion("end_date like", value, "endDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andEndDateNotLike(String value) {
-            addCriterion("end_date not like", value, "endDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andEndDateIn(List<String> values) {
-            addCriterion("end_date in", values, "endDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andEndDateNotIn(List<String> values) {
-            addCriterion("end_date not in", values, "endDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andEndDateBetween(String value1, String value2) {
-            addCriterion("end_date between", value1, value2, "endDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andEndDateNotBetween(String value1, String value2) {
-            addCriterion("end_date not between", value1, value2, "endDate");
-            return (Criteria) this;
-        }
-
         public Criteria andHolderNameIsNull() {
             addCriterion("holder_name is null");
             return (Criteria) this;
@@ -465,243 +325,193 @@ public class ShareHolderExample {
             return (Criteria) this;
         }
 
-        public Criteria andRankingIsNull() {
-            addCriterion("ranking is null");
+        public Criteria andHolderTypeIsNull() {
+            addCriterion("holder_type is null");
             return (Criteria) this;
         }
 
-        public Criteria andRankingIsNotNull() {
-            addCriterion("ranking is not null");
+        public Criteria andHolderTypeIsNotNull() {
+            addCriterion("holder_type is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRankingEqualTo(Integer value) {
-            addCriterion("ranking =", value, "ranking");
+        public Criteria andHolderTypeEqualTo(Integer value) {
+            addCriterion("holder_type =", value, "holderType");
             return (Criteria) this;
         }
 
-        public Criteria andRankingNotEqualTo(Integer value) {
-            addCriterion("ranking <>", value, "ranking");
+        public Criteria andHolderTypeNotEqualTo(Integer value) {
+            addCriterion("holder_type <>", value, "holderType");
             return (Criteria) this;
         }
 
-        public Criteria andRankingGreaterThan(Integer value) {
-            addCriterion("ranking >", value, "ranking");
+        public Criteria andHolderTypeGreaterThan(Integer value) {
+            addCriterion("holder_type >", value, "holderType");
             return (Criteria) this;
         }
 
-        public Criteria andRankingGreaterThanOrEqualTo(Integer value) {
-            addCriterion("ranking >=", value, "ranking");
+        public Criteria andHolderTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("holder_type >=", value, "holderType");
             return (Criteria) this;
         }
 
-        public Criteria andRankingLessThan(Integer value) {
-            addCriterion("ranking <", value, "ranking");
+        public Criteria andHolderTypeLessThan(Integer value) {
+            addCriterion("holder_type <", value, "holderType");
             return (Criteria) this;
         }
 
-        public Criteria andRankingLessThanOrEqualTo(Integer value) {
-            addCriterion("ranking <=", value, "ranking");
+        public Criteria andHolderTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("holder_type <=", value, "holderType");
             return (Criteria) this;
         }
 
-        public Criteria andRankingIn(List<Integer> values) {
-            addCriterion("ranking in", values, "ranking");
+        public Criteria andHolderTypeIn(List<Integer> values) {
+            addCriterion("holder_type in", values, "holderType");
             return (Criteria) this;
         }
 
-        public Criteria andRankingNotIn(List<Integer> values) {
-            addCriterion("ranking not in", values, "ranking");
+        public Criteria andHolderTypeNotIn(List<Integer> values) {
+            addCriterion("holder_type not in", values, "holderType");
             return (Criteria) this;
         }
 
-        public Criteria andRankingBetween(Integer value1, Integer value2) {
-            addCriterion("ranking between", value1, value2, "ranking");
+        public Criteria andHolderTypeBetween(Integer value1, Integer value2) {
+            addCriterion("holder_type between", value1, value2, "holderType");
             return (Criteria) this;
         }
 
-        public Criteria andRankingNotBetween(Integer value1, Integer value2) {
-            addCriterion("ranking not between", value1, value2, "ranking");
+        public Criteria andHolderTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("holder_type not between", value1, value2, "holderType");
             return (Criteria) this;
         }
 
-        public Criteria andHoldCountIsNull() {
-            addCriterion("hold_count is null");
+        public Criteria andCliqueIdIsNull() {
+            addCriterion("clique_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andHoldCountIsNotNull() {
-            addCriterion("hold_count is not null");
+        public Criteria andCliqueIdIsNotNull() {
+            addCriterion("clique_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andHoldCountEqualTo(Double value) {
-            addCriterion("hold_count =", value, "holdCount");
+        public Criteria andCliqueIdEqualTo(Long value) {
+            addCriterion("clique_id =", value, "cliqueId");
             return (Criteria) this;
         }
 
-        public Criteria andHoldCountNotEqualTo(Double value) {
-            addCriterion("hold_count <>", value, "holdCount");
+        public Criteria andCliqueIdNotEqualTo(Long value) {
+            addCriterion("clique_id <>", value, "cliqueId");
             return (Criteria) this;
         }
 
-        public Criteria andHoldCountGreaterThan(Double value) {
-            addCriterion("hold_count >", value, "holdCount");
+        public Criteria andCliqueIdGreaterThan(Long value) {
+            addCriterion("clique_id >", value, "cliqueId");
             return (Criteria) this;
         }
 
-        public Criteria andHoldCountGreaterThanOrEqualTo(Double value) {
-            addCriterion("hold_count >=", value, "holdCount");
+        public Criteria andCliqueIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("clique_id >=", value, "cliqueId");
             return (Criteria) this;
         }
 
-        public Criteria andHoldCountLessThan(Double value) {
-            addCriterion("hold_count <", value, "holdCount");
+        public Criteria andCliqueIdLessThan(Long value) {
+            addCriterion("clique_id <", value, "cliqueId");
             return (Criteria) this;
         }
 
-        public Criteria andHoldCountLessThanOrEqualTo(Double value) {
-            addCriterion("hold_count <=", value, "holdCount");
+        public Criteria andCliqueIdLessThanOrEqualTo(Long value) {
+            addCriterion("clique_id <=", value, "cliqueId");
             return (Criteria) this;
         }
 
-        public Criteria andHoldCountIn(List<Double> values) {
-            addCriterion("hold_count in", values, "holdCount");
+        public Criteria andCliqueIdIn(List<Long> values) {
+            addCriterion("clique_id in", values, "cliqueId");
             return (Criteria) this;
         }
 
-        public Criteria andHoldCountNotIn(List<Double> values) {
-            addCriterion("hold_count not in", values, "holdCount");
+        public Criteria andCliqueIdNotIn(List<Long> values) {
+            addCriterion("clique_id not in", values, "cliqueId");
             return (Criteria) this;
         }
 
-        public Criteria andHoldCountBetween(Double value1, Double value2) {
-            addCriterion("hold_count between", value1, value2, "holdCount");
+        public Criteria andCliqueIdBetween(Long value1, Long value2) {
+            addCriterion("clique_id between", value1, value2, "cliqueId");
             return (Criteria) this;
         }
 
-        public Criteria andHoldCountNotBetween(Double value1, Double value2) {
-            addCriterion("hold_count not between", value1, value2, "holdCount");
+        public Criteria andCliqueIdNotBetween(Long value1, Long value2) {
+            addCriterion("clique_id not between", value1, value2, "cliqueId");
             return (Criteria) this;
         }
 
-        public Criteria andHoldRateIsNull() {
-            addCriterion("hold_rate is null");
+        public Criteria andRemarkIsNull() {
+            addCriterion("remark is null");
             return (Criteria) this;
         }
 
-        public Criteria andHoldRateIsNotNull() {
-            addCriterion("hold_rate is not null");
+        public Criteria andRemarkIsNotNull() {
+            addCriterion("remark is not null");
             return (Criteria) this;
         }
 
-        public Criteria andHoldRateEqualTo(Double value) {
-            addCriterion("hold_rate =", value, "holdRate");
+        public Criteria andRemarkEqualTo(String value) {
+            addCriterion("remark =", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andHoldRateNotEqualTo(Double value) {
-            addCriterion("hold_rate <>", value, "holdRate");
+        public Criteria andRemarkNotEqualTo(String value) {
+            addCriterion("remark <>", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andHoldRateGreaterThan(Double value) {
-            addCriterion("hold_rate >", value, "holdRate");
+        public Criteria andRemarkGreaterThan(String value) {
+            addCriterion("remark >", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andHoldRateGreaterThanOrEqualTo(Double value) {
-            addCriterion("hold_rate >=", value, "holdRate");
+        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("remark >=", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andHoldRateLessThan(Double value) {
-            addCriterion("hold_rate <", value, "holdRate");
+        public Criteria andRemarkLessThan(String value) {
+            addCriterion("remark <", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andHoldRateLessThanOrEqualTo(Double value) {
-            addCriterion("hold_rate <=", value, "holdRate");
+        public Criteria andRemarkLessThanOrEqualTo(String value) {
+            addCriterion("remark <=", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andHoldRateIn(List<Double> values) {
-            addCriterion("hold_rate in", values, "holdRate");
+        public Criteria andRemarkLike(String value) {
+            addCriterion("remark like", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andHoldRateNotIn(List<Double> values) {
-            addCriterion("hold_rate not in", values, "holdRate");
+        public Criteria andRemarkNotLike(String value) {
+            addCriterion("remark not like", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andHoldRateBetween(Double value1, Double value2) {
-            addCriterion("hold_rate between", value1, value2, "holdRate");
+        public Criteria andRemarkIn(List<String> values) {
+            addCriterion("remark in", values, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andHoldRateNotBetween(Double value1, Double value2) {
-            addCriterion("hold_rate not between", value1, value2, "holdRate");
+        public Criteria andRemarkNotIn(List<String> values) {
+            addCriterion("remark not in", values, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andHoldFloatRateIsNull() {
-            addCriterion("hold_float_rate is null");
+        public Criteria andRemarkBetween(String value1, String value2) {
+            addCriterion("remark between", value1, value2, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andHoldFloatRateIsNotNull() {
-            addCriterion("hold_float_rate is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andHoldFloatRateEqualTo(Double value) {
-            addCriterion("hold_float_rate =", value, "holdFloatRate");
-            return (Criteria) this;
-        }
-
-        public Criteria andHoldFloatRateNotEqualTo(Double value) {
-            addCriterion("hold_float_rate <>", value, "holdFloatRate");
-            return (Criteria) this;
-        }
-
-        public Criteria andHoldFloatRateGreaterThan(Double value) {
-            addCriterion("hold_float_rate >", value, "holdFloatRate");
-            return (Criteria) this;
-        }
-
-        public Criteria andHoldFloatRateGreaterThanOrEqualTo(Double value) {
-            addCriterion("hold_float_rate >=", value, "holdFloatRate");
-            return (Criteria) this;
-        }
-
-        public Criteria andHoldFloatRateLessThan(Double value) {
-            addCriterion("hold_float_rate <", value, "holdFloatRate");
-            return (Criteria) this;
-        }
-
-        public Criteria andHoldFloatRateLessThanOrEqualTo(Double value) {
-            addCriterion("hold_float_rate <=", value, "holdFloatRate");
-            return (Criteria) this;
-        }
-
-        public Criteria andHoldFloatRateIn(List<Double> values) {
-            addCriterion("hold_float_rate in", values, "holdFloatRate");
-            return (Criteria) this;
-        }
-
-        public Criteria andHoldFloatRateNotIn(List<Double> values) {
-            addCriterion("hold_float_rate not in", values, "holdFloatRate");
-            return (Criteria) this;
-        }
-
-        public Criteria andHoldFloatRateBetween(Double value1, Double value2) {
-            addCriterion("hold_float_rate between", value1, value2, "holdFloatRate");
-            return (Criteria) this;
-        }
-
-        public Criteria andHoldFloatRateNotBetween(Double value1, Double value2) {
-            addCriterion("hold_float_rate not between", value1, value2, "holdFloatRate");
+        public Criteria andRemarkNotBetween(String value1, String value2) {
+            addCriterion("remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
 
@@ -762,6 +572,66 @@ public class ShareHolderExample {
 
         public Criteria andGmtCreateNotBetween(Date value1, Date value2) {
             addCriterion("gmt_create not between", value1, value2, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateIsNull() {
+            addCriterion("gmt_update is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateIsNotNull() {
+            addCriterion("gmt_update is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateEqualTo(Date value) {
+            addCriterion("gmt_update =", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateNotEqualTo(Date value) {
+            addCriterion("gmt_update <>", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateGreaterThan(Date value) {
+            addCriterion("gmt_update >", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateGreaterThanOrEqualTo(Date value) {
+            addCriterion("gmt_update >=", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateLessThan(Date value) {
+            addCriterion("gmt_update <", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateLessThanOrEqualTo(Date value) {
+            addCriterion("gmt_update <=", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateIn(List<Date> values) {
+            addCriterion("gmt_update in", values, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateNotIn(List<Date> values) {
+            addCriterion("gmt_update not in", values, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateBetween(Date value1, Date value2) {
+            addCriterion("gmt_update between", value1, value2, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateNotBetween(Date value1, Date value2) {
+            addCriterion("gmt_update not between", value1, value2, "gmtUpdate");
             return (Criteria) this;
         }
     }

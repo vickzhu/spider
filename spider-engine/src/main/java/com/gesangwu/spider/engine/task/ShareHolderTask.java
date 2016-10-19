@@ -15,8 +15,10 @@ import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.CompanyExample;
+import com.gesangwu.spider.biz.dao.model.ShareHolder;
 import com.gesangwu.spider.biz.dao.model.StockShareholder;
 import com.gesangwu.spider.biz.service.CompanyService;
+import com.gesangwu.spider.biz.service.ShareHolderService;
 import com.gesangwu.spider.biz.service.StockShareholderService;
 
 /**
@@ -35,8 +37,8 @@ public class ShareHolderTask {
 	
 	@Resource
 	private CompanyService companyService;
-//	@Resource
-//	private ShareHolderService shareHolderService;
+	@Resource
+	private ShareHolderService shService;
 	@Resource
 	private StockShareholderService sshService;
 	
@@ -61,13 +63,6 @@ public class ShareHolderTask {
 		    		String publishDate = m.group(1);
 		    		String endDate = m.group(2);
 		    		String holderCode = m.group(3);
-		    		
-		    		if("null".equals(holderCode)){//个人
-		    			holderCode = null;
-		    			
-		    		} else {//机构
-		    			holderCode = holderCode.replaceAll("\"", StringUtil.EMPTY);
-		    		}
 		    		String holderName = m.group(4);
 		    		String rank = m.group(5);
 		    		String stockCounts = m.group(6);//持股数量
@@ -75,7 +70,9 @@ public class ShareHolderTask {
 		    		String pctOfFloatShares = m.group(8);//持流通股比例
 		    		String isNotNew = m.group(9);
 		    		String chgCount = m.group(10);
+		    		Long holderId = souShareHolder(holderCode, holderName);
 		    		StockShareholder ssh = new StockShareholder();
+		    		ssh.setShareholder(holderId);
 		    		ssh.setSymbol(company.getSymbol());
 		    		ssh.setEndDate(endDate);
 		    		ssh.setHoldCount(Integer.valueOf(stockCounts));
@@ -96,10 +93,31 @@ public class ShareHolderTask {
 			}
 		}
 	}
-
-	public static void main(String[] args) { 
-		ShareHolderTask spider = new ShareHolderTask();
-		spider.execute();
+	
+	private Long souShareHolder(String holderCode, String holderName){
+		if("null".equals(holderCode)){//个人
+			holderCode = null;
+			ShareHolder sh = shService.selectPersonByName(holderName);
+			if(sh == null){
+				sh = new ShareHolder();
+				sh.setGmtCreate(new Date());
+				sh.setHolderName(holderName);
+				sh.setHolderType(1);
+				shService.insert(sh);
+			}
+			return sh.getId();
+		} else {//机构
+			holderCode = holderCode.replaceAll("\"", StringUtil.EMPTY);
+			ShareHolder sh = shService.selectByHoldCode(holderCode);
+			if(sh == null){
+				sh = new ShareHolder();
+				sh.setGmtCreate(new Date());
+				sh.setHolderCode(holderCode);
+				sh.setHolderName(holderName);
+				sh.setHolderType(2);
+				shService.insert(sh);
+			}
+			return sh.getId();
+		}
 	}
-
 }

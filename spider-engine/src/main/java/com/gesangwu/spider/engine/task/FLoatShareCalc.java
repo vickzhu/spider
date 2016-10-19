@@ -7,14 +7,13 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.CompanyExample;
 import com.gesangwu.spider.biz.service.CompanyService;
-import com.gesangwu.spider.biz.service.ShareHolderService;
+import com.gesangwu.spider.biz.service.StockShareholderService;
 
 /**
  * 活跃流通股东
@@ -32,7 +31,7 @@ public class FLoatShareCalc {
 	@Resource
 	private CompanyService companyService;
 	@Resource
-	private ShareHolderService holderService;
+	private StockShareholderService sshService;	
 	
 //	@Scheduled(cron = "0 0 4 * * MON-FRI")
 	public void execute(){
@@ -46,7 +45,7 @@ public class FLoatShareCalc {
 			companyService.selectByPagination(new CompanyExample(), page);
 			List<Company> companyList = page.getRecords();
 			for (Company company : companyList) {
-				Double totalRate = holderService.calcFloatRate(company.getSymbol());
+				Double totalRate = sshService.calcFloatRate(company.getSymbol());
 				if(totalRate == null){
 					continue;
 				}
