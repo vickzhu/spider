@@ -1,7 +1,10 @@
 package com.gesangwu.spider.biz.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import com.gandalf.framework.mybatis.BaseMapper;
@@ -21,6 +24,19 @@ public class StockShareholderServiceImpl extends BaseServiceImpl<StockShareholde
 	@Override
 	protected BaseMapper<StockShareholder, StockShareholderExample> getMapper() {
 		return mapper;
+	}
+
+	@Override
+	public void insertBatch(List<StockShareholder> sshList) {
+		if(CollectionUtils.isEmpty(sshList)){
+			return;
+		}
+		mapper.insertBatch(sshList);		
+	}
+
+	@Override
+	public Double calcFloatRate(String symbol) {
+		return mapper.calcFloatRate(symbol);
 	}
 
 }

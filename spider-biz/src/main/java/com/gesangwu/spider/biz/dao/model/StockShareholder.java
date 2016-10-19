@@ -9,11 +9,11 @@ public class StockShareholder {
 
     private Long shareholder;
 
-    private Date endDate;
+    private String endDate;
 
     private Integer ranking;
 
-    private Integer stockCount;
+    private Integer holdCount;
 
     private Double holdFloatRate;
 
@@ -53,12 +53,12 @@ public class StockShareholder {
         this.shareholder = shareholder;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setEndDate(String endDate) {
+        this.endDate = endDate == null ? null : endDate.trim();
     }
 
     public Integer getRanking() {
@@ -69,12 +69,12 @@ public class StockShareholder {
         this.ranking = ranking;
     }
 
-    public Integer getStockCount() {
-        return stockCount;
+    public Integer getHoldCount() {
+        return holdCount;
     }
 
-    public void setStockCount(Integer stockCount) {
-        this.stockCount = stockCount;
+    public void setHoldCount(Integer holdCount) {
+        this.holdCount = holdCount;
     }
 
     public Double getHoldFloatRate() {

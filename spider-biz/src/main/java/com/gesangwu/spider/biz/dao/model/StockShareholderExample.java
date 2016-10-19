@@ -325,52 +325,62 @@ public class StockShareholderExample {
             return (Criteria) this;
         }
 
-        public Criteria andEndDateEqualTo(Date value) {
+        public Criteria andEndDateEqualTo(String value) {
             addCriterion("end_date =", value, "endDate");
             return (Criteria) this;
         }
 
-        public Criteria andEndDateNotEqualTo(Date value) {
+        public Criteria andEndDateNotEqualTo(String value) {
             addCriterion("end_date <>", value, "endDate");
             return (Criteria) this;
         }
 
-        public Criteria andEndDateGreaterThan(Date value) {
+        public Criteria andEndDateGreaterThan(String value) {
             addCriterion("end_date >", value, "endDate");
             return (Criteria) this;
         }
 
-        public Criteria andEndDateGreaterThanOrEqualTo(Date value) {
+        public Criteria andEndDateGreaterThanOrEqualTo(String value) {
             addCriterion("end_date >=", value, "endDate");
             return (Criteria) this;
         }
 
-        public Criteria andEndDateLessThan(Date value) {
+        public Criteria andEndDateLessThan(String value) {
             addCriterion("end_date <", value, "endDate");
             return (Criteria) this;
         }
 
-        public Criteria andEndDateLessThanOrEqualTo(Date value) {
+        public Criteria andEndDateLessThanOrEqualTo(String value) {
             addCriterion("end_date <=", value, "endDate");
             return (Criteria) this;
         }
 
-        public Criteria andEndDateIn(List<Date> values) {
+        public Criteria andEndDateLike(String value) {
+            addCriterion("end_date like", value, "endDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndDateNotLike(String value) {
+            addCriterion("end_date not like", value, "endDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndDateIn(List<String> values) {
             addCriterion("end_date in", values, "endDate");
             return (Criteria) this;
         }
 
-        public Criteria andEndDateNotIn(List<Date> values) {
+        public Criteria andEndDateNotIn(List<String> values) {
             addCriterion("end_date not in", values, "endDate");
             return (Criteria) this;
         }
 
-        public Criteria andEndDateBetween(Date value1, Date value2) {
+        public Criteria andEndDateBetween(String value1, String value2) {
             addCriterion("end_date between", value1, value2, "endDate");
             return (Criteria) this;
         }
 
-        public Criteria andEndDateNotBetween(Date value1, Date value2) {
+        public Criteria andEndDateNotBetween(String value1, String value2) {
             addCriterion("end_date not between", value1, value2, "endDate");
             return (Criteria) this;
         }
@@ -435,63 +445,63 @@ public class StockShareholderExample {
             return (Criteria) this;
         }
 
-        public Criteria andStockCountIsNull() {
-            addCriterion("stock_count is null");
+        public Criteria andHoldCountIsNull() {
+            addCriterion("hold_count is null");
             return (Criteria) this;
         }
 
-        public Criteria andStockCountIsNotNull() {
-            addCriterion("stock_count is not null");
+        public Criteria andHoldCountIsNotNull() {
+            addCriterion("hold_count is not null");
             return (Criteria) this;
         }
 
-        public Criteria andStockCountEqualTo(Integer value) {
-            addCriterion("stock_count =", value, "stockCount");
+        public Criteria andHoldCountEqualTo(Integer value) {
+            addCriterion("hold_count =", value, "holdCount");
             return (Criteria) this;
         }
 
-        public Criteria andStockCountNotEqualTo(Integer value) {
-            addCriterion("stock_count <>", value, "stockCount");
+        public Criteria andHoldCountNotEqualTo(Integer value) {
+            addCriterion("hold_count <>", value, "holdCount");
             return (Criteria) this;
         }
 
-        public Criteria andStockCountGreaterThan(Integer value) {
-            addCriterion("stock_count >", value, "stockCount");
+        public Criteria andHoldCountGreaterThan(Integer value) {
+            addCriterion("hold_count >", value, "holdCount");
             return (Criteria) this;
         }
 
-        public Criteria andStockCountGreaterThanOrEqualTo(Integer value) {
-            addCriterion("stock_count >=", value, "stockCount");
+        public Criteria andHoldCountGreaterThanOrEqualTo(Integer value) {
+            addCriterion("hold_count >=", value, "holdCount");
             return (Criteria) this;
         }
 
-        public Criteria andStockCountLessThan(Integer value) {
-            addCriterion("stock_count <", value, "stockCount");
+        public Criteria andHoldCountLessThan(Integer value) {
+            addCriterion("hold_count <", value, "holdCount");
             return (Criteria) this;
         }
 
-        public Criteria andStockCountLessThanOrEqualTo(Integer value) {
-            addCriterion("stock_count <=", value, "stockCount");
+        public Criteria andHoldCountLessThanOrEqualTo(Integer value) {
+            addCriterion("hold_count <=", value, "holdCount");
             return (Criteria) this;
         }
 
-        public Criteria andStockCountIn(List<Integer> values) {
-            addCriterion("stock_count in", values, "stockCount");
+        public Criteria andHoldCountIn(List<Integer> values) {
+            addCriterion("hold_count in", values, "holdCount");
             return (Criteria) this;
         }
 
-        public Criteria andStockCountNotIn(List<Integer> values) {
-            addCriterion("stock_count not in", values, "stockCount");
+        public Criteria andHoldCountNotIn(List<Integer> values) {
+            addCriterion("hold_count not in", values, "holdCount");
             return (Criteria) this;
         }
 
-        public Criteria andStockCountBetween(Integer value1, Integer value2) {
-            addCriterion("stock_count between", value1, value2, "stockCount");
+        public Criteria andHoldCountBetween(Integer value1, Integer value2) {
+            addCriterion("hold_count between", value1, value2, "holdCount");
             return (Criteria) this;
         }
 
-        public Criteria andStockCountNotBetween(Integer value1, Integer value2) {
-            addCriterion("stock_count not between", value1, value2, "stockCount");
+        public Criteria andHoldCountNotBetween(Integer value1, Integer value2) {
+            addCriterion("hold_count not between", value1, value2, "holdCount");
             return (Criteria) this;
         }
 

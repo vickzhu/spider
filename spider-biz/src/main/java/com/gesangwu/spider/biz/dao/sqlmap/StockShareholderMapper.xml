@@ -5,9 +5,9 @@
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="symbol" property="symbol" jdbcType="VARCHAR" />
     <result column="shareholder" property="shareholder" jdbcType="BIGINT" />
-    <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="end_date" property="endDate" jdbcType="VARCHAR" />
     <result column="ranking" property="ranking" jdbcType="INTEGER" />
-    <result column="stock_count" property="stockCount" jdbcType="INTEGER" />
+    <result column="hold_count" property="holdCount" jdbcType="INTEGER" />
     <result column="hold_float_rate" property="holdFloatRate" jdbcType="DOUBLE" />
     <result column="hold_rate" property="holdRate" jdbcType="DOUBLE" />
     <result column="is_new_holder" property="isNewHolder" jdbcType="INTEGER" />
@@ -75,7 +75,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, symbol, shareholder, end_date, ranking, stock_count, hold_float_rate, hold_rate, 
+    id, symbol, shareholder, end_date, ranking, hold_count, hold_float_rate, hold_rate, 
     is_new_holder, chg_count, stock_type, publish_date, gmt_create
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.StockShareholderExample" >
@@ -116,12 +116,12 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into stock_shareholder (symbol, shareholder, end_date, 
-      ranking, stock_count, hold_float_rate, 
+      ranking, hold_count, hold_float_rate, 
       hold_rate, is_new_holder, chg_count, 
       stock_type, publish_date, gmt_create
       )
-    values (#{symbol,jdbcType=VARCHAR}, #{shareholder,jdbcType=BIGINT}, #{endDate,jdbcType=TIMESTAMP}, 
-      #{ranking,jdbcType=INTEGER}, #{stockCount,jdbcType=INTEGER}, #{holdFloatRate,jdbcType=DOUBLE}, 
+    values (#{symbol,jdbcType=VARCHAR}, #{shareholder,jdbcType=BIGINT}, #{endDate,jdbcType=VARCHAR}, 
+      #{ranking,jdbcType=INTEGER}, #{holdCount,jdbcType=INTEGER}, #{holdFloatRate,jdbcType=DOUBLE}, 
       #{holdRate,jdbcType=DOUBLE}, #{isNewHolder,jdbcType=INTEGER}, #{chgCount,jdbcType=INTEGER}, 
       #{stockType,jdbcType=INTEGER}, #{publishDate,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}
       )
@@ -144,8 +144,8 @@
       <if test="ranking != null" >
         ranking,
       </if>
-      <if test="stockCount != null" >
-        stock_count,
+      <if test="holdCount != null" >
+        hold_count,
       </if>
       <if test="holdFloatRate != null" >
         hold_float_rate,
@@ -177,13 +177,13 @@
         #{shareholder,jdbcType=BIGINT},
       </if>
       <if test="endDate != null" >
-        #{endDate,jdbcType=TIMESTAMP},
+        #{endDate,jdbcType=VARCHAR},
       </if>
       <if test="ranking != null" >
         #{ranking,jdbcType=INTEGER},
       </if>
-      <if test="stockCount != null" >
-        #{stockCount,jdbcType=INTEGER},
+      <if test="holdCount != null" >
+        #{holdCount,jdbcType=INTEGER},
       </if>
       <if test="holdFloatRate != null" >
         #{holdFloatRate,jdbcType=DOUBLE},
@@ -227,13 +227,13 @@
         shareholder = #{record.shareholder,jdbcType=BIGINT},
       </if>
       <if test="record.endDate != null" >
-        end_date = #{record.endDate,jdbcType=TIMESTAMP},
+        end_date = #{record.endDate,jdbcType=VARCHAR},
       </if>
       <if test="record.ranking != null" >
         ranking = #{record.ranking,jdbcType=INTEGER},
       </if>
-      <if test="record.stockCount != null" >
-        stock_count = #{record.stockCount,jdbcType=INTEGER},
+      <if test="record.holdCount != null" >
+        hold_count = #{record.holdCount,jdbcType=INTEGER},
       </if>
       <if test="record.holdFloatRate != null" >
         hold_float_rate = #{record.holdFloatRate,jdbcType=DOUBLE},
@@ -266,9 +266,9 @@
     set id = #{record.id,jdbcType=BIGINT},
       symbol = #{record.symbol,jdbcType=VARCHAR},
       shareholder = #{record.shareholder,jdbcType=BIGINT},
-      end_date = #{record.endDate,jdbcType=TIMESTAMP},
+      end_date = #{record.endDate,jdbcType=VARCHAR},
       ranking = #{record.ranking,jdbcType=INTEGER},
-      stock_count = #{record.stockCount,jdbcType=INTEGER},
+      hold_count = #{record.holdCount,jdbcType=INTEGER},
       hold_float_rate = #{record.holdFloatRate,jdbcType=DOUBLE},
       hold_rate = #{record.holdRate,jdbcType=DOUBLE},
       is_new_holder = #{record.isNewHolder,jdbcType=INTEGER},
@@ -290,13 +290,13 @@
         shareholder = #{shareholder,jdbcType=BIGINT},
       </if>
       <if test="endDate != null" >
-        end_date = #{endDate,jdbcType=TIMESTAMP},
+        end_date = #{endDate,jdbcType=VARCHAR},
       </if>
       <if test="ranking != null" >
         ranking = #{ranking,jdbcType=INTEGER},
       </if>
-      <if test="stockCount != null" >
-        stock_count = #{stockCount,jdbcType=INTEGER},
+      <if test="holdCount != null" >
+        hold_count = #{holdCount,jdbcType=INTEGER},
       </if>
       <if test="holdFloatRate != null" >
         hold_float_rate = #{holdFloatRate,jdbcType=DOUBLE},
@@ -326,9 +326,9 @@
     update stock_shareholder
     set symbol = #{symbol,jdbcType=VARCHAR},
       shareholder = #{shareholder,jdbcType=BIGINT},
-      end_date = #{endDate,jdbcType=TIMESTAMP},
+      end_date = #{endDate,jdbcType=VARCHAR},
       ranking = #{ranking,jdbcType=INTEGER},
-      stock_count = #{stockCount,jdbcType=INTEGER},
+      hold_count = #{holdCount,jdbcType=INTEGER},
       hold_float_rate = #{holdFloatRate,jdbcType=DOUBLE},
       hold_rate = #{holdRate,jdbcType=DOUBLE},
       is_new_holder = #{isNewHolder,jdbcType=INTEGER},
@@ -346,8 +346,8 @@
       )
     values
     <foreach collection="list" index="index" item="holder" separator=","> 
-     (#{holder.symbol,jdbcType=VARCHAR}, #{holder.shareholder,jdbcType=BIGINT}, #{holder.endDate,jdbcType=TIMESTAMP}, 
-      #{holder.ranking,jdbcType=INTEGER}, #{holder.stockCount,jdbcType=INTEGER}, #{holder.holdFloatRate,jdbcType=DOUBLE}, 
+     (#{holder.symbol,jdbcType=VARCHAR}, #{holder.shareholder,jdbcType=BIGINT}, #{holder.endDate,jdbcType=VARCHAR}, 
+      #{holder.ranking,jdbcType=INTEGER}, #{holder.holdCount,jdbcType=INTEGER}, #{holder.holdFloatRate,jdbcType=DOUBLE}, 
       #{holder.holdRate,jdbcType=DOUBLE}, #{holder.isNewHolder,jdbcType=INTEGER}, #{holder.chgCount,jdbcType=INTEGER}, 
       #{holder.stockType,jdbcType=INTEGER}, #{holder.publishDate,jdbcType=VARCHAR}, #{holder.gmtCreate,jdbcType=TIMESTAMP}
       )

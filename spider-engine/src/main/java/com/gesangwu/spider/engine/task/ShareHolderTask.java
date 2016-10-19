@@ -15,9 +15,9 @@ import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.CompanyExample;
-import com.gesangwu.spider.biz.dao.model.ShareHolder;
+import com.gesangwu.spider.biz.dao.model.StockShareholder;
 import com.gesangwu.spider.biz.service.CompanyService;
-import com.gesangwu.spider.biz.service.ShareHolderService;
+import com.gesangwu.spider.biz.service.StockShareholderService;
 
 /**
  * 十大流通股东
@@ -29,23 +29,25 @@ import com.gesangwu.spider.biz.service.ShareHolderService;
 @Component
 public class ShareHolderTask {
 	
-	private static final String r = "\"publishdate\"\\:\"[0-9]*\",\"enddate\"\\:\"([0-9]*)\",\"compcode\"\\:\"[0-9]*\",\"shholdercode\"\\:(\"[0-9]*\"|null),\"shholdername\"\\:\"([^\"]*)\",\"shholdertype\"\\:\"[^\"]*\",\"rank1\":null,\"rank2\"\\:([0-9]{1,2}),\"holderamt\"\\:([0-9E\\.]*),\"holderrto\"\\:[0-9\\.]*,\"pctoffloatshares\"\\:([0-9\\.]*),";
+	private static final String r = "\"publishdate\"\\:\"([0-9]*)\",\"enddate\"\\:\"([0-9]*)\",\"compcode\"\\:\"[0-9]*\",\"shholdercode\"\\:(\"[0-9]*\"|null),\"shholdername\"\\:\"([^\"]*)\",\"shholdertype\"\\:\"[^\"]*\",\"rank1\":null,\"rank2\"\\:([0-9]{1,2}),\"holderamt\"\\:([0-9E\\.]*),\"holderrto\"\\:([0-9\\.])*,\"pctoffloatshares\"\\:([0-9\\.]*),\"sharestype\"\\:null,\"shholdernature\"\\:\"[^\"]*\",\"symbol\"\\:null,\"name\"\\:null,\"ishis\"\\:([0|1]),\"chg\"\\:([0-9\\.]*),";
 
 	private static Pattern p = Pattern.compile(r);
 	
 	@Resource
 	private CompanyService companyService;
+//	@Resource
+//	private ShareHolderService shareHolderService;
 	@Resource
-	private ShareHolderService shareHolderService;
+	private StockShareholderService sshService;
 	
 	public void execute(){
 		String cookieUrl = "https://xueqiu.com/account/lostpasswd";
 		HttpTool.get(cookieUrl);//这个链接只是为了获得cookie信息，因为后面的请求需要用到cookie
-    	int cpp = 10;
+    	int cpp = 100;
 		int count = companyService.countByExample(null);
 		int totalPages = (count + cpp -1)/cpp;
 		Date now = new Date();
-		for(int cur = 1; cur<=totalPages; cur++){
+		for(int cur = 1; cur <= totalPages; cur++){
 			Page<Company> page = new Page<Company>(cur);
 			companyService.selectByPagination(new CompanyExample(), page);
 			List<Company> companyList = page.getRecords();
@@ -54,32 +56,43 @@ public class ShareHolderTask {
 				String url = "https://xueqiu.com/stock/f10/otsholder.json?symbol="+symbol;
 				String result = HttpTool.get(url);
 				Matcher m = p.matcher(result);
-				List<ShareHolder> holderList = new ArrayList<ShareHolder>();
-		    	while(m.find()){    		
-		    		String endDate = m.group(1);
-		    		String holderCode = m.group(2);
-		    		if("null".equals(holderCode)){
+				List<StockShareholder> holderList = new ArrayList<StockShareholder>();
+		    	while(m.find()){    	
+		    		String publishDate = m.group(1);
+		    		String endDate = m.group(2);
+		    		String holderCode = m.group(3);
+		    		
+		    		if("null".equals(holderCode)){//个人
 		    			holderCode = null;
-		    		} else {
+		    			
+		    		} else {//机构
 		    			holderCode = holderCode.replaceAll("\"", StringUtil.EMPTY);
 		    		}
-		    		String holderName = m.group(3);
-		    		String rank = m.group(4);
-		    		String counts = m.group(5);//持股数量
-		    		String pctOfFloatShares = m.group(6);//流通比例
-		    		ShareHolder holder = new ShareHolder();
-		    		holder.setStockCode(company.getSymbol());
-		    		holder.setEndDate(endDate);
-		    		holder.setHoldCount(Double.valueOf(counts));
-		    		holder.setHolderCode(holderCode);
-		    		holder.setHolderName(holderName);
-		    		holder.setHoldFloatRate(Double.valueOf(pctOfFloatShares));
-//		    		holder.setHoldRate(Double.valueOf(d));
-		    		holder.setRanking(Integer.valueOf(rank));
-		    		holder.setGmtCreate(now);
-		    		holderList.add(holder);
+		    		String holderName = m.group(4);
+		    		String rank = m.group(5);
+		    		String stockCounts = m.group(6);//持股数量
+		    		String pctOfShares = m.group(7);//持股比例
+		    		String pctOfFloatShares = m.group(8);//持流通股比例
+		    		String isNotNew = m.group(9);
+		    		String chgCount = m.group(10);
+		    		StockShareholder ssh = new StockShareholder();
+		    		ssh.setSymbol(company.getSymbol());
+		    		ssh.setEndDate(endDate);
+		    		ssh.setHoldCount(Integer.valueOf(stockCounts));
+		    		ssh.setHoldFloatRate(Double.valueOf(pctOfFloatShares));
+		    		ssh.setHoldRate(Double.valueOf(pctOfShares));
+		    		ssh.setRanking(Integer.valueOf(rank));
+		    		ssh.setPublishDate(publishDate);
+		    		if("1".equals(isNotNew)){//非新股东
+		    			ssh.setIsNewHolder(0);
+		    			ssh.setChgCount(Integer.valueOf(chgCount));
+		    		} else {
+		    			ssh.setIsNewHolder(1);
+		    		}
+		    		ssh.setGmtCreate(now);
+		    		holderList.add(ssh);
 		    	}
-		    	shareHolderService.insertShareHolderBatch(holderList);
+		    	sshService.insertBatch(holderList);
 			}
 		}
 	}
