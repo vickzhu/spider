@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class StockShareholderExample {
+public class StockShareHolderExample {
     protected String orderByClause;
 
     protected boolean distinct;
@@ -15,7 +15,7 @@ public class StockShareholderExample {
 
     protected int rows = -1;
 
-    public StockShareholderExample() {
+    public StockShareHolderExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -742,6 +742,66 @@ public class StockShareholderExample {
 
         public Criteria andChgCountNotBetween(Integer value1, Integer value2) {
             addCriterion("chg_count not between", value1, value2, "chgCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andChgRateIsNull() {
+            addCriterion("chg_rate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andChgRateIsNotNull() {
+            addCriterion("chg_rate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andChgRateEqualTo(Double value) {
+            addCriterion("chg_rate =", value, "chgRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andChgRateNotEqualTo(Double value) {
+            addCriterion("chg_rate <>", value, "chgRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andChgRateGreaterThan(Double value) {
+            addCriterion("chg_rate >", value, "chgRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andChgRateGreaterThanOrEqualTo(Double value) {
+            addCriterion("chg_rate >=", value, "chgRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andChgRateLessThan(Double value) {
+            addCriterion("chg_rate <", value, "chgRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andChgRateLessThanOrEqualTo(Double value) {
+            addCriterion("chg_rate <=", value, "chgRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andChgRateIn(List<Double> values) {
+            addCriterion("chg_rate in", values, "chgRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andChgRateNotIn(List<Double> values) {
+            addCriterion("chg_rate not in", values, "chgRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andChgRateBetween(Double value1, Double value2) {
+            addCriterion("chg_rate between", value1, value2, "chgRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andChgRateNotBetween(Double value1, Double value2) {
+            addCriterion("chg_rate not between", value1, value2, "chgRate");
             return (Criteria) this;
         }
 

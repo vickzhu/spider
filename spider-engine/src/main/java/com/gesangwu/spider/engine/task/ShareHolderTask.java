@@ -1,8 +1,11 @@
 package com.gesangwu.spider.engine.task;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,13 +16,14 @@ import org.springframework.stereotype.Component;
 import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.Page;
+import com.gesangwu.spider.biz.common.DecimalUtil;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.CompanyExample;
 import com.gesangwu.spider.biz.dao.model.ShareHolder;
-import com.gesangwu.spider.biz.dao.model.StockShareholder;
+import com.gesangwu.spider.biz.dao.model.StockShareHolder;
 import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.ShareHolderService;
-import com.gesangwu.spider.biz.service.StockShareholderService;
+import com.gesangwu.spider.biz.service.StockShareHolderService;
 
 /**
  * 十大流通股东
@@ -31,7 +35,7 @@ import com.gesangwu.spider.biz.service.StockShareholderService;
 @Component
 public class ShareHolderTask {
 	
-	private static final String r = "\"publishdate\"\\:\"([0-9]*)\",\"enddate\"\\:\"([0-9]*)\",\"compcode\"\\:\"[0-9]*\",\"shholdercode\"\\:(\"[0-9]*\"|null),\"shholdername\"\\:\"([^\"]*)\",\"shholdertype\"\\:\"[^\"]*\",\"rank1\":null,\"rank2\"\\:([0-9]{1,2}),\"holderamt\"\\:([0-9E\\.]*),\"holderrto\"\\:([0-9\\.])*,\"pctoffloatshares\"\\:([0-9\\.]*),\"sharestype\"\\:null,\"shholdernature\"\\:\"[^\"]*\",\"symbol\"\\:null,\"name\"\\:null,\"ishis\"\\:([0|1]),\"chg\"\\:([0-9\\.]*),";
+	private static final String r = "\"publishdate\"\\:\"([0-9]*)\",\"enddate\"\\:\"([0-9]*)\",\"compcode\"\\:\"[0-9]*\",\"shholdercode\"\\:(\"[0-9]*\"|null),\"shholdername\"\\:\"([^\"]*)\",\"shholdertype\"\\:\"([^\"]*)\",\"rank1\":null,\"rank2\"\\:([0-9]{1,2}),\"holderamt\"\\:([0-9E\\.]*),\"holderrto\"\\:([0-9\\.])*,\"pctoffloatshares\"\\:([0-9\\.]*),\"sharestype\"\\:null,\"shholdernature\"\\:\"[^\"]*\",\"symbol\"\\:null,\"name\"\\:null,\"ishis\"\\:([0|1]),\"chg\"\\:([0-9\\.\\-]*|null),";
 
 	private static Pattern p = Pattern.compile(r);
 	
@@ -40,7 +44,7 @@ public class ShareHolderTask {
 	@Resource
 	private ShareHolderService shService;
 	@Resource
-	private StockShareholderService sshService;
+	private StockShareHolderService sshService;
 	
 	public void execute(){
 		String cookieUrl = "https://xueqiu.com/account/lostpasswd";
@@ -55,34 +59,47 @@ public class ShareHolderTask {
 			List<Company> companyList = page.getRecords();
 			for (Company company : companyList) {
 				String symbol = company.getSymbol();
-				String url = "https://xueqiu.com/stock/f10/otsholder.json?symbol="+symbol;
-				String result = HttpTool.get(url);
+				String result = getContent(symbol);
 				Matcher m = p.matcher(result);
-				List<StockShareholder> holderList = new ArrayList<StockShareholder>();
+				List<StockShareHolder> holderList = new ArrayList<StockShareHolder>();
 		    	while(m.find()){    	
 		    		String publishDate = m.group(1);
 		    		String endDate = m.group(2);
-		    		String holderCode = m.group(3);
+		    		if("20150101".compareTo(endDate) > 0){
+		    			break;
+		    		}
+		    		String holderCode = m.group(3).replaceAll("\"", StringUtil.EMPTY);
 		    		String holderName = m.group(4);
-		    		String rank = m.group(5);
-		    		String stockCounts = m.group(6);//持股数量
-		    		String pctOfShares = m.group(7);//持股比例
-		    		String pctOfFloatShares = m.group(8);//持流通股比例
-		    		String isNotNew = m.group(9);
-		    		String chgCount = m.group(10);
-		    		Long holderId = souShareHolder(holderCode, holderName);
-		    		StockShareholder ssh = new StockShareholder();
+		    		String holderType = m.group(5);
+		    		String rank = m.group(6);
+		    		String stockCounts = m.group(7);//持股数量
+		    		String pctOfShares = m.group(8);//持股比例
+		    		String pctOfFloatShares = m.group(9);//持流通股比例
+		    		String isNotNew = m.group(10);
+		    		String chgCount = m.group(11);
+		    		Long holderId = souShareHolder(holderType, holderCode, holderName);
+		    		StockShareHolder ssh = new StockShareHolder();
 		    		ssh.setShareholder(holderId);
 		    		ssh.setSymbol(company.getSymbol());
 		    		ssh.setEndDate(endDate);
-		    		ssh.setHoldCount(Integer.valueOf(stockCounts));
+		    		Double sc = Double.valueOf(stockCounts);
+		    		ssh.setHoldCount(sc.intValue());
 		    		ssh.setHoldFloatRate(Double.valueOf(pctOfFloatShares));
 		    		ssh.setHoldRate(Double.valueOf(pctOfShares));
 		    		ssh.setRanking(Integer.valueOf(rank));
 		    		ssh.setPublishDate(publishDate);
 		    		if("1".equals(isNotNew)){//非新股东
 		    			ssh.setIsNewHolder(0);
-		    			ssh.setChgCount(Integer.valueOf(chgCount));
+		    			if("null".equals(chgCount)){
+		    				ssh.setChgCount(0);
+		    				ssh.setChgRate(0d);
+		    			} else {
+		    				int changeCount = Double.valueOf(chgCount).intValue();
+			    			double preSc = sc - changeCount;
+			    			double chgRate = DecimalUtil.format(changeCount/preSc, 4).doubleValue();
+			    			ssh.setChgCount(changeCount);
+			    			ssh.setChgRate(chgRate);
+		    			}		    			
 		    		} else {
 		    			ssh.setIsNewHolder(1);
 		    		}
@@ -94,9 +111,16 @@ public class ShareHolderTask {
 		}
 	}
 	
-	private Long souShareHolder(String holderCode, String holderName){
-		if("null".equals(holderCode)){//个人
-			holderCode = null;
+	private String getContent(String symbol){
+		String url = "https://xueqiu.com/stock/f10/otsholder.json?symbol=" + symbol;
+		Map<String, String> headerMap = new HashMap<String, String>();
+		headerMap.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36");
+		headerMap.put("Accept-Encoding", "gzip, deflate, sdch");
+		return HttpTool.get(url, headerMap, Charset.forName("GBK"));
+	}
+	
+	private Long souShareHolder(String holderType, String holderCode, String holderName){
+		if("个人".equals(holderType)){//个人
 			ShareHolder sh = shService.selectPersonByName(holderName);
 			if(sh == null){
 				sh = new ShareHolder();
@@ -107,7 +131,6 @@ public class ShareHolderTask {
 			}
 			return sh.getId();
 		} else {//机构
-			holderCode = holderCode.replaceAll("\"", StringUtil.EMPTY);
 			ShareHolder sh = shService.selectByHoldCode(holderCode);
 			if(sh == null){
 				sh = new ShareHolder();
@@ -120,4 +143,5 @@ public class ShareHolderTask {
 			return sh.getId();
 		}
 	}
+
 }

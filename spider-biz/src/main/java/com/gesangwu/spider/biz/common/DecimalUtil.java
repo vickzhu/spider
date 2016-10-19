@@ -26,4 +26,12 @@ public class DecimalUtil {
 	public static BigDecimal parse(String decimal){
 		return new BigDecimal(decimal).setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
+	
+	public static BigDecimal parse(String decimal, int scale){
+		return new BigDecimal(decimal).setScale(scale, BigDecimal.ROUND_HALF_UP);
+	}
+	
+	public static BigDecimal format(double decimal, int scale){
+		return BigDecimal.valueOf(decimal).setScale(scale, BigDecimal.ROUND_HALF_UP);
+	}
 }

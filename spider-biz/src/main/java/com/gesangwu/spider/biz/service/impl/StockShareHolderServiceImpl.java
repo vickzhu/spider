@@ -9,25 +9,25 @@ import org.springframework.stereotype.Service;
 
 import com.gandalf.framework.mybatis.BaseMapper;
 import com.gandalf.framework.mybatis.BaseServiceImpl;
-import com.gesangwu.spider.biz.dao.mapper.StockShareholderMapper;
-import com.gesangwu.spider.biz.dao.model.StockShareholder;
-import com.gesangwu.spider.biz.dao.model.StockShareholderExample;
-import com.gesangwu.spider.biz.service.StockShareholderService;
+import com.gesangwu.spider.biz.dao.mapper.StockShareHolderMapper;
+import com.gesangwu.spider.biz.dao.model.StockShareHolder;
+import com.gesangwu.spider.biz.dao.model.StockShareHolderExample;
+import com.gesangwu.spider.biz.service.StockShareHolderService;
 
 @Service
-public class StockShareholderServiceImpl extends BaseServiceImpl<StockShareholder, StockShareholderExample>
-		implements StockShareholderService {
+public class StockShareHolderServiceImpl extends BaseServiceImpl<StockShareHolder, StockShareHolderExample>
+		implements StockShareHolderService {
 	
 	@Resource
-	private StockShareholderMapper mapper;
+	private StockShareHolderMapper mapper;
 
 	@Override
-	protected BaseMapper<StockShareholder, StockShareholderExample> getMapper() {
+	protected BaseMapper<StockShareHolder, StockShareHolderExample> getMapper() {
 		return mapper;
 	}
 
 	@Override
-	public void insertBatch(List<StockShareholder> sshList) {
+	public void insertBatch(List<StockShareHolder> sshList) {
 		if(CollectionUtils.isEmpty(sshList)){
 			return;
 		}

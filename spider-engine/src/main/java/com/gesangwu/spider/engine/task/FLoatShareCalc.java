@@ -13,7 +13,7 @@ import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.CompanyExample;
 import com.gesangwu.spider.biz.service.CompanyService;
-import com.gesangwu.spider.biz.service.StockShareholderService;
+import com.gesangwu.spider.biz.service.StockShareHolderService;
 
 /**
  * 活跃流通股东
@@ -31,7 +31,7 @@ public class FLoatShareCalc {
 	@Resource
 	private CompanyService companyService;
 	@Resource
-	private StockShareholderService sshService;	
+	private StockShareHolderService sshService;	
 	
 //	@Scheduled(cron = "0 0 4 * * MON-FRI")
 	public void execute(){

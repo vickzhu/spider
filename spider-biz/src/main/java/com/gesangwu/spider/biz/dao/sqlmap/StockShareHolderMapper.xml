@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gesangwu.spider.biz.dao.mapper.StockShareholderMapper" >
-  <resultMap id="BaseResultMap" type="com.gesangwu.spider.biz.dao.model.StockShareholder" >
+<mapper namespace="com.gesangwu.spider.biz.dao.mapper.StockShareHolderMapper" >
+  <resultMap id="BaseResultMap" type="com.gesangwu.spider.biz.dao.model.StockShareHolder" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="symbol" property="symbol" jdbcType="VARCHAR" />
     <result column="shareholder" property="shareholder" jdbcType="BIGINT" />
@@ -12,6 +12,7 @@
     <result column="hold_rate" property="holdRate" jdbcType="DOUBLE" />
     <result column="is_new_holder" property="isNewHolder" jdbcType="INTEGER" />
     <result column="chg_count" property="chgCount" jdbcType="INTEGER" />
+    <result column="chg_rate" property="chgRate" jdbcType="DOUBLE" />
     <result column="stock_type" property="stockType" jdbcType="INTEGER" />
     <result column="publish_date" property="publishDate" jdbcType="VARCHAR" />
     <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
@@ -76,9 +77,9 @@
   </sql>
   <sql id="Base_Column_List" >
     id, symbol, shareholder, end_date, ranking, hold_count, hold_float_rate, hold_rate, 
-    is_new_holder, chg_count, stock_type, publish_date, gmt_create
+    is_new_holder, chg_count, chg_rate, stock_type, publish_date, gmt_create
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.StockShareholderExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.StockShareHolderExample" >
     select
     <if test="distinct" >
       distinct
@@ -105,28 +106,28 @@
     delete from stock_shareholder
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.gesangwu.spider.biz.dao.model.StockShareholderExample" >
+  <delete id="deleteByExample" parameterType="com.gesangwu.spider.biz.dao.model.StockShareHolderExample" >
     delete from stock_shareholder
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.gesangwu.spider.biz.dao.model.StockShareholder" >
+  <insert id="insert" parameterType="com.gesangwu.spider.biz.dao.model.StockShareHolder" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into stock_shareholder (symbol, shareholder, end_date, 
       ranking, hold_count, hold_float_rate, 
       hold_rate, is_new_holder, chg_count, 
-      stock_type, publish_date, gmt_create
-      )
+      chg_rate, stock_type, publish_date, 
+      gmt_create)
     values (#{symbol,jdbcType=VARCHAR}, #{shareholder,jdbcType=BIGINT}, #{endDate,jdbcType=VARCHAR}, 
       #{ranking,jdbcType=INTEGER}, #{holdCount,jdbcType=INTEGER}, #{holdFloatRate,jdbcType=DOUBLE}, 
       #{holdRate,jdbcType=DOUBLE}, #{isNewHolder,jdbcType=INTEGER}, #{chgCount,jdbcType=INTEGER}, 
-      #{stockType,jdbcType=INTEGER}, #{publishDate,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}
-      )
+      #{chgRate,jdbcType=DOUBLE}, #{stockType,jdbcType=INTEGER}, #{publishDate,jdbcType=VARCHAR}, 
+      #{gmtCreate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.StockShareholder" >
+  <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.StockShareHolder" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -158,6 +159,9 @@
       </if>
       <if test="chgCount != null" >
         chg_count,
+      </if>
+      <if test="chgRate != null" >
+        chg_rate,
       </if>
       <if test="stockType != null" >
         stock_type,
@@ -197,6 +201,9 @@
       <if test="chgCount != null" >
         #{chgCount,jdbcType=INTEGER},
       </if>
+      <if test="chgRate != null" >
+        #{chgRate,jdbcType=DOUBLE},
+      </if>
       <if test="stockType != null" >
         #{stockType,jdbcType=INTEGER},
       </if>
@@ -208,7 +215,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.gesangwu.spider.biz.dao.model.StockShareholderExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.gesangwu.spider.biz.dao.model.StockShareHolderExample" resultType="java.lang.Integer" >
     select count(*) from stock_shareholder
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -247,6 +254,9 @@
       <if test="record.chgCount != null" >
         chg_count = #{record.chgCount,jdbcType=INTEGER},
       </if>
+      <if test="record.chgRate != null" >
+        chg_rate = #{record.chgRate,jdbcType=DOUBLE},
+      </if>
       <if test="record.stockType != null" >
         stock_type = #{record.stockType,jdbcType=INTEGER},
       </if>
@@ -273,6 +283,7 @@
       hold_rate = #{record.holdRate,jdbcType=DOUBLE},
       is_new_holder = #{record.isNewHolder,jdbcType=INTEGER},
       chg_count = #{record.chgCount,jdbcType=INTEGER},
+      chg_rate = #{record.chgRate,jdbcType=DOUBLE},
       stock_type = #{record.stockType,jdbcType=INTEGER},
       publish_date = #{record.publishDate,jdbcType=VARCHAR},
       gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP}
@@ -280,7 +291,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.gesangwu.spider.biz.dao.model.StockShareholder" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.gesangwu.spider.biz.dao.model.StockShareHolder" >
     update stock_shareholder
     <set >
       <if test="symbol != null" >
@@ -310,6 +321,9 @@
       <if test="chgCount != null" >
         chg_count = #{chgCount,jdbcType=INTEGER},
       </if>
+      <if test="chgRate != null" >
+        chg_rate = #{chgRate,jdbcType=DOUBLE},
+      </if>
       <if test="stockType != null" >
         stock_type = #{stockType,jdbcType=INTEGER},
       </if>
@@ -322,7 +336,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.gesangwu.spider.biz.dao.model.StockShareholder" >
+  <update id="updateByPrimaryKey" parameterType="com.gesangwu.spider.biz.dao.model.StockShareHolder" >
     update stock_shareholder
     set symbol = #{symbol,jdbcType=VARCHAR},
       shareholder = #{shareholder,jdbcType=BIGINT},
@@ -333,6 +347,7 @@
       hold_rate = #{holdRate,jdbcType=DOUBLE},
       is_new_holder = #{isNewHolder,jdbcType=INTEGER},
       chg_count = #{chgCount,jdbcType=INTEGER},
+      chg_rate = #{chgRate,jdbcType=DOUBLE},
       stock_type = #{stockType,jdbcType=INTEGER},
       publish_date = #{publishDate,jdbcType=VARCHAR},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
@@ -340,8 +355,8 @@
   </update>
   <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true">
     insert into stock_shareholder (symbol, shareholder, end_date, 
-      ranking, stock_count, hold_float_rate, 
-      hold_rate, is_new_holder, chg_count, 
+      ranking, hold_count, hold_float_rate, 
+      hold_rate, is_new_holder, chg_count, chg_rate, 
       stock_type, publish_date, gmt_create
       )
     values
@@ -349,7 +364,8 @@
      (#{holder.symbol,jdbcType=VARCHAR}, #{holder.shareholder,jdbcType=BIGINT}, #{holder.endDate,jdbcType=VARCHAR}, 
       #{holder.ranking,jdbcType=INTEGER}, #{holder.holdCount,jdbcType=INTEGER}, #{holder.holdFloatRate,jdbcType=DOUBLE}, 
       #{holder.holdRate,jdbcType=DOUBLE}, #{holder.isNewHolder,jdbcType=INTEGER}, #{holder.chgCount,jdbcType=INTEGER}, 
-      #{holder.stockType,jdbcType=INTEGER}, #{holder.publishDate,jdbcType=VARCHAR}, #{holder.gmtCreate,jdbcType=TIMESTAMP}
+      #{holder.chgRate,jdbcType=DOUBLE}, #{holder.stockType,jdbcType=INTEGER}, 
+      #{holder.publishDate,jdbcType=VARCHAR}, #{holder.gmtCreate,jdbcType=TIMESTAMP}
       )
     </foreach>
   </insert>

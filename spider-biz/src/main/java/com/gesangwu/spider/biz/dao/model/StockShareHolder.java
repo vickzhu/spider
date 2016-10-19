@@ -2,7 +2,7 @@ package com.gesangwu.spider.biz.dao.model;
 
 import java.util.Date;
 
-public class StockShareholder {
+public class StockShareHolder {
     private Long id;
 
     private String symbol;
@@ -22,6 +22,8 @@ public class StockShareholder {
     private Integer isNewHolder;
 
     private Integer chgCount;
+
+    private Double chgRate;
 
     private Integer stockType;
 
@@ -107,6 +109,14 @@ public class StockShareholder {
 
     public void setChgCount(Integer chgCount) {
         this.chgCount = chgCount;
+    }
+
+    public Double getChgRate() {
+        return chgRate;
+    }
+
+    public void setChgRate(Double chgRate) {
+        this.chgRate = chgRate;
     }
 
     public Integer getStockType() {
