@@ -35,7 +35,7 @@ import com.gesangwu.spider.biz.service.StockShareHolderService;
 @Component
 public class ShareHolderTask {
 	
-	private static final String r = "\"publishdate\"\\:\"([0-9]*)\",\"enddate\"\\:\"([0-9]*)\",\"compcode\"\\:\"[0-9]*\",\"shholdercode\"\\:(\"[0-9]*\"|null),\"shholdername\"\\:\"([^\"]*)\",\"shholdertype\"\\:\"([^\"]*)\",\"rank1\":null,\"rank2\"\\:([0-9]{1,2}),\"holderamt\"\\:([0-9E\\.]*),\"holderrto\"\\:([0-9\\.])*,\"pctoffloatshares\"\\:([0-9\\.]*),\"sharestype\"\\:null,\"shholdernature\"\\:\"[^\"]*\",\"symbol\"\\:null,\"name\"\\:null,\"ishis\"\\:([0|1]),\"chg\"\\:([0-9\\.\\-]*|null),";
+	private static final String r = "\"publishdate\"\\:\"([0-9]*)\",\"enddate\"\\:\"([0-9]*)\",\"compcode\"\\:\"[0-9]*\",\"shholdercode\"\\:(\"[0-9]*\"|null),\"shholdername\"\\:\"([^\"]*)\",\"shholdertype\"\\:\"([^\"]*)\",\"rank1\":[^,]*,\"rank2\"\\:([0-9]{1,2}),\"holderamt\"\\:([0-9E\\.]*),\"holderrto\"\\:([0-9E\\.])*,\"pctoffloatshares\"\\:([0-9E\\.]*),\"sharestype\"\\:[^,]*,\"shholdernature\"\\:\"[^\"]*\",\"symbol\"\\:[^,]*,\"name\"\\:[^,]*,\"ishis\"\\:([0|1]),\"chg\"\\:([0-9E\\.\\-]*|null),";
 
 	private static Pattern p = Pattern.compile(r);
 	
@@ -54,7 +54,7 @@ public class ShareHolderTask {
 		int totalPages = (count + cpp -1)/cpp;
 		Date now = new Date();
 		for(int cur = 1; cur <= totalPages; cur++){
-			Page<Company> page = new Page<Company>(cur);
+			Page<Company> page = new Page<Company>(cur, cpp);
 			companyService.selectByPagination(new CompanyExample(), page);
 			List<Company> companyList = page.getRecords();
 			for (Company company : companyList) {

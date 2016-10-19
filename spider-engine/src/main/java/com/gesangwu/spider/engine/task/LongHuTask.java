@@ -71,7 +71,7 @@ public class LongHuTask {
 	@Resource
 	private SecDeptService deptService;
 	
-	@Scheduled(cron = "0 0/3 16-17 * * MON-FRI")
+	@Scheduled(cron = "0 0/3 16,17 * * MON-FRI")
 	public void execute(){
 		if(!TradeTimeUtil.checkLongHuTime()){
 			return;
