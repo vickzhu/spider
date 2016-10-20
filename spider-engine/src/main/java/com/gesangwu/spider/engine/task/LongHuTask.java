@@ -89,7 +89,8 @@ public class LongHuTask {
 			tradeDate = sdf.format(now);
 		}
 		String url = buildUrl(tradeDate, 0);
-		String result = HttpTool.get(url);
+		String result = HttpTool.get(url, Charset.forName("GB2312"));
+		System.out.println(result);
 		parse(result, tradeDate);
 	}
 	

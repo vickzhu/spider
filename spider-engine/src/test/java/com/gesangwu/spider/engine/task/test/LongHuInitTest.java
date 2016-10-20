@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.gandalf.framework.net.HttpTool;
-import com.gesangwu.spider.engine.task.LongHuInit;
+import com.gesangwu.spider.engine.task.init.LongHuInit;
 import com.gesangwu.spider.engine.test.BaseTest;
 
 public class LongHuInitTest extends BaseTest {

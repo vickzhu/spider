@@ -1,4 +1,4 @@
-package com.gesangwu.spider.engine.task;
+package com.gesangwu.spider.engine.task.init;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

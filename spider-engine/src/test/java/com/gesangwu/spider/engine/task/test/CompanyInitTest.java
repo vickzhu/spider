@@ -2,7 +2,7 @@ package com.gesangwu.spider.engine.task.test;
 
 import javax.annotation.Resource;
 
-import com.gesangwu.spider.engine.task.CompanyInit;
+import com.gesangwu.spider.engine.task.init.CompanyInit;
 import com.gesangwu.spider.engine.test.BaseTest;
 
 public class CompanyInitTest extends BaseTest {
