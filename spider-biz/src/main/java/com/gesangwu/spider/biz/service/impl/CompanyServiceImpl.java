@@ -55,7 +55,7 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company, CompanyExample>
 	public List<Company> loadLittleCompany() {
 		CompanyExample example = new CompanyExample();
 		CompanyExample.Criteria criteria = example.createCriteria();
-		criteria.andActiveMarketValueLessThanOrEqualTo(200000d);
+		criteria.andActiveMarketValueLessThanOrEqualTo(5000000000d);
 		return mapper.selectByExample(example);
 	}
 

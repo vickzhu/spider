@@ -10,6 +10,6 @@ public interface StockShareHolderMapper extends BaseMapper<StockShareHolder, Sto
 
 	void insertBatch(List<StockShareHolder> sshList);
 	
-	double calcFloatRate(String symbol);
+	Double calcFloatRate(String symbol);
 	
 }

@@ -15,8 +15,8 @@
               <thead>
                 <tr>
 				  <th style="width:5%;">序号</th>
-                  <th>股票</th>
-				  <th>名称</th>
+                  <th>代码</th>
+				  <th>股票</th>
                   <th>压</th>
 				  <th>托</th>
 				  <th>更新时间</th>

@@ -12,8 +12,14 @@ public class StockShareholderServiceTest extends BaseTest {
 	@Resource
 	private StockShareHolderService sshService;
 	
-	@Test
+//	@Test
 	public void selectByExample(){
 		sshService.selectByExample(null);
+	}
+	
+	@Test
+	public void calcFloatRate(){
+		String symbol = "sz002545";
+		System.out.println(sshService.calcFloatRate(symbol));
 	}
 }

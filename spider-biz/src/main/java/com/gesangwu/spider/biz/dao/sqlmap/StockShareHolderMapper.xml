@@ -372,7 +372,13 @@
   <select id="calcFloatRate" parameterType="java.lang.String" resultType="java.lang.Double">
   	select 
   		sum(t.hold_float_rate) 
-  	from 
-  		(select * from stock_shareholder where symbol=#{symbol} and hold_float_rate>5 order by end_date desc limit 10) as t;
+  	from (
+  		select 
+  			hold_float_rate 
+  		from 
+  			stock_shareholder 
+  		where 
+  			symbol=#{symbol} and hold_float_rate >= 5 and end_date = (SELECT MAX(end_date) FROM stock_shareholder WHERE symbol=#{symbol})
+  	) as t;
   </select>
 </mapper>

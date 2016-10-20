@@ -53,10 +53,8 @@ public class LargeVolTask {
 		int page = 0;
 		
 		String timePeriod = getTimePeriod();
-		System.out.println(timePeriod);
 		String url = buildUrl(page, timePeriod, volMin);
 		String result = HttpTool.get(url);
-		System.out.println(result);
 		Matcher m = r.matcher(result);
 		while(m.find()){
 			String tradeType = m.group(2);

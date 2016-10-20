@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.web.tool.Page;
@@ -33,14 +34,13 @@ public class FLoatShareCalc {
 	@Resource
 	private StockShareHolderService sshService;	
 	
-//	@Scheduled(cron = "0 0 4 * * MON-FRI")
+	@Scheduled(cron = "0 0 4 * * MON-FRI")
 	public void execute(){
-		int cpp = 20;
+		int cpp = 50;
 		int count = companyService.countByExample(null);
 		int totalPages = (count + cpp -1)/cpp;
 		Date now = new Date();
 		for(int cur = 1; cur<=totalPages; cur++){
-			System.out.println(cur);
 			Page<Company> page = new Page<Company>(cur, cpp);
 			companyService.selectByPagination(new CompanyExample(), page);
 			List<Company> companyList = page.getRecords();
