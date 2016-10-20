@@ -53,6 +53,9 @@ public class FiveRangeSpider {
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < size; i++) {
 			Company company = companyList.get(i);
+			if(company.getLastPrice().doubleValue() <= 5){//估计太低的不予计算
+				continue;
+			}
 			String stockName = company.getStockName();
 			if(stockName.startsWith("*ST") || stockName.startsWith("ST")){
 				continue;
@@ -70,7 +73,7 @@ public class FiveRangeSpider {
 			}
 		}
 		long end = System.currentTimeMillis();
-		logger.info("Fetch the FiveRange use:"+(end-start)+"ms!");
+		logger.info("Fetch the FiveRange used:"+(end-start)+"ms!");
 	}
 	
 	private void fetch(String symbolArr){
@@ -86,8 +89,8 @@ public class FiveRangeSpider {
 			if(details.length < 30){
 				continue;
 			}
-			String zs = details[2];
-			String xj = details[3];
+			String zs = details[2];//昨收
+			String xj = details[3];//现价
 			double chgPercent = calcChgPercent(zs, xj);
 			if(chgPercent >= 0.07){//涨跌幅过大，不予计算
 				continue;
@@ -132,7 +135,7 @@ public class FiveRangeSpider {
 		}
 	}
 	
-	private static int min_price = 1000;
+	private static int min_price = 10000000;
 	
 	private boolean checkBuy(String[] details){
 		String b_1_c = details[10];
@@ -224,7 +227,10 @@ public class FiveRangeSpider {
 	private double calcAmt(String volStr, String priceStr){
 		double vol = Double.valueOf(volStr);
 		double price = Double.valueOf(priceStr);
-		return vol * price / 10000;
+		if(price < 10){
+			vol = vol * price / 10;
+		}
+		return vol * price;
 	}
 
 }

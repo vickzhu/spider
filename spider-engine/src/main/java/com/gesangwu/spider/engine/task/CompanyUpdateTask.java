@@ -19,7 +19,21 @@ import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.engine.util.UnicodeUtil;
 
 /**
- * 公司信息更新
+ * 公司信息更新，新浪的公司缺失
+ * 参数
+ * SYMBOL	代码
+	NAME	
+	PRICE	收盘价	
+	PERCENT	涨跌幅	
+	UPDOWN	涨跌额
+	OPEN	开盘
+	HIGH	最高
+	LOW		最低
+	VOLUME	成交量
+	HS		换手率
+	MCAP	流通市值
+	TCAP	总市值
+ * http://quotes.money.163.com/hs/service/diyrank.php?page=0&query=STYPE%3AEQA&fields=SYMBOL%2CNAME%2CPRICE%2CPERCENT%2CUPDOWN%2COPEN%2CHIGH%2CLOW%2CVOLUME%2CHS%2CMCAP%2CTCAP&sort=PERCENT&order=desc&count=24&type=query
  * @author zhuxb
  *
  */
@@ -28,20 +42,20 @@ public class CompanyUpdateTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CompanyUpdateTask.class);
 
-	
 	private static final String r1 = "\"total\"\\:([0-9]*),\"pagecount\"\\:([0-9]*)";
 	private static final String r2 = "\"MCAP\"\\:([0-9\\.]*),\"NAME\"\\:\"([^\"]*)\",\"PRICE\"\\:([0-9\\.]*),\"SYMBOL\"\\:\"([0-9]*)\",\"TCAP\"\\:([0-9\\.]*)";
 	private static final Pattern p1 = Pattern.compile(r1);
 	private static final Pattern p2 = Pattern.compile(r2);
+	private static final String r3 = "\"HIGH\"\\:([0-9\\.]*),\"HS\"\\:([0-9\\.]*),\"LOW\"\\:([0-9\\.]*),\"MCAP\"\\:([0-9\\.]*),\"NAME\"\\:\"([^\"]*)\",\"OPEN\"\\:([0-9\\.]*),\"PERCENT\"\\:([0-9\\.]*),\"PRICE\"\\:([0-9\\.]*),\"SYMBOL\"\\:\"([0-9]*)\",\"TCAP\"\\:([0-9\\.]*),\"UPDOWN\"\\:([0-9\\.]*),\"VOLUME\"\\:([0-9\\.]*),";
+	private static final Pattern p3 = Pattern.compile(r3);
 	
 	@Resource
 	private CompanyService companyService;
 
-	@Scheduled(cron="0 0 3 * * ?")
+	@Scheduled(cron="0 10 9 * * ?")
 	public void execute(){
 		long start = System.currentTimeMillis();
 		String result = HttpTool.get(buildUrl(0));
-		System.out.println(result);
 		Matcher matcher = p1.matcher(result);
 		if(!matcher.find()){
 			return;
