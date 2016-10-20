@@ -62,19 +62,19 @@
                     </tr>
                   </thead>
                   <tbody>
-					#foreach($clique in $cliqueList)
+					#foreach($cliqueDept in $cliqueDeptList)
 					<tr>
                       <td>${velocityCount}</td>
-                      <td>$!{clique.name}</td>
+                      <td>$!{longHuTool.getClique($!{cliqueDept.cliqueId})}</td>
 					  <td>
 						<select name="cliqueType" style="width:80px;margin:auto;">
-    						<option value="1" #if($!{clique.deptType}==1)selected #end>主营部</option>
-    						<option value="2" #if($!{clique.deptType}==2)selected #end>辅营部</option>
+    						<option value="1" #if($!{cliqueDept.deptType}==1)selected #end>主营部</option>
+    						<option value="2" #if($!{cliqueDept.deptType}==2)selected #end>辅营部</option>
                         </select>
 					  </td>
-            		  <td>
-						<a href="javascript:;" class="btn btn-warn btn-mini">更新</a>&nbsp;
-						<a cliqueId="$!{clique.id}" cliqueName="$!{clique.name}" href="#delete-clique" data-toggle="modal" class="btn btn-danger btn-mini exit-clique">退帮</a>
+            		  <td cdId="$!{cliqueDept.id}">
+						<a href="javascript:;" class="btn btn-warn btn-mini update-clique">更新</a>&nbsp;
+						<a cliqueId="$!{cliqueDept.cliqueId}" cliqueName="$!{longHuTool.getClique($!{cliqueDept.cliqueId})}" href="#delete-clique" data-toggle="modal" class="btn btn-danger btn-mini exit-clique">退帮</a>
 					  </td>
                     </tr>
 					#end
@@ -119,6 +119,9 @@
 			jQuery.post("#springUrl('/sec-dept/exit-clique')",param,function(result){
 				window.location.reload();
 			});
+		});
+		$(".update-clique").click(function(){
+			
 		});
 	});
 </script>

@@ -40,15 +40,10 @@ public class SecDeptController {
 	public ModelAndView addSecDept(HttpServletRequest request, long deptId){
 		SecDept dept = deptService.selectByPrimaryKey(deptId);
 		List<CliqueDept> cliqueDeptList = cliqueDeptService.selectByDeptCode(dept.getCode());
-		List<Clique> cliqueList = new ArrayList<Clique>();
-		for (CliqueDept cliqueDept : cliqueDeptList) {
-			Clique clique = cliqueService.selectByPrimaryKey(cliqueDept.getCliqueId());
-			cliqueList.add(clique);
-		}
 		Map<Long,Clique> allCliqueMap = CliqueCache.getCliqueMap();
 		ModelAndView mav = new ModelAndView("secDeptEdit");
 		mav.addObject("secDept", dept);
-		mav.addObject("cliqueList", cliqueList);
+		mav.addObject("cliqueDeptList", cliqueDeptList);
 		mav.addObject("allCliqueMap", allCliqueMap);
 		mav.addObject("deptTypeArr", SecDeptType.values());
 		return mav;

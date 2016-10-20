@@ -258,4 +258,18 @@
       gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <select id="selectByTradeDate" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select 
+    <include refid="Base_Column_List" />
+    from large_vol_statis
+  	where date = 
+    <choose>
+    	<when test="tradeDate != null">
+    		#{tradeDate,jdbcType=VARCHAR}
+    	</when>
+    	<otherwise>
+    		(SELECT date FROM large_vol_statis ORDER BY date DESC LIMIT 1)
+    	</otherwise>
+    </choose>
+  </select>
 </mapper>

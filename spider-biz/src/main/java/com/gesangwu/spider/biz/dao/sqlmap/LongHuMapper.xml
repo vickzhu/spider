@@ -463,7 +463,7 @@
       gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select id="selectByTradeDate" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByTradeDate" resultMap="BaseResultMap" parameterType="java.lang.String">
     select 
     <include refid="Base_Column_List" />
     from long_hu
