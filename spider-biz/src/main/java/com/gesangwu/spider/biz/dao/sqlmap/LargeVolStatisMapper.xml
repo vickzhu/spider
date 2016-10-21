@@ -271,5 +271,6 @@
     		(SELECT trade_date FROM large_vol_statis ORDER BY trade_date DESC LIMIT 1)
     	</otherwise>
     </choose>
+    order by gmt_update desc
   </select>
 </mapper>

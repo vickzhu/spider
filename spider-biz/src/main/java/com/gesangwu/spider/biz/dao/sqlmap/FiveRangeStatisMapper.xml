@@ -7,7 +7,7 @@
     <result column="stock_name" property="stockName" jdbcType="VARCHAR" />
     <result column="big_sell" property="bigSell" jdbcType="INTEGER" />
     <result column="big_buy" property="bigBuy" jdbcType="INTEGER" />
-    <result column="date" property="date" jdbcType="VARCHAR" />
+    <result column="trade_date" property="tradeDate" jdbcType="VARCHAR" />
     <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
     <result column="gmt_update" property="gmtUpdate" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -70,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, symbol, stock_name, big_sell, big_buy, date, gmt_create, gmt_update
+    id, symbol, stock_name, big_sell, big_buy, trade_date, gmt_create, gmt_update
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.FiveRangeStatisExample" >
     select
@@ -110,10 +110,10 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into five_range_statis (symbol, stock_name, big_sell, 
-      big_buy, date, gmt_create, 
+      big_buy, trade_date, gmt_create, 
       gmt_update)
     values (#{symbol,jdbcType=VARCHAR}, #{stockName,jdbcType=VARCHAR}, #{bigSell,jdbcType=INTEGER}, 
-      #{bigBuy,jdbcType=INTEGER}, #{date,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{bigBuy,jdbcType=INTEGER}, #{tradeDate,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
       #{gmtUpdate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.FiveRangeStatis" >
@@ -134,8 +134,8 @@
       <if test="bigBuy != null" >
         big_buy,
       </if>
-      <if test="date != null" >
-        date,
+      <if test="tradeDate != null" >
+        trade_date,
       </if>
       <if test="gmtCreate != null" >
         gmt_create,
@@ -157,8 +157,8 @@
       <if test="bigBuy != null" >
         #{bigBuy,jdbcType=INTEGER},
       </if>
-      <if test="date != null" >
-        #{date,jdbcType=VARCHAR},
+      <if test="tradeDate != null" >
+        #{tradeDate,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreate != null" >
         #{gmtCreate,jdbcType=TIMESTAMP},
@@ -192,8 +192,8 @@
       <if test="record.bigBuy != null" >
         big_buy = #{record.bigBuy,jdbcType=INTEGER},
       </if>
-      <if test="record.date != null" >
-        date = #{record.date,jdbcType=VARCHAR},
+      <if test="record.tradeDate != null" >
+        trade_date = #{record.tradeDate,jdbcType=VARCHAR},
       </if>
       <if test="record.gmtCreate != null" >
         gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
@@ -213,7 +213,7 @@
       stock_name = #{record.stockName,jdbcType=VARCHAR},
       big_sell = #{record.bigSell,jdbcType=INTEGER},
       big_buy = #{record.bigBuy,jdbcType=INTEGER},
-      date = #{record.date,jdbcType=VARCHAR},
+      trade_date = #{record.tradeDate,jdbcType=VARCHAR},
       gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
       gmt_update = #{record.gmtUpdate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -235,8 +235,8 @@
       <if test="bigBuy != null" >
         big_buy = #{bigBuy,jdbcType=INTEGER},
       </if>
-      <if test="date != null" >
-        date = #{date,jdbcType=VARCHAR},
+      <if test="tradeDate != null" >
+        trade_date = #{tradeDate,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreate != null" >
         gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
@@ -253,9 +253,24 @@
       stock_name = #{stockName,jdbcType=VARCHAR},
       big_sell = #{bigSell,jdbcType=INTEGER},
       big_buy = #{bigBuy,jdbcType=INTEGER},
-      date = #{date,jdbcType=VARCHAR},
+      trade_date = #{tradeDate,jdbcType=VARCHAR},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <select id="selectByTradeDate" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from five_range_statis
+  	where trade_date = 
+    <choose>
+    	<when test="tradeDate != null">
+    		#{tradeDate,jdbcType=VARCHAR}
+    	</when>
+    	<otherwise>
+    		(SELECT trade_date FROM five_range_statis ORDER BY trade_date DESC LIMIT 1)
+    	</otherwise>
+    </choose>
+    order by gmt_update desc
+  </select>
 </mapper>

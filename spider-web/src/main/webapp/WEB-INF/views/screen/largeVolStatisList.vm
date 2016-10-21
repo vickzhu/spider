@@ -19,8 +19,8 @@
               <thead>
                 <tr>
 				  <th style="width:5%;">序号</th>
-                  <th>股票</th>
-				  <th>名称</th>
+                  <th>代码</th>
+				  <th>股票</th>
                   <th>卖</th>
 				  <th>买</th>
 				  <th>平</th>

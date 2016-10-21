@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="#resources('css/matrix-media.css')" />
 <link rel="stylesheet" href="#resources('css/uniform.css')" />
 <link rel="stylesheet" href="#resources('font-awesome/css/font-awesome.css')" />
+<link rel="Shortcut Icon" href="#springUrl('/favicon.ico')">
 <script src="#resources('js/jquery.min.js')"></script> 
 </head>
 <body>

@@ -115,7 +115,7 @@ public class FiveRangeSpider {
 						statis.setBigSell(1);
 						statis.setBigBuy(0);
 					}
-					statis.setDate(date);
+					statis.setTradeDate(date);
 					statis.setStockName(details[0]);
 					statis.setSymbol(symbol);
 					statis.setGmtCreate(now);

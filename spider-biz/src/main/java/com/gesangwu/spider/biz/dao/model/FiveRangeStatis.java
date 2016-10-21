@@ -13,7 +13,7 @@ public class FiveRangeStatis {
 
     private Integer bigBuy;
 
-    private String date;
+    private String tradeDate;
 
     private Date gmtCreate;
 
@@ -59,12 +59,12 @@ public class FiveRangeStatis {
         this.bigBuy = bigBuy;
     }
 
-    public String getDate() {
-        return date;
+    public String getTradeDate() {
+        return tradeDate;
     }
 
-    public void setDate(String date) {
-        this.date = date == null ? null : date.trim();
+    public void setTradeDate(String tradeDate) {
+        this.tradeDate = tradeDate == null ? null : tradeDate.trim();
     }
 
     public Date getGmtCreate() {

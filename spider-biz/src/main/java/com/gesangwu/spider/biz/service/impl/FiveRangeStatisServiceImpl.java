@@ -32,9 +32,14 @@ public class FiveRangeStatisServiceImpl extends
 		FiveRangeStatisExample example = new FiveRangeStatisExample();
 		FiveRangeStatisExample.Criteria criteria = example.createCriteria();
 		criteria.andSymbolEqualTo(symbol);
-		criteria.andDateEqualTo(date);
+		criteria.andTradeDateEqualTo(date);
 		List<FiveRangeStatis> statisList = mapper.selectByExample(example);
 		return CollectionUtils.isEmpty(statisList)?null:statisList.get(0);
+	}
+
+	@Override
+	public List<FiveRangeStatis> selectByTradeDate(String tradeDate) {
+		return mapper.selectByTradeDate(tradeDate);
 	}
 
 }

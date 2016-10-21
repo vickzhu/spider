@@ -445,73 +445,73 @@ public class FiveRangeStatisExample {
             return (Criteria) this;
         }
 
-        public Criteria andDateIsNull() {
-            addCriterion("date is null");
+        public Criteria andTradeDateIsNull() {
+            addCriterion("trade_date is null");
             return (Criteria) this;
         }
 
-        public Criteria andDateIsNotNull() {
-            addCriterion("date is not null");
+        public Criteria andTradeDateIsNotNull() {
+            addCriterion("trade_date is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDateEqualTo(String value) {
-            addCriterion("date =", value, "date");
+        public Criteria andTradeDateEqualTo(String value) {
+            addCriterion("trade_date =", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andDateNotEqualTo(String value) {
-            addCriterion("date <>", value, "date");
+        public Criteria andTradeDateNotEqualTo(String value) {
+            addCriterion("trade_date <>", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andDateGreaterThan(String value) {
-            addCriterion("date >", value, "date");
+        public Criteria andTradeDateGreaterThan(String value) {
+            addCriterion("trade_date >", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andDateGreaterThanOrEqualTo(String value) {
-            addCriterion("date >=", value, "date");
+        public Criteria andTradeDateGreaterThanOrEqualTo(String value) {
+            addCriterion("trade_date >=", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andDateLessThan(String value) {
-            addCriterion("date <", value, "date");
+        public Criteria andTradeDateLessThan(String value) {
+            addCriterion("trade_date <", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andDateLessThanOrEqualTo(String value) {
-            addCriterion("date <=", value, "date");
+        public Criteria andTradeDateLessThanOrEqualTo(String value) {
+            addCriterion("trade_date <=", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andDateLike(String value) {
-            addCriterion("date like", value, "date");
+        public Criteria andTradeDateLike(String value) {
+            addCriterion("trade_date like", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andDateNotLike(String value) {
-            addCriterion("date not like", value, "date");
+        public Criteria andTradeDateNotLike(String value) {
+            addCriterion("trade_date not like", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andDateIn(List<String> values) {
-            addCriterion("date in", values, "date");
+        public Criteria andTradeDateIn(List<String> values) {
+            addCriterion("trade_date in", values, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andDateNotIn(List<String> values) {
-            addCriterion("date not in", values, "date");
+        public Criteria andTradeDateNotIn(List<String> values) {
+            addCriterion("trade_date not in", values, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andDateBetween(String value1, String value2) {
-            addCriterion("date between", value1, value2, "date");
+        public Criteria andTradeDateBetween(String value1, String value2) {
+            addCriterion("trade_date between", value1, value2, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andDateNotBetween(String value1, String value2) {
-            addCriterion("date not between", value1, value2, "date");
+        public Criteria andTradeDateNotBetween(String value1, String value2) {
+            addCriterion("trade_date not between", value1, value2, "tradeDate");
             return (Criteria) this;
         }
 
