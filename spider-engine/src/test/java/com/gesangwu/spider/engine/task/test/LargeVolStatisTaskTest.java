@@ -14,6 +14,6 @@ public class LargeVolStatisTaskTest extends BaseTest {
 	
 	@Test
 	public void test(){
-		task.execute();
+		task.execute("13_32-13_33");
 	}
 }

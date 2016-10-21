@@ -182,24 +182,33 @@ public class CliqueStockTask {
 	 */
 	private List<LongHuDetail> cliqueOperateList(long cliqueId, String deptCode, String tradeDate, String excludeSymbol){
 		String startDate = getStartDate(tradeDate, 3);
-		int count = lhdService.count4Clique(deptCode, excludeSymbol, cliqueId, startDate, tradeDate);
+		int cliqueCount = lhdService.count4Clique(deptCode, excludeSymbol, cliqueId, startDate, tradeDate);
 		int upCount = countDept(deptCode, tradeDate, 3);
 		if(upCount > 60){//三个月内上榜次数频繁，为一线游资或敢死队
 			return null;
-		} else if(upCount > 30){
+		} else {
 			int least = upCount / 5;
-			if(count < least) {//三个月之内操作帮派股票过少
+			if(least == 0){
+				least = 1;
+			}
+			if(cliqueCount < least) {//三个月之内操作帮派股票过少
 				return null;
 			}
-		} else if(upCount > 15){//三个月上榜15次以上，但小于30次
-			if(count < 2){//
-				return null;
-			}
-		} else {//三个月内上榜15次及以下
-			if(count == 0){//三个月内操作帮派股票过少
-				return null;
-			}
-		}
+		} 
+//		else if(upCount > 30){
+//			int least = upCount / 5;
+//			if(count < least) {//三个月之内操作帮派股票过少
+//				return null;
+//			}
+//		} else if(upCount > 15){//三个月上榜15次以上，但小于30次
+//			if(count < 2){//
+//				return null;
+//			}
+//		} else {//三个月内上榜15次及以下
+//			if(count == 0){//三个月内操作帮派股票过少
+//				return null;
+//			}
+//		}
 		return lhdService.selectDetail(deptCode, cliqueId, startDate, tradeDate);
 	}
 	

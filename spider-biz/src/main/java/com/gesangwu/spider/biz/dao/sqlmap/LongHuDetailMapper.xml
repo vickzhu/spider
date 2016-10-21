@@ -461,7 +461,7 @@
   		FROM 
   			long_hu 
   		WHERE 
-  			operate_clique=#{cliqueId,jdbcType=BIGINT} AND symbol!=#{symbol,jdbcType=VARCHAR} 
+  			operate_clique=#{cliqueId,jdbcType=BIGINT}  
   			AND trade_date &gt; #{startDate,jdbcType=VARCHAR} AND trade_date &lt; #{endDate,jdbcType=VARCHAR})
   </select>
 </mapper>

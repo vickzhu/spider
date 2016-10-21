@@ -2,11 +2,14 @@ package com.gesangwu.spider.engine.task;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -39,8 +42,8 @@ public class LargeVolTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(LargeVolTask.class);
 	
-	private static final String regex = "\\{\"CODE\"\\:\"\\d*\",\"SYMBOL\"\\:\"([0-9]{6})\",\"TRADE_TYPE\"\\:([^,]*),\"PRICE_PRE\"\\:[0-9\\.]*,\"VOLUME_INC\"\\:(\\d*),\"PERCENT\"\\:([0-9\\.\\-]*),\"NAME\"\\:\"[^\"]*\",\"PRICE\"\\:[0-9\\.]*,\"TURNOVER_INC\"\\:([0-9\\.]*),\"DATE\"\\:\"([^\"]*)\",\"RN\"\\:\\d*\\}";
-	private Pattern r = Pattern.compile(regex);
+	private static final String p2 = ",\"list\"\\:(.*)}";
+	private Pattern r2 = Pattern.compile(p2);
 	
 	@Resource
 	private LargeVolService service;
@@ -53,61 +56,76 @@ public class LargeVolTask {
 		if(!TradeTimeUtil.checkTime()){
 			return;
 		}
-		long start = System.currentTimeMillis();
-		Date now = new Date();
-		int page = 0;
-		
 		String timePeriod = getTimePeriod();
-		String url = buildUrl(page, timePeriod, volMin);
+		execute(timePeriod);
+	}
+	
+	public void execute(String timePeriod){
+		Date now = new Date();
+		long start = System.currentTimeMillis();
+		String url = buildUrl(0, timePeriod, volMin);
 		String result = HttpTool.get(url);
-		Matcher m = r.matcher(result);
-		while(m.find()){
-			String tradeType = m.group(2);
-			String vol = m.group(3);
-			String code = m.group(1);
-			String percent = m.group(4);
-			String amountStr = m.group(5);
-			String time = m.group(6);
-			if(StringUtil.isBlank(LittleCompanyHolder.getNameByCode(code))){//大市值企业不需要
-				continue;
-			}
-			double amount = Double.valueOf(amountStr);
-			if(amount < 8000000){
-				continue;
-			}
-			LargeVol lv = new LargeVol();
-			lv.setAmount(amount);
-			lv.setGmtCreate(now);
-			lv.setPercent(Double.valueOf(percent));
-			String symbol = StockUtil.code2Symbol(code);
-			lv.setSymbol(symbol);
-			lv.setTradeTime(time);
-			lv.setVol(Integer.valueOf(vol));
-			lv.setTradeType(Integer.valueOf(tradeType));
-			service.insert(lv);
-			String tradeDate = DateUtil.format(now, "yyyy-MM-dd");
-			LargeVolStatis statis = statisService.selectBySymbolAndDate(symbol, tradeDate);
-			if(statis == null){
-				statis = new LargeVolStatis();
-				statis.setSymbol(symbol);
-				statis.setTradeDate(tradeDate);
-				statis.setSellTotal(0);
-				statis.setEqualTotal(0);
-				statis.setBuyTotal(0);
-				statis.setGmtCreate(now);
-				statis.setGmtUpdate(now);
-				statisService.insert(statis);
-			}
-			if("-1".equals(tradeType)){
-				statis.setSellTotal(statis.getSellTotal()+1);
-			} else if("0".equals(tradeType)){
-				statis.setEqualTotal(statis.getEqualTotal()+1);
-			} else if("1".equals(tradeType)){
-				statis.setBuyTotal(statis.getBuyTotal()+1);
-			}
-			statis.setGmtUpdate(now);
-			statisService.updateByPrimaryKey(statis);
+		Matcher m = r2.matcher(result);
+		if(!m.find()){
+			logger.info("Can't match the largevol from remote!");
+			return;
 		}
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			List<Map<String, Object>> list = mapper.readValue(m.group(1), List.class);
+			for (Map<String, Object> columnMap : list) {
+				int tradeType = (Integer)columnMap.get("TRADE_TYPE");
+				int vol = (Integer)columnMap.get("VOLUME_INC");
+				String code = (String)columnMap.get("SYMBOL");
+				Object percentObj = columnMap.get("PERCENT");
+				Object amountObj = columnMap.get("TURNOVER_INC");
+				String time = (String)columnMap.get("DATE");
+				if(StringUtil.isBlank(LittleCompanyHolder.getNameByCode(code))){//大市值企业不需要
+					continue;
+				}
+				double amount = Double.valueOf(amountObj.toString());
+				if(amount < 8000000){
+					continue;
+				}
+				LargeVol lv = new LargeVol();
+				lv.setAmount(amount);
+				lv.setGmtCreate(now);
+				lv.setPercent(Double.valueOf(percentObj.toString()));
+				String symbol = StockUtil.code2Symbol(code);
+				lv.setSymbol(symbol);
+				lv.setTradeTime(time);
+				lv.setVol(vol);
+				lv.setTradeType(tradeType);
+				service.insert(lv);
+				String tradeDate = DateUtil.format(now, "yyyy-MM-dd");
+				LargeVolStatis statis = statisService.selectBySymbolAndDate(symbol, tradeDate);
+				if("002651".equals(code)){
+					System.out.println("来啦.........");
+				}
+				if(statis == null){
+					statis = new LargeVolStatis();
+					statis.setSymbol(symbol);
+					statis.setTradeDate(tradeDate);
+					statis.setSellTotal(0);
+					statis.setEqualTotal(0);
+					statis.setBuyTotal(0);
+					statis.setGmtCreate(now);
+					statis.setGmtUpdate(now);
+					statisService.insert(statis);
+				}
+				if(tradeType == -1){
+					statis.setSellTotal(statis.getSellTotal()+1);
+				} else if(tradeType == 0){
+					statis.setEqualTotal(statis.getEqualTotal()+1);
+				} else if(tradeType == 1){
+					statis.setBuyTotal(statis.getBuyTotal()+1);
+				}
+				statis.setGmtUpdate(now);
+				statisService.updateByPrimaryKey(statis);
+			}
+		} catch (Exception e) {
+			logger.error("Parse largeVol failed!", e);
+		} 
 		long end = System.currentTimeMillis();
 		logger.info("Fetch the LargeVol used:" + (end - start) + "ms!");
 	}
@@ -117,8 +135,6 @@ public class LargeVolTask {
 		Calendar c = Calendar.getInstance();
 		int hourEnd = c.get(Calendar.HOUR_OF_DAY);
 		int minEnd = c.get(Calendar.MINUTE);
-//		int hourEnd = 14;
-//		int minEnd = 31;
 		int hourStart = hourEnd;
 		int minStart = minEnd - 1;
 		if(minEnd == 0){
@@ -147,8 +163,4 @@ public class LargeVolTask {
 		return sb.toString();
 	}
 
-	public static void main(String[] args){
-		LargeVolTask task = new LargeVolTask();
-		task.execute();
-	}
 }

@@ -71,7 +71,7 @@ public class LongHuTask {
 	@Resource
 	private SecDeptService deptService;
 	
-	@Scheduled(cron = "0 0/3 16,17 * * MON-FRI")
+	@Scheduled(cron = "0 0/3 16-17 * * MON-FRI")
 	public void execute(){
 		if(!TradeTimeUtil.checkLongHuTime()){
 			return;
@@ -84,14 +84,16 @@ public class LongHuTask {
 	 * gpfw:0-全部，1-上证，2-深证
 	 */
 	public void execute(String tradeDate){
+		long start = System.currentTimeMillis();
 		if(StringUtil.isBlank(tradeDate)){
 			Date now = new Date();
 			tradeDate = sdf.format(now);
 		}
 		String url = buildUrl(tradeDate, 0);
 		String result = HttpTool.get(url, Charset.forName("GB2312"));
-		System.out.println(result);
 		parse(result, tradeDate);
+		long end = System.currentTimeMillis();
+		logger.info("Fetch LongHu used:" + (end-start) + "ms!");
 	}
 	
 	private String buildUrl(String date, int bazaar){
