@@ -7,6 +7,8 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -34,6 +36,8 @@ import com.gesangwu.spider.engine.util.TradeTimeUtil;
  */
 @Component
 public class LargeVolTask {
+	
+	private static final Logger logger = LoggerFactory.getLogger(LargeVolTask.class);
 	
 	private static final String regex = "\\{\"CODE\"\\:\"\\d*\",\"SYMBOL\"\\:\"([0-9]{6})\",\"TRADE_TYPE\"\\:([^,]*),\"PRICE_PRE\"\\:[0-9\\.]*,\"VOLUME_INC\"\\:(\\d*),\"PERCENT\"\\:([0-9\\.\\-]*),\"NAME\"\\:\"[^\"]*\",\"PRICE\"\\:[0-9\\.]*,\"TURNOVER_INC\"\\:([0-9\\.]*),\"DATE\"\\:\"([^\"]*)\",\"RN\"\\:\\d*\\}";
 	private Pattern r = Pattern.compile(regex);
@@ -105,7 +109,7 @@ public class LargeVolTask {
 			statisService.updateByPrimaryKey(statis);
 		}
 		long end = System.currentTimeMillis();
-		System.out.println("======================" + (end - start));
+		logger.info("Fetch the LargeVol used:" + (end - start) + "ms!");
 	}
 	
 	private String getTimePeriod(){

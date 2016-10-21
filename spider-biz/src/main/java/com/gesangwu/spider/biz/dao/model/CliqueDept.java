@@ -9,9 +9,13 @@ public class CliqueDept {
 
     private String secDeptCode;
 
+    private String secDeptName;
+
     private Integer deptType;
 
     private Date gmtCreate;
+
+    private Date gmtUpdate;
 
     public Long getId() {
         return id;
@@ -37,6 +41,14 @@ public class CliqueDept {
         this.secDeptCode = secDeptCode == null ? null : secDeptCode.trim();
     }
 
+    public String getSecDeptName() {
+        return secDeptName;
+    }
+
+    public void setSecDeptName(String secDeptName) {
+        this.secDeptName = secDeptName == null ? null : secDeptName.trim();
+    }
+
     public Integer getDeptType() {
         return deptType;
     }
@@ -51,5 +63,13 @@ public class CliqueDept {
 
     public void setGmtCreate(Date gmtCreate) {
         this.gmtCreate = gmtCreate;
+    }
+
+    public Date getGmtUpdate() {
+        return gmtUpdate;
+    }
+
+    public void setGmtUpdate(Date gmtUpdate) {
+        this.gmtUpdate = gmtUpdate;
     }
 }

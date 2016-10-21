@@ -315,6 +315,76 @@ public class CliqueDeptExample {
             return (Criteria) this;
         }
 
+        public Criteria andSecDeptNameIsNull() {
+            addCriterion("sec_dept_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptNameIsNotNull() {
+            addCriterion("sec_dept_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptNameEqualTo(String value) {
+            addCriterion("sec_dept_name =", value, "secDeptName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptNameNotEqualTo(String value) {
+            addCriterion("sec_dept_name <>", value, "secDeptName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptNameGreaterThan(String value) {
+            addCriterion("sec_dept_name >", value, "secDeptName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptNameGreaterThanOrEqualTo(String value) {
+            addCriterion("sec_dept_name >=", value, "secDeptName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptNameLessThan(String value) {
+            addCriterion("sec_dept_name <", value, "secDeptName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptNameLessThanOrEqualTo(String value) {
+            addCriterion("sec_dept_name <=", value, "secDeptName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptNameLike(String value) {
+            addCriterion("sec_dept_name like", value, "secDeptName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptNameNotLike(String value) {
+            addCriterion("sec_dept_name not like", value, "secDeptName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptNameIn(List<String> values) {
+            addCriterion("sec_dept_name in", values, "secDeptName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptNameNotIn(List<String> values) {
+            addCriterion("sec_dept_name not in", values, "secDeptName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptNameBetween(String value1, String value2) {
+            addCriterion("sec_dept_name between", value1, value2, "secDeptName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecDeptNameNotBetween(String value1, String value2) {
+            addCriterion("sec_dept_name not between", value1, value2, "secDeptName");
+            return (Criteria) this;
+        }
+
         public Criteria andDeptTypeIsNull() {
             addCriterion("dept_type is null");
             return (Criteria) this;
@@ -432,6 +502,66 @@ public class CliqueDeptExample {
 
         public Criteria andGmtCreateNotBetween(Date value1, Date value2) {
             addCriterion("gmt_create not between", value1, value2, "gmtCreate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateIsNull() {
+            addCriterion("gmt_update is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateIsNotNull() {
+            addCriterion("gmt_update is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateEqualTo(Date value) {
+            addCriterion("gmt_update =", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateNotEqualTo(Date value) {
+            addCriterion("gmt_update <>", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateGreaterThan(Date value) {
+            addCriterion("gmt_update >", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateGreaterThanOrEqualTo(Date value) {
+            addCriterion("gmt_update >=", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateLessThan(Date value) {
+            addCriterion("gmt_update <", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateLessThanOrEqualTo(Date value) {
+            addCriterion("gmt_update <=", value, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateIn(List<Date> values) {
+            addCriterion("gmt_update in", values, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateNotIn(List<Date> values) {
+            addCriterion("gmt_update not in", values, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateBetween(Date value1, Date value2) {
+            addCriterion("gmt_update between", value1, value2, "gmtUpdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtUpdateNotBetween(Date value1, Date value2) {
+            addCriterion("gmt_update not between", value1, value2, "gmtUpdate");
             return (Criteria) this;
         }
     }

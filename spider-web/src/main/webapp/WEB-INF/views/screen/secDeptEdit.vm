@@ -63,7 +63,7 @@
                   </thead>
                   <tbody>
 					#foreach($cliqueDept in $cliqueDeptList)
-					<tr>
+					<tr cdId="$!{cliqueDept.id}">
                       <td>${velocityCount}</td>
                       <td>$!{longHuTool.getClique($!{cliqueDept.cliqueId})}</td>
 					  <td>
@@ -72,8 +72,8 @@
     						<option value="2" #if($!{cliqueDept.deptType}==2)selected #end>辅营部</option>
                         </select>
 					  </td>
-            		  <td cdId="$!{cliqueDept.id}">
-						<a href="javascript:;" class="btn btn-warn btn-mini update-clique">更新</a>&nbsp;
+            		  <td>
+						<a href="javascript:;" class="btn btn-primary btn-mini update-clique">更新</a>&nbsp;
 						<a cliqueId="$!{cliqueDept.cliqueId}" cliqueName="$!{longHuTool.getClique($!{cliqueDept.cliqueId})}" href="#delete-clique" data-toggle="modal" class="btn btn-danger btn-mini exit-clique">退帮</a>
 					  </td>
                     </tr>
@@ -121,7 +121,13 @@
 			});
 		});
 		$(".update-clique").click(function(){
-			
+			var parentTr = $(this).parent().parent();
+			var cdId = parentTr.attr("cdId");
+			var deptType = parentTr.find("select").val();
+			var param={cdId:cdId,deptType:deptType,$!{tokenTool.tokenKey}:$("#stock_token").val()};
+			jQuery.post("#springUrl('/sec-dept/edit-clique')",param,function(result){
+				window.location.reload();
+			});
 		});
 	});
 </script>

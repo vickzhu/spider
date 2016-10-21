@@ -1,6 +1,5 @@
 package com.gesangwu.spider.web.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -78,7 +77,7 @@ public class SecDeptController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/exit-clique", method = RequestMethod.POST)
-	public AjaxResult exitClique(HttpServletRequest request,Long cliqueId, String deptCode){
+	public AjaxResult exitClique(HttpServletRequest request,long cliqueId, String deptCode){
 		try{			
 			cliqueDeptService.delete(cliqueId, deptCode);
 		}catch(Exception e){
@@ -87,4 +86,17 @@ public class SecDeptController {
 		return new AjaxResult(true, null);
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/edit-clique", method = RequestMethod.POST)
+	public AjaxResult editClique(HttpServletRequest request,long cdId, int deptType){
+		try{
+			CliqueDept cd = cliqueDeptService.selectByPrimaryKey(cdId);
+			cd.setDeptType(deptType);
+			cd.setGmtUpdate(new Date());
+			cliqueDeptService.updateByPrimaryKey(cd);
+		}catch(Exception e){
+			return new AjaxResult(false, e.getMessage());
+		}
+		return new AjaxResult(true, null);
+	}
 }

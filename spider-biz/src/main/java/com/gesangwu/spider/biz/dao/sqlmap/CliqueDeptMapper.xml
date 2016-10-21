@@ -5,8 +5,10 @@
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="clique_id" property="cliqueId" jdbcType="BIGINT" />
     <result column="sec_dept_code" property="secDeptCode" jdbcType="VARCHAR" />
+    <result column="sec_dept_name" property="secDeptName" jdbcType="VARCHAR" />
     <result column="dept_type" property="deptType" jdbcType="INTEGER" />
     <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+    <result column="gmt_update" property="gmtUpdate" jdbcType="TIMESTAMP" />
   </resultMap>
   <resultMap id="ExtResultMap" type="com.gesangwu.spider.biz.dao.model.ext.CliqueDeptExt" extends="BaseResultMap">
     <result column="dept_addr" property="deptName" jdbcType="VARCHAR" />
@@ -70,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, clique_id, sec_dept_code, dept_type, gmt_create
+    id, clique_id, sec_dept_code, sec_dept_name, dept_type, gmt_create, gmt_update
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.CliqueDeptExample" >
     select
@@ -109,10 +111,12 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into clique_dept (clique_id, sec_dept_code, dept_type, 
-      gmt_create)
-    values (#{cliqueId,jdbcType=BIGINT}, #{secDeptCode,jdbcType=VARCHAR}, #{deptType,jdbcType=INTEGER}, 
-      #{gmtCreate,jdbcType=TIMESTAMP})
+    insert into clique_dept (clique_id, sec_dept_code, sec_dept_name, 
+      dept_type, gmt_create, gmt_update
+      )
+    values (#{cliqueId,jdbcType=BIGINT}, #{secDeptCode,jdbcType=VARCHAR}, #{secDeptName,jdbcType=VARCHAR}, 
+      #{deptType,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.CliqueDept" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -126,11 +130,17 @@
       <if test="secDeptCode != null" >
         sec_dept_code,
       </if>
+      <if test="secDeptName != null" >
+        sec_dept_name,
+      </if>
       <if test="deptType != null" >
         dept_type,
       </if>
       <if test="gmtCreate != null" >
         gmt_create,
+      </if>
+      <if test="gmtUpdate != null" >
+        gmt_update,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -140,11 +150,17 @@
       <if test="secDeptCode != null" >
         #{secDeptCode,jdbcType=VARCHAR},
       </if>
+      <if test="secDeptName != null" >
+        #{secDeptName,jdbcType=VARCHAR},
+      </if>
       <if test="deptType != null" >
         #{deptType,jdbcType=INTEGER},
       </if>
       <if test="gmtCreate != null" >
         #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtUpdate != null" >
+        #{gmtUpdate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -166,11 +182,17 @@
       <if test="record.secDeptCode != null" >
         sec_dept_code = #{record.secDeptCode,jdbcType=VARCHAR},
       </if>
+      <if test="record.secDeptName != null" >
+        sec_dept_name = #{record.secDeptName,jdbcType=VARCHAR},
+      </if>
       <if test="record.deptType != null" >
         dept_type = #{record.deptType,jdbcType=INTEGER},
       </if>
       <if test="record.gmtCreate != null" >
         gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtUpdate != null" >
+        gmt_update = #{record.gmtUpdate,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -182,8 +204,10 @@
     set id = #{record.id,jdbcType=BIGINT},
       clique_id = #{record.cliqueId,jdbcType=BIGINT},
       sec_dept_code = #{record.secDeptCode,jdbcType=VARCHAR},
+      sec_dept_name = #{record.secDeptName,jdbcType=VARCHAR},
       dept_type = #{record.deptType,jdbcType=INTEGER},
-      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP}
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      gmt_update = #{record.gmtUpdate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -197,11 +221,17 @@
       <if test="secDeptCode != null" >
         sec_dept_code = #{secDeptCode,jdbcType=VARCHAR},
       </if>
+      <if test="secDeptName != null" >
+        sec_dept_name = #{secDeptName,jdbcType=VARCHAR},
+      </if>
       <if test="deptType != null" >
         dept_type = #{deptType,jdbcType=INTEGER},
       </if>
       <if test="gmtCreate != null" >
         gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtUpdate != null" >
+        gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -210,11 +240,12 @@
     update clique_dept
     set clique_id = #{cliqueId,jdbcType=BIGINT},
       sec_dept_code = #{secDeptCode,jdbcType=VARCHAR},
+      sec_dept_name = #{secDeptName,jdbcType=VARCHAR},
       dept_type = #{deptType,jdbcType=INTEGER},
-      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  
   <select id="selectExtByExample" resultMap="ExtResultMap" parameterType="com.gesangwu.spider.biz.dao.model.CliqueDeptExample" >
     select
     <if test="distinct" >
