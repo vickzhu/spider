@@ -8,7 +8,11 @@
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
             <h5>大单成交列表</h5>
-			<a class="label label-info" style="line-height:20px;"></a>
+			<a class="label label-info" style="line-height:20px;">
+				#if(${list}&&${list.size()}>0)
+					${list.get(0).tradeDate}
+				#end
+			</a>
           </div>
           <div class="widget-content">
             <table class="table table-bordered table-striped">

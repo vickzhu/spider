@@ -1,6 +1,5 @@
 package com.gesangwu.spider.biz.service.impl;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -28,13 +27,18 @@ public class LargeVolStatisServiceImpl extends BaseServiceImpl<LargeVolStatis, L
 	}
 	
 	@Override
-	public LargeVolStatis selectBySymbolAndDate(String symbol, Date date) {
+	public LargeVolStatis selectBySymbolAndDate(String symbol, String tradeDate) {
 		LargeVolStatisExample example = new LargeVolStatisExample();
 		LargeVolStatisExample.Criteria criteria = example.createCriteria();
 		criteria.andSymbolEqualTo(symbol);
-		criteria.andDateEqualTo(date);
+		criteria.andTradeDateEqualTo(tradeDate);
 		List<LargeVolStatis> list = mapper.selectByExample(example);
 		return CollectionUtils.isEmpty(list)?null:list.get(0);
+	}
+
+	@Override
+	public List<LargeVolStatis> selectByTradeDate(String tradeDate) {
+		return mapper.selectByTradeDate(tradeDate);
 	}
 
 }

@@ -7,13 +7,13 @@ public class LargeVolStatis {
 
     private String symbol;
 
-    private Integer sellTotal = 0;
+    private Integer sellTotal;
 
-    private Integer buyTotal = 0;
+    private Integer buyTotal;
 
-    private Integer equalTotal = 0;
+    private Integer equalTotal;
 
-    private Date date;
+    private String tradeDate;
 
     private Date gmtCreate;
 
@@ -59,12 +59,12 @@ public class LargeVolStatis {
         this.equalTotal = equalTotal;
     }
 
-    public Date getDate() {
-        return date;
+    public String getTradeDate() {
+        return tradeDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setTradeDate(String tradeDate) {
+        this.tradeDate = tradeDate == null ? null : tradeDate.trim();
     }
 
     public Date getGmtCreate() {

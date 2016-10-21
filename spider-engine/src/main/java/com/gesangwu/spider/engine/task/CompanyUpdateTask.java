@@ -52,7 +52,7 @@ public class CompanyUpdateTask {
 	@Resource
 	private CompanyService companyService;
 
-	@Scheduled(cron="0 10 9 * * ?")
+	@Scheduled(cron="0 15 9 * * ?")
 	public void execute(){
 		long start = System.currentTimeMillis();
 		String result = HttpTool.get(buildUrl(0));

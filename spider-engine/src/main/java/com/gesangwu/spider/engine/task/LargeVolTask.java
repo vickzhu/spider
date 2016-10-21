@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
+import com.gandalf.framework.util.DateUtil;
 import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.common.StockUtil;
 import com.gesangwu.spider.biz.dao.model.LargeVol;
@@ -80,11 +81,12 @@ public class LargeVolTask {
 			lv.setVol(Integer.valueOf(vol));
 			lv.setTradeType(Integer.valueOf(tradeType));
 			service.insert(lv);
-			LargeVolStatis statis = statisService.selectBySymbolAndDate(symbol, now);
+			String tradeDate = DateUtil.format(now, "yyyy-MM-dd");
+			LargeVolStatis statis = statisService.selectBySymbolAndDate(symbol, tradeDate);
 			if(statis == null){
 				statis = new LargeVolStatis();
 				statis.setSymbol(symbol);
-				statis.setDate(now);
+				statis.setTradeDate(tradeDate);
 				statis.setSellTotal(0);
 				statis.setEqualTotal(0);
 				statis.setBuyTotal(0);
