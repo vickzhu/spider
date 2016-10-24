@@ -15,6 +15,8 @@ public class LargeVolStatis {
 
     private String tradeDate;
 
+    private Double activeMarketValue;
+
     private Date gmtCreate;
 
     private Date gmtUpdate;
@@ -65,6 +67,14 @@ public class LargeVolStatis {
 
     public void setTradeDate(String tradeDate) {
         this.tradeDate = tradeDate == null ? null : tradeDate.trim();
+    }
+
+    public Double getActiveMarketValue() {
+        return activeMarketValue;
+    }
+
+    public void setActiveMarketValue(Double activeMarketValue) {
+        this.activeMarketValue = activeMarketValue;
     }
 
     public Date getGmtCreate() {

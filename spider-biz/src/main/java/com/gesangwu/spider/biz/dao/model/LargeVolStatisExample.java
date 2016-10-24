@@ -505,6 +505,66 @@ public class LargeVolStatisExample {
             return (Criteria) this;
         }
 
+        public Criteria andActiveMarketValueIsNull() {
+            addCriterion("active_market_value is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveMarketValueIsNotNull() {
+            addCriterion("active_market_value is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveMarketValueEqualTo(Double value) {
+            addCriterion("active_market_value =", value, "activeMarketValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveMarketValueNotEqualTo(Double value) {
+            addCriterion("active_market_value <>", value, "activeMarketValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveMarketValueGreaterThan(Double value) {
+            addCriterion("active_market_value >", value, "activeMarketValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveMarketValueGreaterThanOrEqualTo(Double value) {
+            addCriterion("active_market_value >=", value, "activeMarketValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveMarketValueLessThan(Double value) {
+            addCriterion("active_market_value <", value, "activeMarketValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveMarketValueLessThanOrEqualTo(Double value) {
+            addCriterion("active_market_value <=", value, "activeMarketValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveMarketValueIn(List<Double> values) {
+            addCriterion("active_market_value in", values, "activeMarketValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveMarketValueNotIn(List<Double> values) {
+            addCriterion("active_market_value not in", values, "activeMarketValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveMarketValueBetween(Double value1, Double value2) {
+            addCriterion("active_market_value between", value1, value2, "activeMarketValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andActiveMarketValueNotBetween(Double value1, Double value2) {
+            addCriterion("active_market_value not between", value1, value2, "activeMarketValue");
+            return (Criteria) this;
+        }
+
         public Criteria andGmtCreateIsNull() {
             addCriterion("gmt_create is null");
             return (Criteria) this;

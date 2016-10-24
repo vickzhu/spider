@@ -19,9 +19,12 @@ import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.util.DateUtil;
 import com.gandalf.framework.util.StringUtil;
+import com.gesangwu.spider.biz.common.DecimalUtil;
 import com.gesangwu.spider.biz.common.StockUtil;
+import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.LargeVol;
 import com.gesangwu.spider.biz.dao.model.LargeVolStatis;
+import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.LargeVolService;
 import com.gesangwu.spider.biz.service.LargeVolStatisService;
 import com.gesangwu.spider.engine.util.LittleCompanyHolder;
@@ -49,6 +52,8 @@ public class LargeVolTask {
 	private LargeVolService service;
 	@Resource
 	private LargeVolStatisService statisService;
+	@Resource
+	private CompanyService companyService;
 	private static final int volMin = 1000;
 	
 	@Scheduled(cron = "59 0/1 9-14 * * MON-FRI")
@@ -99,16 +104,16 @@ public class LargeVolTask {
 				service.insert(lv);
 				String tradeDate = DateUtil.format(now, "yyyy-MM-dd");
 				LargeVolStatis statis = statisService.selectBySymbolAndDate(symbol, tradeDate);
-				if("002651".equals(code)){
-					System.out.println("来啦.........");
-				}
 				if(statis == null){
+					Company company = companyService.selectBySymbol(symbol);
 					statis = new LargeVolStatis();
 					statis.setSymbol(symbol);
 					statis.setTradeDate(tradeDate);
 					statis.setSellTotal(0);
 					statis.setEqualTotal(0);
 					statis.setBuyTotal(0);
+					double amv = DecimalUtil.format(company.getActiveMarketValue()/100000000, 2).doubleValue();
+					statis.setActiveMarketValue(amv);
 					statis.setGmtCreate(now);
 					statis.setGmtUpdate(now);
 					statisService.insert(statis);
