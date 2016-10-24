@@ -15,6 +15,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.util.StringUtil;
+import com.gesangwu.spider.biz.common.DeptCliqueType;
 import com.gesangwu.spider.biz.dao.model.CliqueDept;
 import com.gesangwu.spider.biz.dao.model.LongHu;
 import com.gesangwu.spider.biz.dao.model.LongHuDetail;
@@ -53,8 +54,10 @@ public class CliqueStockTask {
 	}
 	
 	public void calc(LongHu longHu){
-		List<List<LongHuDetail>> resultList = getLongHuDetailList(longHu);
-		for (List<LongHuDetail> detailList : resultList) {//不同日期类型的龙虎榜详情(一日，二日，三日)
+		Map<Integer,List<LongHuDetail>> resultMap = getLongHuDetailList(longHu);
+		for (Map.Entry<Integer,List<LongHuDetail>> detailEntry : resultMap.entrySet()) {//不同日期类型的龙虎榜详情(一日，二日，三日)
+			int dateType = detailEntry.getKey();
+			List<LongHuDetail> detailList = detailEntry.getValue();
 			Map<Long,List<LongHuDetail>> detailMap = listToCliqueMap(detailList);
 			//TODO clique_stock数据没有保存
 			long cliqueId = 0;
@@ -70,8 +73,10 @@ public class CliqueStockTask {
 				List<LongHuDetail> lhdList = detailMap.get(cliqueId);
 				updateCliqueOperate(cliqueId, longHu, lhdList);
 				detailList.removeAll(lhdList);
-				calcOtherDept(cliqueId, detailList);
-			} else if(cliqueSize > 0) {// 判断其他营业部是否操作过相应的帮派，有的营业部可能操作过温州帮的标的，但是还没有加入到温州帮来
+				if(dateType == 1){
+					calcOtherDept(cliqueId, detailList);
+				}
+			} else if(cliqueSize > 0 && dateType == 1) {//判断其他营业部是否操作过相应的帮派标的，但是还没有加入到该帮派里
 				List<LongHuDetail> lhdList = detailMap.get(cliqueId);
 				detailList.removeAll(lhdList);
 				List<LongHuDetail> tmpList = new ArrayList<LongHuDetail>();
@@ -156,14 +161,14 @@ public class CliqueStockTask {
 				detail.setCliqueId(cliqueId);
 				detail.setGmtUpdate(now);
 				lhdService.updateByPrimaryKey(detail);
-				for (LongHuDetail detailHistory : detailList) {//把找出来的历史数据也更新为相应帮派
-					detailHistory.setCliqueId(cliqueId);
-					detailHistory.setGmtUpdate(now);
-					lhdService.updateByPrimaryKey(detailHistory);
-				}
+//				for (LongHuDetail detailHistory : detailList) {//把找出来的历史数据也更新为相应帮派
+//					detailHistory.setCliqueId(cliqueId);
+//					detailHistory.setGmtUpdate(now);
+//					lhdService.updateByPrimaryKey(detailHistory);
+//				}
 				CliqueDept cliqueDept = new CliqueDept();
 				cliqueDept.setCliqueId(cliqueId);
-				cliqueDept.setDeptType(2);
+				cliqueDept.setDeptType(DeptCliqueType.ASSIST.getCode());//暂定所有筛选出来的营业部都为辅营部
 				cliqueDept.setGmtCreate(now);
 				cliqueDept.setSecDeptCode(deptCode);
 				cliqueDeptService.insert(cliqueDept);
@@ -186,29 +191,16 @@ public class CliqueStockTask {
 		int upCount = countDept(deptCode, tradeDate, 3);
 		if(upCount > 60){//三个月内上榜次数频繁，为一线游资或敢死队
 			return null;
-		} else {
+		} else if(upCount > 15) {
 			int least = upCount / 5;
-			if(least == 0){
-				least = 1;
-			}
 			if(cliqueCount < least) {//三个月之内操作帮派股票过少
 				return null;
 			}
-		} 
-//		else if(upCount > 30){
-//			int least = upCount / 5;
-//			if(count < least) {//三个月之内操作帮派股票过少
-//				return null;
-//			}
-//		} else if(upCount > 15){//三个月上榜15次以上，但小于30次
-//			if(count < 2){//
-//				return null;
-//			}
-//		} else {//三个月内上榜15次及以下
-//			if(count == 0){//三个月内操作帮派股票过少
-//				return null;
-//			}
-//		}
+		} else {
+			if(cliqueCount < 2){
+				return null;
+			}
+		}
 		return lhdService.selectDetail(deptCode, cliqueId, startDate, tradeDate);
 	}
 	
@@ -258,18 +250,20 @@ public class CliqueStockTask {
 	 * @param longHu
 	 * @return
 	 */
-	private List<List<LongHuDetail>> getLongHuDetailList(LongHu longHu){
-		List<List<LongHuDetail>> resultList = new ArrayList<List<LongHuDetail>>();
+	private Map<Integer,List<LongHuDetail>> getLongHuDetailList(LongHu longHu){
+		Map<Integer,List<LongHuDetail>> resultMap = new HashMap<Integer, List<LongHuDetail>>();
 		String symbol = longHu.getSymbol();
 		String tradeDate = longHu.getTradeDate();
-		resultList.add(getLongHuDetailList(symbol, tradeDate, 1));
+		if(StringUtil.isNotBlank(longHu.getYrType())){
+			resultMap.put(1, getLongHuDetailList(symbol, tradeDate, 1));
+		}
 		if(StringUtil.isNotBlank(longHu.getErType())){
-			resultList.add(getLongHuDetailList(symbol, tradeDate, 2));
+			resultMap.put(2, getLongHuDetailList(symbol, tradeDate, 2));
 		}
 		if(StringUtil.isNotBlank(longHu.getSrType())){
-			resultList.add(getLongHuDetailList(symbol, tradeDate, 3));
+			resultMap.put(3, getLongHuDetailList(symbol, tradeDate, 3));
 		}
-		return resultList;
+		return resultMap;
 	}
 	
 	private List<LongHuDetail> getLongHuDetailList(String symbol, String tradeDate, int dateType){
