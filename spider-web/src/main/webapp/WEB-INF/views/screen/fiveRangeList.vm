@@ -10,6 +10,7 @@
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
             <h5>托压单列表</h5>
 			<a class="label label-info" style="line-height:20px;">挂单金额&gt;=1000万</a>
+			
           </div>
 		  <div class="widget-content nopadding">
 			<form id="searchForm" action="#springUrl('/fiverange/')" method="get" class="form-horizontal">
@@ -20,10 +21,19 @@
 							<input type="text" id="tradeDate" name="tradeDate" value="$!{tradeDate}" data-date-format="yyyy-mm-dd" class="span11" />
 							<span class="add-on"><i class="icon-th"></i></span> 
 						</div>
+						
 					</div>
-                    <div>
-                        <button type="submit"  class="btn btn-success">搜索</button>
-                    </div>
+					<div>
+                        <label>可流通市值：</label>
+						<div class="input-append">
+							<select class="amv span20">
+								<option value="0">全部</option>
+								<option value="50">20-50亿</option>
+								<option value="20">小于20亿</option>
+                            </select>
+						</div>
+					</div>
+					<button type="submit"  class="btn btn-success">搜索</button>
                 </div>
 			</form>
           </div>
@@ -34,6 +44,7 @@
 				  <th style="width:5%;">序号</th>
                   <th>代码</th>
 				  <th>股票</th>
+				  <th>可流通市值</th>
                   <th>压</th>
 				  <th>托</th>
 				  <th>更新时间</th>
@@ -46,6 +57,7 @@
 				  <td>$!{velocityCount}</td>
                   <td>$!{statis.symbol}</td>
                   <td>$!{companyTool.getNameBySymbol($!{statis.symbol})}</td>
+				  <td>$!{statis.activeMarketValue}亿</td>
 				  <td>$!{statis.bigSell}</td>
 				  <td>$!{statis.bigBuy}</td>
 				  <td>$!{date.format("HH:mm:ss",$!{statis.gmtUpdate})}</td>

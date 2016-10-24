@@ -116,7 +116,7 @@ public class LongHuTask {
 		Set<String> lhCodeSet = new HashSet<String>();
 		Map<String,List<String>> typeMap = XinLangLongHuTool.getLongHuType(tradeDate);
 		if(typeMap == null || typeMap.size() == 0){
-			logger.error("No type Map fund from XinLang!");
+			logger.error("No type Map fund from Sina!");
 			return;
 		}
 		while(m.find()){
