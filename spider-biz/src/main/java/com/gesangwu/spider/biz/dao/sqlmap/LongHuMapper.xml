@@ -469,7 +469,7 @@
     from long_hu
     where trade_date = 
     <choose>
-    	<when test="tradeDate != null">
+    	<when test="tradeDate != null and tradeDate != ''">
     		#{tradeDate,jdbcType=VARCHAR}
     	</when>
     	<otherwise>

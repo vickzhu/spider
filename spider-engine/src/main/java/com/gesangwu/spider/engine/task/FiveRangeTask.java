@@ -30,9 +30,9 @@ import com.gesangwu.spider.engine.util.TradeTimeUtil;
  *
  */
 @Component
-public class FiveRangeSpider {
+public class FiveRangeTask {
 	
-	private static final Logger logger = LoggerFactory.getLogger(FiveRangeSpider.class);
+	private static final Logger logger = LoggerFactory.getLogger(FiveRangeTask.class);
 	
 	private static final String regex = "var hq_str_([\\w]{8})=\"(.*)\";";
 	private static final Pattern r = Pattern.compile(regex);

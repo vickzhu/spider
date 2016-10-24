@@ -53,7 +53,11 @@ public class LongHuController {
 		ModelAndView mav = new ModelAndView("longHu");
 		List<LongHu> lhList = lhService.selectByTradeDate(tradeDate);
 		mav.addObject("lhList", lhList);
-		mav.addObject("tradeDate", StringUtil.isBlank(tradeDate)?lhList.get(0).getTradeDate():tradeDate);
+		if(CollectionUtils.isNotEmpty(lhList)){
+			mav.addObject("tradeDate", lhList.get(0).getTradeDate());
+		} else {
+			mav.addObject("tradeDate", tradeDate);
+		}
 		return mav;
 	}
 	

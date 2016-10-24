@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.gandalf.framework.mybatis.BaseMapper;
 import com.gandalf.framework.mybatis.BaseServiceImpl;
+import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.dao.mapper.FiveRangeStatisMapper;
 import com.gesangwu.spider.biz.dao.model.FiveRangeStatis;
 import com.gesangwu.spider.biz.dao.model.FiveRangeStatisExample;
@@ -40,6 +41,18 @@ public class FiveRangeStatisServiceImpl extends
 	@Override
 	public List<FiveRangeStatis> selectByTradeDate(String tradeDate) {
 		return mapper.selectByTradeDate(tradeDate);
+	}
+
+	@Override
+	public void selectByPagination(FiveRangeStatisExample example,
+			Page<FiveRangeStatis> page) {
+		example.setOffset(page.getOffset());
+        example.setRows(page.getPageSize());
+        int totalCounts = mapper.countByExample(example);
+        page.setTotalCounts(totalCounts);
+        List<FiveRangeStatis> companyList = mapper.selectByExample(example);
+        page.setRecords(companyList);	
+		
 	}
 
 }

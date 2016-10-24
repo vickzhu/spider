@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.gandalf.framework.mybatis.BaseMapper;
 import com.gandalf.framework.mybatis.BaseServiceImpl;
+import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.dao.mapper.LargeVolStatisMapper;
 import com.gesangwu.spider.biz.dao.model.LargeVolStatis;
 import com.gesangwu.spider.biz.dao.model.LargeVolStatisExample;
@@ -39,6 +40,17 @@ public class LargeVolStatisServiceImpl extends BaseServiceImpl<LargeVolStatis, L
 	@Override
 	public List<LargeVolStatis> selectByTradeDate(String tradeDate) {
 		return mapper.selectByTradeDate(tradeDate);
+	}
+
+	@Override
+	public void selectByPagination(LargeVolStatisExample example,
+			Page<LargeVolStatis> page) {
+		example.setOffset(page.getOffset());
+        example.setRows(page.getPageSize());
+        int totalCounts = mapper.countByExample(example);
+        page.setTotalCounts(totalCounts);
+        List<LargeVolStatis> companyList = mapper.selectByExample(example);
+        page.setRecords(companyList);		
 	}
 
 }

@@ -1,0 +1,53 @@
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">股票</a> <a href="#" class="current">托压单</a> </div>
+	<h1>$!{companyTool.getNameBySymbol($symbol)}</h1>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+            <h5>托压单历史</h5>
+			<a class="label label-info" style="line-height:20px;"></a>
+          </div>
+          <div class="widget-content">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+				  <th style="width:5%;">序号</th>
+                  <th>压</th>
+				  <th>托</th>
+				  <th>日期</th>
+                </tr>
+              </thead>
+              <tbody>
+				#foreach($history in ${page.records})
+                <tr>
+				  <td>$!{velocityCount}</td>
+				  <td>$!{history.bigSell}</td>
+				  <td>$!{history.bigBuy}</td>
+				  <td>$!{history.tradeDate}</td>
+                </tr>
+				#end
+              </tbody>
+             </table>
+			 <div id="page_nav"></div>
+			</div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+<form id="searchForm" action="#springUrl('/fiverange/history')" method="get">
+	<input type="hidden" id="curPage" name="curPage"/>
+	<input type="hidden" id="symbol" name="symbol" value="${company.symbol}"/>
+</form>
+<script src="#resources('js/pagination.js')"></script>
+<script type="text/javascript">
+	function gotoPage(pageNo){
+		$("#curPage").val(pageNo);
+		$("#searchForm").submit();
+	}
+	$('#page_nav').html(new Pagination($!{page.curPage},$!{page.totalPages}, gotoPage).getHtml());
+</script>

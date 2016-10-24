@@ -264,7 +264,7 @@
     from large_vol_statis
   	where trade_date = 
     <choose>
-    	<when test="tradeDate != null">
+    	<when test="tradeDate != null and tradeDate != ''">
     		#{tradeDate,jdbcType=VARCHAR}
     	</when>
     	<otherwise>

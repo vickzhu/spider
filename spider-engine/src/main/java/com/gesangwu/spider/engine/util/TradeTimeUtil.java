@@ -17,7 +17,7 @@ public class TradeTimeUtil {
 		if(hod == 12){
 			return Boolean.FALSE;
 		}
-		if(hod == 14 && min >= 59){//最后一分钟不计算
+		if(hod == 14 && min >= 58){//最后一分钟不计算
 			return Boolean.FALSE;
 		}
 		return Boolean.TRUE;

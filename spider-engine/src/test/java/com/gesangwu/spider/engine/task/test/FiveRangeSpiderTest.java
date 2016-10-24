@@ -4,13 +4,13 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
-import com.gesangwu.spider.engine.task.FiveRangeSpider;
+import com.gesangwu.spider.engine.task.FiveRangeTask;
 import com.gesangwu.spider.engine.test.BaseTest;
 
 public class FiveRangeSpiderTest extends BaseTest {
 	
 	@Resource
-	private FiveRangeSpider spider;
+	private FiveRangeTask spider;
 	
 	@Test
 	public void test(){

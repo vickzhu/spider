@@ -17,7 +17,7 @@
 					<div>
                         <label>日期：</label>
 						<div data-date="${tradeDate}" class="input-append date datepicker">
-							<input type="text" name="tradeDate" value="${tradeDate}" data-date-format="yyyy-mm-dd" class="span11" />
+							<input type="text" id="tradeDate" name="tradeDate" value="$!{tradeDate}" data-date-format="yyyy-mm-dd" class="span11" />
 							<span class="add-on"><i class="icon-th"></i></span> 
 						</div>
 					</div>
@@ -98,19 +98,8 @@
             weekStart: 1,
             autoclose: true,
             todayBtn: 'linked',
-            language: 'zh-CN'});
-    	
-    	//------------- Datepicker -------------//
-    	if($('#datepicker').length) {
-    		$("#datepicker").datepicker({
-    			showOtherMonths:true
-    		});
-    	}
-    	if($('#datepicker-inline').length) {
-    		$('#datepicker-inline').datepicker({
-    	        inline: true,
-    			showOtherMonths:true
-    	    });
-    	}
+            language: 'zh-CN'}).on('changeDate',function(){
+				$("#searchForm").submit();
+			});
 	});
 </script>
