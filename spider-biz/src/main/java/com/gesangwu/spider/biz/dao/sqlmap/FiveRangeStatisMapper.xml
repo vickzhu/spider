@@ -8,6 +8,7 @@
     <result column="big_sell" property="bigSell" jdbcType="INTEGER" />
     <result column="big_buy" property="bigBuy" jdbcType="INTEGER" />
     <result column="trade_date" property="tradeDate" jdbcType="VARCHAR" />
+    <result column="active_market_value" property="activeMarketValue" jdbcType="DOUBLE" />
     <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
     <result column="gmt_update" property="gmtUpdate" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -70,7 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, symbol, stock_name, big_sell, big_buy, trade_date, gmt_create, gmt_update
+    id, symbol, stock_name, big_sell, big_buy, trade_date, active_market_value, gmt_create, 
+    gmt_update
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.FiveRangeStatisExample" >
     select
@@ -110,11 +112,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into five_range_statis (symbol, stock_name, big_sell, 
-      big_buy, trade_date, gmt_create, 
-      gmt_update)
+      big_buy, trade_date, active_market_value, 
+      gmt_create, gmt_update)
     values (#{symbol,jdbcType=VARCHAR}, #{stockName,jdbcType=VARCHAR}, #{bigSell,jdbcType=INTEGER}, 
-      #{bigBuy,jdbcType=INTEGER}, #{tradeDate,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
-      #{gmtUpdate,jdbcType=TIMESTAMP})
+      #{bigBuy,jdbcType=INTEGER}, #{tradeDate,jdbcType=VARCHAR}, #{activeMarketValue,jdbcType=DOUBLE}, 
+      #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.FiveRangeStatis" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -136,6 +138,9 @@
       </if>
       <if test="tradeDate != null" >
         trade_date,
+      </if>
+      <if test="activeMarketValue != null" >
+        active_market_value,
       </if>
       <if test="gmtCreate != null" >
         gmt_create,
@@ -159,6 +164,9 @@
       </if>
       <if test="tradeDate != null" >
         #{tradeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="activeMarketValue != null" >
+        #{activeMarketValue,jdbcType=DOUBLE},
       </if>
       <if test="gmtCreate != null" >
         #{gmtCreate,jdbcType=TIMESTAMP},
@@ -195,6 +203,9 @@
       <if test="record.tradeDate != null" >
         trade_date = #{record.tradeDate,jdbcType=VARCHAR},
       </if>
+      <if test="record.activeMarketValue != null" >
+        active_market_value = #{record.activeMarketValue,jdbcType=DOUBLE},
+      </if>
       <if test="record.gmtCreate != null" >
         gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
       </if>
@@ -214,6 +225,7 @@
       big_sell = #{record.bigSell,jdbcType=INTEGER},
       big_buy = #{record.bigBuy,jdbcType=INTEGER},
       trade_date = #{record.tradeDate,jdbcType=VARCHAR},
+      active_market_value = #{record.activeMarketValue,jdbcType=DOUBLE},
       gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
       gmt_update = #{record.gmtUpdate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -238,6 +250,9 @@
       <if test="tradeDate != null" >
         trade_date = #{tradeDate,jdbcType=VARCHAR},
       </if>
+      <if test="activeMarketValue != null" >
+        active_market_value = #{activeMarketValue,jdbcType=DOUBLE},
+      </if>
       <if test="gmtCreate != null" >
         gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       </if>
@@ -254,6 +269,7 @@
       big_sell = #{bigSell,jdbcType=INTEGER},
       big_buy = #{bigBuy,jdbcType=INTEGER},
       trade_date = #{tradeDate,jdbcType=VARCHAR},
+      active_market_value = #{activeMarketValue,jdbcType=DOUBLE},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}

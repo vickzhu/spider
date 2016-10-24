@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
+import com.gesangwu.spider.biz.common.DecimalUtil;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.FiveRangeStatis;
 import com.gesangwu.spider.biz.service.CompanyService;
@@ -63,11 +64,11 @@ public class FiveRangeTask {
 			sb.append(company.getSymbol());
 			sb.append(SymbolConstant.COMMA);
 			if(i == size - 1){
-				fetch(sb.toString());
+				fetch(sb.toString(), company.getActiveMarketValue());
 				sb = new StringBuffer();
 			} else {
 				if(i != 0 && i % 499 == 0){
-					fetch(sb.toString());
+					fetch(sb.toString(), company.getActiveMarketValue());
 					sb = new StringBuffer();
 				}
 			}
@@ -76,7 +77,7 @@ public class FiveRangeTask {
 		logger.info("Fetch the FiveRange used:"+(end-start)+"ms!");
 	}
 	
-	private void fetch(String symbolArr){
+	private void fetch(String symbolArr, double activeMarketValue){
 		String result = HttpTool.get("http://hq.sinajs.cn/etag.php?list=" + symbolArr);
 		Matcher matcher = r.matcher(result);
 		Date now = new Date();
@@ -118,6 +119,8 @@ public class FiveRangeTask {
 					statis.setTradeDate(date);
 					statis.setStockName(details[0]);
 					statis.setSymbol(symbol);
+					double amv = DecimalUtil.format(activeMarketValue/100000000, 2).doubleValue();
+					statis.setActiveMarketValue(amv);
 					statis.setGmtCreate(now);
 					statis.setGmtUpdate(now);
 					statisService.insert(statis);
