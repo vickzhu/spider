@@ -64,11 +64,11 @@ public class FiveRangeTask {
 			sb.append(company.getSymbol());
 			sb.append(SymbolConstant.COMMA);
 			if(i == size - 1){
-				fetch(sb.toString(), company.getActiveMarketValue());
+				fetch(sb.toString());
 				sb = new StringBuffer();
 			} else {
 				if(i != 0 && i % 499 == 0){
-					fetch(sb.toString(), company.getActiveMarketValue());
+					fetch(sb.toString());
 					sb = new StringBuffer();
 				}
 			}
@@ -77,7 +77,7 @@ public class FiveRangeTask {
 		logger.info("Fetch the FiveRange used:"+(end-start)+"ms!");
 	}
 	
-	private void fetch(String symbolArr, double activeMarketValue){
+	private void fetch(String symbolArr){
 		String result = HttpTool.get("http://hq.sinajs.cn/etag.php?list=" + symbolArr);
 		Matcher matcher = r.matcher(result);
 		Date now = new Date();
@@ -116,10 +116,11 @@ public class FiveRangeTask {
 						statis.setBigSell(1);
 						statis.setBigBuy(0);
 					}
+					Company company = companyService.selectBySymbol(symbol);
 					statis.setTradeDate(date);
 					statis.setStockName(details[0]);
 					statis.setSymbol(symbol);
-					double amv = DecimalUtil.format(activeMarketValue/100000000, 2).doubleValue();
+					double amv = DecimalUtil.format(company.getActiveMarketValue()/100000000, 2).doubleValue();
 					statis.setActiveMarketValue(amv);
 					statis.setGmtCreate(now);
 					statis.setGmtUpdate(now);

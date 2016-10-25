@@ -23,16 +23,6 @@
 						</div>
 						
 					</div>
-					<div>
-                        <label>可流通市值：</label>
-						<div class="input-append">
-							<select class="amv span20">
-								<option value="0">全部</option>
-								<option value="50">20-50亿</option>
-								<option value="20">小于20亿</option>
-                            </select>
-						</div>
-					</div>
 					<button type="submit"  class="btn btn-success">搜索</button>
                 </div>
 			</form>

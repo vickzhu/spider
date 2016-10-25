@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -29,17 +31,20 @@ import com.gesangwu.spider.biz.service.StockShareHolderService;
 @Component
 public class FLoatShareCalc {
 	
+	private static final Logger logger = LoggerFactory.getLogger(FLoatShareCalc.class);
+	
 	@Resource
 	private CompanyService companyService;
 	@Resource
 	private StockShareHolderService sshService;	
 	
-	@Scheduled(cron = "0 20 9 * * MON-FRI")
+	@Scheduled(cron = "0 15 9 * * MON-FRI")
 	public void execute(){
 		int cpp = 50;
 		int count = companyService.countByExample(null);
 		int totalPages = (count + cpp -1)/cpp;
 		Date now = new Date();
+		long start = System.currentTimeMillis();
 		for(int cur = 1; cur<=totalPages; cur++){
 			Page<Company> page = new Page<Company>(cur, cpp);
 			companyService.selectByPagination(new CompanyExample(), page);
@@ -56,13 +61,15 @@ public class FLoatShareCalc {
 				companyService.updateByPrimaryKey(company);
 			}
 		}
+		long end = System.currentTimeMillis();
+		logger.info("Calculate active market value used "+(end-start)+"ms!");
 	}
 	
 	private double calc(double floatMarketValue, double totalRate){
 		double remainRate = 1 - totalRate/100;
 		BigDecimal mv = BigDecimal.valueOf(floatMarketValue);
 		BigDecimal rr = BigDecimal.valueOf(remainRate);
-		BigDecimal amv = mv.multiply(rr).setScale(4,RoundingMode.HALF_UP);
+		BigDecimal amv = mv.multiply(rr).setScale(2,RoundingMode.HALF_UP);
 		return amv.doubleValue();
 	}
 	
