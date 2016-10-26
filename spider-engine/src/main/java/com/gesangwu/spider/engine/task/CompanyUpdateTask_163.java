@@ -37,7 +37,7 @@ import com.gesangwu.spider.engine.util.UnicodeUtil;
  * @author zhuxb
  *
  */
-@Component
+//@Component
 public class CompanyUpdateTask_163 {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CompanyUpdateTask_163.class);
@@ -52,7 +52,7 @@ public class CompanyUpdateTask_163 {
 	@Resource
 	private CompanyService companyService;
 
-	@Scheduled(cron="0 15 9 * * ?")
+//	@Scheduled(cron="0 15 9 * * ?")
 	public void execute(){
 		long start = System.currentTimeMillis();
 		String result = HttpTool.get(buildUrl(0));

@@ -58,7 +58,7 @@ public class FiveRangeTask {
 				continue;
 			}
 			String stockName = company.getStockName();
-			if(stockName.startsWith("*ST") || stockName.startsWith("ST")){
+			if(stockName.startsWith("S") || stockName.startsWith("*S")){
 				continue;
 			}
 			sb.append(company.getSymbol());

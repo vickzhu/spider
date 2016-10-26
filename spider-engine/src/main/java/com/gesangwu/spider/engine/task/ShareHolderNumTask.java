@@ -2,16 +2,22 @@ package com.gesangwu.spider.engine.task;
 
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
-import com.gandalf.framework.web.tool.Page;
+import com.gandalf.framework.util.StringUtil;
+import com.gesangwu.spider.biz.common.StockUtil;
 import com.gesangwu.spider.biz.dao.model.Company;
-import com.gesangwu.spider.biz.dao.model.CompanyExample;
+import com.gesangwu.spider.biz.dao.model.HolderNum;
 import com.gesangwu.spider.biz.service.CompanyService;
+import com.gesangwu.spider.biz.service.HolderNumService;
+import com.gesangwu.spider.engine.util.LittleCompanyHolder;
 
 /**
  * 股东人数
@@ -21,26 +27,63 @@ import com.gesangwu.spider.biz.service.CompanyService;
 @Component
 public class ShareHolderNumTask {
 	
+	private static final String r="<div style=\"display\\:none\" id=\"gdrsData\" >\\[\\[(.*)\\]\\]</div>";
+	private static final Pattern p = Pattern.compile(r);
 	@Resource
 	private CompanyService companyService;
-
+	@Resource
+	private HolderNumService hnService;
+	
 	public void execute(){
-		String cookieUrl = "https://xueqiu.com/account/lostpasswd";
-		HttpTool.get(cookieUrl);//这个链接只是为了获得cookie信息，因为后面的请求需要用到cookie
-		int cpp = 10;
-		int count = companyService.countByExample(null);
-		int totalPages = (count + cpp -1)/cpp;
-		Date now = new Date();
-		for(int cur = 1; cur <= totalPages; cur++){
-			Page<Company> page = new Page<Company>(cur);
-			companyService.selectByPagination(new CompanyExample(), page);
-			List<Company> companyList = page.getRecords();
-			for (Company company : companyList) {
-				String symbol = company.getSymbol();
-				String url = "https://xueqiu.com/stock/f10/shareholdernum.json?page=1&size=10&symbol="+symbol;
-				String result = HttpTool.get(url);
-				System.out.println(result);
+		List<Company> companyList = LittleCompanyHolder.getCompanyList();
+		for (Company company : companyList) {
+			String code = company.getStockCode();
+			execute(code);
+		}
+	}
+
+	public void execute(String code){
+		String symbol = StockUtil.code2Symbol(code);
+		String url = buildUrl(code);
+		String result = HttpTool.get(url);
+		Matcher m = p.matcher(result);
+		if(m.find()){
+			String content = m.group(1);
+			content = content.replaceAll("\"", StringUtil.EMPTY);
+			String[] arr = content.split("\\],\\[");
+			for (String columns : arr) {
+				String[] columnArr = columns.split(SymbolConstant.COMMA);
+				String endDate = columnArr[0];
+				String total = columnArr[1];
+				String price = columnArr[2];
+				HolderNum hn = hnService.selectLatestBySymbol(symbol);
+				if(hn == null){//第一条
+					HolderNum holderNum = new HolderNum();
+					holderNum.setEndDate(endDate);
+					holderNum.setGmtCreate(new Date());
+					holderNum.setPrice(Double.valueOf(price));
+					holderNum.setSymbol(symbol);
+				} else {
+					if(endDate.compareTo(hn.getEndDate()) > 0){//大于数据库中的最大日期
+						
+					} else {//最新的数据都没有数据库中的新，直接退出
+						break;
+					}
+				}
 			}
 		}
+	}
+	
+	private String buildUrl(String code){
+		StringBuilder sb = new StringBuilder();
+		sb.append("http://basic.10jqka.com.cn/mobile/");
+		sb.append(code);
+		sb.append("/holdern.html");
+		return sb.toString();
+	}
+	
+	public static void main(String[] args){
+		ShareHolderNumTask task = new ShareHolderNumTask();
+		task.execute("002810");
 	}
 }
