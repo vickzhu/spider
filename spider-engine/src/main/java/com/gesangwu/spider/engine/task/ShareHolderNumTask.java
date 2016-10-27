@@ -1,5 +1,6 @@
 package com.gesangwu.spider.engine.task;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +38,7 @@ public class ShareHolderNumTask {
 	@Resource
 	private HolderNumService hnService;
 	
-	public void execute(){
+	public void execute() throws UnsupportedEncodingException{
 		List<Company> companyList = LittleCompanyHolder.getCompanyList();
 		for (Company company : companyList) {
 			String code = company.getStockCode();
@@ -59,50 +60,26 @@ public class ShareHolderNumTask {
 			
 		}
 	}
-
-	public void execute1(String code){
-		String symbol = StockUtil.code2Symbol(code);
-		String url = buildUrl(code);
-		String result = HttpTool.get(url);
-		Matcher m = p.matcher(result);
-		if(m.find()){
-			String content = m.group(1);
-			content = content.replaceAll("\"", StringUtil.EMPTY);
-			String[] arr = content.split("\\],\\[");
-			for (String columns : arr) {
-				String[] columnArr = columns.split(SymbolConstant.COMMA);
-				String endDate = columnArr[0];
-				String total = columnArr[1];
-				String price = columnArr[2];
-				HolderNum hn = hnService.selectLatestBySymbol(symbol);
-				if(hn == null){//第一条
-					HolderNum holderNum = new HolderNum();
-					holderNum.setEndDate(endDate);
-					holderNum.setGmtCreate(new Date());
-					holderNum.setPrice(Double.valueOf(price));
-					holderNum.setSymbol(symbol);
-					holderNum.setTotality(Integer.valueOf(total));
-					//TODO 与上期的不同
-				} else {
-					if(endDate.compareTo(hn.getEndDate()) > 0){//大于数据库中的最大日期
-						
-					} else {//最新的数据都没有数据库中的新，直接退出
-						break;
-					}
-				}
-			}
-		}
-	}
 	
-	private List<Integer> buildTotailty(String result){
+	/**
+	 * 构建人数
+	 * @param result
+	 * @return
+	 * @throws UnsupportedEncodingException 
+	 */
+	private List<Integer> buildTotailty(String result) throws UnsupportedEncodingException{
 		List<Integer> list = new ArrayList<Integer>();
 		Matcher m = p.matcher(result);
+		if(!m.find()){
+			return list;
+		}
 		String content = m.group(1);
 		content = content.replaceAll("\"", StringUtil.EMPTY);
 		String[] arr = content.split("\\],\\[");
 		for (String columns : arr) {
 			String[] columnArr = columns.split(SymbolConstant.COMMA);
 			String total = columnArr[1];
+			System.out.println(new String(columnArr[0].getBytes(),"UTF-8"));
 			list.add(Integer.valueOf(total));
 		}
 		return list;
@@ -136,7 +113,7 @@ public class ShareHolderNumTask {
 		return ltgb;
 	}
 	
-	private static final String r2="<ul class=\"swiper-list\"><li>([0-9\\-]*)</li><li>[0-9\\.]*</li><li class=\"c-[a-z]+\">([0-9\\.\\-%])</li>";
+	private static final String r2="<ul class=\"swiper-list\"><li>([0-9\\-]*)</li><li>[0-9\\.]*</li><li class=\"c\\-[a-z]+\">([0-9\\.\\-\\+%]*)</li>";
 	private static final Pattern p2 = Pattern.compile(r2);
 	
 	private void execute(String code){
@@ -154,6 +131,11 @@ public class ShareHolderNumTask {
 		}
 	}
 	
+	/**
+	 * 构建股东人数对象
+	 * @param result
+	 * @return
+	 */
 	private List<HolderNum> buildHolderNum(String result){
 		Matcher m = p2.matcher(result);
 		List<HolderNum> list = new ArrayList<HolderNum>();
@@ -179,8 +161,21 @@ public class ShareHolderNumTask {
 		return sb.toString();
 	}
 	
-	public static void main(String[] args){
+	private static final String r4="<li class=\"c\\-[a-z]+\">([0-9\\.\\-\\+%]*)</li>";
+	private static final Pattern p4 = Pattern.compile(r4);
+	
+	public static void main(String[] args) throws UnsupportedEncodingException{
 		ShareHolderNumTask task = new ShareHolderNumTask();
-		task.execute("002810");
+		String url = task.buildUrl("002211");
+		String result = HttpTool.get(url);
+		Matcher m = p4.matcher(result);
+		while(m.find()){
+			String endDate = m.group(1);
+			System.out.println(endDate);
+		}
+		List<Integer> list = task.buildTotailty(result);
+		for (Integer integer : list) {
+			System.out.println(integer);
+		}
 	}
 }
