@@ -22,6 +22,10 @@ public class Company {
 
     private BigDecimal lastPrice;
 
+    private Double stockTotal;
+
+    private Double floatStockTotal;
+
     private Date gmtCreate;
 
     private Date gmtUpdate;
@@ -96,6 +100,22 @@ public class Company {
 
     public void setLastPrice(BigDecimal lastPrice) {
         this.lastPrice = lastPrice;
+    }
+
+    public Double getStockTotal() {
+        return stockTotal;
+    }
+
+    public void setStockTotal(Double stockTotal) {
+        this.stockTotal = stockTotal;
+    }
+
+    public Double getFloatStockTotal() {
+        return floatStockTotal;
+    }
+
+    public void setFloatStockTotal(Double floatStockTotal) {
+        this.floatStockTotal = floatStockTotal;
     }
 
     public Date getGmtCreate() {

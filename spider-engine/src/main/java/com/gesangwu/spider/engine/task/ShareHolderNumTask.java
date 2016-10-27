@@ -112,16 +112,28 @@ public class ShareHolderNumTask {
 	private static final Pattern p3 = Pattern.compile(r3);
 	
 	/**
-	 * 最新股本
+	 * 最新流通股本
 	 * @return
 	 */
 	private double latestLTGB(Company company, String result){
+		double ltgb = 0;
 		Matcher m = p3.matcher(result);
 		if(m.find()){
-			double tmk = Double.valueOf(m.group(2));
-			double fmk = Double.valueOf(m.group(3));
+			double st = Double.valueOf(m.group(2));
+			double fst = Double.valueOf(m.group(3));
+			Double stockTotal = company.getStockTotal();
+			Double floatStockTotal = company.getFloatStockTotal();
+			if(stockTotal == null || floatStockTotal == null){
+				company.setStockTotal(st);
+				company.setFloatStockTotal(fst);
+				companyService.updateByPrimaryKey(company);//FIXME 这里有个问题，company是缓存起来的
+			} else if(stockTotal != st || floatStockTotal != fst){
+				
+			} else {
+				
+			}
 		}
-		return 0;
+		return ltgb;
 	}
 	
 	private static final String r2="<ul class=\"swiper-list\"><li>([0-9\\-]*)</li><li>[0-9\\.]*</li><li class=\"c-[a-z]+\">([0-9\\.\\-%])</li>";

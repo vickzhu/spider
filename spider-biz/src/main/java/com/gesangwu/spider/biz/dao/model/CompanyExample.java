@@ -706,6 +706,126 @@ public class CompanyExample {
             return (Criteria) this;
         }
 
+        public Criteria andStockTotalIsNull() {
+            addCriterion("stock_total is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockTotalIsNotNull() {
+            addCriterion("stock_total is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockTotalEqualTo(Double value) {
+            addCriterion("stock_total =", value, "stockTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockTotalNotEqualTo(Double value) {
+            addCriterion("stock_total <>", value, "stockTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockTotalGreaterThan(Double value) {
+            addCriterion("stock_total >", value, "stockTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockTotalGreaterThanOrEqualTo(Double value) {
+            addCriterion("stock_total >=", value, "stockTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockTotalLessThan(Double value) {
+            addCriterion("stock_total <", value, "stockTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockTotalLessThanOrEqualTo(Double value) {
+            addCriterion("stock_total <=", value, "stockTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockTotalIn(List<Double> values) {
+            addCriterion("stock_total in", values, "stockTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockTotalNotIn(List<Double> values) {
+            addCriterion("stock_total not in", values, "stockTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockTotalBetween(Double value1, Double value2) {
+            addCriterion("stock_total between", value1, value2, "stockTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockTotalNotBetween(Double value1, Double value2) {
+            addCriterion("stock_total not between", value1, value2, "stockTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloatStockTotalIsNull() {
+            addCriterion("float_stock_total is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloatStockTotalIsNotNull() {
+            addCriterion("float_stock_total is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloatStockTotalEqualTo(Double value) {
+            addCriterion("float_stock_total =", value, "floatStockTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloatStockTotalNotEqualTo(Double value) {
+            addCriterion("float_stock_total <>", value, "floatStockTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloatStockTotalGreaterThan(Double value) {
+            addCriterion("float_stock_total >", value, "floatStockTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloatStockTotalGreaterThanOrEqualTo(Double value) {
+            addCriterion("float_stock_total >=", value, "floatStockTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloatStockTotalLessThan(Double value) {
+            addCriterion("float_stock_total <", value, "floatStockTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloatStockTotalLessThanOrEqualTo(Double value) {
+            addCriterion("float_stock_total <=", value, "floatStockTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloatStockTotalIn(List<Double> values) {
+            addCriterion("float_stock_total in", values, "floatStockTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloatStockTotalNotIn(List<Double> values) {
+            addCriterion("float_stock_total not in", values, "floatStockTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloatStockTotalBetween(Double value1, Double value2) {
+            addCriterion("float_stock_total between", value1, value2, "floatStockTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloatStockTotalNotBetween(Double value1, Double value2) {
+            addCriterion("float_stock_total not between", value1, value2, "floatStockTotal");
+            return (Criteria) this;
+        }
+
         public Criteria andGmtCreateIsNull() {
             addCriterion("gmt_create is null");
             return (Criteria) this;
