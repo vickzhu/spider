@@ -325,6 +325,66 @@ public class HolderNumExample {
             return (Criteria) this;
         }
 
+        public Criteria andTotalityIsNull() {
+            addCriterion("totality is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalityIsNotNull() {
+            addCriterion("totality is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalityEqualTo(Integer value) {
+            addCriterion("totality =", value, "totality");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalityNotEqualTo(Integer value) {
+            addCriterion("totality <>", value, "totality");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalityGreaterThan(Integer value) {
+            addCriterion("totality >", value, "totality");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalityGreaterThanOrEqualTo(Integer value) {
+            addCriterion("totality >=", value, "totality");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalityLessThan(Integer value) {
+            addCriterion("totality <", value, "totality");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalityLessThanOrEqualTo(Integer value) {
+            addCriterion("totality <=", value, "totality");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalityIn(List<Integer> values) {
+            addCriterion("totality in", values, "totality");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalityNotIn(List<Integer> values) {
+            addCriterion("totality not in", values, "totality");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalityBetween(Integer value1, Integer value2) {
+            addCriterion("totality between", value1, value2, "totality");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalityNotBetween(Integer value1, Integer value2) {
+            addCriterion("totality not between", value1, value2, "totality");
+            return (Criteria) this;
+        }
+
         public Criteria andPriceIsNull() {
             addCriterion("price is null");
             return (Criteria) this;

@@ -9,6 +9,8 @@ public class HolderNum {
 
     private String endDate;
 
+    private Integer totality;
+
     private Double price;
 
     private Double chgRate;
@@ -37,6 +39,14 @@ public class HolderNum {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate == null ? null : endDate.trim();
+    }
+
+    public Integer getTotality() {
+        return totality;
+    }
+
+    public void setTotality(Integer totality) {
+        this.totality = totality;
     }
 
     public Double getPrice() {

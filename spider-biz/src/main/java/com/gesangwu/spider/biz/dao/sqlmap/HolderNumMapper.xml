@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="symbol" property="symbol" jdbcType="VARCHAR" />
     <result column="end_date" property="endDate" jdbcType="VARCHAR" />
+    <result column="totality" property="totality" jdbcType="INTEGER" />
     <result column="price" property="price" jdbcType="DOUBLE" />
     <result column="chg_rate" property="chgRate" jdbcType="DOUBLE" />
     <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, symbol, end_date, price, chg_rate, gmt_create
+    id, symbol, end_date, totality, price, chg_rate, gmt_create
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.HolderNumExample" >
     select
@@ -107,10 +108,12 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into holder_num (symbol, end_date, price, 
-      chg_rate, gmt_create)
-    values (#{symbol,jdbcType=VARCHAR}, #{endDate,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, 
-      #{chgRate,jdbcType=DOUBLE}, #{gmtCreate,jdbcType=TIMESTAMP})
+    insert into holder_num (symbol, end_date, totality, 
+      price, chg_rate, gmt_create
+      )
+    values (#{symbol,jdbcType=VARCHAR}, #{endDate,jdbcType=VARCHAR}, #{totality,jdbcType=INTEGER}, 
+      #{price,jdbcType=DOUBLE}, #{chgRate,jdbcType=DOUBLE}, #{gmtCreate,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.HolderNum" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -123,6 +126,9 @@
       </if>
       <if test="endDate != null" >
         end_date,
+      </if>
+      <if test="totality != null" >
+        totality,
       </if>
       <if test="price != null" >
         price,
@@ -140,6 +146,9 @@
       </if>
       <if test="endDate != null" >
         #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="totality != null" >
+        #{totality,jdbcType=INTEGER},
       </if>
       <if test="price != null" >
         #{price,jdbcType=DOUBLE},
@@ -170,6 +179,9 @@
       <if test="record.endDate != null" >
         end_date = #{record.endDate,jdbcType=VARCHAR},
       </if>
+      <if test="record.totality != null" >
+        totality = #{record.totality,jdbcType=INTEGER},
+      </if>
       <if test="record.price != null" >
         price = #{record.price,jdbcType=DOUBLE},
       </if>
@@ -189,6 +201,7 @@
     set id = #{record.id,jdbcType=BIGINT},
       symbol = #{record.symbol,jdbcType=VARCHAR},
       end_date = #{record.endDate,jdbcType=VARCHAR},
+      totality = #{record.totality,jdbcType=INTEGER},
       price = #{record.price,jdbcType=DOUBLE},
       chg_rate = #{record.chgRate,jdbcType=DOUBLE},
       gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP}
@@ -204,6 +217,9 @@
       </if>
       <if test="endDate != null" >
         end_date = #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="totality != null" >
+        totality = #{totality,jdbcType=INTEGER},
       </if>
       <if test="price != null" >
         price = #{price,jdbcType=DOUBLE},
@@ -221,6 +237,7 @@
     update holder_num
     set symbol = #{symbol,jdbcType=VARCHAR},
       end_date = #{endDate,jdbcType=VARCHAR},
+      totality = #{totality,jdbcType=INTEGER},
       price = #{price,jdbcType=DOUBLE},
       chg_rate = #{chgRate,jdbcType=DOUBLE},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
