@@ -21,6 +21,7 @@ import com.gesangwu.spider.biz.dao.model.HolderNum;
 import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.HolderNumService;
 import com.gesangwu.spider.engine.util.LittleCompanyHolder;
+import com.gesangwu.spider.engine.util.UnicodeUtil;
 
 /**
  * 股东人数
@@ -38,7 +39,7 @@ public class ShareHolderNumTask {
 	@Resource
 	private HolderNumService hnService;
 	
-	public void execute() throws UnsupportedEncodingException{
+	public void execute(){
 		List<Company> companyList = LittleCompanyHolder.getCompanyList();
 		for (Company company : companyList) {
 			String code = company.getStockCode();
@@ -67,7 +68,7 @@ public class ShareHolderNumTask {
 	 * @return
 	 * @throws UnsupportedEncodingException 
 	 */
-	private List<Integer> buildTotailty(String result) throws UnsupportedEncodingException{
+	private List<Integer> buildTotailty(String result){
 		List<Integer> list = new ArrayList<Integer>();
 		Matcher m = p.matcher(result);
 		if(!m.find()){
@@ -79,10 +80,19 @@ public class ShareHolderNumTask {
 		for (String columns : arr) {
 			String[] columnArr = columns.split(SymbolConstant.COMMA);
 			String total = columnArr[1];
-			System.out.println(new String(columnArr[0].getBytes(),"UTF-8"));
+			System.out.println(decodeDate(columnArr[0]));
 			list.add(Integer.valueOf(total));
 		}
 		return list;
+	}
+	
+	private String decodeDate(String date){
+		date = UnicodeUtil.decodeUnicode(date);
+		date = date.replace(" 一季报", "-03-31");
+		date = date.replace(" 中报", "-06-30");
+		date = date.replace(" 三季报", "-09-30");
+		date = date.replace(" 年报", "-12-31");
+		return date;
 	}
 	
 	private static final String r3="<ul class=\"swiper-list\"><li>([0-9\\-]*)</li><li>([0-9\\.]*)</li><li>([0-9\\.]*)</li><li>";
@@ -164,9 +174,9 @@ public class ShareHolderNumTask {
 	private static final String r4="<li class=\"c\\-[a-z]+\">([0-9\\.\\-\\+%]*)</li>";
 	private static final Pattern p4 = Pattern.compile(r4);
 	
-	public static void main(String[] args) throws UnsupportedEncodingException{
+	public static void main(String[] args){
 		ShareHolderNumTask task = new ShareHolderNumTask();
-		String url = task.buildUrl("002211");
+		String url = task.buildUrl("002374");
 		String result = HttpTool.get(url);
 		Matcher m = p4.matcher(result);
 		while(m.find()){
