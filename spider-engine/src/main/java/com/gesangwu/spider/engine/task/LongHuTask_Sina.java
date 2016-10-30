@@ -39,22 +39,22 @@ import com.gesangwu.spider.engine.util.TradeTimeUtil;
 import com.gesangwu.spider.engine.util.XinLangLongHuTool;
 
 /**
- * 
+ * TODO 没有对龙虎类型检查数据库中是否存在
  * <ul>
  * 	<li>东方财富</li>
  *  <li>http://data.eastmoney.com/stock/tradedetail.html</li>
  * </ul>
  * <ul>
- * 	<li>网易</li>
- * 	<li>http://quotes.money.163.com/old/#query=MRLHB&DataType=lhb&sort=TDATE&order=desc&count=150&page=0&$3xa05</li>
+ * 	<li>新浪</li>
+ * 	<li>http://vip.stock.finance.sina.com.cn/q/go.php/vInvestConsult/kind/lhb/index.phtml</li>
  * </ul>
  * @author zhuxb
  *
  */
-@Component
-public class LongHuTask {
+//@Component
+public class LongHuTask_Sina {
 	
-	private static final Logger logger = LoggerFactory.getLogger(LongHuTask.class);
+	private static final Logger logger = LoggerFactory.getLogger(LongHuTask_Sina.class);
 
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	private static final String r1 = "\"SCode\"\\:\"([0-9]*)\",\"SName\"\\:\"([^\"]*)\",\"ClosePrice\"\\:\"([0-9\\.]*)\",\"Chgradio\"\\:\"([\\-0-9\\.]*)\",\"Dchratio\"\\:\"([0-9\\.]*)\",\"JmMoney\"\\:\"[\\-0-9\\.]*\",\"Turnover\"\\:\"([\\-0-9\\.]*)\",\"Ntransac\"\\:\"([\\-0-9\\.]*)\",\"Ctypedes\"\\:\"[^\"]*\",\"Oldid\"\\:\"[\\-0-9\\.]*\",\"Smoney\"\\:\"([0-9\\.]*)\",\"Bmoney\"\\:\"([0-9\\.]*)\",\"ZeMoney\"\\:\"[^\"]*\",\"Tdate\"\\:\"([^\"]*)\",\"JmRate\"\\:\"[^\"]*\",\"ZeRate\"\\:\"[^\"]*\",\"Ltsz\"\\:\"([^\"]*)\"";
@@ -328,7 +328,7 @@ public class LongHuTask {
 	}
 	
 	public static void main(String[] args){
-		LongHuTask task = new LongHuTask();
+		LongHuTask_Sina task = new LongHuTask_Sina();
 		task.execute("2016-10-11");
 	}
 }
