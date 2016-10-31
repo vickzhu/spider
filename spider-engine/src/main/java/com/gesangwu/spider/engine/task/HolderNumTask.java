@@ -121,32 +121,51 @@ public class HolderNumTask {
 	private static final String r2="<li class=\"c\\-[a-z]+\">([0-9\\.\\-\\+%]*)</li>";
 	private static final Pattern p2 = Pattern.compile(r2);
 	
+	private static final String r3 = "<div class=\"swiper\\-container swiper\\-container2 swiper\\-hide\">([\\s\\S]*)<!\\-\\- Add Pagination \\-\\->";
+	private static final Pattern p3 = Pattern.compile(r3);
+	
 	/**
 	 * 构建股东人数对象
 	 * @param result
 	 * @return
 	 */
 	private List<Double> buildChgRate(String result){
-		Parser parser = Parser.createParser(result, "UTF-8");
-		try {
-			NodeList nodeList = parser.parse(null);
-			processNodeList(nodeList);
-		} catch (Exception e) {
-			logger.error("Parse html from 10jka.com.cn failed", e);
+		Matcher m = p3.matcher(result);
+		if(m.find()){
+			String content = m.group(1);
+			content = content.replaceAll("[\\n||\\t]", StringUtil.EMPTY);
+			content = content.replaceAll("  ", StringUtil.EMPTY);
+			try{
+				Parser parser = Parser.createParser(content, "UTF-8");
+				NodeList nodeList = parser.parse(null);
+				Map<String, Double> chgRateMap = processNodeList(nodeList);
+			}catch(Exception e){
+				System.out.println(e.getMessage());
+			}
 		}
-		Matcher m = p2.matcher(result);
-		List<Double> list = new ArrayList<Double>();
-		while(m.find()){
-			String chgStr = m.group(1);
-			chgStr = chgStr.replace("%", StringUtil.EMPTY);
-			double chg = Double.valueOf(chgStr);
-			double chgRate = DecimalUtil.format(chg/100, 4).doubleValue();
-			list.add(chgRate);
-		}
-		return list;
+//		Parser parser = Parser.createParser(result, "UTF-8");
+//		List<Double> list = new ArrayList<Double>();
+//		try {
+//			NodeList nodeList = parser.parse(null);
+//			Map<String, Double> chgRateMap = processNodeList(nodeList);
+//			for(Map.Entry<String, Double> entry:chgRateMap.entrySet()){
+//				System.out.println(entry.getKey() + ":" + entry.getValue());
+//			}
+//			Matcher m = p2.matcher(result);
+//			while(m.find()){
+//				String chgStr = m.group(1);
+//				chgStr = chgStr.replace("%", StringUtil.EMPTY);
+//				double chg = Double.valueOf(chgStr);
+//				double chgRate = DecimalUtil.format(chg/100, 4).doubleValue();
+//				list.add(chgRate);
+//			}
+//		} catch (Exception e) {
+//			logger.error("Parse html from 10jka.com.cn failed", e);
+//		}
+		return null;
 	}
 	
-	private void processNodeList(NodeList list) {
+	private Map<String, Double> processNodeList(NodeList list) {
 		Map<String, Double> chgRateMap = new HashMap<String, Double>();
 		//迭代开始
 		SimpleNodeIterator iterator = list.elements();
@@ -154,11 +173,13 @@ public class HolderNumTask {
 			Node node = iterator.nextNode();
 			if(node instanceof TagNode){
 				TagNode tn = (TagNode)node;
+//				System.out.println(tn.getTagName());
 				if("LI".equals(tn.getTagName())){
 					String clz = tn.getAttribute("class");
-					System.out.println(clz);
-					if(clz.startsWith("c_")){
+					System.out.println("["+clz);
+					if(clz.startsWith("c-")){
 						String chgStr = tn.getFirstChild().getText();
+						System.out.println("......"+chgStr);
 						chgStr = chgStr.replace("%", StringUtil.EMPTY);
 						double chg = Double.valueOf(chgStr);
 						Node dateNode = tn.getParent().getFirstChild().getFirstChild();
@@ -167,12 +188,19 @@ public class HolderNumTask {
 					}
 				}
 			}
+			//得到该节点的子节点列表
+			NodeList childList = node.getChildren();
+			if (null != childList){
+				
+				processNodeList(childList);
+			}
 		}//end wile
+		return chgRateMap;
 	}
 	
 	public static void main(String[] args){
 		HolderNumTask task = new HolderNumTask();
-		String result = HttpTool.get("");
+		String result = HttpTool.get(task.buildUrl("002211"));
 		task.buildChgRate(result);
 	}
 	
