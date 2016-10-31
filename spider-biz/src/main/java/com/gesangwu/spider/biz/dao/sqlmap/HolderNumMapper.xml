@@ -251,4 +251,15 @@
     where 
     	symbol=#{symbol,jdbcType=VARCHAR} and end_date=(select max(end_date) from holder_num where symbol=#{symbol,jdbcType=VARCHAR})
   </select>
+  <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true">
+    insert into holder_num (symbol, end_date, totality, 
+      price, chg_rate, gmt_create
+      )
+    values 
+    <foreach collection="list" index="index" item="hn" separator=",">
+    (#{hn.symbol,jdbcType=VARCHAR}, #{hn.endDate,jdbcType=VARCHAR}, #{hn.totality,jdbcType=INTEGER}, 
+      #{hn.price,jdbcType=DOUBLE}, #{hn.chgRate,jdbcType=DOUBLE}, #{hn.gmtCreate,jdbcType=TIMESTAMP}
+      )
+    </foreach>
+  </insert>
 </mapper>

@@ -1,5 +1,7 @@
 package com.gesangwu.spider.biz.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -26,6 +28,11 @@ public class HolderNumServiceImpl extends BaseServiceImpl<HolderNum, HolderNumEx
 	@Override
 	public HolderNum selectLatestBySymbol(String symbol) {
 		return mapper.selectLatestBySymbol(symbol);
+	}
+
+	@Override
+	public void insertBatch(List<HolderNum> hnList) {
+		mapper.insertBatch(hnList);		
 	}
 
 }

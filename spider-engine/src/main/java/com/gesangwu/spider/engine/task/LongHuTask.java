@@ -29,17 +29,18 @@ import com.gesangwu.spider.biz.common.StockUtil;
 import com.gesangwu.spider.biz.dao.model.LongHu;
 import com.gesangwu.spider.biz.dao.model.LongHuDetail;
 import com.gesangwu.spider.biz.dao.model.LongHuType;
-import com.gesangwu.spider.biz.dao.model.SecDept;
 import com.gesangwu.spider.biz.service.LongHuDetailService;
 import com.gesangwu.spider.biz.service.LongHuService;
 import com.gesangwu.spider.biz.service.LongHuTypeService;
 import com.gesangwu.spider.biz.service.SecDeptService;
 import com.gesangwu.spider.engine.util.StockTool;
 import com.gesangwu.spider.engine.util.TradeTimeUtil;
-import com.gesangwu.spider.engine.util.XinLangLongHuTool;
+import com.gesangwu.spider.engine.util.WangYiLongHuTool;
 
 /**
- * 
+ * 1、从东方财富获得龙虎列表，但东方财富无龙虎类型
+ * 2、从网易获取所有龙虎类型
+ * 3、根据从东财获得的列表及从网易获取的龙虎类型，抓取龙虎详情
  * <ul>
  * 	<li>东方财富</li>
  *  <li>http://data.eastmoney.com/stock/tradedetail.html</li>
@@ -114,9 +115,9 @@ public class LongHuTask {
 		Date now = new Date();
 		List<LongHu> longHuList = new ArrayList<LongHu>();
 		Set<String> lhCodeSet = new HashSet<String>();
-		Map<String,List<String>> typeMap = XinLangLongHuTool.getLongHuType(tradeDate);
+		Map<String,List<String>> typeMap = WangYiLongHuTool.getLongHuType(tradeDate);
 		if(typeMap == null || typeMap.size() == 0){
-			logger.error("No type Map fund from Sina!");
+			logger.error("No type Map fund from 163!");
 			return;
 		}
 		while(m.find()){
@@ -197,58 +198,32 @@ public class LongHuTask {
 		cliqueTask.calc(longHu);
 	}
 	
-	private static final String r2 = "SYMBOL\\:\"([0-9]{6})\",type\\:\"([0-9]{2})\",comCode\\:\"([0-9]*)\",comName\\:\"([^\"]*)\",buyAmount\\:\"([0-9\\.]*)\",sellAmount\\:\"([0-9\\.]*)\",netAmount\\:([0-9\\.\\-]*)";
-	private Pattern p2 = Pattern.compile(r2);
-	
 	public List<LongHuDetail> fetchDetail(int dateType, String lhType, LongHu longHu){
+		Date now = new Date();
 		int index = lhType.indexOf(SymbolConstant.COMMA);
 		if(index > 0){
 			lhType = lhType.substring(0, index);
 		}
 		String code = StockUtil.symbol2Code(longHu.getSymbol());
 		String tradeDate = longHu.getTradeDate();
-		String result = getDetailContent(lhType, code, tradeDate);
-		Matcher m = p2.matcher(result);
+		List<LongHuDetail> detailList = WangYiLongHuTool.fetchDetail(code, tradeDate, lhType);
 		BigDecimal buyTotal = BigDecimal.ZERO;
 		BigDecimal sellTotal = BigDecimal.ZERO;
-		Date now = new Date();
 		Map<String,LongHuDetail> detailMap = new HashMap<String,LongHuDetail>();
-		while(m.find()){
-			String deptCode = m.group(3);
-			String deptName = m.group(4);//TODO 这里是否需要更新营业部的名称
-			String buyAmtStr = m.group(5);
-			String sellAmtStr = m.group(6);
-			String netAmtStr = m.group(7);
-			souDept(deptCode, deptName);
-			LongHuDetail detail = detailMap.get(deptCode);
-			BigDecimal buyAmt = DecimalUtil.parse(buyAmtStr);
-			BigDecimal sellAmt = DecimalUtil.parse(sellAmtStr);
-			BigDecimal netBuy = DecimalUtil.parse(netAmtStr);
-			if(detail != null){
-				if(detail.getSellAmt().compareTo(sellAmt) < 0){
-					detail.setSellAmt(sellAmt);
-					netBuy = detail.getBuyAmt().subtract(sellAmt);
-					detail.setNetBuy(netBuy);
-					sellTotal = sellTotal.add(sellAmt);
-				}
+		for (LongHuDetail detail : detailList) {
+			LongHuDetail lhd = detailMap.get(detail.getSecDeptCode());
+			if(lhd != null){//已经存在了
 				continue;
 			} else {
-				detail = new LongHuDetail(); 
-				detailMap.put(deptCode, detail);
+				detailMap.put(detail.getSecDeptCode(), detail);
 			}
-			
-			buyTotal = buyTotal.add(buyAmt);
-			sellTotal = sellTotal.add(sellAmt);
-
 			detail.setLongHuId(longHu.getId());
-			detail.setBuyAmt(buyAmt);
-			detail.setSellAmt(sellAmt);
-			detail.setNetBuy(netBuy);
 			detail.setDateType(dateType);
 			detail.setGmtCreate(now);
-			detail.setSecDeptCode(deptCode);
 			detail.setSymbol(StockUtil.code2Symbol(code));
-			detail.setTradeDate(tradeDate);	
+			detail.setTradeDate(tradeDate);
+			buyTotal = buyTotal.add(detail.getBuyAmt());
+			sellTotal = sellTotal.add(detail.getSellAmt());
 		}
 		if(dateType == 1){
 			longHu.setYrAmt(buildAmt(buyTotal, sellTotal));
@@ -264,33 +239,6 @@ public class LongHuTask {
 		return lhdList;
 	}
 	
-	/**
-	 * 保存或更新营业部信息
-	 * @param secCode
-	 * @param secName
-	 */
-	private void souDept(String deptCode, String deptName){
-		SecDept dept = deptService.selectByCode(deptCode);
-		if(dept == null){
-			dept = new SecDept();
-			dept.setCode(deptCode);
-			dept.setDeptAddr(deptName);
-			dept.setGmtCreate(new Date());
-			deptService.insert(dept);
-		} else {
-			dept.setDeptAddr(deptName);
-			dept.setGmtUpdate(new Date());
-			deptService.updateByPrimaryKey(dept);
-		}
-	}
-	
-	private String getDetailContent(String lhType, String code, String tradeDate){
-		String url = buildDetailUrl(lhType, code, tradeDate);
-		Map<String, String> headerMap = new HashMap<String, String>();
-		headerMap.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36");
-		headerMap.put("Accept-Encoding", "gzip, deflate, sdch");
-		return HttpTool.get(url, headerMap, Charset.forName("GBK"));
-	}
 	
 	private String buildAmt(BigDecimal buyTotal, BigDecimal sellTotal){
 		BigDecimal netBuy = buyTotal.subtract(sellTotal);
@@ -314,17 +262,6 @@ public class LongHuTask {
 				erList.add(type);
 			}
 		}
-	}
-	
-	private String buildDetailUrl(String type, String code, String date){
-		StringBuilder sb = new StringBuilder();
-		sb.append("http://vip.stock.finance.sina.com.cn/q/api/jsonp.php/var%20details=/InvestConsultService.getLHBComBSData?symbol=");
-		sb.append(code);
-		sb.append("&tradedate=");
-		sb.append(date);
-		sb.append("&type=");
-		sb.append(type);
-		return sb.toString();
 	}
 	
 	public static void main(String[] args){

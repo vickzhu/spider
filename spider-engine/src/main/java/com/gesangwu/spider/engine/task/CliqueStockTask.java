@@ -76,25 +76,35 @@ public class CliqueStockTask {
 				if(dateType == 1){
 					calcOtherDept(cliqueId, detailList);
 				}
-			} else if(cliqueSize > 0 && dateType == 1) {//判断其他营业部是否操作过相应的帮派标的，但是还没有加入到该帮派里
-				List<LongHuDetail> lhdList = detailMap.get(cliqueId);
-				detailList.removeAll(lhdList);
-				List<LongHuDetail> tmpList = new ArrayList<LongHuDetail>();
-				for (LongHuDetail detail : detailList) {
-					String deptCode = detail.getSecDeptCode();
-					String tradeDate = detail.getTradeDate();
-					String startDate = getStartDate(tradeDate, 3);
-					int cliqueCount = lhdService.count4Clique(deptCode, detail.getSymbol(), cliqueId, startDate, tradeDate);
-					int upCount = countDept(deptCode, tradeDate, 3);
-					if(cliqueCount > 0 && cliqueCount * 2 >= upCount){//跟帮操作次数占总上榜次数50%及以上
-						tmpList.add(detail);
+			} else if(cliqueSize > 0) {//判断其他营业部是否操作过相应的帮派标的，但是还没有加入到该帮派里
+				if(dateType == 1){//单日行情才计算其他帮派
+					List<LongHuDetail> lhdList = detailMap.get(cliqueId);
+					detailList.removeAll(lhdList);
+					List<LongHuDetail> tmpList = new ArrayList<LongHuDetail>();
+					for (LongHuDetail detail : detailList) {
+						String deptCode = detail.getSecDeptCode();
+						String tradeDate = detail.getTradeDate();
+						String startDate = getStartDate(tradeDate, 3);
+						int cliqueCount = lhdService.count4Clique(deptCode, detail.getSymbol(), cliqueId, startDate, tradeDate);
+						int upCount = countDept(deptCode, tradeDate, 3);
+						if(cliqueCount > 0 && cliqueCount * 2 >= upCount){//跟帮操作次数占总上榜次数50%及以上
+							tmpList.add(detail);
+						}
 					}
-				}
-				if(cliqueSize + tmpList.size() > 3){//可以判断为一个帮派操作
-					lhdList.addAll(tmpList);
-					updateCliqueOperate(cliqueId, longHu, lhdList);
-					detailList.removeAll(tmpList);
-					calcOtherDept(cliqueId, detailList);
+					if(cliqueSize + tmpList.size() > 3){//可以判断为一个帮派操作
+						lhdList.addAll(tmpList);
+						updateCliqueOperate(cliqueId, longHu, lhdList);
+						detailList.removeAll(tmpList);
+						calcOtherDept(cliqueId, detailList);
+					} else {
+						longHu.setSecDeptRelation(cliqueSize);
+						longHu.setGmtUpdate(new Date());
+						lhService.updateByPrimaryKey(longHu);
+					}
+				} else {
+					longHu.setSecDeptRelation(cliqueSize);
+					longHu.setGmtUpdate(new Date());
+					lhService.updateByPrimaryKey(longHu);
 				}
 			} else {
 				continue;

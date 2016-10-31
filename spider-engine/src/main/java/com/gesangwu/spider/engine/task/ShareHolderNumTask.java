@@ -41,7 +41,10 @@ public class ShareHolderNumTask {
 	
 	public void execute(){
 		List<Company> companyList = LittleCompanyHolder.getCompanyList();
-		for (Company company : companyList) {
+		List<HolderNum> list = new ArrayList<HolderNum>();
+		int size = companyList.size();
+		for (int i = 0; i < size; i++) {
+			Company company = companyList.get(i);
 			String code = company.getStockCode();
 			String symbol = StockUtil.code2Symbol(code);
 			String url = buildUrl(code);
@@ -49,17 +52,19 @@ public class ShareHolderNumTask {
 			List<Integer> totalityList = buildTotailty(result);
 			List<HolderNum> hnList = buildHolderNum(result);
 			HolderNum latestHn = hnService.selectLatestBySymbol(symbol);
-			for (int i = 0; i<hnList.size(); i++) {
-				HolderNum holderNum = hnList.get(i);
+			for (int j = 0; j < hnList.size(); j++) {
+				HolderNum holderNum = hnList.get(j);
 				if(latestHn != null && holderNum.getEndDate().compareTo(latestHn.getEndDate()) < 1){
 					break;
 				}
 				holderNum.setSymbol(symbol);
-				holderNum.setTotality(totalityList.get(i));
-				
+				holderNum.setTotality(totalityList.get(j));
+				list.add(holderNum);
 			}
-			
-		}
+			if(i == size-1 || list.size() >= 50){
+				hnService.insertBatch(list);
+			}
+		}		
 	}
 	
 	/**
@@ -95,51 +100,8 @@ public class ShareHolderNumTask {
 		return date;
 	}
 	
-	private static final String r3="<ul class=\"swiper-list\"><li>([0-9\\-]*)</li><li>([0-9\\.]*)</li><li>([0-9\\.]*)</li><li>";
-	private static final Pattern p3 = Pattern.compile(r3);
-	
-	/**
-	 * 最新流通股本
-	 * @return
-	 */
-	private double latestLTGB(Company company, String result){
-		double ltgb = 0;
-		Matcher m = p3.matcher(result);
-		if(m.find()){
-			double st = Double.valueOf(m.group(2));
-			double fst = Double.valueOf(m.group(3));
-			Double stockTotal = company.getStockTotal();
-			Double floatStockTotal = company.getFloatStockTotal();
-			if(stockTotal == null || floatStockTotal == null){
-				company.setStockTotal(st);
-				company.setFloatStockTotal(fst);
-				companyService.updateByPrimaryKey(company);//FIXME 这里有个问题，company是缓存起来的
-			} else if(stockTotal != st || floatStockTotal != fst){
-				
-			} else {
-				
-			}
-		}
-		return ltgb;
-	}
-	
 	private static final String r2="<ul class=\"swiper-list\"><li>([0-9\\-]*)</li><li>[0-9\\.]*</li><li class=\"c\\-[a-z]+\">([0-9\\.\\-\\+%]*)</li>";
 	private static final Pattern p2 = Pattern.compile(r2);
-	
-	private void execute(String code){
-		String symbol = StockUtil.code2Symbol(code);
-		String url = buildUrl(code);
-		String result = HttpTool.get(url);
-		Matcher m = p2.matcher(result);
-		List<Double> list = new ArrayList<Double>();
-		while(m.find()){
-			String endDate = m.group(1);
-			String chgStr = m.group(2);
-			chgStr = chgStr.replace("%", StringUtil.EMPTY);
-			double chg = Double.valueOf(chgStr);
-			list.add(DecimalUtil.format(chg/100, 4).doubleValue());
-		}
-	}
 	
 	/**
 	 * 构建股东人数对象
