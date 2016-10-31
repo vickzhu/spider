@@ -213,6 +213,12 @@ public class LongHuTask {
 		for (LongHuDetail detail : detailList) {
 			LongHuDetail lhd = detailMap.get(detail.getSecDeptCode());
 			if(lhd != null){//已经存在了
+				if(detail.getSellAmt().compareTo(lhd.getSellAmt()) > 0){
+					lhd.setSellAmt(detail.getSellAmt());
+					BigDecimal netBuy = lhd.getBuyAmt().subtract(lhd.getSellAmt());
+					lhd.setNetBuy(netBuy);
+					sellTotal = sellTotal.add(lhd.getSellAmt());
+				}
 				continue;
 			} else {
 				detailMap.put(detail.getSecDeptCode(), detail);

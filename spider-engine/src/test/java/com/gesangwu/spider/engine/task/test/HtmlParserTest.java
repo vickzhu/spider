@@ -7,6 +7,8 @@ import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import org.htmlparser.util.SimpleNodeIterator;
 
+import com.gandalf.framework.net.HttpTool;
+
 public class HtmlParserTest {
 
 	public static void main(String[] args) {
@@ -16,10 +18,13 @@ public class HtmlParserTest {
 	public static void extractKeyWordText(String url, String keyword) {
 		try {
             //生成一个解析器对象，用网页的 url 作为参数
-			Parser parser = new Parser(url);
+			String result = HttpTool.get(url);
+//			Parser parser = new Parser(url);
+			Parser parser = Parser.createParser(result, "utf-8");
 			//设置网页的编码,这里只是请求了一个 UTF-8 编码网页
-			parser.setEncoding("UTF-8");
+//			parser.setEncoding("UTF-8");
 			//迭代所有节点, null 表示不使用 NodeFilter
+		
 			NodeList list = parser.parse(null);
             //从初始的节点列表迭代所有的节点
 			processNodeList(list, keyword);

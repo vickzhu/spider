@@ -3,12 +3,21 @@ package com.gesangwu.spider.engine.task;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
+import org.htmlparser.Node;
+import org.htmlparser.Parser;
+import org.htmlparser.nodes.TagNode;
+import org.htmlparser.util.NodeList;
+import org.htmlparser.util.SimpleNodeIterator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
@@ -29,7 +38,9 @@ import com.gesangwu.spider.engine.util.UnicodeUtil;
  *
  */
 @Component
-public class ShareHolderNumTask {
+public class HolderNumTask {
+	
+	private static final Logger logger = LoggerFactory.getLogger(HolderNumTask.class);
 	
 	private static final String r="<div style=\"display\\:none\" id=\"gdrsData\" >\\[\\[(.*)\\]\\]</div>";
 	private static final Pattern p = Pattern.compile(r);
@@ -49,20 +60,22 @@ public class ShareHolderNumTask {
 			String symbol = StockUtil.code2Symbol(code);
 			String url = buildUrl(code);
 			String result = HttpTool.get(url);
-			List<Integer> totalityList = buildTotailty(result);
-			List<HolderNum> hnList = buildHolderNum(result);
+			List<HolderNum> hnList = buildTotailty(result);
+			List<Double> chgRateList = buildChgRate(result);
 			HolderNum latestHn = hnService.selectLatestBySymbol(symbol);
 			for (int j = 0; j < hnList.size(); j++) {
 				HolderNum holderNum = hnList.get(j);
 				if(latestHn != null && holderNum.getEndDate().compareTo(latestHn.getEndDate()) < 1){
 					break;
 				}
+				
 				holderNum.setSymbol(symbol);
-				holderNum.setTotality(totalityList.get(j));
+				holderNum.setChgRate(chgRateList.get(j));
 				list.add(holderNum);
 			}
 			if(i == size-1 || list.size() >= 50){
 				hnService.insertBatch(list);
+				list.clear();
 			}
 		}		
 	}
@@ -73,20 +86,25 @@ public class ShareHolderNumTask {
 	 * @return
 	 * @throws UnsupportedEncodingException 
 	 */
-	private List<Integer> buildTotailty(String result){
-		List<Integer> list = new ArrayList<Integer>();
+	private List<HolderNum> buildTotailty(String result){
+		List<HolderNum> list = new ArrayList<HolderNum>();
 		Matcher m = p.matcher(result);
 		if(!m.find()){
 			return list;
 		}
+		Date now = new Date();
 		String content = m.group(1);
 		content = content.replaceAll("\"", StringUtil.EMPTY);
 		String[] arr = content.split("\\],\\[");
 		for (String columns : arr) {
 			String[] columnArr = columns.split(SymbolConstant.COMMA);
 			String total = columnArr[1];
-			System.out.println(decodeDate(columnArr[0]));
-			list.add(Integer.valueOf(total));
+			String endDate = decodeDate(columnArr[0]);
+			HolderNum hn = new HolderNum();
+			hn.setEndDate(endDate);
+			hn.setGmtCreate(now);
+			hn.setTotality(Integer.valueOf(total));
+			list.add(hn);
 		}
 		return list;
 	}
@@ -100,7 +118,7 @@ public class ShareHolderNumTask {
 		return date;
 	}
 	
-	private static final String r2="<ul class=\"swiper-list\"><li>([0-9\\-]*)</li><li>[0-9\\.]*</li><li class=\"c\\-[a-z]+\">([0-9\\.\\-\\+%]*)</li>";
+	private static final String r2="<li class=\"c\\-[a-z]+\">([0-9\\.\\-\\+%]*)</li>";
 	private static final Pattern p2 = Pattern.compile(r2);
 	
 	/**
@@ -108,21 +126,54 @@ public class ShareHolderNumTask {
 	 * @param result
 	 * @return
 	 */
-	private List<HolderNum> buildHolderNum(String result){
+	private List<Double> buildChgRate(String result){
+		Parser parser = Parser.createParser(result, "UTF-8");
+		try {
+			NodeList nodeList = parser.parse(null);
+			processNodeList(nodeList);
+		} catch (Exception e) {
+			logger.error("Parse html from 10jka.com.cn failed", e);
+		}
 		Matcher m = p2.matcher(result);
-		List<HolderNum> list = new ArrayList<HolderNum>();
+		List<Double> list = new ArrayList<Double>();
 		while(m.find()){
-			String endDate = m.group(1);
-			String chgStr = m.group(2);
+			String chgStr = m.group(1);
 			chgStr = chgStr.replace("%", StringUtil.EMPTY);
 			double chg = Double.valueOf(chgStr);
 			double chgRate = DecimalUtil.format(chg/100, 4).doubleValue();
-			HolderNum holderNum = new HolderNum();
-			holderNum.setEndDate(endDate);
-			holderNum.setGmtCreate(new Date());
-			holderNum.setChgRate(chgRate);
+			list.add(chgRate);
 		}
 		return list;
+	}
+	
+	private void processNodeList(NodeList list) {
+		Map<String, Double> chgRateMap = new HashMap<String, Double>();
+		//迭代开始
+		SimpleNodeIterator iterator = list.elements();
+		while (iterator.hasMoreNodes()) {
+			Node node = iterator.nextNode();
+			if(node instanceof TagNode){
+				TagNode tn = (TagNode)node;
+				if("LI".equals(tn.getTagName())){
+					String clz = tn.getAttribute("class");
+					System.out.println(clz);
+					if(clz.startsWith("c_")){
+						String chgStr = tn.getFirstChild().getText();
+						chgStr = chgStr.replace("%", StringUtil.EMPTY);
+						double chg = Double.valueOf(chgStr);
+						Node dateNode = tn.getParent().getFirstChild().getFirstChild();
+						String endDate = dateNode.getFirstChild().getText();
+						chgRateMap.put(endDate, chg);
+					}
+				}
+			}
+		}//end wile
+	}
+	
+	public static void main(String[] args){
+		HolderNumTask task = new HolderNumTask();
+		String result = HttpTool.get("");
+		task.buildChgRate(result);
 	}
 	
 	private String buildUrl(String code){
@@ -133,21 +184,4 @@ public class ShareHolderNumTask {
 		return sb.toString();
 	}
 	
-	private static final String r4="<li class=\"c\\-[a-z]+\">([0-9\\.\\-\\+%]*)</li>";
-	private static final Pattern p4 = Pattern.compile(r4);
-	
-	public static void main(String[] args){
-		ShareHolderNumTask task = new ShareHolderNumTask();
-		String url = task.buildUrl("002374");
-		String result = HttpTool.get(url);
-		Matcher m = p4.matcher(result);
-		while(m.find()){
-			String endDate = m.group(1);
-			System.out.println(endDate);
-		}
-		List<Integer> list = task.buildTotailty(result);
-		for (Integer integer : list) {
-			System.out.println(integer);
-		}
-	}
 }

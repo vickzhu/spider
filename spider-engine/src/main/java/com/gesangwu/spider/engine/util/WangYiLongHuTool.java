@@ -65,14 +65,16 @@ public class WangYiLongHuTool {
 		String url = buildDetailUrl(code, tradeDate, lhType);
 		try {
             //生成一个解析器对象，用网页的 url 作为参数
-			Parser parser = new Parser(url);
+//			Parser parser = new Parser(url);
+			String result = HttpTool.get(url);
+			Parser parser = Parser.createParser(result, "UTF-8");
 			//设置网页的编码,这里只是请求了一个 UTF-8 编码网页
 			parser.setEncoding("UTF-8");
 			//迭代所有节点, null 表示不使用 NodeFilter
 			NodeList list = parser.parse(null);
             //从初始的节点列表迭代所有的节点
 			return processNodeList(list);
-		} catch (ParserException e) {
+		} catch (Exception e) {
 			logger.error("Parse LongHu detail from 163 failed!",e);
 		}
 		return null;
@@ -96,7 +98,6 @@ public class WangYiLongHuTool {
 						String buyAmtStr = buyNode.getFirstChild().getText().trim();
 						Node sellNode = buyNode.getNextSibling().getNextSibling().getNextSibling().getNextSibling();
 						String sellAmtStr = sellNode.getFirstChild().getText().trim();
-						System.out.println(deptCode + deptName+":"+buyAmtStr + "," + sellAmtStr);
 						BigDecimal buyAmt = DecimalUtil.parse(buyAmtStr);
 						BigDecimal sellAmt = DecimalUtil.parse(sellAmtStr);
 						BigDecimal netBuy = buyAmt.subtract(sellAmt);
