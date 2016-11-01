@@ -23,7 +23,6 @@ import org.springframework.stereotype.Component;
 import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.util.StringUtil;
-import com.gesangwu.spider.biz.common.DecimalUtil;
 import com.gesangwu.spider.biz.common.StockUtil;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.HolderNum;
@@ -60,17 +59,23 @@ public class HolderNumTask {
 			String symbol = StockUtil.code2Symbol(code);
 			String url = buildUrl(code);
 			String result = HttpTool.get(url);
+			if(StringUtil.isBlank(result)){//可能已退市
+				continue;
+			}
 			List<HolderNum> hnList = buildTotailty(result);
-			List<Double> chgRateList = buildChgRate(result);
+			Map<String, Double> chgRateMap = buildChgRate(result);
 			HolderNum latestHn = hnService.selectLatestBySymbol(symbol);
 			for (int j = 0; j < hnList.size(); j++) {
 				HolderNum holderNum = hnList.get(j);
 				if(latestHn != null && holderNum.getEndDate().compareTo(latestHn.getEndDate()) < 1){
 					break;
 				}
-				
 				holderNum.setSymbol(symbol);
-				holderNum.setChgRate(chgRateList.get(j));
+				if(chgRateMap == null || chgRateMap.get(holderNum.getEndDate())==null){
+					holderNum.setChgRate(0d);
+				} else {
+					holderNum.setChgRate( chgRateMap.get(holderNum.getEndDate()));
+				}
 				list.add(holderNum);
 			}
 			if(i == size-1 || list.size() >= 50){
@@ -118,9 +123,6 @@ public class HolderNumTask {
 		return date;
 	}
 	
-	private static final String r2="<li class=\"c\\-[a-z]+\">([0-9\\.\\-\\+%]*)</li>";
-	private static final Pattern p2 = Pattern.compile(r2);
-	
 	private static final String r3 = "<div class=\"swiper\\-container swiper\\-container2 swiper\\-hide\">([\\s\\S]*)<!\\-\\- Add Pagination \\-\\->";
 	private static final Pattern p3 = Pattern.compile(r3);
 	
@@ -129,39 +131,19 @@ public class HolderNumTask {
 	 * @param result
 	 * @return
 	 */
-	private List<Double> buildChgRate(String result){
+	private Map<String, Double> buildChgRate(String result){
 		Matcher m = p3.matcher(result);
 		if(m.find()){
 			String content = m.group(1);
-			content = content.replaceAll("[\\n||\\t]", StringUtil.EMPTY);
-			content = content.replaceAll("  ", StringUtil.EMPTY);
+			content = content.replaceAll("[\\n\\t]|  ", StringUtil.EMPTY);
 			try{
 				Parser parser = Parser.createParser(content, "UTF-8");
 				NodeList nodeList = parser.parse(null);
-				Map<String, Double> chgRateMap = processNodeList(nodeList);
+				return processNodeList(nodeList);
 			}catch(Exception e){
-				System.out.println(e.getMessage());
+				logger.error("Parser ChangeRate from 10jqk.com.cn failed!", e);
 			}
 		}
-//		Parser parser = Parser.createParser(result, "UTF-8");
-//		List<Double> list = new ArrayList<Double>();
-//		try {
-//			NodeList nodeList = parser.parse(null);
-//			Map<String, Double> chgRateMap = processNodeList(nodeList);
-//			for(Map.Entry<String, Double> entry:chgRateMap.entrySet()){
-//				System.out.println(entry.getKey() + ":" + entry.getValue());
-//			}
-//			Matcher m = p2.matcher(result);
-//			while(m.find()){
-//				String chgStr = m.group(1);
-//				chgStr = chgStr.replace("%", StringUtil.EMPTY);
-//				double chg = Double.valueOf(chgStr);
-//				double chgRate = DecimalUtil.format(chg/100, 4).doubleValue();
-//				list.add(chgRate);
-//			}
-//		} catch (Exception e) {
-//			logger.error("Parse html from 10jka.com.cn failed", e);
-//		}
 		return null;
 	}
 	
@@ -173,18 +155,13 @@ public class HolderNumTask {
 			Node node = iterator.nextNode();
 			if(node instanceof TagNode){
 				TagNode tn = (TagNode)node;
-//				System.out.println(tn.getTagName());
 				if("LI".equals(tn.getTagName())){
 					String clz = tn.getAttribute("class");
-					System.out.println("["+clz);
-					if(clz.startsWith("c-")){
+					if(clz!=null && clz.startsWith("c-")){
 						String chgStr = tn.getFirstChild().getText();
-						System.out.println("......"+chgStr);
 						chgStr = chgStr.replace("%", StringUtil.EMPTY);
-						double chg = Double.valueOf(chgStr);
-						Node dateNode = tn.getParent().getFirstChild().getFirstChild();
-						String endDate = dateNode.getFirstChild().getText();
-						chgRateMap.put(endDate, chg);
+						String endDate = tn.getParent().getFirstChild().getFirstChild().getText();
+						chgRateMap.put(endDate, Double.valueOf(chgStr));
 					}
 				}
 			}
@@ -192,7 +169,10 @@ public class HolderNumTask {
 			NodeList childList = node.getChildren();
 			if (null != childList){
 				
-				processNodeList(childList);
+				Map<String, Double> tmpMap = processNodeList(childList);
+				if(tmpMap.size() > 0){
+					chgRateMap.putAll(tmpMap);
+				}
 			}
 		}//end wile
 		return chgRateMap;
