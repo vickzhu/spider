@@ -27,7 +27,7 @@ public class TradeTimeUtil {
 		Calendar c = Calendar.getInstance();
 		int hod = c.get(Calendar.HOUR_OF_DAY);
 		int min = c.get(Calendar.MINUTE);
-		if(hod < 16 || hod > 17){
+		if(hod < 16 || hod > 18){
 			return Boolean.FALSE;
 		}
 		if(hod == 16 && min <= 30){
