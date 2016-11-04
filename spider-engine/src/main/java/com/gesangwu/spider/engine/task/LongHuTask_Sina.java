@@ -51,7 +51,7 @@ import com.gesangwu.spider.engine.util.XinLangLongHuTool;
  * @author zhuxb
  *
  */
-//@Component
+@Component
 public class LongHuTask_Sina {
 	
 	private static final Logger logger = LoggerFactory.getLogger(LongHuTask_Sina.class);
@@ -71,7 +71,7 @@ public class LongHuTask_Sina {
 	@Resource
 	private SecDeptService deptService;
 	
-	@Scheduled(cron = "0 0/3 16-17 * * MON-FRI")
+//	@Scheduled(cron = "0 0/3 16-17 * * MON-FRI")
 	public void execute(){
 		if(!TradeTimeUtil.checkLongHuTime()){
 			return;
@@ -139,7 +139,9 @@ public class LongHuTask_Sina {
 			longHu.setStockName(stockName);
 			longHu.setPrice(Double.valueOf(price));
 			longHu.setChgPercent(DecimalUtil.parse(chg).doubleValue());
-			longHu.setTurnover(DecimalUtil.parse(turnover).doubleValue());
+			if(StringUtil.isNotBlank(turnover)){
+				longHu.setTurnover(DecimalUtil.parse(turnover).doubleValue());
+			}
 			longHu.setTradeDate(tradeDate);
 			longHu.setGmtCreate(now);
 			List<String> typeList = typeMap.get(code);

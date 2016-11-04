@@ -4,7 +4,6 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
-import com.gesangwu.spider.biz.dao.model.LongHu;
 import com.gesangwu.spider.biz.service.LongHuService;
 import com.gesangwu.spider.engine.task.LongHuTask;
 import com.gesangwu.spider.engine.test.BaseTest;
@@ -21,7 +20,7 @@ public class LongHuTaskTest extends BaseTest {
 //		task.execute(null);
 //		task.execute("2016-10-13");
 //		task.execute("2016-10-14");
-		task.execute("2016-11-01");
+		task.execute("2016-11-02");
 //		LongHu longHu = lhService.selectByPrimaryKey(82345l);
 //		task.fetchDetail(1, "04", longHu);
 //		task.fetchDetail(longHu);
