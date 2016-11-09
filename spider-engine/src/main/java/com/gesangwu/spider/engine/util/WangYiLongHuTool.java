@@ -14,7 +14,6 @@ import org.htmlparser.Node;
 import org.htmlparser.Parser;
 import org.htmlparser.nodes.TagNode;
 import org.htmlparser.util.NodeList;
-import org.htmlparser.util.ParserException;
 import org.htmlparser.util.SimpleNodeIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,8 +89,8 @@ public class WangYiLongHuTool {
 				TagNode tn = (TagNode)node;
 				if("A".equals(tn.getTagName())){
 					String href = tn.getAttribute("href");
-					String deptCode = href.substring(href.indexOf("_")+1, href.indexOf("."));
-					if(href.indexOf("agencylist") != 0){
+					if(href.indexOf("agencylist") > 0){
+						String deptCode = href.substring(href.indexOf("_")+1, href.indexOf("."));
 						String deptName = tn.getFirstChild().getText();
 						souDept(deptCode, deptName);
 						Node buyNode = tn.getParent().getNextSibling();

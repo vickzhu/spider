@@ -20,8 +20,6 @@ public class XinLangLongHuTool {
 		String r = "showDetail\\('([0-9]{2})','([0-9]{6})','" + tradeDate + "',this\\)";
 		Pattern p = Pattern.compile(r);
 		Map<String, String> headerMap = new HashMap<String, String>();
-		headerMap.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36");
-		headerMap.put("Accept-Encoding", "gzip, deflate, sdch");
 		String result = HttpTool.get(url, headerMap, Charset.forName("GBK"));
 		Matcher m = p.matcher(result);
 		Map<String,List<String>> longHuMap = new HashMap<String,List<String>>();

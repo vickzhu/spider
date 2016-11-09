@@ -9,7 +9,9 @@
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
             <h5>龙虎榜</h5>
-			<a class="label label-info" style="line-height:20px;"></a>
+			<a id="fetchSina" class="label label-important" style="line-height:20px;">
+			获取新浪龙虎
+			</a>
           </div>
 		  <div class="widget-content nopadding">
 			<form id="searchForm" action="#springUrl('/longhu/')" method="get" class="form-horizontal">
@@ -101,5 +103,9 @@
             language: 'zh-CN'}).on('changeDate',function(){
 				$("#searchForm").submit();
 			});
+			
+		$("#fetchSina").click(function(){
+			jQuery.get("#springUrl('/longhu/fetch/sina')");
+		});
 	});
 </script>
