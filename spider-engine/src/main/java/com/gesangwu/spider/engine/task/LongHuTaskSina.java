@@ -18,7 +18,6 @@ import javax.annotation.Resource;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
@@ -52,9 +51,9 @@ import com.gesangwu.spider.engine.util.XinLangLongHuTool;
  *
  */
 @Component
-public class LongHuTask_Sina {
+public class LongHuTaskSina {
 	
-	private static final Logger logger = LoggerFactory.getLogger(LongHuTask_Sina.class);
+	private static final Logger logger = LoggerFactory.getLogger(LongHuTaskSina.class);
 
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	private static final String r1 = "\"SCode\"\\:\"([0-9]*)\",\"SName\"\\:\"([^\"]*)\",\"ClosePrice\"\\:\"([0-9\\.]*)\",\"Chgradio\"\\:\"([\\-0-9\\.]*)\",\"Dchratio\"\\:\"([0-9\\.]*)\",\"JmMoney\"\\:\"[\\-0-9\\.]*\",\"Turnover\"\\:\"([\\-0-9\\.]*)\",\"Ntransac\"\\:\"([\\-0-9\\.]*)\",\"Ctypedes\"\\:\"[^\"]*\",\"Oldid\"\\:\"[\\-0-9\\.]*\",\"Smoney\"\\:\"([0-9\\.]*)\",\"Bmoney\"\\:\"([0-9\\.]*)\",\"ZeMoney\"\\:\"[^\"]*\",\"Tdate\"\\:\"([^\"]*)\",\"JmRate\"\\:\"[^\"]*\",\"ZeRate\"\\:\"[^\"]*\",\"Ltsz\"\\:\"([^\"]*)\"";
@@ -71,7 +70,6 @@ public class LongHuTask_Sina {
 	@Resource
 	private SecDeptService deptService;
 	
-//	@Scheduled(cron = "0 0/3 16-17 * * MON-FRI")
 	public void execute(){
 		if(!TradeTimeUtil.checkLongHuTime()){
 			return;
@@ -330,7 +328,7 @@ public class LongHuTask_Sina {
 	}
 	
 	public static void main(String[] args){
-		LongHuTask_Sina task = new LongHuTask_Sina();
+		LongHuTaskSina task = new LongHuTaskSina();
 		task.execute("2016-10-11");
 	}
 }

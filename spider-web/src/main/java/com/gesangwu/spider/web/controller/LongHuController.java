@@ -30,6 +30,7 @@ import com.gesangwu.spider.biz.service.LongHuDetailService;
 import com.gesangwu.spider.biz.service.LongHuService;
 import com.gesangwu.spider.biz.service.LongHuTypeService;
 import com.gesangwu.spider.biz.service.SecDeptService;
+import com.gesangwu.spider.engine.task.LongHuTaskSina;
 
 @Controller
 @RequestMapping(value="/longhu")
@@ -47,6 +48,8 @@ public class LongHuController {
 	private SecDeptService secDeptService;
 	@Resource
 	private CliqueDeptService cliqueDeptService;
+	@Resource
+	private LongHuTaskSina sinaTask;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request, String tradeDate){
@@ -144,6 +147,12 @@ public class LongHuController {
 			typeList.add(lhType.getLhDesc());
 		}
 		return typeList;
+	}
+	
+	
+	@RequestMapping(value = "/fetch/sina", method = RequestMethod.GET)
+	public void fetchSina(HttpServletRequest request){
+		sinaTask.execute();
 	}
 	
 }

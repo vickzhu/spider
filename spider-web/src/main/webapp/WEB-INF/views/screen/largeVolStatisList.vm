@@ -24,6 +24,14 @@
                     <div>
                         <button type="submit"  class="btn btn-success">搜索</button>
                     </div>
+					<div style="float:right">
+						<label>可流通市值：</label>
+						<select name="afm" style="width:100px;">
+							<option value="">全部</option>
+							<option value="25">&lt;25亿</option>
+							<option value="50">&gt;25亿</option>
+                        </select>
+                    </div>
                 </div>
 			</form>
           </div>

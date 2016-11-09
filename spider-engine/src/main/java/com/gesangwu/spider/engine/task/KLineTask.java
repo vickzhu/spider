@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.net.HttpTool;
+import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.service.CompanyService;
@@ -63,6 +64,9 @@ public class KLineTask {
 			String symbol = company.getSymbol();
 			String url = buildUrl(symbol, start, end);
 			String result = HttpTool.get(url);
+			if(StringUtil.isBlank(result)){
+				continue;
+			}
 			Matcher m = p.matcher(result);
 			List<KLine> kLineList = new ArrayList<KLine>();
 			while (m.find()){

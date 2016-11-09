@@ -22,15 +22,16 @@ import com.gesangwu.spider.biz.service.LargeVolStatisService;
 
 @Controller
 @RequestMapping("/largeVol")
-public class LargeVolStatisController {
+public class LargeVolController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(LargeVolStatisController.class);
+	private static final Logger logger = LoggerFactory.getLogger(LargeVolController.class);
 	
 	@Resource
 	private LargeVolStatisService lvsService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest request,String tradeDate) throws ParseException{
+//		String afm = request.getParameter("afm");//可流通市值
 		List<LargeVolStatis> statisList = lvsService.selectByTradeDate(tradeDate);
 		ModelAndView mav = new ModelAndView("largeVolStatisList");
 		mav.addObject("list", statisList);
