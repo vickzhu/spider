@@ -17,6 +17,9 @@
     <result column="publish_date" property="publishDate" jdbcType="VARCHAR" />
     <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
   </resultMap>
+  <resultMap id="ExtResultMap" type="com.gesangwu.spider.biz.dao.model.ext.StockShareHolderExt" extends="BaseResultMap">
+  	<result column="stock_name" property="stockName" jdbcType="VARCHAR" />
+  </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -380,5 +383,29 @@
   		where 
   			symbol=#{symbol} and hold_float_rate >= 5 and end_date = (SELECT MAX(end_date) FROM stock_shareholder WHERE symbol=#{symbol})
   	) as t;
+  </select>
+  <select id="selectLatestDate" parameterType="java.lang.String" resultType="java.lang.String">
+  	select 
+  		max(end_date) 
+  	from
+  		stock_shareholder 
+  	where
+  		symbol=#{symbol}
+  </select>
+  <select id="selectByPersonalName" parameterType="java.lang.String" resultMap="ExtResultMap" >
+  	SELECT 
+  		c.stock_name,ssh.* 
+  	FROM 
+  		stock_shareholder ssh,company c 
+  	WHERE 
+  		ssh.`symbol`=c.`symbol` AND ssh.shareholder=(SELECT id FROM shareholder WHERE holder_name=#{holderName});
+  </select>
+  <select id="selectExtByShareHolder" resultMap="ExtResultMap" parameterType="java.lang.Long" >
+    SELECT 
+  		c.stock_name,ssh.* 
+  	FROM 
+  		stock_shareholder ssh,company c 
+    where
+    	ssh.`symbol`=c.`symbol` AND ssh.shareholder=#{holderId}
   </select>
 </mapper>

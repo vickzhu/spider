@@ -1,0 +1,86 @@
+<link rel="stylesheet" href="#resources('css/datepicker.css')" />
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">资讯管理</a> <a href="#" class="current">龙虎榜管理</a> </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+            <h5>龙虎榜</h5>
+			<a id="fetchSina" class="label label-important" style="line-height:20px;">
+			获取新浪龙虎
+			</a>
+          </div>
+		  <div class="widget-content nopadding">
+			<form id="searchForm" action="#springUrl('/longhu/')" method="get" class="form-horizontal">
+                <div class="search_option">
+					<div>
+                        <label>日期：</label>
+						<div data-date="${tradeDate}" class="input-append date datepicker">
+							<input type="text" id="tradeDate" name="tradeDate" value="$!{tradeDate}" data-date-format="yyyy-mm-dd" class="span11" />
+							<span class="add-on"><i class="icon-th"></i></span> 
+						</div>
+					</div>
+                    <div>
+                        <button type="submit"  class="btn btn-success">搜索</button>
+                    </div>
+                </div>
+			</form>
+          </div>
+          <div class="widget-content">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+				  <th style="width:5%;">序号</th>
+                  <th>股票名称</th>
+				  <th>持股时间</th>
+				  <th>持股量</th>
+				  <th>较上期变化</th>
+                </tr>
+              </thead>
+              <tbody>
+				#foreach($sshExt in ${sshExtList})
+                <tr>
+				  <td>$!{velocityCount}</td>
+                  <td><a class="lh_detail" onclick="javascript:;">$!{sshExt.stockName}</a></td>			  
+				  <td>$!{sshExt.endDate}</td>
+                  <td>$!{sshExt.holdCount}</td>
+				  <td>$!{sshExt.chgCount}</td>
+                </tr>
+				#end
+              </tbody>
+             </table>
+			</div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+#macro(showAmt $amt)
+	#set($amtArr = ${amt.split(",")})
+	<td style="color:red">$!amtArr[0]</td>
+	<td style="color:green">$!amtArr[1]</td>
+	<td>$!amtArr[2]</td>
+#end
+<script src="#resources('js/bootstrap-datepicker.js')"></script> 
+<script type="text/javascript">
+	$(function(){
+		$(".lh_detail").click(function(){
+			var symbol = $(this).parent().parent().attr("symbol");
+			window.location.href="#springUrl('/longhu/detail')?symbol="+symbol+"&tradeDate=${tradeDate}";
+		});
+		$('.datepicker').datepicker({format: 'yyyy-mm-dd',
+            weekStart: 1,
+            autoclose: true,
+            todayBtn: 'linked',
+            language: 'zh-CN'}).on('changeDate',function(){
+				$("#searchForm").submit();
+			});
+			
+		$("#fetchSina").click(function(){
+			jQuery.get("#springUrl('/longhu/fetch/sina')");
+		});
+	});
+</script>

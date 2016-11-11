@@ -3,9 +3,7 @@ package com.gesangwu.spider.engine.task;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,10 +11,12 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.common.DecimalUtil;
+import com.gesangwu.spider.biz.common.HolderType;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.CompanyExample;
 import com.gesangwu.spider.biz.dao.model.ShareHolder;
@@ -38,6 +38,7 @@ public class ShareHolderTask {
 	private static final String r = "\"publishdate\"\\:\"([0-9]*)\",\"enddate\"\\:\"([0-9]*)\",\"compcode\"\\:\"[0-9]*\",\"shholdercode\"\\:(\"[0-9]*\"|null),\"shholdername\"\\:\"([^\"]*)\",\"shholdertype\"\\:\"([^\"]*)\",\"rank1\":[^,]*,\"rank2\"\\:([0-9]{1,2}),\"holderamt\"\\:([0-9E\\.]*),\"holderrto\"\\:([0-9E\\.])*,\"pctoffloatshares\"\\:([0-9E\\.]*),\"sharestype\"\\:[^,]*,\"shholdernature\"\\:\"[^\"]*\",\"symbol\"\\:[^,]*,\"name\"\\:[^,]*,\"ishis\"\\:([0|1]),\"chg\"\\:([0-9E\\.\\-]*|null),";
 
 	private static Pattern p = Pattern.compile(r);
+	private static final String EARLIEST_DATE = "2015-01-01";
 	
 	@Resource
 	private CompanyService companyService;
@@ -63,9 +64,13 @@ public class ShareHolderTask {
 				Matcher m = p.matcher(result);
 				List<StockShareHolder> holderList = new ArrayList<StockShareHolder>();
 		    	while(m.find()){    	
-		    		String publishDate = m.group(1);
-		    		String endDate = m.group(2);
-		    		if("20150101".compareTo(endDate) > 0){
+		    		String publishDate = formatDate(m.group(1));
+		    		String endDate = formatDate(m.group(2));
+		    		String latestDate = sshService.selectLatestDate(symbol);
+		    		if(StringUtil.isNotBlank(latestDate) && latestDate.compareTo(endDate) >= 0){
+		    			break;
+		    		}
+		    		if(EARLIEST_DATE.compareTo(endDate) > 0){
 		    			break;
 		    		}
 		    		String holderCode = m.group(3).replaceAll("\"", StringUtil.EMPTY);
@@ -111,12 +116,19 @@ public class ShareHolderTask {
 		}
 	}
 	
+	private String formatDate(String date){
+		StringBuilder sb = new StringBuilder();
+		sb.append(date.substring(0, 4));
+		sb.append(SymbolConstant.H_LINE);
+		sb.append(date.substring(4, 6));
+		sb.append(SymbolConstant.H_LINE);
+		sb.append(date.substring(6, 8));
+		return sb.toString();
+	}
+	
 	private String getContent(String symbol){
 		String url = "https://xueqiu.com/stock/f10/otsholder.json?symbol=" + symbol;
-		Map<String, String> headerMap = new HashMap<String, String>();
-		headerMap.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36");
-		headerMap.put("Accept-Encoding", "gzip, deflate, sdch");
-		return HttpTool.get(url, headerMap, Charset.forName("GBK"));
+		return HttpTool.get(url, Charset.forName("GBK"));
 	}
 	
 	private Long souShareHolder(String holderType, String holderCode, String holderName){
@@ -126,7 +138,7 @@ public class ShareHolderTask {
 				sh = new ShareHolder();
 				sh.setGmtCreate(new Date());
 				sh.setHolderName(holderName);
-				sh.setHolderType(1);
+				sh.setHolderType(HolderType.PERSON.getType());
 				shService.insert(sh);
 			}
 			return sh.getId();
@@ -137,7 +149,7 @@ public class ShareHolderTask {
 				sh.setGmtCreate(new Date());
 				sh.setHolderCode(holderCode);
 				sh.setHolderName(holderName);
-				sh.setHolderType(2);
+				sh.setHolderType(HolderType.ORG.getType());
 				shService.insert(sh);
 			}
 			return sh.getId();

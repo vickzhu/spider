@@ -12,6 +12,7 @@ import com.gandalf.framework.mybatis.BaseServiceImpl;
 import com.gesangwu.spider.biz.dao.mapper.StockShareHolderMapper;
 import com.gesangwu.spider.biz.dao.model.StockShareHolder;
 import com.gesangwu.spider.biz.dao.model.StockShareHolderExample;
+import com.gesangwu.spider.biz.dao.model.ext.StockShareHolderExt;
 import com.gesangwu.spider.biz.service.StockShareHolderService;
 
 @Service
@@ -37,6 +38,21 @@ public class StockShareHolderServiceImpl extends BaseServiceImpl<StockShareHolde
 	@Override
 	public Double calcFloatRate(String symbol) {
 		return mapper.calcFloatRate(symbol);
+	}
+
+	@Override
+	public String selectLatestDate(String symbol) {
+		return mapper.selectLatestDate(symbol);
+	}
+
+	@Override
+	public List<StockShareHolderExt> selectByPersonalName(String name) {
+		return mapper.selectByPersonalName(name);
+	}
+
+	@Override
+	public List<StockShareHolderExt> selectExtByShareHolder(Long holderId) {
+		return mapper.selectExtByShareHolder(holderId);
 	}
 
 }
