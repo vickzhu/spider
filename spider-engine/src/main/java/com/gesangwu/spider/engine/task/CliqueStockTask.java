@@ -250,7 +250,7 @@ public class CliqueStockTask {
 		LongHuExample lhExample = new LongHuExample();
 		lhExample.setOrderByClause("trade_date asc");
 		LongHuExample.Criteria criteria = lhExample.createCriteria();
-		criteria.andTradeDateGreaterThan("2015-03-01");
+		criteria.andTradeDateGreaterThan("2016-06-01");
 		criteria.andOperateCliqueIsNull();
 		return lhService.selectByExample(lhExample);
 	}

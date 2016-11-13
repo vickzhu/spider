@@ -49,9 +49,11 @@ public class ShareHolderController {
 	
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
 	public ModelAndView detail(HttpServletRequest request,long holderId){
+		ShareHolder holder = holderService.selectByPrimaryKey(holderId);
 		List<StockShareHolderExt> sshExtList = sshService.selectExtByShareHolder(holderId);
 		ModelAndView mav = new ModelAndView("shareHolderDetail");
 		mav.addObject("sshExtList", sshExtList);
+		mav.addObject("holder", holder);
 		return mav;
 	}
 	

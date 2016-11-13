@@ -8,7 +8,7 @@
 		<li><a href="#springUrl('/clique/')">帮派</a></li>
 		<li><a href="#springUrl('/fiverange/')">压托大单</a></li>
 		<li><a href="#springUrl('/largeVol/')">大单成交</a></li>
-		<li><a href="#springUrl('/shareholder/')">帮派成员</a></li>
+		<li><a href="#springUrl('/shareholder/')">个人持股</a></li>
 		<li><a href="#springUrl('/fiverange/')">股东人数</a></li>
       </ul>
     </li>

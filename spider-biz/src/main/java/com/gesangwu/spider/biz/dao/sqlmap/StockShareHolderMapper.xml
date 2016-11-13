@@ -399,6 +399,8 @@
   		stock_shareholder ssh,company c 
   	WHERE 
   		ssh.`symbol`=c.`symbol` AND ssh.shareholder=(SELECT id FROM shareholder WHERE holder_name=#{holderName});
+  	order by 
+    	ssh.end_date desc
   </select>
   <select id="selectExtByShareHolder" resultMap="ExtResultMap" parameterType="java.lang.Long" >
     SELECT 
@@ -407,5 +409,7 @@
   		stock_shareholder ssh,company c 
     where
     	ssh.`symbol`=c.`symbol` AND ssh.shareholder=#{holderId}
+    order by 
+    	ssh.end_date desc
   </select>
 </mapper>
