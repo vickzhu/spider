@@ -1,6 +1,6 @@
 <div id="content">
   <div id="content-header">
-    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">资讯管理</a> <a href="#" class="current">龙虎榜管理</a> </div>
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">股票</a> <a href="#" class="current">帮派</a> </div>
   </div>
   <div class="container-fluid">
     <div class="row-fluid">
@@ -20,7 +20,7 @@
                 <div class="article-post">
                   <div class="fr">
 					<a href="#" class="btn btn-primary btn-mini">编辑</a> 
-					<a href="#" class="btn btn-success btn-mini">查看</a>
+					<a href="#springUrl('/shareholder/')?cliqueId=$!{clique.id}" class="btn btn-success btn-mini">查看成员</a>
 				  </div>
                   <span class="user-info" style="font-size:18px;">$!{clique.name}</span>
                   <p><a class="clique-detail" cid="$!{clique.id}" href="#">$!{clique.profile}</a> </p>

@@ -18,10 +18,5 @@ public class IndexController {
 			System.out.println(cookie.getName() + ":" + cookie.getValue());
 		}
 	}
-	
-	@RequestMapping(value = "/login",method = RequestMethod.GET)
-	public void login(HttpServletRequest request, HttpServletResponse response){
-		Cookie cookie = new Cookie("name","zhuxb");
-		response.addCookie(cookie);
-	}
+
 }

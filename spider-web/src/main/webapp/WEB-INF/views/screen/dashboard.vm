@@ -32,9 +32,7 @@
 		</li>
       </ul>
     </div>
-<!--End-Action boxes-->    
-
-
+<!--End-Action boxes--> 
     <hr/>
     <div class="row-fluid">
       <div class="span6">
@@ -55,9 +53,13 @@
                 </tr>
               </thead>
               <tbody>
-				#foreach($statis in ${list})
+				#foreach($hn in ${hnList})
                 <tr>
-                  <td>$!{statis.symbol}</td>
+                  <td>$!{hn.symbol}</td>
+				  <td>$!{companyTool.getStockName($!{hn.symbol})}</td>
+				  <td>$!{hn.totality}</td>
+				  <td>$!{hn.chgRate}</td>
+				  <td>$!{date.format("yyyy-MM-dd",$!{hn.gmtCreate})}</td>
                 </tr>
 				#end
               </tbody>
