@@ -6,6 +6,9 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
+import com.gandalf.framework.web.tool.Page;
+import com.gesangwu.spider.biz.dao.model.StockShareHolder;
+import com.gesangwu.spider.biz.dao.model.StockShareHolderExample;
 import com.gesangwu.spider.biz.dao.model.ext.StockShareHolderExt;
 import com.gesangwu.spider.biz.service.StockShareHolderService;
 import com.gesangwu.spider.biz.test.BaseTest;
@@ -40,11 +43,22 @@ public class StockShareholderServiceTest extends BaseTest {
 		}
 	}
 	
-	@Test
+//	@Test
 	public void selectByHolderId(){
-		List<StockShareHolderExt> sshExt = sshService.selectExtByShareHolder(50224l);
-		for (StockShareHolderExt ext : sshExt) {
-			System.out.println(ext.getStockName());
+		List<StockShareHolder> sshList = sshService.selectByShareHolder(50224l);
+		for (StockShareHolder ssh : sshList) {
+			System.out.println(ssh.getEndDate());
+		}
+	}
+	
+	@Test
+	public void selectCliqueByExample(){
+		Page<StockShareHolderExt> page = new Page<StockShareHolderExt>(1, 15);
+		StockShareHolderExample example = new StockShareHolderExample();
+		sshService.selectCliqueByPagination(example, page);
+		List<StockShareHolderExt> sshList = page.getRecords();
+		for (StockShareHolderExt ssh : sshList) {
+			System.out.println(ssh.getHolderName());
 		}
 	}
 }

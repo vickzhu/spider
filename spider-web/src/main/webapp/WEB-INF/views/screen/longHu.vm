@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="#resources('css/datepicker.css')" />
 <div id="content">
   <div id="content-header">
-    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">资讯管理</a> <a href="#" class="current">龙虎榜管理</a> </div>
+    <div id="breadcrumb"> <a href="#springUrl('/')" title="回到首页" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="javascript:;">股票</a> <a href="javascript:;" class="current">龙虎榜管理</a> </div>
   </div>
   <div class="container-fluid">
     <div class="row-fluid">

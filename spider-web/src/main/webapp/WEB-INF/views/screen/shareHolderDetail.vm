@@ -28,7 +28,9 @@
                 <tr>
 				  <td>$!{velocityCount}</td>
 				  <td>$!{sshExt.symbol}</td>
-                  <td><a class="lh_detail" onclick="javascript:;">$!{sshExt.stockName}</a></td>			  
+                  <td>
+					<a class="lh_detail" onclick="javascript:;">$!{companyTool.getStockName($!{sshExt.symbol})}</a>
+				  </td>			  
 				  <td>$!{sshExt.endDate}</td>
                   <td>$!{sshExt.holdCount}</td>
 				  <td>
@@ -51,7 +53,6 @@
 					#else
 						新进
 					#end
-
 				  </td>
                 </tr>
 				#end

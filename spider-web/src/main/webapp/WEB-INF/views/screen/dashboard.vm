@@ -1,0 +1,100 @@
+<!--main-container-part-->
+<div id="content">
+<!--breadcrumbs-->
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="javascript:;"><i class="icon-home"></i>首页</a></div>
+  </div>
+<!--End-breadcrumbs-->
+
+<!--Action boxes-->
+  <div class="container-fluid">
+    <div class="quick-actions_homepage">
+      <ul class="quick-actions">
+		<li class="bg_lg span1"> 
+			<a href="#springUrl('/longhu/')"> <i class="icon-signal"></i> 龙虎榜</a> 
+		</li>
+        <li class="bg_ly"> 
+			<a href="#springUrl('/largeVol/')"> 
+				<i class="icon-inbox"></i><span class="label label-success"></span> 大单成交 
+			</a> 
+		</li>
+        <li class="bg_lo"> 
+			<a href="#springUrl('/fiverange/')"> 
+				<i class="icon-th"></i>托压大单
+			</a> 
+		</li>
+		<li class="bg_ly"> <a href="#"> <i class=" icon-globe"></i> 资讯管理 </a> </li>
+
+		<li class="bg_lo"> 
+			<a href="#springUrl('/clique/')"> 
+				<i class="icon-group"></i><span class="label label-success">4</span>  帮派管理 
+			</a>
+		</li>
+      </ul>
+    </div>
+<!--End-Action boxes-->    
+
+
+    <hr/>
+    <div class="row-fluid">
+      <div class="span6">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+            <h5>股东人数</h5>
+			<a class="label label-info" style="line-height:20px;">更多</a>
+          </div>
+          <div class="widget-content nopadding">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>代码</th>
+				  <th>股票</th>
+				  <th>人数</th>
+                  <th>变化</th>
+				  <th>更新时间</th>
+                </tr>
+              </thead>
+              <tbody>
+				#foreach($statis in ${list})
+                <tr>
+                  <td>$!{statis.symbol}</td>
+                </tr>
+				#end
+              </tbody>
+             </table>
+			</div>
+          </div>
+      </div>
+	  <div class="span6">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+            <h5>帮派持股</h5>
+			<a href="#springUrl('/shareholder/clique')" class="label label-info" style="line-height:20px;">更多</a>
+          </div>
+          <div class="widget-content nopadding">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+				  <th>姓名</th>
+				  <th>股票</th>
+				  <th>持股时间</th>
+				  <th>帮派</th>				  
+                </tr>
+              </thead>
+              <tbody>
+				#foreach($ssh in ${sshList})
+                <tr>
+				  <td>$!{ssh.holderName}</td>
+				  <td>$!{companyTool.getStockName($!{ssh.symbol})}</td>
+				  <td>$!{ssh.endDate}</td>
+				  <td>$!{longHuTool.getClique($!{ssh.cliqueId})}</td>
+                </tr>
+				#end
+              </tbody>
+             </table>
+			</div>
+          </div>
+      </div>
+    </div><!-- end row-fluid -->
+  </div><!-- end container-fluid-->
+</div><!-- end content-->

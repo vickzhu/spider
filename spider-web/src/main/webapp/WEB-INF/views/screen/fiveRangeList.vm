@@ -46,7 +46,7 @@
                 <tr>
 				  <td>$!{velocityCount}</td>
                   <td>$!{statis.symbol}</td>
-                  <td>$!{companyTool.getNameBySymbol($!{statis.symbol})}</td>
+                  <td>$!{companyTool.getStockName($!{statis.symbol})}</td>
 				  <td>$!{statis.activeMarketValue}亿</td>
 				  <td>$!{statis.bigSell}</td>
 				  <td>$!{statis.bigBuy}</td>

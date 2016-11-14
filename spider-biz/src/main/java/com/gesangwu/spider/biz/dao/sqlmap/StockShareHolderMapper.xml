@@ -19,6 +19,8 @@
   </resultMap>
   <resultMap id="ExtResultMap" type="com.gesangwu.spider.biz.dao.model.ext.StockShareHolderExt" extends="BaseResultMap">
   	<result column="stock_name" property="stockName" jdbcType="VARCHAR" />
+  	<result column="clique_id" property="cliqueId" jdbcType="BIGINT" />
+  	<result column="holder_name" property="holderName" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -402,14 +404,16 @@
   	order by 
     	ssh.end_date desc
   </select>
-  <select id="selectExtByShareHolder" resultMap="ExtResultMap" parameterType="java.lang.Long" >
+  <select id="selectCliqueByExample" resultMap="ExtResultMap" parameterType="java.lang.Long" >
     SELECT 
-  		c.stock_name,ssh.* 
-  	FROM 
-  		stock_shareholder ssh,company c 
-    where
-    	ssh.`symbol`=c.`symbol` AND ssh.shareholder=#{holderId}
-    order by 
-    	ssh.end_date desc
+    	sh.`holder_name`, sh.`clique_id`, ssh.* 
+    FROM 
+    	stock_shareholder ssh, shareholder sh 
+    WHERE 
+    	ssh.`shareholder` = sh.`id` AND sh.`holder_type`=1 AND sh.`clique_id` IS NOT NULL 
+    ORDER BY ssh.`end_date` DESC, ssh.`shareholder`
+    <if test="offset != null and offset > -1" >
+      limit ${offset},${rows}
+    </if>
   </select>
 </mapper>
