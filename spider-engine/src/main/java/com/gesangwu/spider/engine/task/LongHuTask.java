@@ -91,8 +91,8 @@ public class LongHuTask {
 			tradeDate = sdf.format(now);
 		}
 		String url = buildUrl(tradeDate, 0);
-		String result = HttpTool.get(url);
-//		parse(result, tradeDate);
+		String result = HttpTool.get(url, Charset.forName("GB2312"));
+		parse(result, tradeDate);
 		long end = System.currentTimeMillis();
 		logger.info("Fetch LongHu used:" + (end-start) + "ms!");
 	}
