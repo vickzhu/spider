@@ -12,9 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.Page;
-import com.gesangwu.spider.biz.common.HolderType;
 import com.gesangwu.spider.biz.dao.model.ShareHolder;
-import com.gesangwu.spider.biz.dao.model.ShareHolderExample;
 import com.gesangwu.spider.biz.dao.model.StockShareHolder;
 import com.gesangwu.spider.biz.dao.model.StockShareHolderExample;
 import com.gesangwu.spider.biz.dao.model.ext.StockShareHolderExt;
@@ -32,23 +30,6 @@ public class ShareHolderController {
 	private HolderNumService hnService;
 	@Resource
 	private StockShareHolderService sshService;
-
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView list(HttpServletRequest request){
-		String cliqueId = request.getParameter("cliqueId");
-		ShareHolderExample example = new ShareHolderExample();
-		ShareHolderExample.Criteria criteria = example.createCriteria();
-		criteria.andHolderTypeEqualTo(HolderType.PERSON.getType());
-		if(StringUtil.isNotBlank(cliqueId)){
-			criteria.andCliqueIdEqualTo(Long.valueOf(cliqueId));
-		} else {
-			criteria.andCliqueIdIsNotNull();
-		}
-		List<ShareHolder> holderList = holderService.selectByExample(example);
-		ModelAndView mav = new ModelAndView("shareHolder");
-		mav.addObject("holderList", holderList);
-		return mav;
-	}
 	
 	/**
 	 * 帮派

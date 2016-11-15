@@ -20,7 +20,7 @@
                 <div class="article-post">
                   <div class="fr">
 					<a href="#" class="btn btn-primary btn-mini">编辑</a> 
-					<a href="#springUrl('/shareholder/')?cliqueId=$!{clique.id}" class="btn btn-success btn-mini">查看成员</a>
+					<a href="#springUrl('/clique/shareholder')?cliqueId=$!{clique.id}" class="btn btn-success btn-mini">查看成员</a>
 				  </div>
                   <span class="user-info" style="font-size:18px;">$!{clique.name}</span>
                   <p><a class="clique-detail" cid="$!{clique.id}" href="#">$!{clique.profile}</a> </p>

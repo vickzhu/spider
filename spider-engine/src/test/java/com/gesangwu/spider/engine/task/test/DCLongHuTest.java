@@ -21,14 +21,17 @@ import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.spring.ContextHolder;
 import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.common.DecimalUtil;
-import com.gesangwu.spider.biz.dao.model.LongHu;
 import com.gesangwu.spider.biz.dao.model.LongHuDetail;
 import com.gesangwu.spider.biz.dao.model.LongHuType;
 import com.gesangwu.spider.biz.dao.model.SecDept;
 import com.gesangwu.spider.biz.service.LongHuTypeService;
 import com.gesangwu.spider.biz.service.SecDeptService;
 import com.gesangwu.spider.engine.test.BaseTest;
-
+/**
+ * 东方财富
+ * @author zhuxb
+ *
+ */
 public class DCLongHuTest extends BaseTest {
 	
 	@Resource
@@ -60,7 +63,7 @@ public class DCLongHuTest extends BaseTest {
 		List<String> srList = new ArrayList<String>();
 		String[] strs = result.split("<div class=\"div_remark\" style=\"display\\:table;\"><div style=\"display\\:table-cell;vertical-align\\:middle;\"><span>");
 		for(int i = 1;i < strs.length;i++){
-			LongHu longHu = new LongHu();
+
 			
 			LongHuType lhType = typeList.get(i);
 			if(lhType.getDateType() == 1){//一日
