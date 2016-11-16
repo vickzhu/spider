@@ -33,7 +33,7 @@
 	<span class="label label-danger"><a class="refresh-longhu" lf="$!{longHu.id}" href="javascript:;">刷新榜单</a></span>
     <h5>上榜理由</h5>
   </div>
-  <div class="widget-title" style="height:auto;padding:8px 0 8px 15px;">
+  <div class="widget-title" style="height:auto;padding:8px 0 8px 25px;">
 	<ol style="margin:auto;">
 	#foreach($lhType in $typeList)
 		<li>$lhType</li>
