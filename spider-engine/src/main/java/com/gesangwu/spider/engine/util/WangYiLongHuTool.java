@@ -35,7 +35,6 @@ public class WangYiLongHuTool {
 	public static Map<String,List<String>> getLongHuType(String tradeDate){
 		String url = buildUrl(tradeDate);
 		String result = HttpTool.get(url);
-		System.out.println(result);
 		Map<String,List<String>> longHuMap = new HashMap<String,List<String>>();
 		Matcher m = p.matcher(result);
 		while(m.find()){
