@@ -28,11 +28,18 @@
 </div>
 #macro(showDetail $amt $typeList $buyList $sellList)
 <div class="widget-box">
-  #foreach($lhType in $typeList)
+  
   <div class="widget-title">
-    <h5>上榜理由$!{velocityCount}：$lhType</h5>
+	<span class="label label-danger"><a class="refresh-longhu" lf="$!{longHu.id}" href="javascript:;">刷新榜单</a></span>
+    <h5>上榜理由</h5>
   </div>
-  #end
+  <div class="widget-title" style="height:auto;padding:8px 0 8px 15px;">
+	<ol style="margin:auto;">
+	#foreach($lhType in $typeList)
+		<li>$lhType</li>
+	#end
+	</ol>
+  </div>
   #set($amtArr = $amt.split(","))
   <div class="widget-title"> 
 	<span class="label label-important">买入总计：$amtArr[0]</span>
@@ -47,7 +54,6 @@
           <th>买入</th>
 		  <th>卖出</th>
 		  <th>帮派</th>
-		  <th>操作</th>
         </tr>
       </thead>
       <tbody>
@@ -63,11 +69,6 @@
 		  <td style="color:red">$!{buyDetail.buyAmt}</td>
 		  <td style="color:green">$!{buyDetail.sellAmt}</td>
 		  <td>$!{longHuTool.getClique($!{buyDetail.cliqueId})}</td>
-		  <td>
-			#if(${longHu.operateClique}&&!$!{buyDetail.cliqueId})
-				加入帮派
-			#end
-		  </td>
         </tr>
         #end
       </tbody>
@@ -87,7 +88,6 @@
     		  <th>卖出</th>
               <th>买入</th>
     		  <th>帮派</th>
-			  <th>操作</th>
             </tr>
           </thead>
           <tbody>
@@ -103,11 +103,6 @@
     		  <td style="color:green">$!{sellDetail.sellAmt}</td>
     		  <td style="color:red">$!{sellDetail.buyAmt}</td>
     		  <td>$!{longHuTool.getClique($!{sellDetail.cliqueId})}</td>
-			  <td>
-				#if(${longHu.operateClique}&&!$!{sellDetail.cliqueId})
-					加入帮派
-				#end
-			  </td>
             </tr>
             #end
           </tbody>
@@ -127,6 +122,13 @@
 		$(".date-list").change(function(){
 			var tradeDate = $(this).val();
 			window.location.href="#springUrl('/longhu/detail')?symbol=$!{longHu.symbol}&tradeDate="+tradeDate;
+		});
+		$(".refresh-longhu").click(function(){
+			var lf = $(this).attr("lf");
+			var params = {id:lf,$!{tokenTool.tokenKey}:'$!{tokenTool.token}'}
+			jQuery.post("#springUrl('/longhu/refresh')",params,function(){
+				window.location.reload();
+			});
 		});
     })
 </script>

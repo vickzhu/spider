@@ -68,8 +68,6 @@ public class LongHuTask {
 	@Resource
 	private LongHuTypeService typeService;
 	@Resource
-	private CliqueStockTask cliqueTask;
-	@Resource
 	private SecDeptService deptService;
 	
 	@Scheduled(cron = "0 0/3 16-17 * * MON-FRI")
@@ -197,7 +195,7 @@ public class LongHuTask {
 			lhdList.addAll(fetchDetail(3, longHu.getSrType(), longHu));
 		}
 		lhService.insert(longHu, lhdList);
-		cliqueTask.calc(longHu);
+		lhService.analyzeClique(longHu);
 	}
 	
 	public List<LongHuDetail> fetchDetail(int dateType, String lhType, LongHu longHu){

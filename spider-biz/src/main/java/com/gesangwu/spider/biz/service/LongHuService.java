@@ -21,4 +21,6 @@ public interface LongHuService extends BaseService<LongHu, LongHuExample> {
 	
 	void insert(LongHu longHu, List<LongHuDetail> detailList);
 	
+	void analyzeClique(LongHu longhu);
+	
 }

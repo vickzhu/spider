@@ -1,6 +1,7 @@
 package com.gesangwu.spider.web.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -18,10 +19,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.Page;
+import com.gesangwu.spider.biz.common.DeptCliqueType;
 import com.gesangwu.spider.biz.common.LongHuDateType;
 import com.gesangwu.spider.biz.common.LongHuDetailPair;
 import com.gesangwu.spider.biz.dao.model.CliqueDept;
 import com.gesangwu.spider.biz.dao.model.LongHu;
+import com.gesangwu.spider.biz.dao.model.LongHuDetail;
 import com.gesangwu.spider.biz.dao.model.LongHuDetailExample;
 import com.gesangwu.spider.biz.dao.model.LongHuDetailExt;
 import com.gesangwu.spider.biz.dao.model.LongHuType;
@@ -155,6 +158,18 @@ public class LongHuController {
 	@RequestMapping(value = "/fetch/sina", method = RequestMethod.GET)
 	public void fetchSina(HttpServletRequest request){
 		sinaTask.execute();
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/refresh", method = RequestMethod.POST)
+	public void joinClique(HttpServletRequest request){
+		String longHuIdStr = request.getParameter("id");
+		if(StringUtil.isBlank(longHuIdStr)){
+			return;
+		}
+		long longhuId = Long.valueOf(longHuIdStr);
+		LongHu longhu = lhService.selectByPrimaryKey(longhuId);
+		lhService.analyzeClique(longhu);
 	}
 	
 }
