@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
@@ -47,6 +48,7 @@ public class ShareHolderTask {
 	@Resource
 	private StockShareHolderService sshService;
 	
+	@Scheduled(cron = "0 31 11 * * MON-FRI")
 	public void execute(){
 		String cookieUrl = "https://xueqiu.com/account/lostpasswd";
 		HttpTool.get(cookieUrl);//这个链接只是为了获得cookie信息，因为后面的请求需要用到cookie

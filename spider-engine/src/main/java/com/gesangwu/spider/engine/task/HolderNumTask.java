@@ -18,6 +18,7 @@ import org.htmlparser.util.NodeList;
 import org.htmlparser.util.SimpleNodeIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
@@ -49,6 +50,7 @@ public class HolderNumTask {
 	@Resource
 	private HolderNumService hnService;
 	
+	@Scheduled(cron = "0 30 12 * * MON-FRI")
 	public void execute(){
 		List<Company> companyList = LittleCompanyHolder.getCompanyList();
 		List<HolderNum> list = new ArrayList<HolderNum>();
