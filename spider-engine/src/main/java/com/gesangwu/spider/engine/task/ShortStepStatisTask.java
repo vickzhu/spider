@@ -6,7 +6,6 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.web.tool.Page;
@@ -43,7 +42,7 @@ public class ShortStepStatisTask {
 			KLineExample klExample = new KLineExample();
 			KLineExample.Criteria klC = klExample.createCriteria();
 			klC.andSymbolEqualTo(bankerTrace.getSymbol());
-			klC.andTransDateGreaterThanOrEqualTo(bankerTrace.getLaunchDate());
+			klC.andTradeDateGreaterThanOrEqualTo(bankerTrace.getLaunchDate());
 			Page<KLine> page = new Page<KLine>(1,8);
 			kLineService.selectByPagination(klExample, page);
 			List<KLine> kLineList = page.getRecords();

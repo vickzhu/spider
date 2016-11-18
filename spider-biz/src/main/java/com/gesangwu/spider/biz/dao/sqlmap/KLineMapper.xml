@@ -16,7 +16,7 @@
     <result column="ma10" property="ma10" jdbcType="DOUBLE" />
     <result column="ma20" property="ma20" jdbcType="DOUBLE" />
     <result column="ma30" property="ma30" jdbcType="DOUBLE" />
-    <result column="trans_date" property="transDate" jdbcType="VARCHAR" />
+    <result column="trade_date" property="tradeDate" jdbcType="VARCHAR" />
     <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -79,7 +79,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, symbol, volume, open, close, high, low, change_amount, percent, turnrate, ma5, 
-    ma10, ma20, ma30, trans_date, gmt_create
+    ma10, ma20, ma30, trade_date, gmt_create
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.KLineExample" >
     select
@@ -121,12 +121,12 @@
     insert into k_line (symbol, volume, open, 
       close, high, low, change_amount, 
       percent, turnrate, ma5, 
-      ma10, ma20, ma30, trans_date, 
+      ma10, ma20, ma30, trade_date, 
       gmt_create)
     values (#{symbol,jdbcType=VARCHAR}, #{volume,jdbcType=BIGINT}, #{open,jdbcType=DOUBLE}, 
       #{close,jdbcType=DOUBLE}, #{high,jdbcType=DOUBLE}, #{low,jdbcType=DOUBLE}, #{changeAmount,jdbcType=DOUBLE}, 
       #{percent,jdbcType=DOUBLE}, #{turnrate,jdbcType=DOUBLE}, #{ma5,jdbcType=DOUBLE}, 
-      #{ma10,jdbcType=DOUBLE}, #{ma20,jdbcType=DOUBLE}, #{ma30,jdbcType=DOUBLE}, #{transDate,jdbcType=VARCHAR}, 
+      #{ma10,jdbcType=DOUBLE}, #{ma20,jdbcType=DOUBLE}, #{ma30,jdbcType=DOUBLE}, #{tradeDate,jdbcType=VARCHAR}, 
       #{gmtCreate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.KLine" >
@@ -174,8 +174,8 @@
       <if test="ma30 != null" >
         ma30,
       </if>
-      <if test="transDate != null" >
-        trans_date,
+      <if test="tradeDate != null" >
+        trade_date,
       </if>
       <if test="gmtCreate != null" >
         gmt_create,
@@ -221,8 +221,8 @@
       <if test="ma30 != null" >
         #{ma30,jdbcType=DOUBLE},
       </if>
-      <if test="transDate != null" >
-        #{transDate,jdbcType=VARCHAR},
+      <if test="tradeDate != null" >
+        #{tradeDate,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreate != null" >
         #{gmtCreate,jdbcType=TIMESTAMP},
@@ -280,8 +280,8 @@
       <if test="record.ma30 != null" >
         ma30 = #{record.ma30,jdbcType=DOUBLE},
       </if>
-      <if test="record.transDate != null" >
-        trans_date = #{record.transDate,jdbcType=VARCHAR},
+      <if test="record.tradeDate != null" >
+        trade_date = #{record.tradeDate,jdbcType=VARCHAR},
       </if>
       <if test="record.gmtCreate != null" >
         gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
@@ -307,7 +307,7 @@
       ma10 = #{record.ma10,jdbcType=DOUBLE},
       ma20 = #{record.ma20,jdbcType=DOUBLE},
       ma30 = #{record.ma30,jdbcType=DOUBLE},
-      trans_date = #{record.transDate,jdbcType=VARCHAR},
+      trade_date = #{record.tradeDate,jdbcType=VARCHAR},
       gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -355,8 +355,8 @@
       <if test="ma30 != null" >
         ma30 = #{ma30,jdbcType=DOUBLE},
       </if>
-      <if test="transDate != null" >
-        trans_date = #{transDate,jdbcType=VARCHAR},
+      <if test="tradeDate != null" >
+        trade_date = #{tradeDate,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreate != null" >
         gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
@@ -379,7 +379,7 @@
       ma10 = #{ma10,jdbcType=DOUBLE},
       ma20 = #{ma20,jdbcType=DOUBLE},
       ma30 = #{ma30,jdbcType=DOUBLE},
-      trans_date = #{transDate,jdbcType=VARCHAR},
+      trade_date = #{tradeDate,jdbcType=VARCHAR},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -387,14 +387,14 @@
     insert into k_line (symbol, volume, open, 
       close, high, low, change_amount, 
       percent, turnrate, ma5, ma10, ma20, 
-      ma30, trans_date, gmt_create
+      ma30, trade_date, gmt_create
       )
     values 
     <foreach collection="list" index="index" item="kLine" separator=",">
     (#{kLine.symbol,jdbcType=VARCHAR}, #{kLine.volume,jdbcType=BIGINT}, #{kLine.open,jdbcType=DOUBLE}, 
       #{kLine.close,jdbcType=DOUBLE}, #{kLine.high,jdbcType=DOUBLE}, #{kLine.low,jdbcType=DOUBLE}, #{kLine.changeAmount,jdbcType=DOUBLE}, 
       #{kLine.percent,jdbcType=DOUBLE}, #{kLine.turnrate,jdbcType=DOUBLE}, #{kLine.ma5,jdbcType=DOUBLE}, #{kLine.ma10,jdbcType=DOUBLE}, #{kLine.ma20,jdbcType=DOUBLE}, 
-      #{kLine.ma30,jdbcType=DOUBLE}, #{kLine.transDate,jdbcType=VARCHAR}, #{kLine.gmtCreate,jdbcType=TIMESTAMP}
+      #{kLine.ma30,jdbcType=DOUBLE}, #{kLine.tradeDate,jdbcType=VARCHAR}, #{kLine.gmtCreate,jdbcType=TIMESTAMP}
       )
     </foreach>
   </insert>

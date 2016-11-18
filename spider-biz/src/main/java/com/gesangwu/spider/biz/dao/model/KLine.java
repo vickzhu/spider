@@ -31,7 +31,7 @@ public class KLine {
 
     private Double ma30;
 
-    private String transDate;
+    private String tradeDate;
 
     private Date gmtCreate;
 
@@ -147,12 +147,12 @@ public class KLine {
         this.ma30 = ma30;
     }
 
-    public String getTransDate() {
-        return transDate;
+    public String getTradeDate() {
+        return tradeDate;
     }
 
-    public void setTransDate(String transDate) {
-        this.transDate = transDate == null ? null : transDate.trim();
+    public void setTradeDate(String tradeDate) {
+        this.tradeDate = tradeDate == null ? null : tradeDate.trim();
     }
 
     public Date getGmtCreate() {

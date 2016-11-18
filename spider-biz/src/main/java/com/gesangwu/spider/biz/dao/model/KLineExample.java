@@ -975,73 +975,73 @@ public class KLineExample {
             return (Criteria) this;
         }
 
-        public Criteria andTransDateIsNull() {
-            addCriterion("trans_date is null");
+        public Criteria andTradeDateIsNull() {
+            addCriterion("trade_date is null");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateIsNotNull() {
-            addCriterion("trans_date is not null");
+        public Criteria andTradeDateIsNotNull() {
+            addCriterion("trade_date is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateEqualTo(String value) {
-            addCriterion("trans_date =", value, "transDate");
+        public Criteria andTradeDateEqualTo(String value) {
+            addCriterion("trade_date =", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateNotEqualTo(String value) {
-            addCriterion("trans_date <>", value, "transDate");
+        public Criteria andTradeDateNotEqualTo(String value) {
+            addCriterion("trade_date <>", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateGreaterThan(String value) {
-            addCriterion("trans_date >", value, "transDate");
+        public Criteria andTradeDateGreaterThan(String value) {
+            addCriterion("trade_date >", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateGreaterThanOrEqualTo(String value) {
-            addCriterion("trans_date >=", value, "transDate");
+        public Criteria andTradeDateGreaterThanOrEqualTo(String value) {
+            addCriterion("trade_date >=", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateLessThan(String value) {
-            addCriterion("trans_date <", value, "transDate");
+        public Criteria andTradeDateLessThan(String value) {
+            addCriterion("trade_date <", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateLessThanOrEqualTo(String value) {
-            addCriterion("trans_date <=", value, "transDate");
+        public Criteria andTradeDateLessThanOrEqualTo(String value) {
+            addCriterion("trade_date <=", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateLike(String value) {
-            addCriterion("trans_date like", value, "transDate");
+        public Criteria andTradeDateLike(String value) {
+            addCriterion("trade_date like", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateNotLike(String value) {
-            addCriterion("trans_date not like", value, "transDate");
+        public Criteria andTradeDateNotLike(String value) {
+            addCriterion("trade_date not like", value, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateIn(List<String> values) {
-            addCriterion("trans_date in", values, "transDate");
+        public Criteria andTradeDateIn(List<String> values) {
+            addCriterion("trade_date in", values, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateNotIn(List<String> values) {
-            addCriterion("trans_date not in", values, "transDate");
+        public Criteria andTradeDateNotIn(List<String> values) {
+            addCriterion("trade_date not in", values, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateBetween(String value1, String value2) {
-            addCriterion("trans_date between", value1, value2, "transDate");
+        public Criteria andTradeDateBetween(String value1, String value2) {
+            addCriterion("trade_date between", value1, value2, "tradeDate");
             return (Criteria) this;
         }
 
-        public Criteria andTransDateNotBetween(String value1, String value2) {
-            addCriterion("trans_date not between", value1, value2, "transDate");
+        public Criteria andTradeDateNotBetween(String value1, String value2) {
+            addCriterion("trade_date not between", value1, value2, "tradeDate");
             return (Criteria) this;
         }
 

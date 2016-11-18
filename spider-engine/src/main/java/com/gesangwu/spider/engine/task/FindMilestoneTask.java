@@ -58,8 +58,8 @@ public class FindMilestoneTask {
 				int launchScore = ScoreUtil.launchDay(preKLine, company);
 				BankerTrace trace = new BankerTrace();
 				trace.setGmtCreate(new Date());
-				trace.setMsDate(kLine.getTransDate());
-				trace.setLaunchDate(preKLine.getTransDate());
+				trace.setMsDate(kLine.getTradeDate());
+				trace.setLaunchDate(preKLine.getTradeDate());
 				trace.setScores(milestoneScore + launchScore);
 				trace.setMsScore(milestoneScore + launchScore);
 				trace.setStep(TraceStepEnum.MILESTONE.getCode());

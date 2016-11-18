@@ -72,8 +72,8 @@ public class BankerTraceStatisTask {
 					int launchScore = ScoreUtil.launchDay(preKLine, company);
 					trace = new BankerTrace();//成立的情况下才新建对象
 					trace.setGmtCreate(new Date());
-					trace.setMsDate(kLine.getTransDate());
-					trace.setLaunchDate(preKLine.getTransDate());
+					trace.setMsDate(kLine.getTradeDate());
+					trace.setLaunchDate(preKLine.getTradeDate());
 					trace.setScores(milestoneScore + launchScore);
 					trace.setMsScore(milestoneScore + launchScore);
 					trace.setStep(1);

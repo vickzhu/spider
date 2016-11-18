@@ -94,7 +94,7 @@ public class KLineInit {
 				kLine.setOpen(Double.valueOf(open));
 				try {
 					Date tradeDate = sdf1.parse(date);
-					kLine.setTransDate(sdf2.format(tradeDate));
+					kLine.setTradeDate(sdf2.format(tradeDate));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
