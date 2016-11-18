@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gesangwu.spider.biz.dao.mapper.UpperShadowMapper" >
+  <resultMap id="BaseResultMap" type="com.gesangwu.spider.biz.dao.model.UpperShadow" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="symbol" property="symbol" jdbcType="VARCHAR" />
+    <result column="trade_date" property="tradeDate" jdbcType="VARCHAR" />
+    <result column="chg_percent" property="chgPercent" jdbcType="DOUBLE" />
+    <result column="max_chg_percent" property="maxChgPercent" jdbcType="DOUBLE" />
+    <result column="shadow_percent" property="shadowPercent" jdbcType="DOUBLE" />
+    <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+    <result column="active_float_market" property="activeFloatMarket" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, symbol, trade_date, chg_percent, max_chg_percent, shadow_percent, gmt_create, 
+    active_float_market
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.UpperShadowExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from upper_shadow
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="offset != null and offset > -1" >
+      limit ${offset},${rows}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from upper_shadow
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from upper_shadow
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gesangwu.spider.biz.dao.model.UpperShadowExample" >
+    delete from upper_shadow
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.gesangwu.spider.biz.dao.model.UpperShadow" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into upper_shadow (symbol, trade_date, chg_percent, 
+      max_chg_percent, shadow_percent, gmt_create, 
+      active_float_market)
+    values (#{symbol,jdbcType=VARCHAR}, #{tradeDate,jdbcType=VARCHAR}, #{chgPercent,jdbcType=DOUBLE}, 
+      #{maxChgPercent,jdbcType=DOUBLE}, #{shadowPercent,jdbcType=DOUBLE}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{activeFloatMarket,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.UpperShadow" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into upper_shadow
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="symbol != null" >
+        symbol,
+      </if>
+      <if test="tradeDate != null" >
+        trade_date,
+      </if>
+      <if test="chgPercent != null" >
+        chg_percent,
+      </if>
+      <if test="maxChgPercent != null" >
+        max_chg_percent,
+      </if>
+      <if test="shadowPercent != null" >
+        shadow_percent,
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create,
+      </if>
+      <if test="activeFloatMarket != null" >
+        active_float_market,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="symbol != null" >
+        #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeDate != null" >
+        #{tradeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="chgPercent != null" >
+        #{chgPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="maxChgPercent != null" >
+        #{maxChgPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="shadowPercent != null" >
+        #{shadowPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="gmtCreate != null" >
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activeFloatMarket != null" >
+        #{activeFloatMarket,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gesangwu.spider.biz.dao.model.UpperShadowExample" resultType="java.lang.Integer" >
+    select count(*) from upper_shadow
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update upper_shadow
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.symbol != null" >
+        symbol = #{record.symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tradeDate != null" >
+        trade_date = #{record.tradeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chgPercent != null" >
+        chg_percent = #{record.chgPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="record.maxChgPercent != null" >
+        max_chg_percent = #{record.maxChgPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="record.shadowPercent != null" >
+        shadow_percent = #{record.shadowPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="record.gmtCreate != null" >
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.activeFloatMarket != null" >
+        active_float_market = #{record.activeFloatMarket,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update upper_shadow
+    set id = #{record.id,jdbcType=BIGINT},
+      symbol = #{record.symbol,jdbcType=VARCHAR},
+      trade_date = #{record.tradeDate,jdbcType=VARCHAR},
+      chg_percent = #{record.chgPercent,jdbcType=DOUBLE},
+      max_chg_percent = #{record.maxChgPercent,jdbcType=DOUBLE},
+      shadow_percent = #{record.shadowPercent,jdbcType=DOUBLE},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      active_float_market = #{record.activeFloatMarket,jdbcType=DOUBLE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gesangwu.spider.biz.dao.model.UpperShadow" >
+    update upper_shadow
+    <set >
+      <if test="symbol != null" >
+        symbol = #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeDate != null" >
+        trade_date = #{tradeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="chgPercent != null" >
+        chg_percent = #{chgPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="maxChgPercent != null" >
+        max_chg_percent = #{maxChgPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="shadowPercent != null" >
+        shadow_percent = #{shadowPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activeFloatMarket != null" >
+        active_float_market = #{activeFloatMarket,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gesangwu.spider.biz.dao.model.UpperShadow" >
+    update upper_shadow
+    set symbol = #{symbol,jdbcType=VARCHAR},
+      trade_date = #{tradeDate,jdbcType=VARCHAR},
+      chg_percent = #{chgPercent,jdbcType=DOUBLE},
+      max_chg_percent = #{maxChgPercent,jdbcType=DOUBLE},
+      shadow_percent = #{shadowPercent,jdbcType=DOUBLE},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      active_float_market = #{activeFloatMarket,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

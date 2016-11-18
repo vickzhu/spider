@@ -1,6 +1,6 @@
 <div id="content">
   <div id="content-header">
-    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">龙虎榜</a> <a href="#" class="current">${longHu.stockName}</a> </div>
+    <div id="breadcrumb"> <a href="#springUrl('/')" title="回到首页" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#springUrl('/longhu/')">龙虎榜</a> <a href="#" class="current">${longHu.stockName}</a> </div>
 	<h1>
 		${longHu.stockName}
         <select class="span2 date-list">
