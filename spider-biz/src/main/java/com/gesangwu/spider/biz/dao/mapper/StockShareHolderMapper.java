@@ -13,9 +13,12 @@ public interface StockShareHolderMapper extends BaseMapper<StockShareHolder, Sto
 	
 	Double calcFloatRate(String symbol);
 	
-	public String selectLatestDate(String symbol);
+	String selectLatestDate(String symbol);
 	
-	public List<StockShareHolderExt> selectByPersonalName(String name);
+	List<StockShareHolder> selectByPersonalName(String name);
 	
-	public List<StockShareHolderExt> selectCliqueByExample(StockShareHolderExample example);
+	List<StockShareHolderExt> selectCliqueByExample(StockShareHolderExample example);
+	
+	List<StockShareHolderExt> selectLatestBySymbol(String symbol);
+	
 }

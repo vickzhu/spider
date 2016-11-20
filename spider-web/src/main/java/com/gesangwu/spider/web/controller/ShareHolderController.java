@@ -75,9 +75,9 @@ public class ShareHolderController {
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public ModelAndView search(HttpServletRequest request){
 		String keyword = request.getParameter("keyword");
-		List<StockShareHolderExt> sshExtList = sshService.selectByPersonalName(keyword);
+		List<StockShareHolder> sshList = sshService.selectByPersonalName(keyword);
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("sshExtList", sshExtList);
+		mav.addObject("sshList", sshList);
 		return mav;
 	}
 	

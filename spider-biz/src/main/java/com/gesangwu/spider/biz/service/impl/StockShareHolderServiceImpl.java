@@ -47,7 +47,7 @@ public class StockShareHolderServiceImpl extends BaseServiceImpl<StockShareHolde
 	}
 
 	@Override
-	public List<StockShareHolderExt> selectByPersonalName(String name) {
+	public List<StockShareHolder> selectByPersonalName(String name) {
 		return mapper.selectByPersonalName(name);
 	}
 
@@ -70,6 +70,11 @@ public class StockShareHolderServiceImpl extends BaseServiceImpl<StockShareHolde
         List<StockShareHolderExt> companyList = mapper.selectCliqueByExample(example);
         page.setRecords(companyList);
 		
+	}
+
+	@Override
+	public List<StockShareHolderExt> selectLatestBySymbol(String symbol) {
+		return mapper.selectLatestBySymbol(symbol);
 	}
 
 }

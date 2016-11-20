@@ -17,4 +17,9 @@ public class StockUtil {
 	public static String symbol2Code(String symbol){
 		return symbol.substring(2);
 	}
+	
+	public static boolean isLittleMarketValue(double activeMarketValue){
+		return activeMarketValue < 5000000000d;
+	}
+	
 }

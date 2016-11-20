@@ -37,9 +37,9 @@ public class StockShareholderServiceTest extends BaseTest {
 	
 //	@Test
 	public void selectByPersonalName(){
-		List<StockShareHolderExt> sshExt = sshService.selectByPersonalName("李国院");
-		for (StockShareHolderExt ext : sshExt) {
-			System.out.println(ext.getStockName());
+		List<StockShareHolder> sshList = sshService.selectByPersonalName("李国院");
+		for (StockShareHolder ssh : sshList) {
+			System.out.println(ssh.getSymbol());
 		}
 	}
 	
@@ -51,7 +51,7 @@ public class StockShareholderServiceTest extends BaseTest {
 		}
 	}
 	
-	@Test
+//	@Test
 	public void selectCliqueByExample(){
 		Page<StockShareHolderExt> page = new Page<StockShareHolderExt>(1, 15);
 		StockShareHolderExample example = new StockShareHolderExample();
@@ -59,6 +59,14 @@ public class StockShareholderServiceTest extends BaseTest {
 		List<StockShareHolderExt> sshList = page.getRecords();
 		for (StockShareHolderExt ssh : sshList) {
 			System.out.println(ssh.getHolderName());
+		}
+	}
+	
+	@Test
+	public void selectLatestBySymbol(){
+		List<StockShareHolderExt> sshExtList = sshService.selectLatestBySymbol("sz002211");
+		for (StockShareHolderExt sshExt : sshExtList) {
+			System.out.println(sshExt.getHolderName());
 		}
 	}
 }

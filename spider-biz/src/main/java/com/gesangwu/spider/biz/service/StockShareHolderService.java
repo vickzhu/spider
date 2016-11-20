@@ -16,10 +16,12 @@ public interface StockShareHolderService extends BaseService<StockShareHolder, S
 	
 	public String selectLatestDate(String symbol);
 	
-	public List<StockShareHolderExt> selectByPersonalName(String name);
+	public List<StockShareHolder> selectByPersonalName(String name);
 	
 	public List<StockShareHolder> selectByShareHolder(Long holderId);
 	
 	public void selectCliqueByPagination(StockShareHolderExample example, Page<StockShareHolderExt> page);
+	
+	public List<StockShareHolderExt> selectLatestBySymbol(String symbol);
 	
 }

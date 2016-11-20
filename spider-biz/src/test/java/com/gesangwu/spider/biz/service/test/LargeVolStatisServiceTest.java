@@ -1,6 +1,5 @@
 package com.gesangwu.spider.biz.service.test;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;

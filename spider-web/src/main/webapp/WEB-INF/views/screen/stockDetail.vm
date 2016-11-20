@@ -1,0 +1,157 @@
+<!--main-container-part-->
+<div id="content">
+<!--breadcrumbs-->
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="#springUrl('/')" title="回到首页" class="tip-bottom"><i class="icon-home"></i>首页</a><a href="javascript:;" class="current">股票详情</a> </div>
+	<h1>$!{company.stockName}</h1>
+  </div>
+<!--End-breadcrumbs-->
+	<div class="container-fluid">
+        <div class="row-fluid">
+    	  <div class="span6">
+			<div class="widget-box">
+              <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                <h5>简况</h5>
+    			<a class="label label-info" style="line-height:20px;"></a>
+              </div>
+              <div class="widget-content">
+                <table>
+                  <tbody>
+                    <tr>
+    				  <td><h4>$!{company.stockName}</h4></td>
+                    </tr>
+					<tr>
+    				  <td>代码：$!{company.symbol}</td>
+                    </tr>
+					<tr>
+    				  <td>流通市值：$!{decimalTool.toYi($!{company.floatMarketValue})}</td>
+                    </tr>
+					<tr>
+    				  <td>可流通市值：$!{decimalTool.toYi($!{company.activeMarketValue})}</td>
+                    </tr>
+                  </tbody>
+                 </table>
+    			</div>
+              </div>
+            <div class="widget-box">
+              <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                <h5>托压单</h5>
+    			<a class="label label-info" style="line-height:20px;"></a>
+              </div>
+              <div class="widget-content nopadding">
+                <table class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+    				  <th>序号</th>
+                      <th>压</th>
+    				  <th>托</th>
+    				  <th>日期</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+    				#foreach($frs in ${frsList})
+                    <tr>
+    				  <td>$!{velocityCount}</td>
+    				  <td>$!{frs.bigSell}</td>
+    				  <td>$!{frs.bigBuy}</td>
+    				  <td>$!{frs.tradeDate}</td>
+                    </tr>
+    				#end
+                  </tbody>
+                 </table>
+    			</div>
+              </div>
+			  <div class="widget-box">
+              <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                <h5>大单成交</h5>
+    			<a class="label label-info" style="line-height:20px;"></a>
+              </div>
+              <div class="widget-content nopadding">
+                <table class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+    				  <th>序号</th>
+                      <th>卖</th>
+    				  <th>买</th>
+    				  <th>平</th>
+    				  <th>日期</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+    				#foreach($history in ${page.records})
+                    <tr>
+    				  <td>$!{velocityCount}</td>
+    				  <td>$!{history.sellTotal}</td>
+    				  <td>$!{history.buyTotal}</td>
+    				  <td>$!{history.equalTotal}</td>
+    				  <td>$!{history.tradeDate}</td>
+                    </tr>
+    				#end
+                  </tbody>
+                 </table>
+    			</div>
+              </div>
+          </div>
+		  <div class="span6">
+            <div class="widget-box">
+              <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                <h5>股东人数</h5>
+    			<a class="label label-info" style="line-height:20px;"></a>
+              </div>
+              <div class="widget-content nopadding">
+                <table class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+    				  <th>截止时间</th>
+    				  <th>人数</th>
+                      <th>变化</th>
+    				  <th>更新时间</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+    				#foreach($hn in ${hnList})
+                    <tr>
+    				  <td>${hn.endDate}</td>
+    				  <td>$!{hn.totality}</td>
+    				  <td>$!{hn.chgRate}</td>
+    				  <td>$!{date.format("yyyy-MM-dd",$!{hn.gmtCreate})}</td>
+                    </tr>
+    				#end
+                  </tbody>
+                 </table>
+    			</div>
+            </div>
+			<div class="widget-box">
+              <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                <h5>流通股东</h5>
+    			<a class="label label-info" style="line-height:20px;"></a>
+              </div>
+              <div class="widget-content nopadding">
+                <table class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+    				  <th>姓名</th>
+    				  <th>持股数</th>
+					  <th>持股比例</th>
+    				  <th>持股时间</th>
+    				  <th>帮派</th>				  
+                    </tr>
+                  </thead>
+                  <tbody>
+    				#foreach($sshExt in ${sshExtList})
+                    <tr>
+    				  <td>$!{sshExt.holderName}</td>
+					  <td>$!{sshExt.holdCount}</td>
+					  <td>$!{sshExt.holdFloatRate}</td>
+    				  <td>$!{sshExt.endDate}</td>
+    				  <td>$!{longHuTool.getClique($!{sshExt.cliqueId})}</td>
+                    </tr>
+    				#end
+                  </tbody>
+                 </table>
+    			</div>
+            </div>
+          </div>
+		</div><!-- end row-fluid -->
+  </div><!-- end container-fluid-->
+</div><!-- end content-->

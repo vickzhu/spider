@@ -394,13 +394,13 @@
   	where
   		symbol=#{symbol}
   </select>
-  <select id="selectByPersonalName" parameterType="java.lang.String" resultMap="ExtResultMap" >
+  <select id="selectByPersonalName" parameterType="java.lang.String" resultMap="BaseResultMap" >
   	SELECT 
-  		c.stock_name,ssh.* 
+  		ssh.* 
   	FROM 
-  		stock_shareholder ssh,company c 
+  		stock_shareholder ssh
   	WHERE 
-  		ssh.`symbol`=c.`symbol` AND ssh.shareholder=(SELECT id FROM shareholder WHERE holder_name=#{holderName});
+  		ssh.shareholder=(SELECT id FROM shareholder WHERE holder_name=#{holderName})
   	order by 
     	ssh.end_date desc
   </select>
@@ -415,5 +415,13 @@
     <if test="offset != null and offset > -1" >
       limit ${offset},${rows}
     </if>
+  </select>
+  <select id="selectLatestBySymbol" parameterType="java.lang.String" resultMap="ExtResultMap">
+  	SELECT 
+    	sh.`holder_name`, sh.`clique_id`, ssh.* 
+    FROM 
+    	stock_shareholder ssh, shareholder sh
+    where 
+    	ssh.symbol=#{symbol,jdbcType=VARCHAR} AND ssh.`shareholder`=sh.`id` and end_date=(select max(end_date) from stock_shareholder where symbol=#{symbol,jdbcType=VARCHAR})
   </select>
 </mapper>

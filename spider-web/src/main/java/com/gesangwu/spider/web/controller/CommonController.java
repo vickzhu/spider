@@ -1,5 +1,6 @@
 package com.gesangwu.spider.web.controller;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
@@ -8,11 +9,26 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.common.StockUtil;
 import com.gesangwu.spider.biz.dao.model.Company;
+import com.gesangwu.spider.biz.dao.model.FiveRangeStatis;
+import com.gesangwu.spider.biz.dao.model.FiveRangeStatisExample;
+import com.gesangwu.spider.biz.dao.model.HolderNum;
+import com.gesangwu.spider.biz.dao.model.HolderNumExample;
+import com.gesangwu.spider.biz.dao.model.LargeVolStatis;
+import com.gesangwu.spider.biz.dao.model.LargeVolStatisExample;
+import com.gesangwu.spider.biz.dao.model.ShareHolder;
+import com.gesangwu.spider.biz.dao.model.StockShareHolderExample;
+import com.gesangwu.spider.biz.dao.model.ext.StockShareHolderExt;
 import com.gesangwu.spider.biz.service.CompanyService;
+import com.gesangwu.spider.biz.service.FiveRangeStatisService;
+import com.gesangwu.spider.biz.service.HolderNumService;
+import com.gesangwu.spider.biz.service.LargeVolStatisService;
 import com.gesangwu.spider.biz.service.LongHuService;
+import com.gesangwu.spider.biz.service.StockShareHolderService;
 
 @Controller
 public class CommonController {
@@ -21,6 +37,14 @@ public class CommonController {
 	private LongHuService longHuService;
 	@Resource
 	private CompanyService companyService;
+	@Resource
+	private LargeVolStatisService lvsService;
+	@Resource
+	private FiveRangeStatisService frss;
+	@Resource
+	private StockShareHolderService sshService;
+	@Resource
+	private HolderNumService hnService;
 	
 	private static final String r1 = "[0-9]{6}";
 	private static final String r2 = "(sh|sz)[0-9]{6}";
@@ -41,6 +65,61 @@ public class CommonController {
 				symbol = company.getSymbol();
 			}
 		}
-		return "forward:/longhu/detail?symbol="+symbol;
+		return "forward:/stock?symbol="+symbol;
 	}
+	
+	@RequestMapping(value = "/stock", method = RequestMethod.GET)
+	public ModelAndView stock(HttpServletRequest request){
+		String symbol = request.getParameter("symbol");
+		
+		Company company = companyService.selectBySymbol(symbol);
+		List<LargeVolStatis> lvsList = getLvsList(symbol);
+		List<FiveRangeStatis> frsList = getFrsList(symbol);
+		List<StockShareHolderExt> sshExtList = getSshList(symbol);
+		List<HolderNum> hnList = getHnList(symbol);
+		
+		ModelAndView mav = new ModelAndView("stockDetail");
+		mav.addObject("company", company);
+		mav.addObject("lvsList", lvsList);
+		mav.addObject("frsList", frsList);
+		mav.addObject("sshExtList", sshExtList);
+		mav.addObject("hnList", hnList);
+		return mav;
+	}
+	
+	private List<LargeVolStatis> getLvsList(String symbol){
+		Page<LargeVolStatis> lvsPage = new Page<LargeVolStatis>(1, 10);
+		LargeVolStatisExample lvsExample = new LargeVolStatisExample();
+		lvsExample.setOrderByClause("trade_date desc");
+		LargeVolStatisExample.Criteria criteria = lvsExample.createCriteria();
+		criteria.andSymbolEqualTo(symbol);
+		lvsService.selectByPagination(lvsExample, lvsPage);
+		return lvsPage.getRecords();
+	}
+	
+	private List<FiveRangeStatis> getFrsList(String symbol){
+		Page<FiveRangeStatis> page = new Page<FiveRangeStatis>(1, 10);
+		FiveRangeStatisExample example = new FiveRangeStatisExample();
+		example.setOrderByClause("trade_date desc");
+		FiveRangeStatisExample.Criteria criteria = example.createCriteria();
+		criteria.andSymbolEqualTo(symbol);
+		frss.selectByPagination(example, page);
+		return page.getRecords();
+	}
+	
+	private List<StockShareHolderExt> getSshList(String symbol){
+		return sshService.selectLatestBySymbol(symbol);
+	}
+	
+	private List<HolderNum> getHnList(String symbol){
+		HolderNumExample example = new HolderNumExample();
+		example.setOrderByClause("gmt_create desc");
+		example.setOffset(0);
+		example.setRows(10);
+		HolderNumExample.Criteria criteria = example.createCriteria();
+		criteria.andSymbolEqualTo(symbol);
+		return hnService.selectByExample(example);
+	}
+	
+	
 }

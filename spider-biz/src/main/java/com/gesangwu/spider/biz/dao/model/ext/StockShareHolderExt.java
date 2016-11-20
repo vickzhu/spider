@@ -4,17 +4,8 @@ import com.gesangwu.spider.biz.dao.model.StockShareHolder;
 
 public class StockShareHolderExt extends StockShareHolder {
 	
-	private String stockName;
 	private Long cliqueId;
 	private String holderName;
-
-	public String getStockName() {
-		return stockName;
-	}
-
-	public void setStockName(String stockName) {
-		this.stockName = stockName;
-	}
 
 	public Long getCliqueId() {
 		return cliqueId;

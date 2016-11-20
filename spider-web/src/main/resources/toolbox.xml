@@ -11,5 +11,6 @@
    		<tool class="org.apache.velocity.tools.generic.MathTool"/>
    		<tool class="com.gesangwu.spider.web.velocity.tool.CompanyTool"/>
    		<tool class="com.gesangwu.spider.web.velocity.tool.LongHuTool"/>
+   		<tool class="com.gesangwu.spider.web.velocity.tool.DecimalTool"/>
    	</toolbox>
 </tools>
