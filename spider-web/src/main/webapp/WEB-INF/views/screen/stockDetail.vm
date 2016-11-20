@@ -7,6 +7,7 @@
   </div>
 <!--End-breadcrumbs-->
 	<div class="container-fluid">
+		#parse("control/kline.vm")
         <div class="row-fluid">
     	  <div class="span6">
 			<div class="widget-box">
@@ -31,8 +32,8 @@
                     </tr>
                   </tbody>
                  </table>
-    			</div>
-              </div>
+			  </div>
+            </div>
             <div class="widget-box">
               <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
                 <h5>托压单</h5>
