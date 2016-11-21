@@ -67,7 +67,7 @@ public class FiveRangeTask {
 				fetch(sb.toString());
 				sb = new StringBuffer();
 			} else {
-				if(i != 0 && i % 499 == 0){
+				if(i != 0 && i % 299 == 0){
 					fetch(sb.toString());
 					sb = new StringBuffer();
 				}

@@ -22,7 +22,7 @@
     				  <td><h4>$!{company.stockName}</h4></td>
                     </tr>
 					<tr>
-    				  <td>代码：$!{company.symbol}</td>
+    				  <td>代码：$!{company.stockCode}</td>
                     </tr>
 					<tr>
     				  <td>流通市值：$!{decimalTool.toYi($!{company.floatMarketValue})}</td>

@@ -6,16 +6,14 @@ function getKLData() {
     for (var i = 0; i < data.length; i++) {
         var rawData = data[i];
         //20111215,11.68,11.65,11.76,11.40,11.41,43356655,502325991
-        //ÈÕÆÚ,×òÊÕ,¿ªÅÌ¼Û,¸ß,µÍ£¬ÊÕ,Á¿£¬¶î
+        //æ—¥æœŸ,æ˜¨æ”¶,å¼€ç›˜ä»·,é«˜,ä½Žï¼Œæ”¶,é‡ï¼Œé¢
         var item = {
             quoteTime: rawData[0],
-            preClose: rawData[1],
             open: rawData[2],
             high: rawData[3],
             low: rawData[4],
             close: rawData[5],
-            volume: rawData[6],
-            amount: rawData[7]
+            volume: rawData[6]
         };
         if (ks.length == 0) {
             result.low = item.low;

@@ -18,14 +18,15 @@ import com.gesangwu.spider.biz.dao.model.FiveRangeStatis;
 import com.gesangwu.spider.biz.dao.model.FiveRangeStatisExample;
 import com.gesangwu.spider.biz.dao.model.HolderNum;
 import com.gesangwu.spider.biz.dao.model.HolderNumExample;
+import com.gesangwu.spider.biz.dao.model.KLine;
+import com.gesangwu.spider.biz.dao.model.KLineExample;
 import com.gesangwu.spider.biz.dao.model.LargeVolStatis;
 import com.gesangwu.spider.biz.dao.model.LargeVolStatisExample;
-import com.gesangwu.spider.biz.dao.model.ShareHolder;
-import com.gesangwu.spider.biz.dao.model.StockShareHolderExample;
 import com.gesangwu.spider.biz.dao.model.ext.StockShareHolderExt;
 import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.FiveRangeStatisService;
 import com.gesangwu.spider.biz.service.HolderNumService;
+import com.gesangwu.spider.biz.service.KLineService;
 import com.gesangwu.spider.biz.service.LargeVolStatisService;
 import com.gesangwu.spider.biz.service.LongHuService;
 import com.gesangwu.spider.biz.service.StockShareHolderService;
@@ -45,6 +46,8 @@ public class CommonController {
 	private StockShareHolderService sshService;
 	@Resource
 	private HolderNumService hnService;
+	@Resource
+	private KLineService kLineService;
 	
 	private static final String r1 = "[0-9]{6}";
 	private static final String r2 = "(sh|sz)[0-9]{6}";
@@ -77,6 +80,7 @@ public class CommonController {
 		List<FiveRangeStatis> frsList = getFrsList(symbol);
 		List<StockShareHolderExt> sshExtList = getSshList(symbol);
 		List<HolderNum> hnList = getHnList(symbol);
+		List<KLine> kLineList = getKLineList(symbol);
 		
 		ModelAndView mav = new ModelAndView("stockDetail");
 		mav.addObject("company", company);
@@ -84,6 +88,7 @@ public class CommonController {
 		mav.addObject("frsList", frsList);
 		mav.addObject("sshExtList", sshExtList);
 		mav.addObject("hnList", hnList);
+		mav.addObject("kLineList", kLineList);
 		return mav;
 	}
 	
@@ -119,6 +124,13 @@ public class CommonController {
 		HolderNumExample.Criteria criteria = example.createCriteria();
 		criteria.andSymbolEqualTo(symbol);
 		return hnService.selectByExample(example);
+	}
+	
+	private List<KLine> getKLineList(String symbol){
+		KLineExample example = new KLineExample();
+		KLineExample.Criteria criteria = example.createCriteria();
+		criteria.andSymbolEqualTo(symbol);
+		return kLineService.selectByExample(example);
 	}
 	
 	

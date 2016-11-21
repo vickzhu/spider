@@ -13,6 +13,8 @@ import java.util.regex.Pattern;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +33,8 @@ import com.gesangwu.spider.biz.service.KLineService;
 @Component
 public class KLineTask {
 	
+	private static final Logger logger = LoggerFactory.getLogger(KLineTask.class);
+	
 	private static final String r = "\\{\"volume\"\\:([0-9]*),\"open\"\\:([0-9\\.]*),\"high\"\\:([0-9\\.]*),\"close\"\\:([0-9\\.]*),\"low\"\\:([0-9\\.]*),\"chg\"\\:(\\-?[0-9\\.]*),\"percent\"\\:(\\-?[0-9\\.]*),\"turnrate\"\\:([0-9\\.]*),\"ma5\"\\:([0-9\\.]*),\"ma10\"\\:([0-9\\.]*),\"ma20\"\\:([0-9\\.]*),\"ma30\"\\:([0-9\\.]*),\"dif\"\\:\\-?[0-9\\.]*,\"dea\"\\:\\-?[0-9\\.]*,\"macd\"\\:\\-?[0-9\\.]*,\"time\"\\:\"([^\"]*)\"\\}";
 	private static Pattern p = Pattern.compile(r);
 	private static SimpleDateFormat sdf1 = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy",Locale.US);
@@ -43,6 +47,7 @@ public class KLineTask {
 	
 	@Scheduled(cron = "0 05 15 * * MON-FRI")
 	public void execute(){
+		long startMil = System.currentTimeMillis();
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.HOUR_OF_DAY, 0);
 		c.set(Calendar.MINUTE, 0);
@@ -54,6 +59,8 @@ public class KLineTask {
 		c.set(Calendar.SECOND, 59);
 		long end = c.getTimeInMillis();
 		execute(start, end);
+		long endMil = System.currentTimeMillis();
+		logger.info("Fetch the k-line used:"+(endMil-startMil)+"ms!");
 	}
 	
 	public void execute(long start, long end) {

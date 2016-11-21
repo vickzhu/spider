@@ -52,7 +52,7 @@ public class FLoatShareCalc {
 			for (Company company : companyList) {
 				Double totalRate = sshService.calcFloatRate(company.getSymbol());
 				if(totalRate == null){
-					continue;
+					totalRate = 0d;
 				}
 				double floatMarketValue = company.getFloatMarketValue();
 				double activeMarketValue = calc(floatMarketValue, totalRate);

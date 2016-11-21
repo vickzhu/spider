@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -36,6 +38,8 @@ import com.gesangwu.spider.biz.service.StockShareHolderService;
 @Component
 public class ShareHolderTask {
 	
+	private static final Logger logger = LoggerFactory.getLogger(ShareHolderTask.class);
+	
 	private static final String r = "\"publishdate\"\\:\"([0-9]*)\",\"enddate\"\\:\"([0-9]*)\",\"compcode\"\\:\"[0-9]*\",\"shholdercode\"\\:(\"[0-9]*\"|null),\"shholdername\"\\:\"([^\"]*)\",\"shholdertype\"\\:\"([^\"]*)\",\"rank1\":[^,]*,\"rank2\"\\:([0-9]{1,2}),\"holderamt\"\\:([0-9E\\.]*),\"holderrto\"\\:([0-9E\\.])*,\"pctoffloatshares\"\\:([0-9E\\.]*),\"sharestype\"\\:[^,]*,\"shholdernature\"\\:\"[^\"]*\",\"symbol\"\\:[^,]*,\"name\"\\:[^,]*,\"ishis\"\\:([0|1]),\"chg\"\\:([0-9E\\.\\-]*|null),";
 
 	private static Pattern p = Pattern.compile(r);
@@ -50,6 +54,7 @@ public class ShareHolderTask {
 	
 	@Scheduled(cron = "0 31 11 * * MON-FRI")
 	public void execute(){
+		long start = System.currentTimeMillis();
 		String cookieUrl = "https://xueqiu.com/account/lostpasswd";
 		HttpTool.get(cookieUrl);//这个链接只是为了获得cookie信息，因为后面的请求需要用到cookie
     	int cpp = 100;
@@ -116,6 +121,8 @@ public class ShareHolderTask {
 		    	sshService.insertBatch(holderList);
 			}
 		}
+		long end = System.currentTimeMillis();
+		logger.info("Fetch share holder used:" + (end - start) + "ms!");
 	}
 	
 	private String formatDate(String date){

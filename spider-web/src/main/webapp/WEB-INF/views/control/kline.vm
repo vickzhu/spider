@@ -1,30 +1,18 @@
 <!DOCTYPE html>
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
-    <style type="text/css">
-.wrap{width:990px;zoom:1;}
-BODY, A, P, SPAN, TD{font-family: Arial, "宋体";font-size: 14px;}
-h1{margin:0 0 10px 10px;border-bottom: 1px solid #f0f0f0;padding: 0px 20px 5px 10px;}
-h1 a{font-family:"微软雅黑", "黑体";font-size: 18px;color:black;text-decoration:none}
-h2{font-family:"微软雅黑", "黑体";font-size: 16px;margin: 10px 0 5px 2px;padding: 8px 0px 0px 2px;}
-pre{margin:4px;padding: 5px 0 0 30px!important;color: gray;font-size: .8em;line-height: 20px;}
-.foot{text-align:center}
-.foot a {font-size:9pt}
-</style>
-
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <title>k line painter</title>
-    <script src="#resources('/kline/loading.js')" type="text/javascript" charset="UTF-8"></script>
-    <script src="#resources('/kline/util.js')" type="text/javascript" charset="UTF-8"></script>
-    <script src="#resources('/kline/absPainter.js')" type="text/javascript" charset="UTF-8"></script>
-    <script src="#resources('/kline/ajax.js')" type="text/javascript" charset="UTF-8"></script>
-    <script src="#resources('/kline/crossLines.js')" type="text/javascript" charset="UTF-8"></script>
-    <script src="#resources('/kline/axis-x.js')" type="text/javascript" charset="UTF-8"></script>
-    <script src="#resources('/kline/tip.js')" type="text/javascript" charset="UTF-8"></script>
-    <script src="#resources('/kline/linepainter.js')" type="text/javascript" charset="UTF-8"></script>
-    <script src="#resources('/kline/volumePainter.js')" type="text/javascript" charset="UTF-8"></script>
-    <script src="#resources('/kline/axis-y.js')" type="text/javascript" charset="UTF-8"></script>
-    <script src="#resources('/kline/chartEventHelper.kl.js')" type="text/javascript" charset="UTF-8"></script>
+    <script src="#resources('/kline/loading.js')" type="text/javascript"></script>
+    <script src="#resources('/kline/util.js')" type="text/javascript"></script>
+    <script src="#resources('/kline/absPainter.js')" type="text/javascript"></script>
+    <script src="#resources('/kline/ajax.js')" type="text/javascript"></script>
+    <script src="#resources('/kline/crossLines.js')" type="text/javascript"></script>
+    <script src="#resources('/kline/axis-x.js')" type="text/javascript"></script>
+    <script src="#resources('/kline/tip.js')" type="text/javascript"></script>
+    <script src="#resources('/kline/linepainter.js')" type="text/javascript"></script>
+    <script src="#resources('/kline/volumePainter.js')" type="text/javascript"></script>
+    <script src="#resources('/kline/axis-y.js')" type="text/javascript"></script>
+    <script src="#resources('/kline/chartEventHelper.kl.js')" type="text/javascript"></script>
     <script type="text/javascript">
         function convertDate(val, withWeek) {
             var year = Math.ceil(val / 10000) - 1;
@@ -745,17 +733,12 @@ pre{margin:4px;padding: 5px 0 0 30px!important;color: gray;font-size: .8em;line-
 
     </script>
 </head>
-<body onload="drawKL()" style="padding:0;margin:2px">
+<body onload="drawKL()">
 <div class="wrap">
     <canvas id="canvasKL" width="984" height="390" style="z-index: 2; border: 1px solid #69c">
         <p>hey,您的浏览器不支持html5，换个浏览器吧，比如google chrome，firefox</p>
     </canvas>
-    <div id="debug"></div>
-
     <script type="text/javascript" src="#resources('/kline/k-data.js')"></script>
-    
-    <style>
-    pre{padding: 60px 0 0 30px;color: gray;font-size: .8em;line-height: 20px;}
-    </style>
 </div>
-</body></html>
+</body>
+</html>

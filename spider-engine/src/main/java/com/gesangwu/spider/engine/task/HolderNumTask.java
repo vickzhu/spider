@@ -52,6 +52,7 @@ public class HolderNumTask {
 	
 	@Scheduled(cron = "0 30 12 * * MON-FRI")
 	public void execute(){
+		long start = System.currentTimeMillis();
 		List<Company> companyList = LittleCompanyHolder.getCompanyList();
 		List<HolderNum> list = new ArrayList<HolderNum>();
 		int size = companyList.size();
@@ -84,7 +85,9 @@ public class HolderNumTask {
 				hnService.insertBatch(list);
 				list.clear();
 			}
-		}		
+		}	
+		long end = System.currentTimeMillis();
+		logger.info("Fetch holder number used:" + (end - start) + "ms!");
 	}
 	
 	/**

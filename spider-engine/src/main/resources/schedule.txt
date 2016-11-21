@@ -1,4 +1,7 @@
-1、公司信息更新	CompanyUpdateTask		9:10
-3、真实流通市值计算	FloatShareCalc		9:15
-3、小公司加载	LoadLittleCompanyTask	9:25
-4、K线更新	KLineTask	15:05
+1、公司信息更新		CompanyUpdateTask		9:10
+2、可流通市值计算	FloatShareCalc			9:15
+3、小公司加载		LoadLittleCompanyTask	9:25
+4、股东股本更新		ShareHolderTask			11:31
+5、股东人数		HolderNumTask			12:30
+6、K线更新		KLineTask				15:05
+7、上影线计算		UpperShadow 			16:00
