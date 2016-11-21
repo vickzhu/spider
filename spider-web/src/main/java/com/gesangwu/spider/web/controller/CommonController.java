@@ -90,7 +90,6 @@ public class CommonController {
 		List<FiveRangeStatis> frsList = getFrsList(symbol);
 		List<StockShareHolderExt> sshExtList = getSshList(symbol);
 		List<HolderNum> hnList = getHnList(symbol);
-		String klJson = getKLineList(symbol);
 		
 		ModelAndView mav = new ModelAndView("stockDetail");
 		mav.addObject("company", company);
@@ -98,7 +97,6 @@ public class CommonController {
 		mav.addObject("frsList", frsList);
 		mav.addObject("sshExtList", sshExtList);
 		mav.addObject("hnList", hnList);
-		mav.addObject("klJson", klJson);
 		return mav;
 	}
 	

@@ -33,20 +33,14 @@
 			<property name="rootInterface" value="com.gandalf.framework.mybatis.BaseMapper"/>
 		</javaClientGenerator> 
 		
-		
+		<!-- 
 		<table tableName="company" domainObjectName="Company"> 
 			<property name="suppressAllComments" value="true"/> 
 		    <property name="suppressDate" value="true"/>
 		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
 		</table>
-		 <!-- 
+		 
 		<table tableName="big_vol_statis" domainObjectName="BigVolStatis"> 
-			<property name="suppressAllComments" value="true"/> 
-		    <property name="suppressDate" value="true"/>
-		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
-		</table>		
-		
-		<table tableName="k_line" domainObjectName="KLine"> 
 			<property name="suppressAllComments" value="true"/> 
 		    <property name="suppressDate" value="true"/>
 		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
@@ -146,7 +140,19 @@
 		    <property name="suppressDate" value="true"/>
 		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
 		</table>
+		
+		
+		<table tableName="k_line" domainObjectName="KLine"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
 		-->	
+		<table tableName="upper_shadow" domainObjectName="UpperShadow"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
 		
 	</context>
 	

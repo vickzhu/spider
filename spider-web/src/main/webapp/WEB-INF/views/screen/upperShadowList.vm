@@ -31,7 +31,7 @@
                 <tr>
 				  <td>$!{velocityCount}</td>
                   <td>$!{us.symbol}</td>
-                  <td>$!{companyTool.getStockName($!{us.symbol})}</td>
+                  <td><a href="#springUrl('/stock?symbol=')$!{us.symbol}" target="_blank">$!{companyTool.getStockName($!{us.symbol})}</a></td>
 				  <td>$!{us.tradeDate}</td>
 				  <td>$!{us.activeFloatMarket}亿</td>
 				  <td>$!{us.chgPercent}</td>

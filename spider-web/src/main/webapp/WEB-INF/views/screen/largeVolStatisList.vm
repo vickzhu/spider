@@ -55,7 +55,7 @@
                 <tr>
 				  <td>$!{velocityCount}</td>
                   <td>$!{statis.symbol}</td>
-                  <td>$!{companyTool.getStockName($!{statis.symbol})}</td>
+                  <td><a href="#springUrl('/stock?symbol=')$!{statis.symbol}" target="_blank">$!{companyTool.getStockName($!{statis.symbol})}</a></td>
 				  <td>$!{statis.activeMarketValue}亿</td>
 				  <td #if($!{statis.sellTotal}>0)style="color:green"#end>$!{statis.sellTotal}</td>
 				  <td #if($!{statis.buyTotal}>0)style="color:red"#end>$!{statis.buyTotal}</td>
