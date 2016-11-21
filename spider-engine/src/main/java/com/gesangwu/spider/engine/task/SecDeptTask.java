@@ -8,16 +8,18 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Component;
-
 import com.gandalf.framework.net.HttpTool;
 import com.gesangwu.spider.biz.dao.model.SecCompany;
 import com.gesangwu.spider.biz.dao.model.SecDept;
 import com.gesangwu.spider.biz.service.SecCompanyService;
 import com.gesangwu.spider.biz.service.SecDeptService;
 import com.gesangwu.spider.engine.util.ProvinceHolder;
-
-@Component
+/**
+ * 抓取营业部，不过已经没用了
+ * @author zhuxb
+ *
+ */
+@Deprecated
 public class SecDeptTask {
 	
 	@Resource

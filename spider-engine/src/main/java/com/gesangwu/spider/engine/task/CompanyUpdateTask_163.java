@@ -9,8 +9,6 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.net.HttpTool;
 import com.gesangwu.spider.biz.common.StockUtil;
@@ -46,8 +44,6 @@ public class CompanyUpdateTask_163 {
 	private static final String r2 = "\"MCAP\"\\:([0-9\\.]*),\"NAME\"\\:\"([^\"]*)\",\"PRICE\"\\:([0-9\\.]*),\"SYMBOL\"\\:\"([0-9]*)\",\"TCAP\"\\:([0-9\\.]*)";
 	private static final Pattern p1 = Pattern.compile(r1);
 	private static final Pattern p2 = Pattern.compile(r2);
-	private static final String r3 = "\"HIGH\"\\:([0-9\\.]*),\"HS\"\\:([0-9\\.]*),\"LOW\"\\:([0-9\\.]*),\"MCAP\"\\:([0-9\\.]*),\"NAME\"\\:\"([^\"]*)\",\"OPEN\"\\:([0-9\\.]*),\"PERCENT\"\\:([0-9\\.]*),\"PRICE\"\\:([0-9\\.]*),\"SYMBOL\"\\:\"([0-9]*)\",\"TCAP\"\\:([0-9\\.]*),\"UPDOWN\"\\:([0-9\\.]*),\"VOLUME\"\\:([0-9\\.]*),";
-	private static final Pattern p3 = Pattern.compile(r3);
 	
 	@Resource
 	private CompanyService companyService;
