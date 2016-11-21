@@ -734,7 +734,7 @@
     </script>
 </head>
 <body onload="drawKL()">
-<div class="wrap">
+<div>
     <canvas id="canvasKL" width="984" height="390" style="z-index: 2; border: 1px solid #69c">
         <p>hey,您的浏览器不支持html5，换个浏览器吧，比如google chrome，firefox</p>
     </canvas>
