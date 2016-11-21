@@ -1,16 +1,24 @@
 package com.gesangwu.spider.web.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.common.StockUtil;
 import com.gesangwu.spider.biz.dao.model.Company;
@@ -33,6 +41,8 @@ import com.gesangwu.spider.biz.service.StockShareHolderService;
 
 @Controller
 public class CommonController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(CommonController.class);
 	
 	@Resource
 	private LongHuService longHuService;
@@ -80,7 +90,7 @@ public class CommonController {
 		List<FiveRangeStatis> frsList = getFrsList(symbol);
 		List<StockShareHolderExt> sshExtList = getSshList(symbol);
 		List<HolderNum> hnList = getHnList(symbol);
-		List<KLine> kLineList = getKLineList(symbol);
+		String klJson = getKLineList(symbol);
 		
 		ModelAndView mav = new ModelAndView("stockDetail");
 		mav.addObject("company", company);
@@ -88,8 +98,17 @@ public class CommonController {
 		mav.addObject("frsList", frsList);
 		mav.addObject("sshExtList", sshExtList);
 		mav.addObject("hnList", hnList);
-		mav.addObject("kLineList", kLineList);
+		mav.addObject("klJson", klJson);
 		return mav;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/stock/k-line/{symbol}", method = RequestMethod.GET)
+	public String getKLineData(HttpServletRequest request, @PathVariable("symbol") String symbol){
+		String klJson = getKLineList(symbol);
+		klJson = klJson.replaceAll("[\\-|\"]", StringUtil.EMPTY);
+		
+		return "var data = "+klJson + ";";
 	}
 	
 	private List<LargeVolStatis> getLvsList(String symbol){
@@ -126,11 +145,30 @@ public class CommonController {
 		return hnService.selectByExample(example);
 	}
 	
-	private List<KLine> getKLineList(String symbol){
+	private String getKLineList(String symbol){
 		KLineExample example = new KLineExample();
 		KLineExample.Criteria criteria = example.createCriteria();
 		criteria.andSymbolEqualTo(symbol);
-		return kLineService.selectByExample(example);
+		List<KLine> klList = kLineService.selectByExample(example);
+		List<Object[]> objList = new ArrayList<Object[]>();
+		//日期,昨收,开盘价,高,低，收,量，额
+		for (KLine kLine : klList) {
+			Object[] objArr = new Object[6];
+			objArr[0] = kLine.getTradeDate();
+			objArr[1] = kLine.getOpen();
+			objArr[2] = kLine.getHigh();
+			objArr[3] = kLine.getLow();
+			objArr[4] = kLine.getClose();
+			objArr[5] = kLine.getVolume();
+			objList.add(objArr);
+		}
+		ObjectMapper om = new ObjectMapper();
+		try {
+			return om.writeValueAsString(objList);
+		} catch (IOException e) {
+			logger.error("Parse kline to json failed!",e);
+			return StringUtil.EMPTY;
+		}
 	}
 	
 	
