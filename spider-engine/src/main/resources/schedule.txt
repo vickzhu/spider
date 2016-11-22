@@ -1,4 +1,4 @@
-1、公司信息更新		CompanyUpdateTask		9:10
+1、公司信息更新		CompanyUpdateTask		9:10	这个任务应该是凌晨执行的，否则系统启动时，部分新公司数据拿不到
 2、可流通市值计算	FloatShareCalc			9:15
 3、小公司加载		LoadLittleCompanyTask	9:25
 4、股东股本更新		ShareHolderTask			11:31
