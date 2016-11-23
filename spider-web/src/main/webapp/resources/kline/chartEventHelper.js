@@ -58,7 +58,7 @@ crossLinesAndTipMgr.prototype._onMouseOrTouchMove = function (ev) {
     var canvasPosition = getPageCoord(canvas);
     var range = options.triggerEventRanges;
 
-    //�ж��Ƿ��ڷ�Χ֮�ڣ�������ڷ�Χ֮������ȥʮ���ߺ�tip
+    //判断是否在范围之内，如果不在范围之内则移去十字线和tip
     if (ev.offsetX < range.x || ev.offsetX > range.x + range.width
             || ev.offsetY < range.y || ev.offsetY > range.y + range.height) {
         me._removeTipAndCrossLines();
@@ -66,7 +66,7 @@ crossLinesAndTipMgr.prototype._onMouseOrTouchMove = function (ev) {
     }
 
     var crossPoint = options.getCrossPoint(ev);
-    //������ʹ���Event
+    //添加鼠标和触摸Event
     var crossLinesOptions = {
         crossPoint: crossPoint,
         verticalRange: { y1: range.y, y2: range.y + range.height },
@@ -104,9 +104,9 @@ crossLinesAndTipMgr.prototype._onMouseOrTouchMove = function (ev) {
     if (options.tipOptions) {
         var tipOp = options.tipOptions;
         if (!me.tip) {
-            //tip����
+            //tip设置
             var tip = new Tip({
-                position: { x: tipOp.position.x || false, y: tipOp.position.y || false }, //position�е�ֵ�������canvas�����Ͻǵ�
+                position: { x: tipOp.position.x || false, y: tipOp.position.y || false }, //position中的值是相对于canvas的左上角的
                 size: tipOp.size,
                 opacity: tipOp.opacity || 80,
                 cssClass: tipOp.cssClass,
@@ -125,11 +125,13 @@ crossLinesAndTipMgr.prototype._onMouseOrTouchMove = function (ev) {
 
 crossLinesAndTipMgr.prototype._touchstart = function (e) {
     e = e || event;
+    disableBubbleAndPreventDefault(e);
     var src = e.srcElement || e.target || e.relatedTarget;
     this.touchstartTime = new Date();
 };
 crossLinesAndTipMgr.prototype._touchmove = function (e) {
     e = e || event;
+    disableBubbleAndPreventDefault(e);
 
     var canvas = this.canvas;
 
@@ -142,6 +144,7 @@ crossLinesAndTipMgr.prototype._touchmove = function (e) {
 
 crossLinesAndTipMgr.prototype._touchend = function (e) {
     e = e || event;
+    disableBubbleAndPreventDefault(e);
     var src = e.srcElement || e.target || e.relatedTarget;
     var canvas = this.canvas;
     var fixedEvt = setTouchEventOffsetPosition(e, getPageCoord(canvas));
@@ -158,7 +161,7 @@ crossLinesAndTipMgr.prototype._mouseout = function (ev) {
     ev = getOffset(e);
     var me = this;
     var range = me.options.triggerEventRanges;
-    //�ж��Ƿ��ڷ�Χ֮�ڣ�������ڷ�Χ֮������ȥʮ���ߺ�tip
+    //判断是否在范围之内，如果不在范围之内则移去十字线和tip
     if (ev.offsetX <= range.x || ev.offsetX >= range.x + range.width
             || ev.offsetY <= range.y || ev.offsetY >= range.y + range.height) {
         me._removeTipAndCrossLines();
@@ -183,67 +186,17 @@ crossLinesAndTipMgr.prototype.addCrossLinesAndTipEvents = function () {
 
     var touchable = isTouchDevice();
     var me = this;
-    var controllerEvts = me.options.controllerEvents;
     if (touchable) {
-        addEvent(canvas, 'touchstart', function (ev) {
-            ev = ev || event;
-            disableBubbleAndPreventDefault(ev);
-            if (me.options.shouldDoControllerEvent(ev,'touchstart')) {
-                controllerEvts.onStart(ev);
-            }
-            else {
-                me._touchstart.call(me, ev);
-            }
-        });
+        addEvent(canvas, 'touchstart', function (ev) { me._touchstart.call(me, ev); });
 
-        addEvent(canvas, 'touchmove', function (ev) {
-            ev = ev || event;
-            disableBubbleAndPreventDefault(ev);
-            if (me.options.shouldDoControllerEvent(ev,'touchmove')) {
-                controllerEvts.onMove(ev);
-            } else {
-                me._touchmove.call(me, ev);
-            }
-        });
+        addEvent(canvas, 'touchmove', function (ev) { me._touchmove.call(me, ev); });
 
-        addEvent(canvas, 'touchend', function (ev) {
-            ev = ev || event;
-            disableBubbleAndPreventDefault(ev);
-            if (me.options.shouldDoControllerEvent(ev,'touchend')) {
-                controllerEvts.onEnd(ev);
-            }
-            me._touchend.call(me, ev);
-        });
+        addEvent(canvas, 'touchend', function (ev) { me._touchend.call(me, ev); });
     }
     else {
-        //me.controllerMode = location.href.indexOf('controllerMode') > 0;
+        addEvent(canvas, 'mouseout', function (ev) { me._mouseout.call(me, ev); });
 
-        addEvent(canvas, 'mouseout', function (ev) {
-            if (me.options.shouldDoControllerEvent(ev)) {
-                controllerEvts.onEnd(ev);
-            } else {
-                me._mouseout.call(me, ev);
-            }
-        });
-
-        addEvent(canvas, 'mousemove', function (ev) {
-            if (me.options.shouldDoControllerEvent(ev)) {
-                controllerEvts.onMove(ev);
-            } else {
-                me._onMouseOrTouchMove.call(me, ev);
-            }
-        });
-
-        addEvent(canvas, 'mousedown', function (ev) {
-            if (me.options.shouldDoControllerEvent(ev)) {
-                controllerEvts.onStart(ev);
-            }
-        });
-
-        addEvent(canvas, 'mouseup', function (ev) {
-            //me.controllerMode = false;
-            controllerEvts.onEnd(ev);
-        });
+        addEvent(canvas, 'mousemove', function (ev) { me._onMouseOrTouchMove.call(me, ev); });
 
         if (typeof options.onClick == 'function') {
             addEvent(canvas, 'click', options.onClick);

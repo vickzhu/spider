@@ -12,7 +12,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -111,12 +110,13 @@ public class CommonController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/stock/k-line/{symbol}", method = RequestMethod.GET)
-	public String getKLineData(HttpServletRequest request, @PathVariable("symbol") String symbol){
+	@RequestMapping(value = "/kline2", method = RequestMethod.GET)
+	public ModelAndView showKLine2(HttpServletRequest request,String symbol){
 		String klJson = getKLineList(symbol);
 		klJson = klJson.replaceAll("[\\-|\"]", StringUtil.EMPTY);
-		
-		return "var data = "+klJson + ";";
+		ModelAndView mav = new ModelAndView("kline2");
+		mav.addObject("klData", klJson);
+		return mav;
 	}
 	
 	private List<LargeVolStatis> getLvsList(String symbol){

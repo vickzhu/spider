@@ -10,7 +10,8 @@
 <script src="#resources('/kline/linepainter.js')" type="text/javascript"></script>
 <script src="#resources('/kline/volumePainter.js')" type="text/javascript"></script>
 <script src="#resources('/kline/axis-y.js')" type="text/javascript"></script>
-<script src="#resources('/kline/chartEventHelper.kl.js')" type="text/javascript"></script>
+<script src="#resources('/kline/chartEventHelper.js')" type="text/javascript"></script>
+<script src="#resources('/kline/controller.js')" type="text/javascript"></script>
 <script type="text/javascript">
     function convertDate(val, withWeek) {
         var year = Math.ceil(val / 10000) - 1;
@@ -151,86 +152,24 @@
                 return tipHtml;
             }
 
-            function getEventOffsetPosition(ev){                    
-                var offset = isTouchDevice()
-                    ? setTouchEventOffsetPosition(ev, getPageCoord(me.canvas))
-                    : getOffset(ev);
-                return offset;
-            }
-            
-            var controllerEvents = {
-                onStart:function(ev){
-                    ev = ev || event;
-                    var offset = getEventOffsetPosition(ev);
-                    me.controllerStartOffset = offset;
-                    me.controllerStartRange = me.dataRanges;
-                },
-                onEnd:function(ev){
-                    me.controllerStartOffset = null;
-                    me.controllerStartRange = null;
-                },
-                onMove:function(ev){
-                    if(!me.controllerStartOffset) return;
-                    ev = ev || event;
-                    var offset = getEventOffsetPosition(ev);
-                    var moveX = offset.offsetX - me.controllerStartOffset.offsetX;
-                    var currentRange = me.controllerStartRange;/*0-100*/
-                    var regionWidth = region.width;
-                    var moveValue =0- (moveX/regionWidth)*(currentRange.to-currentRange.start);
-                    var start = currentRange.start+moveValue;
-                    var to = currentRange.to + moveValue;
-                    if(start<0) {
-                        start = 0;
-                        to = start + (currentRange.to-currentRange.start);
-                    }
-                    else{
-                        if(to > 100){
-                            to = 100;
-                            start = to-(currentRange.to-currentRange.start);
-                        }
-                    }                        
-                    var changeToValue = {left:start,right:to};
-                    if(!me.painting) drawKL({ start: changeToValue.left, to: changeToValue.right });
-                }
-            };
-
             /*
-            当touchstart时的位置在K线柱附近时表示要显示柱的描述信息框；否则则要控制K线的范围
-            */
-            var fingerSize = {width:30,height:20};
-            function shouldDoControllerEvent(ev,evtType){
-                if(evtType == undefined) return true;
-                if(typeof me.shouldController == 'undefined') me.shouldController = true;
-                if(evtType == 'touchstart'){
-                    var offset = getEventOffsetPosition(ev);
-                    var showTip=false;
-
-                    var x = offset.offsetX;
-                    x -= region.x;
-                    var index = Math.ceil(x / (me.klOptions.spaceWidth + me.klOptions.barWidth)) - 1;
-
-                    var indexRange = Math.ceil(fingerSize.width / (me.klOptions.spaceWidth + me.klOptions.barWidth))+1;
-
-                    var indexStart = Math.max(0,index - indexRange/2);
-                    var indexTo = Math.min(me.filteredData.length-1,index+indexRange/2);
-                    var yMin=999999;
-                    var yMax=-1;
-                    for(index = indexStart;index<=indexTo;index++){
-                        var dataAtIndex = me.filteredData[index];
-                        var yTop = region.y+ (me.high - dataAtIndex.high) * region.height / (me.high - me.low) - fingerSize.height;
-                        var yBottom = region.y+(me.high - dataAtIndex.low) * region.height / (me.high - me.low) + fingerSize.height;
-                        yMin = Math.min(yTop,yMin);
-                        yMax = Math.max(yBottom,yMax);
-                    }
-                    showTip = offset.offsetY >= yMin && offset.offsetY <= yMax;
-                    setDebugMsg('yMin='+yMin + ',yMax=' + yMax + ',offsetY='+offset.offsetY+',showTip=' + showTip);
-                    me.shouldController = !showTip;
-                    
-                }
-                //setDebugMsg('shouldController=' + me.shouldController);
-                return me.shouldController;
+            //添加鼠标事件
+            addCrossLinesAndTipEvents(this.canvas, {
+            getCrossPoint: function (ev) { return { x: getX(ev.offsetX), y: ev.offsetY }; },
+            triggerEventRanges: { x: region.x, y: region.y + 1, width: region.width, height: volumeRegion.y + volumeRegion.height - region.y },
+            tipOptions: {
+            getTipHtml: function (ev) { return getTipHtml(ev.offsetX); },
+            size:{width:120,height:150},
+            position:{x:false,y:region.y+(region.height-150)/3}, //position中的值是相对于canvas的左上角的
+            opacity:80,
+            cssClass:'',
+            offsetToPoint:30,
+            },
+            crossLineOptions: {
+            color: 'black'
             }
-
+            });
+            */
             if(!me.crossLineAndTipMgrInstance){
                 me.crossLineAndTipMgrInstance = new crossLinesAndTipMgr(me.canvas, {
                     getCrossPoint: function (ev) { return { x: getX(ev.offsetX), y: ev.offsetY }; },
@@ -245,9 +184,7 @@
                     },
                     crossLineOptions: {
                         color: 'black'
-                    },
-                    shouldDoControllerEvent:shouldDoControllerEvent,
-                    controllerEvents:controllerEvents
+                    }
                 });
                 me.crossLineAndTipMgrInstance.addCrossLinesAndTipEvents();
             }
@@ -265,11 +202,80 @@
                         },
                         crossLineOptions: {
                             color: 'black'
-                        },
-                        shouldDoControllerEvent:shouldDoControllerEvent,
-                        controllerEvents:controllerEvents
+                        }
                     });
             }
+
+            if (me.controller == null) {
+                me.implement.paintPriceLine.call(me);
+                var controllerOptions = options.controller;
+                var id = me.canvas.id + '_controller';
+                var controllerCanvas = $id(id);
+                var exists = $id(id) != null;
+                if (!exists) {
+                    controllerCanvas = document.createElement('CANVAS');
+                    controllerCanvas.id = id;
+                    document.body.appendChild(controllerCanvas);
+                }
+                var priceRegion = me.klOptions.priceLine.region;
+                setDebugMsg('priceRegion.width=' + priceRegion.width);
+                controllerCanvas.width = priceRegion.width;
+                controllerCanvas.height = priceRegion.height;
+                var canvasPosition = getPageCoord(me.canvas);
+                controllerCanvas.style.left = canvasPosition.x + priceRegion.x + 'px';
+                controllerCanvas.style.top = canvasPosition.y + priceRegion.y + 'px';
+                controllerCanvas.style.position = 'absolute';
+                controllerCanvas.style.zIndex = (me.canvas.style.zIndex ? me.canvas.style.zIndex : 1) + 1;
+                controllerCanvas.style.display = 'block';
+
+
+                var c = new controller(controllerCanvas.id, {
+                    region: { x: 0, y: 0, width: controllerCanvas.width, height: controllerCanvas.height },
+                    bar: controllerOptions.bar || { width: 20, height: 35, borderColor: 'black', fillColor: 'snow' },
+                    value: { left: me.dataRanges.start, right: me.dataRanges.to },
+                    minBarDistance: controllerOptions.minBarDistance || 20,
+                    onPositionChanged: function (changeToValue) {
+                        timer.start('drawKL');
+                        drawKL({ start: changeToValue.left, to: changeToValue.right });
+                        timer.stop();
+                        me.controller.drawControllerPart();
+                    },
+                    prePaint: function (ctx) {
+                    },
+                    touchFaultTolerance:20
+                });
+                /* 在原图上画控制器部分
+                var c = new controller(me.canvas.id, {
+                region: me.klOptions.priceLine.region,
+                bar: controllerOptions.bar || { width: 20, height: 35, borderColor: 'black', fillColor: 'snow' },
+                value: { left: me.dataRanges.start, right: me.dataRanges.to },
+                minBarDistance: controllerOptions.minBarDistance||20,
+                onPositionChanged: function (changeToValue) {
+                //setDebugMsg('left = ' + changeToValue.left + ',right = ' + changeToValue.right);
+                var d = new Date();
+                drawKL({ start: changeToValue.left, to: changeToValue.right });
+                me.controller.drawControllerPart();
+                var timeSpan = (new Date()).getTime() - d.getTime();
+                setDebugMsg('time:' + d + '，耗时：' + timeSpan+'ms'
+                +' value.left=' + changeToValue.left + ',value.right='+changeToValue.right
+                +' startIndex=' + me.startIndex
+                + ',toIndex=' + me.toIndex);
+                },
+                prePaint:function(ctx){
+                me.implement.paintPriceLine.call(me);
+                }
+                });
+                */
+                this.controller = c;
+                c.drawControllerPart();
+                c.addControllerEvents();
+            } else if (me.requestController) {
+                me.requestController = false;
+                var c = this.controller;
+                c.drawControllerPart();
+                c.addControllerEvents();
+            }
+
             if (!me.addOrentationChangedEvent) {
                 me.addOrentationChangedEvent = true;
 
@@ -402,7 +408,6 @@
             };
             //画蜡烛
             filteredData.each(drawCandle);
-            this.filteredData = filteredData;
             //timer.stop();
             //timer.start('paintItems:纵轴');
             var yAxisOptions = options.yAxis;
@@ -427,12 +432,11 @@
                 options.xAxis.scalerCount = filteredData.length;
                 stepLength = 1;
             }
-            xScalers.push(convertDate(filteredData[0].quoteTime, false).substr(2));
+            xScalers.push(convertDate(filteredData[0].quoteTime, false));
             for (var i = 1; i < options.xAxis.scalerCount; i++) {
                 var index = Math.ceil(i * stepLength);
                 if (index >= filteredData.length) index = filteredData.length - 1;
                 var quoteTime = convertDate(filteredData[index].quoteTime, false);
-                quoteTime = quoteTime.substr(2);
                 xScalers.push(quoteTime);
             }
             var xPainter = new Painter(this.canvas.id, xAxisImp, xScalers);
@@ -542,7 +546,6 @@
                 var MA = val.values;
                 ctx.strokeStyle = val.color;
                 ctx.beginPath();
-                var currentX = 0;
                 MA.each(function (val, arr, i) {
                     var x = i * (options.spaceWidth + options.barWidth) + (options.spaceWidth + options.barWidth) * .5;
                     
@@ -726,7 +729,6 @@
         painter.dataRanges = ranges;
         painter.paint();
     }
-
 </script>
 <canvas id="canvasKL" width="984" height="390" style="z-index: 2; border: 1px solid #69c">
     <p>hey,您的浏览器不支持html5，换个浏览器吧，比如google chrome，firefox</p>
