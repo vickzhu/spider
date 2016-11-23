@@ -11,6 +11,7 @@
 	</h1>
   </div>
   <div class="container-fluid">
+	<div class="kline"></div>
     <div class="row-fluid">
       <div class="span8">
 		#if($yrTypeList)
@@ -131,4 +132,13 @@
 			});
 		});
     })
+</script>
+<script type="text/javascript">
+	$(function(){
+		$(".kline").load("#springUrl('/kline?symbol=')$!{longHu.symbol}",function(response,status,xhr){
+			if(status!="success"){
+				alert("K线图加载失败！");
+			}
+		});
+	})
 </script>

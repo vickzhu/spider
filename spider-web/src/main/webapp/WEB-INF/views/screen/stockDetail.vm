@@ -7,7 +7,8 @@
   </div>
 <!--End-breadcrumbs-->
 	<div class="container-fluid">
-		#parse("control/kline.vm")
+		##parse("control/kline.vm")
+        <div class="kline"></div>
         <div class="row-fluid">
     	  <div class="span6">
 			<div class="widget-box">
@@ -156,3 +157,12 @@
 		</div><!-- end row-fluid -->
   </div><!-- end container-fluid-->
 </div><!-- end content-->
+<script type="text/javascript">
+	$(function(){
+		$(".kline").load("#springUrl('/kline?symbol=')$!{company.symbol}",function(response,status,xhr){
+			if(status!="success"){
+				alert("K线图加载失败！");
+			}
+		});
+	})
+</script>

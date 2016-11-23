@@ -101,6 +101,16 @@ public class CommonController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "/kline", method = RequestMethod.GET)
+	public ModelAndView showKLine(HttpServletRequest request,String symbol){
+		String klJson = getKLineList(symbol);
+		klJson = klJson.replaceAll("[\\-|\"]", StringUtil.EMPTY);
+		ModelAndView mav = new ModelAndView("kline");
+		mav.addObject("klData", klJson);
+		return mav;
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "/stock/k-line/{symbol}", method = RequestMethod.GET)
 	public String getKLineData(HttpServletRequest request, @PathVariable("symbol") String symbol){
 		String klJson = getKLineList(symbol);

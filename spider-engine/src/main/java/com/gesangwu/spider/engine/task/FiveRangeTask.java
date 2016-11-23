@@ -25,7 +25,7 @@ import com.gesangwu.spider.engine.util.TradeTimeUtil;
 /**
  * 五档
  * <pre>
- * 这里的定时时间最长一分钟，涨跌幅7个点以上，不予计算, TODO ST股票涨跌幅只有5个点
+ * 这里的定时时间最长一分钟，涨跌幅7个点以上，不予计算
  * </pre>
  * @author zhuxb
  *
