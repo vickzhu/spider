@@ -29,11 +29,23 @@ public class LargeVolController {
 	@Resource
 	private LargeVolStatisService lvsService;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView list(HttpServletRequest request,String tradeDate) throws ParseException{
-//		String afm = request.getParameter("afm");//可流通市值
-		List<LargeVolStatis> statisList = lvsService.selectByTradeDate(tradeDate);
-		ModelAndView mav = new ModelAndView("largeVolStatisList");
+	@RequestMapping(value = "/r1", method = RequestMethod.GET)
+	public ModelAndView list1(HttpServletRequest request,String tradeDate) throws ParseException{
+		List<LargeVolStatis> statisList = lvsService.selectByTradeDate(tradeDate,0,25);
+		ModelAndView mav = new ModelAndView("largeVolStatisR1List");
+		mav.addObject("list", statisList);
+		if(CollectionUtils.isNotEmpty(statisList)){
+			mav.addObject("tradeDate", statisList.get(0).getTradeDate());
+		} else {
+			mav.addObject("tradeDate", tradeDate);
+		}
+		return mav;
+	}
+	
+	@RequestMapping(value = "/r2", method = RequestMethod.GET)
+	public ModelAndView list2(HttpServletRequest request,String tradeDate) throws ParseException{
+		List<LargeVolStatis> statisList = lvsService.selectByTradeDate(tradeDate,25,50);
+		ModelAndView mav = new ModelAndView("largeVolStatisR2List");
 		mav.addObject("list", statisList);
 		if(CollectionUtils.isNotEmpty(statisList)){
 			mav.addObject("tradeDate", statisList.get(0).getTradeDate());

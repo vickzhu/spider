@@ -10,6 +10,6 @@ import com.gesangwu.spider.biz.dao.model.LargeVolStatisExample;
 
 public interface LargeVolStatisMapper extends BaseMapper<LargeVolStatis, LargeVolStatisExample> {
 	
-	List<LargeVolStatis> selectByTradeDate(@Param("tradeDate")String tradeDate);
+	List<LargeVolStatis> selectByTradeDate(@Param("tradeDate")String tradeDate, @Param("minAmv")double minAmv, @Param("maxAmv")double maxAmv);
 	
 }

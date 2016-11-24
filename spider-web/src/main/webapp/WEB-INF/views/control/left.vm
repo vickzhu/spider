@@ -10,7 +10,7 @@
         <li class=""><a href="#springUrl('/longhu/')">龙虎榜</a></li>
 		<li><a href="#springUrl('/clique/')">帮派管理</a></li>
 		<li><a href="#springUrl('/fiverange/r1')">压托大单</a></li>
-		<li><a href="#springUrl('/largeVol/')">大单成交</a></li>
+		<li><a href="#springUrl('/largeVol/r1')">大单成交</a></li>
 		<li><a href="#springUrl('/shareholder/clique')">个人持股</a></li>
 		<li><a href="#springUrl('/fiverange/')">股东人数</a></li>
 		<li><a href="#springUrl('/upper-shadow/')">上影线</a></li>

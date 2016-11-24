@@ -12,7 +12,7 @@
 			<a class="label label-info" style="line-height:20px;">成交金额&gt;=800万</a>
           </div>
 		  <div class="widget-content nopadding">
-			<form id="searchForm" action="#springUrl('/largeVol/')" method="get" class="form-horizontal">
+			<form id="searchForm" action="#springUrl('/largeVol/r2')" method="get" class="form-horizontal">
                 <div class="search_option">
 					<div>
                         <label>日期：</label>
@@ -22,16 +22,14 @@
 						</div>
 					</div>
                     <button type="submit"  class="btn btn-success">搜索</button>
-					<div style="float:right">
-						<label>可流通市值：</label>
-						<select name="afm" style="width:100px;">
-							<option value="">全部</option>
-							<option value="25">0-25亿</option>
-							<option value="50">25-50亿</option>
-                        </select>
-                    </div>
                 </div>
 			</form>
+          </div>
+		  <div class="widget-title">
+            <ul class="nav nav-tabs">
+              <li class=""><a href="#springUrl('/largeVol/r1')">可流通市值：0-25亿</a></li>
+              <li class="active"><a data-toggle="tab" href="javascript:;">可流通市值：25-50亿</a></li>
+            </ul>
           </div>
           <div class="widget-content">
             <table class="table table-bordered table-striped">

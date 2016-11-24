@@ -31,7 +31,7 @@ public class FiveRangeController {
 	@RequestMapping(value = "/r1", method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest request,String tradeDate){
 		List<FiveRangeStatis> statisList = frss.selectByTradeDate(tradeDate,0,25);
-		ModelAndView mav = new ModelAndView("fiveRangeList");
+		ModelAndView mav = new ModelAndView("fiveRangeR1List");
 		mav.addObject("list", statisList);
 		if(CollectionUtils.isNotEmpty(statisList)){
 			mav.addObject("tradeDate", statisList.get(0).getTradeDate());

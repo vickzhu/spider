@@ -287,6 +287,7 @@
     		(SELECT trade_date FROM large_vol_statis ORDER BY trade_date DESC LIMIT 1)
     	</otherwise>
     </choose>
+    and active_market_value&gt;#{minAmv,jdbcType=DOUBLE} and active_market_value&lt;=#{maxAmv,jdbcType=DOUBLE}
     order by gmt_update desc
   </select>
 </mapper>

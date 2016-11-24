@@ -11,7 +11,7 @@ public interface LargeVolStatisService extends BaseService<LargeVolStatis, Large
 
 	public LargeVolStatis selectBySymbolAndDate(String symbol, String tradeDate);
 	
-	public List<LargeVolStatis> selectByTradeDate(String tradeDate);
+	public List<LargeVolStatis> selectByTradeDate(String tradeDate, double minAmv, double maxAmv);
 	
 	public void selectByPagination(LargeVolStatisExample example, Page<LargeVolStatis> lvsPage);
 	

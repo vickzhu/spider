@@ -15,12 +15,12 @@ public class LargeVolStatisServiceTest extends BaseTest {
 	@Resource
 	private LargeVolStatisService lvsService;
 	
-	@Test
+//	@Test
 	public void selectByExampleTest(){
 		lvsService.selectByExample(null);
 	}
 	
-	@Test
+//	@Test
 	public void selectBySymbolAndDate(){
 		String symbol = "sh002265";
 		lvsService.selectBySymbolAndDate(symbol, "2016-10-20");
@@ -28,7 +28,7 @@ public class LargeVolStatisServiceTest extends BaseTest {
 	
 	@Test
 	public void selectByTradeDate(){
-		List<LargeVolStatis> lvsList = lvsService.selectByTradeDate(null);
+		List<LargeVolStatis> lvsList = lvsService.selectByTradeDate(null,0,25);
 		for (LargeVolStatis lvs : lvsList) {
 			System.out.println(lvs.getSymbol() + ":" + lvs.getTradeDate());
 		}
