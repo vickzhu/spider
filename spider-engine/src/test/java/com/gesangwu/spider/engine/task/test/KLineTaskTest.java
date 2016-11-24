@@ -28,6 +28,7 @@ public class KLineTaskTest extends BaseTest {
 //		c.set(Calendar.MINUTE, 59);
 //		c.set(Calendar.SECOND, 59);
 		long end = c.getTimeInMillis();
-		task.execute(start, end);
+//		task.execute(start, end);
+		task.execute();
 	}
 }

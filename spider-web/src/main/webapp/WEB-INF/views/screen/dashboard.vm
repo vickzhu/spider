@@ -45,20 +45,20 @@
             <table class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>代码</th>
 				  <th>股票</th>
 				  <th>人数</th>
                   <th>变化</th>
+                  <th>截止时间</th>
 				  <th>更新时间</th>
                 </tr>
               </thead>
               <tbody>
 				#foreach($hn in ${hnList})
                 <tr>
-                  <td>$!{hn.symbol}</td>
 				  <td>$!{companyTool.getStockName($!{hn.symbol})}</td>
 				  <td>$!{hn.totality}</td>
 				  <td>$!{hn.chgRate}</td>
+				  <td>$!{hn.endDate}</td>
 				  <td>$!{date.format("yyyy-MM-dd",$!{hn.gmtCreate})}</td>
                 </tr>
 				#end

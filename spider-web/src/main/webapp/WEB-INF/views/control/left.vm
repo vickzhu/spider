@@ -12,7 +12,6 @@
 		<li><a href="#springUrl('/fiverange/')">压托大单</a></li>
 		<li><a href="#springUrl('/largeVol/')">大单成交</a></li>
 		<li><a href="#springUrl('/shareholder/clique')">个人持股</a></li>
-		<li><a href="#springUrl('/')">帮派股东</a></li>
 		<li><a href="#springUrl('/fiverange/')">股东人数</a></li>
 		<li><a href="#springUrl('/upper-shadow/')">上影线</a></li>
       </ul>

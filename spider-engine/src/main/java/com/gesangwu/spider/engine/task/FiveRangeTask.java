@@ -1,5 +1,6 @@
 package com.gesangwu.spider.engine.task;
 
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -78,7 +79,7 @@ public class FiveRangeTask {
 	}
 	
 	private void fetch(String symbolArr){
-		String result = HttpTool.get("http://hq.sinajs.cn/etag.php?list=" + symbolArr);
+		String result = HttpTool.get("http://hq.sinajs.cn/etag.php?list=" + symbolArr,Charset.forName("GBK"));
 		Matcher matcher = r.matcher(result);
 		Date now = new Date();
 		while(matcher.find()){
@@ -118,7 +119,6 @@ public class FiveRangeTask {
 					}
 					Company company = companyService.selectBySymbol(symbol);
 					statis.setTradeDate(date);
-					statis.setStockName(details[0]);
 					statis.setSymbol(symbol);
 					double amv = DecimalUtil.format(company.getActiveMarketValue()/100000000, 2).doubleValue();
 					statis.setActiveMarketValue(amv);
