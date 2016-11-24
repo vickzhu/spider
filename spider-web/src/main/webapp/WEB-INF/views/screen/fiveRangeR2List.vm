@@ -1,0 +1,92 @@
+<link rel="stylesheet" href="#resources('css/datepicker.css')" />
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">股票</a> <a href="#" class="current">托压单</a> </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+            <h5>托压单列表</h5>
+			<a class="label label-info" style="line-height:20px;">挂单金额&gt;=1000万</a>
+			
+          </div>
+		  <div class="widget-content nopadding">
+			<form id="searchForm" action="#springUrl('/fiverange/')" method="get" class="form-horizontal">
+                <div class="search_option">
+					<div>
+                        <label>日期：</label>
+						<div data-date="${tradeDate}" class="input-append date datepicker">
+							<input type="text" id="tradeDate" name="tradeDate" value="$!{tradeDate}" data-date-format="yyyy-mm-dd" class="span11" />
+							<span class="add-on"><i class="icon-th"></i></span> 
+						</div>
+						
+					</div>
+					<button type="submit"  class="btn btn-success">搜索</button>
+                </div>
+			</form>
+          </div>
+		  <div class="widget-title">
+            <ul class="nav nav-tabs">
+              <li class=""><a href="#springUrl('/fiverange/')">可流通市值：0-25亿</a></li>
+              <li class="active"><a data-toggle="tab" href="javascript:;">可流通市值：25-50亿</a></li>
+            </ul>
+          </div>
+          <div class="widget-content">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+				  <th style="width:5%;">序号</th>
+                  <th>代码</th>
+				  <th>股票</th>
+				  <th>可流通市值</th>
+                  <th>压</th>
+				  <th>托</th>
+				  <th>更新时间</th>
+				  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+				#foreach($statis in ${list})
+                <tr>
+				  <td>$!{velocityCount}</td>
+                  <td>$!{statis.symbol}</td>
+                  <td><a href="#springUrl('/stock?symbol=')$!{statis.symbol}" target="_blank">$!{companyTool.getStockName($!{statis.symbol})}</a></td>
+				  <td>$!{statis.activeMarketValue}亿</td>
+				  <td>$!{statis.bigSell}</td>
+				  <td>$!{statis.bigBuy}</td>
+				  <td>$!{date.format("HH:mm:ss",$!{statis.gmtUpdate})}</td>
+				  <td>
+					<a href="javascript:;" class="statis_history" symbol="$!{statis.symbol}">查看历史</a>
+				  </td>
+                </tr>
+				#end
+              </tbody>
+             </table>
+			</div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$(".statis_history").click(function(){
+			var symbol = $(this).attr("symbol");
+			window.open("#springUrl('/fiverange/history')?symbol="+symbol);
+		});
+	})
+</script>
+<script src="#resources('js/bootstrap-datepicker.js')"></script> 
+<script type="text/javascript">
+	$(function(){
+		$('.datepicker').datepicker({format: 'yyyy-mm-dd',
+            weekStart: 1,
+            autoclose: true,
+            todayBtn: 'linked',
+            language: 'zh-CN'}).on('changeDate',function(){
+				$("#searchForm").submit();
+			});
+	});
+</script>

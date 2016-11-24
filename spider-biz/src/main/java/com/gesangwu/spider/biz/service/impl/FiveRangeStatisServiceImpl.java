@@ -39,8 +39,8 @@ public class FiveRangeStatisServiceImpl extends
 	}
 
 	@Override
-	public List<FiveRangeStatis> selectByTradeDate(String tradeDate) {
-		return mapper.selectByTradeDate(tradeDate);
+	public List<FiveRangeStatis> selectByTradeDate(String tradeDate, double minAmv, double maxAmv) {
+		return mapper.selectByTradeDate(tradeDate, minAmv, maxAmv);
 	}
 
 	@Override

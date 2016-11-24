@@ -27,6 +27,12 @@
                 </div>
 			</form>
           </div>
+		  <div class="widget-title">
+            <ul class="nav nav-tabs">
+              <li class="active"><a data-toggle="tab" href="#tab1">可流通市值：0-25亿</a></li>
+              <li class=""><a href="#springUrl('/fiverange/r2')">可流通市值：25-50亿</a></li>
+            </ul>
+          </div>
           <div class="widget-content">
             <table class="table table-bordered table-striped">
               <thead>

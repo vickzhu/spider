@@ -28,10 +28,23 @@ public class FiveRangeController {
 	@Resource
 	private FiveRangeStatisService frss;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/r1", method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest request,String tradeDate){
-		List<FiveRangeStatis> statisList = frss.selectByTradeDate(tradeDate);
+		List<FiveRangeStatis> statisList = frss.selectByTradeDate(tradeDate,0,25);
 		ModelAndView mav = new ModelAndView("fiveRangeList");
+		mav.addObject("list", statisList);
+		if(CollectionUtils.isNotEmpty(statisList)){
+			mav.addObject("tradeDate", statisList.get(0).getTradeDate());
+		} else {
+			mav.addObject("tradeDate", tradeDate);
+		}
+		return mav;
+	}
+	
+	@RequestMapping(value = "/r2", method = RequestMethod.GET)
+	public ModelAndView list2(HttpServletRequest request,String tradeDate){
+		List<FiveRangeStatis> statisList = frss.selectByTradeDate(tradeDate,25,50);
+		ModelAndView mav = new ModelAndView("fiveRangeR2List");
 		mav.addObject("list", statisList);
 		if(CollectionUtils.isNotEmpty(statisList)){
 			mav.addObject("tradeDate", statisList.get(0).getTradeDate());

@@ -11,7 +11,7 @@ public interface FiveRangeStatisService extends BaseService<FiveRangeStatis, Fiv
 
 	public FiveRangeStatis selectBySymbolAndDate(String symbol, String date);
 	
-	List<FiveRangeStatis> selectByTradeDate(String tradeDate);
+	List<FiveRangeStatis> selectByTradeDate(String tradeDate, double minAmv, double maxAmv);
 	
 	public void selectByPagination(FiveRangeStatisExample example, Page<FiveRangeStatis> page);
 }

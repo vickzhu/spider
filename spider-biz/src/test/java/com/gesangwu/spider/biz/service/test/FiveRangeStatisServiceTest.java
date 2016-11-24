@@ -22,7 +22,7 @@ public class FiveRangeStatisServiceTest extends BaseTest {
 	
 	@Test
 	public void selectByTradeDate(){
-		List<FiveRangeStatis> list = service.selectByTradeDate("2016-10-20");
+		List<FiveRangeStatis> list = service.selectByTradeDate("2016-11-24",0,25);
 		for (FiveRangeStatis frs : list) {
 			System.out.println(frs.getSymbol() + ":" + frs.getTradeDate());
 		}

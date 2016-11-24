@@ -10,6 +10,6 @@ import com.gesangwu.spider.biz.dao.model.FiveRangeStatisExample;
 
 public interface FiveRangeStatisMapper extends BaseMapper<FiveRangeStatis, FiveRangeStatisExample> {
     
-	List<FiveRangeStatis> selectByTradeDate(@Param("tradeDate")String tradeDate);
+	List<FiveRangeStatis> selectByTradeDate(@Param("tradeDate")String tradeDate,@Param("minAmv")double minAmv, @Param("maxAmv")double maxAmv);
 	
 }
