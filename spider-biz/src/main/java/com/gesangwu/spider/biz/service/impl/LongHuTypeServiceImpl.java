@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.gandalf.framework.mybatis.BaseMapper;
 import com.gandalf.framework.mybatis.BaseServiceImpl;
+import com.gesangwu.spider.biz.dao.cache.LongHuTypeCache;
 import com.gesangwu.spider.biz.dao.mapper.LongHuTypeMapper;
 import com.gesangwu.spider.biz.dao.model.LongHuType;
 import com.gesangwu.spider.biz.dao.model.LongHuTypeExample;
@@ -22,7 +23,6 @@ public class LongHuTypeServiceImpl extends BaseServiceImpl<LongHuType, LongHuTyp
 	
 	@Resource
 	private LongHuTypeMapper mapper;
-	private static Map<String, LongHuType> typeMap = new HashMap<String, LongHuType>();
 
 	@Override
 	protected BaseMapper<LongHuType, LongHuTypeExample> getMapper() {
@@ -32,14 +32,16 @@ public class LongHuTypeServiceImpl extends BaseServiceImpl<LongHuType, LongHuTyp
 	@PostConstruct
 	public void init(){
 		List<LongHuType> typeList = mapper.selectByExample(null);
+		Map<String, LongHuType> typeMap = new HashMap<String, LongHuType>();
 		for (LongHuType longHuType : typeList) {
 			typeMap.put(longHuType.getLhType(), longHuType);
 		}
+		LongHuTypeCache.setTypeMap(typeMap);
 	}
 
 	@Override
 	public LongHuType selectByType(String type) {
-		LongHuType lhType = typeMap.get(type);
+		LongHuType lhType = LongHuTypeCache.get(type);
 		if(lhType == null){
 			LongHuTypeExample example = new LongHuTypeExample();
 			LongHuTypeExample.Criteria criteria = example.createCriteria();
@@ -47,7 +49,7 @@ public class LongHuTypeServiceImpl extends BaseServiceImpl<LongHuType, LongHuTyp
 			List<LongHuType> typeList = mapper.selectByExample(example);
 			if(!CollectionUtils.isEmpty(typeList)){
 				lhType = typeList.get(0);
-				typeMap.put(lhType.getLhType(), lhType);
+				LongHuTypeCache.add(lhType);
 			}
 		}
 		return lhType;

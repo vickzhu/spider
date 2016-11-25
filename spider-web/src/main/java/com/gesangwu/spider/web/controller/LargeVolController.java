@@ -1,6 +1,5 @@
 package com.gesangwu.spider.web.controller;
 
-import java.text.ParseException;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -10,6 +9,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,24 +29,23 @@ public class LargeVolController {
 	@Resource
 	private LargeVolStatisService lvsService;
 
-	@RequestMapping(value = "/r1", method = RequestMethod.GET)
-	public ModelAndView list1(HttpServletRequest request,String tradeDate) throws ParseException{
-		List<LargeVolStatis> statisList = lvsService.selectByTradeDate(tradeDate,0,25);
-		ModelAndView mav = new ModelAndView("largeVolStatisR1List");
-		mav.addObject("list", statisList);
-		if(CollectionUtils.isNotEmpty(statisList)){
-			mav.addObject("tradeDate", statisList.get(0).getTradeDate());
+	@RequestMapping(value = "/r{range}", method = RequestMethod.GET)
+	public ModelAndView list(HttpServletRequest request,String tradeDate, @PathVariable("range")String range){
+		double min = 0;
+		double max = 50;
+		if("1".equals(range)){//一档
+			max = 25;
+		} else if("2".equals(range)){//二档
+			min = 25;
 		} else {
-			mav.addObject("tradeDate", tradeDate);
+			if(!"a".equals(range)){
+				range = "a";
+			}
 		}
-		return mav;
-	}
-	
-	@RequestMapping(value = "/r2", method = RequestMethod.GET)
-	public ModelAndView list2(HttpServletRequest request,String tradeDate) throws ParseException{
-		List<LargeVolStatis> statisList = lvsService.selectByTradeDate(tradeDate,25,50);
-		ModelAndView mav = new ModelAndView("largeVolStatisR2List");
+		List<LargeVolStatis> statisList = lvsService.selectByTradeDate(tradeDate,min,max);
+		ModelAndView mav = new ModelAndView("largeVolStatisList");
 		mav.addObject("list", statisList);
+		mav.addObject("amvRange", range);
 		if(CollectionUtils.isNotEmpty(statisList)){
 			mav.addObject("tradeDate", statisList.get(0).getTradeDate());
 		} else {

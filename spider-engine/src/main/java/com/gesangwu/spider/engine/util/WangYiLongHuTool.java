@@ -20,7 +20,10 @@ import org.slf4j.LoggerFactory;
 
 import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.spring.ContextHolder;
+import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.common.DecimalUtil;
+import com.gesangwu.spider.biz.common.StockUtil;
+import com.gesangwu.spider.biz.dao.model.LongHu;
 import com.gesangwu.spider.biz.dao.model.LongHuDetail;
 import com.gesangwu.spider.biz.dao.model.SecDept;
 import com.gesangwu.spider.biz.service.SecDeptService;
@@ -29,7 +32,7 @@ public class WangYiLongHuTool {
 	
 	private static final Logger logger = LoggerFactory.getLogger(WangYiLongHuTool.class);
 	
-	private static final String r = "\"SYMBOL\"\\:\"([0-9]{6})\",\"SNAME\"\\:\"[^\"]*\",\"TCLOSE\"\\:\"([0-9\\.]*)\",\"PCHG\"\\:\"([0-9\\.\\-]*)\",\"SMEBTSTOCK1\"\\:\"[^\"]*\",\"VOTURNOVER\"\\:([0-9\\.]*),\"VATURNOVER\"\\:([0-9\\.]*),\"TDATE\"\\:\"[0-9\\-]*\",\"EXCHANGE\"\\:\"[0|1]\",\"SCSTC27\"\\:\"[0-9\\.\\%]*\",\"SMEBTSTOCK11\"\\:\"([0-9]*)\"";
+	private static final String r = "\"SYMBOL\"\\:\"([0-9]{6})\",\"SNAME\"\\:\"[^\"]*\",\"TCLOSE\"\\:\"([0-9\\.]*)\",\"PCHG\"\\:\"([0-9\\.\\-]*)\",\"SMEBTSTOCK1\"\\:\"[^\"]*\",\"VOTURNOVER\"\\:[0-9\\.]*,\"VATURNOVER\"\\:[0-9\\.]*,\"TDATE\"\\:\"[0-9\\-]*\",\"EXCHANGE\"\\:\"[0|1]\",\"SCSTC27\"\\:\"([0-9\\.\\%]*)\",\"SMEBTSTOCK11\"\\:\"([0-9]*)\"";
 	private static final Pattern p = Pattern.compile(r);
 
 	public static Map<String,List<String>> getLongHuType(String tradeDate){
@@ -39,7 +42,7 @@ public class WangYiLongHuTool {
 		Matcher m = p.matcher(result);
 		while(m.find()){
 			String code = m.group(1);
-			String type = m.group(6);
+			String type = m.group(5);
 			List<String> list = longHuMap.get(code);
 			if(list == null){
 				list = new ArrayList<String>();
@@ -49,6 +52,38 @@ public class WangYiLongHuTool {
 		}
 		return longHuMap;
 	}
+	
+	public static Map<String, LongHu> getLongHu(String tradeDate){
+		String url = buildUrl(tradeDate);
+		String result = HttpTool.get(url);
+		Map<String, LongHu> longHuMap = new HashMap<String, LongHu>();
+		Matcher m = p.matcher(result);
+		while(m.find()){
+			String code = m.group(1);
+			String symbol = StockUtil.code2Symbol(code);
+			LongHu longHu = longHuMap.get(symbol);
+			if(longHu == null){
+				longHu = new LongHu();
+				double close = Double.valueOf(m.group(2)); 
+				double chgPercent = Double.valueOf(m.group(3)); 
+				String turnoverStr = m.group(4);
+				turnoverStr = turnoverStr.replaceAll("\\%", StringUtil.EMPTY);
+				double turnover = Double.valueOf(turnoverStr);
+				longHu.setSymbol(symbol);
+				longHu.setTradeDate(tradeDate);
+				longHu.setPrice(close);
+				longHu.setChgPercent(chgPercent);
+				longHu.setTurnover(turnover);
+				longHuMap.put(symbol, longHu);
+			}
+			//TODO 判断类型，赋值给longhu
+			String type = m.group(5);
+			
+		}
+		return longHuMap;
+	}
+	
+	
 	
 	private static String buildUrl(String tradeDate){
 		StringBuilder sb = new StringBuilder();
