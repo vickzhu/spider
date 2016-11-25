@@ -40,7 +40,7 @@ public class MainController {
 	
 	private List<HolderNum> getHnList(){
 		HolderNumExample example = new HolderNumExample();
-		example.setOrderByClause("gmt_create desc");
+		example.setOrderByClause("end_date desc");
 		example.setOffset(0);
 		example.setRows(10);
 		return hnService.selectByExample(example);

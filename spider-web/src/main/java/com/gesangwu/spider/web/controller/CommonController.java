@@ -145,7 +145,7 @@ public class CommonController {
 	
 	private List<HolderNum> getHnList(String symbol){
 		HolderNumExample example = new HolderNumExample();
-		example.setOrderByClause("gmt_create desc");
+		example.setOrderByClause(" end_date desc ");
 		example.setOffset(0);
 		example.setRows(10);
 		HolderNumExample.Criteria criteria = example.createCriteria();
