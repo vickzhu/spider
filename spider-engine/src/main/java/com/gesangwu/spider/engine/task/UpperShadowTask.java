@@ -34,7 +34,7 @@ public class UpperShadowTask {
 	@Resource
 	private CompanyService companyService;
 
-	@Scheduled(cron = "0 0 16 * * MON-FRI")
+	@Scheduled(cron = "0 15 16 * * MON-FRI")
 	public void execute(){
 		long start = System.currentTimeMillis();
 		execute(1);

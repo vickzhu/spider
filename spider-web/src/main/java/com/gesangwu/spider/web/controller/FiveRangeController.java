@@ -9,6 +9,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,25 +28,24 @@ public class FiveRangeController {
 	
 	@Resource
 	private FiveRangeStatisService frss;
-
-	@RequestMapping(value = "/r1", method = RequestMethod.GET)
-	public ModelAndView list(HttpServletRequest request,String tradeDate){
-		List<FiveRangeStatis> statisList = frss.selectByTradeDate(tradeDate,0,25);
-		ModelAndView mav = new ModelAndView("fiveRangeR1List");
-		mav.addObject("list", statisList);
-		if(CollectionUtils.isNotEmpty(statisList)){
-			mav.addObject("tradeDate", statisList.get(0).getTradeDate());
-		} else {
-			mav.addObject("tradeDate", tradeDate);
-		}
-		return mav;
-	}
 	
-	@RequestMapping(value = "/r2", method = RequestMethod.GET)
-	public ModelAndView list2(HttpServletRequest request,String tradeDate){
-		List<FiveRangeStatis> statisList = frss.selectByTradeDate(tradeDate,25,50);
-		ModelAndView mav = new ModelAndView("fiveRangeR2List");
+	@RequestMapping(value = "/r{range}", method = RequestMethod.GET)
+	public ModelAndView list(HttpServletRequest request,String tradeDate, @PathVariable("range")String range){
+		double min = 0;
+		double max = 50;
+		if("1".equals(range)){//一档
+			max = 25;
+		} else if("2".equals(range)){//二档
+			min = 25;
+		} else {
+			if(!"a".equals(range)){
+				range = "a";
+			}
+		}
+		List<FiveRangeStatis> statisList = frss.selectByTradeDate(tradeDate,min,max);
+		ModelAndView mav = new ModelAndView("fiveRangeList");
 		mav.addObject("list", statisList);
+		mav.addObject("amvRange", range);
 		if(CollectionUtils.isNotEmpty(statisList)){
 			mav.addObject("tradeDate", statisList.get(0).getTradeDate());
 		} else {

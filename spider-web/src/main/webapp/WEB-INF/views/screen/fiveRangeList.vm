@@ -10,10 +10,9 @@
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
             <h5>托压单列表</h5>
 			<a class="label label-info" style="line-height:20px;">挂单金额&gt;=1000万</a>
-			
           </div>
 		  <div class="widget-content nopadding">
-			<form id="searchForm" action="#springUrl('/fiverange/')" method="get" class="form-horizontal">
+			<form id="searchForm" method="get" class="form-horizontal">
                 <div class="search_option">
 					<div>
                         <label>日期：</label>
@@ -23,14 +22,15 @@
 						</div>
 						
 					</div>
-					<button type="submit"  class="btn btn-success">搜索</button>
+					<button id="searchFr" type="button" class="btn btn-success">搜索</button>
                 </div>
 			</form>
           </div>
 		  <div class="widget-title">
             <ul class="nav nav-tabs">
-              <li class="active"><a data-toggle="tab" href="#tab1">可流通市值：0-25亿</a></li>
-              <li class=""><a href="#springUrl('/fiverange/r2')">可流通市值：25-50亿</a></li>
+              <li class="#if($amvRange=='1')active#end"><a class="search-by-range" range="1" href="javascript:;">可流通市值：0-25亿</a></li>
+              <li class="#if($amvRange=='2')active#end"><a class="search-by-range" range="2" href="javascript:;">可流通市值：25-50亿</a></li>
+			  <li class="#if($amvRange=='a')active#end"><a class="search-by-range" range="a" href="javascript:;">可流通市值：0-50亿</a></li>
             </ul>
           </div>
           <div class="widget-content">
@@ -75,6 +75,15 @@
 		$(".statis_history").click(function(){
 			var symbol = $(this).attr("symbol");
 			window.open("#springUrl('/fiverange/history')?symbol="+symbol);
+		});
+		$("#searchFr").click(function(){
+			$("#searchForm").attr("action","#springUrl('/fiverange/r')$!{amvRange}");
+			$("#searchForm").submit();
+		});
+		$(".search-by-range").click(function(){
+			var range = $(this).attr("range");
+			$("#searchForm").attr("action","#springUrl('/fiverange/r')"+range);
+			$("#searchForm").submit();
 		});
 	})
 </script>
