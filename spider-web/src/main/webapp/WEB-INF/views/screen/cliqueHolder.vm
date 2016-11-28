@@ -23,9 +23,9 @@
 				  <th style="width:5%;">序号</th>
                   <th>姓名</th>
                   <th>股票</th>
-				  <th>持股时间</th>
 				  <th>持股量</th>
 				  <th>较上期变化</th>
+				  <th>持股时间</th>
 				  <th>更新时间</th>
 				  <th>帮派</th>
 				  <th>操作</th>
@@ -37,7 +37,6 @@
 				  <td>$!{velocityCount}</td>
                   <td><a class="lh_detail" onclick="javascript:;">$!{ssh.holderName}</a></td>
 				  <td>$!{companyTool.getStockName($!{ssh.symbol})}</td>
-				  <td>$!{ssh.endDate}</td>
 				  <td>$!{ssh.holdCount}</td>
 				  <td>
 					#if($!{ssh.chgCount})
@@ -60,6 +59,7 @@
 						新进
 					#end
 				  </td>
+				  <td>$!{ssh.endDate}</td>
 				  <td>${date.format("yyyy-MM-dd",$!{ssh.gmtCreate})}</td>
 				  <td>$!{longHuTool.getClique($!{ssh.cliqueId})}</td>
                   <td>

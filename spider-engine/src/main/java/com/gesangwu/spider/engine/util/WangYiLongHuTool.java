@@ -18,21 +18,25 @@ import org.htmlparser.util.SimpleNodeIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.spring.ContextHolder;
 import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.common.DecimalUtil;
 import com.gesangwu.spider.biz.common.StockUtil;
+import com.gesangwu.spider.biz.dao.cache.LongHuTypeCache;
 import com.gesangwu.spider.biz.dao.model.LongHu;
 import com.gesangwu.spider.biz.dao.model.LongHuDetail;
+import com.gesangwu.spider.biz.dao.model.LongHuType;
 import com.gesangwu.spider.biz.dao.model.SecDept;
+import com.gesangwu.spider.biz.service.LongHuTypeService;
 import com.gesangwu.spider.biz.service.SecDeptService;
 
 public class WangYiLongHuTool {
 	
 	private static final Logger logger = LoggerFactory.getLogger(WangYiLongHuTool.class);
 	
-	private static final String r = "\"SYMBOL\"\\:\"([0-9]{6})\",\"SNAME\"\\:\"[^\"]*\",\"TCLOSE\"\\:\"([0-9\\.]*)\",\"PCHG\"\\:\"([0-9\\.\\-]*)\",\"SMEBTSTOCK1\"\\:\"[^\"]*\",\"VOTURNOVER\"\\:[0-9\\.]*,\"VATURNOVER\"\\:[0-9\\.]*,\"TDATE\"\\:\"[0-9\\-]*\",\"EXCHANGE\"\\:\"[0|1]\",\"SCSTC27\"\\:\"([0-9\\.\\%]*)\",\"SMEBTSTOCK11\"\\:\"([0-9]*)\"";
+	private static final String r = "\"SYMBOL\"\\:\"([0-9]{6})\",\"SNAME\"\\:\"([^\"]*)\",\"TCLOSE\"\\:\"([0-9\\.]*)\",\"PCHG\"\\:\"([0-9\\.\\-]*)\",\"SMEBTSTOCK1\"\\:\"([^\"]*)\",\"VOTURNOVER\"\\:[0-9\\.]*,\"VATURNOVER\"\\:[0-9\\.]*,\"TDATE\"\\:\"[0-9\\-]*\",\"EXCHANGE\"\\:\"[0|1]\",\"SCSTC27\"\\:\"([0-9\\.\\%]*)\",\"SMEBTSTOCK11\"\\:\"([0-9]*)\"";
 	private static final Pattern p = Pattern.compile(r);
 
 	public static Map<String,List<String>> getLongHuType(String tradeDate){
@@ -42,7 +46,7 @@ public class WangYiLongHuTool {
 		Matcher m = p.matcher(result);
 		while(m.find()){
 			String code = m.group(1);
-			String type = m.group(5);
+			String type = m.group(7);
 			List<String> list = longHuMap.get(code);
 			if(list == null){
 				list = new ArrayList<String>();
@@ -53,34 +57,87 @@ public class WangYiLongHuTool {
 		return longHuMap;
 	}
 	
-	public static Map<String, LongHu> getLongHu(String tradeDate){
+	public static List<LongHu> getLongHuList(String tradeDate){
+		List<LongHu> longHuList = new ArrayList<LongHu>();
+		Map<String, LongHu> longHuMap = getLongHu(tradeDate);
+		for(Map.Entry<String, LongHu> entry:longHuMap.entrySet()){
+			longHuList.add(entry.getValue());
+		}
+		return longHuList;
+	}
+	
+	private static Map<String, LongHu> getLongHu(String tradeDate){
 		String url = buildUrl(tradeDate);
 		String result = HttpTool.get(url);
 		Map<String, LongHu> longHuMap = new HashMap<String, LongHu>();
 		Matcher m = p.matcher(result);
+		Date now = new Date();
 		while(m.find()){
 			String code = m.group(1);
 			String symbol = StockUtil.code2Symbol(code);
 			LongHu longHu = longHuMap.get(symbol);
 			if(longHu == null){
 				longHu = new LongHu();
-				double close = Double.valueOf(m.group(2)); 
-				double chgPercent = Double.valueOf(m.group(3)); 
-				String turnoverStr = m.group(4);
+				double close = Double.valueOf(m.group(3)); 
+				double chgPercent = Double.valueOf(m.group(4)); 
+				String turnoverStr = m.group(6);
 				turnoverStr = turnoverStr.replaceAll("\\%", StringUtil.EMPTY);
 				double turnover = Double.valueOf(turnoverStr);
+				String stockName = UnicodeUtil.decodeUnicode(m.group(2));
 				longHu.setSymbol(symbol);
+				longHu.setStockName(stockName);
 				longHu.setTradeDate(tradeDate);
 				longHu.setPrice(close);
 				longHu.setChgPercent(chgPercent);
 				longHu.setTurnover(turnover);
+				longHu.setGmtCreate(now);
 				longHuMap.put(symbol, longHu);
 			}
-			//TODO 判断类型，赋值给longhu
-			String type = m.group(5);
-			
+			String type = m.group(7);
+			LongHuType lhType = LongHuTypeCache.get(type);
+			if(lhType == null){
+				lhType = new LongHuType();
+				String typeDesc = UnicodeUtil.decodeUnicode(m.group(5));
+				int dateType = getDateType(typeDesc);
+				lhType.setDateType(dateType);
+				lhType.setLhDesc(typeDesc);
+				lhType.setLhType(type);
+				ContextHolder.getContext().getBean(LongHuTypeService.class).insert(lhType);
+			}
+			if(lhType.getDateType() == 1){
+				String yrType = longHu.getYrType();
+				if(StringUtil.isBlank(yrType)){
+					longHu.setYrType(lhType.getLhType());
+				} else {
+					longHu.setYrType(longHu.getYrType()+SymbolConstant.COMMA+lhType.getLhType());
+				}
+			} else if(lhType.getDateType() == 3){
+				String srType = longHu.getSrType();
+				if(StringUtil.isBlank(srType)){
+					longHu.setSrType(lhType.getLhType());
+				} else {
+					longHu.setSrType(longHu.getSrType()+SymbolConstant.COMMA+lhType.getLhType());
+				}
+			} else if(lhType.getDateType() ==2){
+				String erType = longHu.getErType();
+				if(StringUtil.isBlank(erType)){
+					longHu.setErType(lhType.getLhType());
+				} else {
+					longHu.setErType(longHu.getErType()+SymbolConstant.COMMA+lhType.getLhType());
+				}
+			}
 		}
 		return longHuMap;
+	}
+	
+	private static int getDateType(String typeDesc){
+		int dateType = 1;
+		if(typeDesc.indexOf("三个")>0){
+			dateType = 3;
+		}else if(typeDesc.indexOf("2个")>0){
+			dateType = 2;
+		}
+		return dateType;
 	}
 	
 	
@@ -188,7 +245,8 @@ public class WangYiLongHuTool {
 	}
 	
 	public static void main(String[] args){
-		Map<String,List<String>> typeMap = getLongHuType("2016-10-28");
+		String tradeDate = "2016-11-28";
+		Map<String,List<String>> typeMap = getLongHuType(tradeDate);
 		for(Map.Entry<String,List<String>> entry : typeMap.entrySet()){
 			System.out.println(entry.getKey()+":"+entry.getValue());
 		}

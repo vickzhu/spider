@@ -10,12 +10,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -24,16 +21,13 @@ import org.springframework.stereotype.Component;
 import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.util.StringUtil;
-import com.gesangwu.spider.biz.common.DecimalUtil;
 import com.gesangwu.spider.biz.common.StockUtil;
 import com.gesangwu.spider.biz.dao.model.LongHu;
 import com.gesangwu.spider.biz.dao.model.LongHuDetail;
-import com.gesangwu.spider.biz.dao.model.LongHuType;
 import com.gesangwu.spider.biz.service.LongHuDetailService;
 import com.gesangwu.spider.biz.service.LongHuService;
 import com.gesangwu.spider.biz.service.LongHuTypeService;
 import com.gesangwu.spider.biz.service.SecDeptService;
-import com.gesangwu.spider.engine.util.StockTool;
 import com.gesangwu.spider.engine.util.TradeTimeUtil;
 import com.gesangwu.spider.engine.util.WangYiLongHuTool;
 
@@ -58,8 +52,6 @@ public class LongHuTask {
 	private static final Logger logger = LoggerFactory.getLogger(LongHuTask.class);
 
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	private static final String r1 = "\"SCode\"\\:\"([0-9]*)\",\"SName\"\\:\"([^\"]*)\",\"ClosePrice\"\\:\"([0-9\\.]*)\",\"Chgradio\"\\:\"([\\-0-9\\.]*)\",\"Dchratio\"\\:\"([0-9\\.]*)\",\"JmMoney\"\\:\"[\\-0-9\\.]*\",\"Turnover\"\\:\"([\\-0-9\\.]*)\",\"Ntransac\"\\:\"([\\-0-9\\.]*)\",\"Ctypedes\"\\:\"[^\"]*\",\"Oldid\"\\:\"[\\-0-9\\.]*\",\"Smoney\"\\:\"([0-9\\.]*)\",\"Bmoney\"\\:\"([0-9\\.]*)\",\"ZeMoney\"\\:\"[^\"]*\",\"Tdate\"\\:\"([^\"]*)\",\"JmRate\"\\:\"[^\"]*\",\"ZeRate\"\\:\"[^\"]*\",\"Ltsz\"\\:\"([^\"]*)\"";
-	private static Pattern p1 = Pattern.compile(r1);
 	
 	@Resource
 	private LongHuService lhService;
@@ -109,63 +101,11 @@ public class LongHuTask {
 	
 	private void parse(String content, String tradeDate){
 		Set<String> lhSet = completedLongHuMap(tradeDate);
-		Matcher m =  p1.matcher(content);
-		Date now = new Date();
-		List<LongHu> longHuList = new ArrayList<LongHu>();
-		Set<String> lhCodeSet = new HashSet<String>();
-		Map<String,List<String>> typeMap = WangYiLongHuTool.getLongHuType(tradeDate);
-		if(typeMap == null || typeMap.size() == 0){
-			logger.error("No type Map fund from 163!");
-			return;
-		}
-		while(m.find()){
-			String code = m.group(1);
-			String symbol = StockTool.codeToSymbol(code);
-			if(lhSet.contains(symbol)){
-				continue;
-			}
-			String stockName = m.group(2);
-			String price = m.group(3);
-			String chg = m.group(4);
-			String turnover = m.group(5);
-			if(lhCodeSet.contains(code)){//已经存在了
-				continue;
-			}else {
-				lhCodeSet.add(code);
-			}
-			LongHu longHu = new LongHu();
-			longHu.setSymbol(symbol);
-			longHu.setStockName(stockName);
-			longHu.setPrice(Double.valueOf(price));
-			longHu.setChgPercent(DecimalUtil.parse(chg).doubleValue());
-			if(StringUtil.isNotBlank(turnover)){
-				longHu.setTurnover(DecimalUtil.parse(turnover).doubleValue());
-			}
-			longHu.setTradeDate(tradeDate);
-			longHu.setGmtCreate(now);
-			List<String> typeList = typeMap.get(code);
-			if(CollectionUtils.isEmpty(typeList)){
-				continue;
-			}
-			List<String> yrList = new ArrayList<String>();
-			List<String> erList = new ArrayList<String>();
-			List<String> srList = new ArrayList<String>();
-			buildLhType(yrList, erList, srList, typeList);
-			if(yrList.size() > 0){
-				String typeArr = StringUtil.join(yrList.iterator(), SymbolConstant.COMMA);
-				longHu.setYrType(typeArr);
-			}
-			if(erList.size() > 0){
-				String typeArr = StringUtil.join(erList.iterator(), SymbolConstant.COMMA);
-				longHu.setErType(typeArr);		
-			}
-			if(srList.size() > 0){
-				String typeArr = StringUtil.join(srList.iterator(), SymbolConstant.COMMA);
-				longHu.setSrType(typeArr);
-			}
-			longHuList.add(longHu);
-		}
+		List<LongHu> longHuList = WangYiLongHuTool.getLongHuList(tradeDate);
 		for (LongHu longHu : longHuList) {
+			if(lhSet.contains(longHu.getSymbol())){
+				continue;
+			}
 			fetchDetail(longHu);
 		}
 	}
@@ -255,19 +195,6 @@ public class LongHuTask {
 		sb.append(SymbolConstant.COMMA);
 		sb.append(netBuy.toString());
 		return sb.toString();
-	}
-	
-	private void buildLhType(List<String> yrList, List<String> erList, List<String> srList, List<String> typeList){
-		for (String type : typeList) {
-			LongHuType lhType = typeService.selectByType(type);
-			if(lhType.getDateType() == 1){//一日
-				yrList.add(type);
-			} else if(lhType.getDateType() == 3){//三日
-				srList.add(type);
-			} else if(lhType.getDateType() == 2){//二日
-				erList.add(type);
-			}
-		}
 	}
 	
 	public static void main(String[] args){
