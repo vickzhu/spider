@@ -31,7 +31,7 @@
 <div class="widget-box">
   
   <div class="widget-title">
-	<span class="label label-danger"><a class="refresh-longhu" lf="$!{longHu.id}" href="javascript:;">刷新榜单</a></span>
+	<span class="label label-important"><a class="refresh-longhu" lh="$!{longHu.id}" href="javascript:;">刷新榜单</a></span>
     <h5>上榜理由</h5>
   </div>
   <div class="widget-title" style="height:auto;padding:8px 0 8px 25px;">
@@ -125,8 +125,8 @@
 			window.location.href="#springUrl('/longhu/detail')?symbol=$!{longHu.symbol}&tradeDate="+tradeDate;
 		});
 		$(".refresh-longhu").click(function(){
-			var lf = $(this).attr("lf");
-			var params = {id:lf,$!{tokenTool.tokenKey}:'$!{tokenTool.token}'}
+			var lh = $(this).attr("lh");
+			var params = {id:lh,$!{tokenTool.tokenKey}:'$!{tokenTool.token}'}
 			jQuery.post("#springUrl('/longhu/refresh')",params,function(){
 				window.location.reload();
 			});

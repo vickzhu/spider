@@ -1,6 +1,5 @@
 package com.gesangwu.spider.engine.task.init;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -30,7 +29,6 @@ public class ShareHolderNumInit {
 		int cpp = 10;
 		int count = companyService.countByExample(null);
 		int totalPages = (count + cpp -1)/cpp;
-		Date now = new Date();
 		for(int cur = 1; cur <= totalPages; cur++){
 			Page<Company> page = new Page<Company>(cur);
 			companyService.selectByPagination(new CompanyExample(), page);
