@@ -103,7 +103,6 @@ public class CommonController {
 	@RequestMapping(value = "/kline", method = RequestMethod.GET)
 	public ModelAndView showKLine(HttpServletRequest request,String symbol){
 		String klJson = getKLineList(symbol);
-		klJson = klJson.replaceAll("[\\-|\"]", StringUtil.EMPTY);
 		ModelAndView mav = new ModelAndView("kline");
 		mav.addObject("klData", klJson);
 		return mav;
@@ -113,7 +112,6 @@ public class CommonController {
 	@RequestMapping(value = "/kline2", method = RequestMethod.GET)
 	public ModelAndView showKLine2(HttpServletRequest request,String symbol){
 		String klJson = getKLineList(symbol);
-		klJson = klJson.replaceAll("[\\-|\"]", StringUtil.EMPTY);
 		ModelAndView mav = new ModelAndView("kline2");
 		mav.addObject("klData", klJson);
 		return mav;
@@ -161,13 +159,14 @@ public class CommonController {
 		List<Object[]> objList = new ArrayList<Object[]>();
 		//日期,昨收,开盘价,高,低，收,量，额
 		for (KLine kLine : klList) {
-			Object[] objArr = new Object[6];
+			Object[] objArr = new Object[7];
 			objArr[0] = kLine.getTradeDate();
 			objArr[1] = kLine.getOpen();
 			objArr[2] = kLine.getHigh();
 			objArr[3] = kLine.getLow();
 			objArr[4] = kLine.getClose();
 			objArr[5] = kLine.getVolume();
+			objArr[6] = kLine.getPercent();
 			objList.add(objArr);
 		}
 		ObjectMapper om = new ObjectMapper();
