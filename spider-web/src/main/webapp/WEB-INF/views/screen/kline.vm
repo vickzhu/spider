@@ -10,7 +10,7 @@
 <script src="#resources('/kline/linepainter.js')" type="text/javascript"></script>
 <script src="#resources('/kline/volumePainter.js')" type="text/javascript"></script>
 <script src="#resources('/kline/axis-y.js')" type="text/javascript"></script>
-<script src="#resources('/kline/chartEventHelper.kl.js')" type="text/javascript"></script>
+<script src="#resources('/kline/chartEventHelper.js')" type="text/javascript"></script>
 <script type="text/javascript">
     function convertDate(val, withWeek) {
 		var dateArr = val.split("-");
@@ -129,13 +129,13 @@
                 if (index < 0) index = 0;
                 var ki = me.data.ks[index];
                 var tipHtml = '<div><b>' + convertDate(ki.quoteTime) + '</b></div>' +
-                '昨收价：<font color="' + getPriceColor(ki, ki.preClose) + '">' + toMoney(ki.preClose) + '</font><br/>' +
                 '开盘价：<font color="' + getPriceColor(ki, ki.open) + '">' + toMoney(ki.open) + '</font><br/>' +
                 '最高价：<font color="' + getPriceColor(ki, ki.high) + '">' + toMoney(ki.high) + '</font><br/>' +
                 '最低价：<font color="' + getPriceColor(ki, ki.low) + '">' + toMoney(ki.low) + '</font><br/>' +
                '收盘价：<font color="' + getPriceColor(ki, ki.close) + '">' + toMoney(ki.close) + '</font><br/>' +
                 '成交量：' + bigNumberToText(ki.volume / 100) + '手<br/>' +
-                '成交额：' + bigNumberToText(ki.amount);
+				'涨跌额：' + ki.chgAmt+"元<br/>"+
+                '涨跌幅：' + ki.percent+'%';
                 return tipHtml;
             }
 
@@ -189,33 +189,7 @@
             function shouldDoControllerEvent(ev,evtType){
                 if(evtType == undefined) return true;
                 if(typeof me.shouldController == 'undefined') me.shouldController = true;
-                if(evtType == 'touchstart'){
-                    var offset = getEventOffsetPosition(ev);
-                    var showTip=false;
-
-                    var x = offset.offsetX;
-                    x -= region.x;
-                    var index = Math.ceil(x / (me.klOptions.spaceWidth + me.klOptions.barWidth)) - 1;
-
-                    var indexRange = Math.ceil(fingerSize.width / (me.klOptions.spaceWidth + me.klOptions.barWidth))+1;
-
-                    var indexStart = Math.max(0,index - indexRange/2);
-                    var indexTo = Math.min(me.filteredData.length-1,index+indexRange/2);
-                    var yMin=999999;
-                    var yMax=-1;
-                    for(index = indexStart;index<=indexTo;index++){
-                        var dataAtIndex = me.filteredData[index];
-                        var yTop = region.y+ (me.high - dataAtIndex.high) * region.height / (me.high - me.low) - fingerSize.height;
-                        var yBottom = region.y+(me.high - dataAtIndex.low) * region.height / (me.high - me.low) + fingerSize.height;
-                        yMin = Math.min(yTop,yMin);
-                        yMax = Math.max(yBottom,yMax);
-                    }
-                    showTip = offset.offsetY >= yMin && offset.offsetY <= yMax;
-                    setDebugMsg('yMin='+yMin + ',yMax=' + yMax + ',offsetY='+offset.offsetY+',showTip=' + showTip);
-                    me.shouldController = !showTip;
-                    
-                }
-                //setDebugMsg('shouldController=' + me.shouldController);
+                
                 return me.shouldController;
             }
 
@@ -224,7 +198,9 @@
                     getCrossPoint: function (ev) { return { x: getX(ev.offsetX), y: ev.offsetY }; },
                     triggerEventRanges: { x: region.x, y: region.y + 1, width: region.width, height: volumeRegion.y + volumeRegion.height - region.y },
                     tipOptions: {
-                        getTipHtml: function (ev) { return getTipHtml(ev.offsetX); },
+                        getTipHtml: function (ev) {
+							return getTipHtml(ev.offsetX); 
+						},
                         size:{width:120,height:150},
                         position:{x:false,y:region.y+(region.height-150)/3}, //position中的值是相对于canvas的左上角的
                         opacity:80,
@@ -244,7 +220,10 @@
                         getCrossPoint: function (ev) { return { x: getX(ev.offsetX), y: ev.offsetY }; },
                         triggerEventRanges: { x: region.x, y: region.y + 1, width: region.width, height: volumeRegion.y + volumeRegion.height - region.y },
                         tipOptions: {
-                            getTipHtml: function (ev) { return getTipHtml(ev.offsetX); },
+                            getTipHtml: function (ev) {
+								alert(222);
+								return getTipHtml(ev.offsetX); 
+							},
                             size:{width:120,height:150},
                             position:{x:false,y:region.y+(region.height-150)/3}, //position中的值是相对于canvas的左上角的
                             opacity:80,
@@ -257,14 +236,6 @@
                         shouldDoControllerEvent:shouldDoControllerEvent,
                         controllerEvents:controllerEvents
                     });
-            }
-            if (!me.addOrentationChangedEvent) {
-                me.addOrentationChangedEvent = true;
-
-                addEvent(window, 'orientationchange', function (ev) {
-                    me.requestController = true;
-                    me.implement.onOrentationChanged.call(me);
-                });
             }
 
             me.painting = false;
@@ -742,7 +713,8 @@ function getKLData() {
             low: rawData[3],
             close: rawData[4],
             volume: rawData[5],
-			percent: rawData[6]
+			percent: rawData[6],
+			chgAmt: rawData[7]
         };
         if (ks.length == 0) {
             result.low = item.low;

@@ -159,7 +159,7 @@ public class CommonController {
 		List<Object[]> objList = new ArrayList<Object[]>();
 		//日期,昨收,开盘价,高,低，收,量，额
 		for (KLine kLine : klList) {
-			Object[] objArr = new Object[7];
+			Object[] objArr = new Object[8];
 			objArr[0] = kLine.getTradeDate();
 			objArr[1] = kLine.getOpen();
 			objArr[2] = kLine.getHigh();
@@ -167,6 +167,7 @@ public class CommonController {
 			objArr[4] = kLine.getClose();
 			objArr[5] = kLine.getVolume();
 			objArr[6] = kLine.getPercent();
+			objArr[7] = kLine.getChangeAmount();
 			objList.add(objArr);
 		}
 		ObjectMapper om = new ObjectMapper();
