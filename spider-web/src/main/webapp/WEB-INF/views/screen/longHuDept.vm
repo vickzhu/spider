@@ -41,9 +41,9 @@
 				#foreach($detail in ${page.getRecords()})
                 <tr symbol="$!{detail.symbol}">
 				  <td>$!{velocityCount}</td>
-                  <td><a class="lh_detail" onclick="javascript:;">$!{detail.symbol}</a></td>
+                  <td><a onclick="javascript:;">$!{detail.symbol}</a></td>
                   <td>
-					<a data-toggle="modal" href="#modal-add-event" class="lh_detail" onclick="javascript:;">$!{detail.stockName}</a>
+					<a href="#springUrl('/longhu/detail?symbol=')$!{detail.symbol}" target="_blank">$!{detail.stockName}</a>
 					#if(${detail.dateType}==2)
 					<span class="label label-info">2日</span>
 					#elseif(${detail.dateType}==3)
@@ -69,16 +69,6 @@
     </div>
   </div>
 </div>
-  <div class="modal hide" id="modal-add-event" style="width:1000px;margin-left:-500px">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal">×</button>
-      <h3>$!{secDept.deptAddr}</h3>
-    </div>
-    <div class="modal-body">
-		<img src="http://html54stock.outofmemory.cn/imgs/k-controller.JPG"/>
-    </div>
-    <div class="modal-footer"> <a href="#" class="btn" data-dismiss="modal">取消</a> <a href="#" id="add-event-submit" class="btn btn-primary">确定</a> </div>
-  </div>
 <script src="#resources('js/pagination.js')"></script>
 <script type="text/javascript">
 	function gotoPage(pageNo){
