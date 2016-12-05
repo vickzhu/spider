@@ -464,4 +464,7 @@
   			operate_clique=#{cliqueId,jdbcType=BIGINT}  
   			AND trade_date &gt; #{startDate,jdbcType=VARCHAR} AND trade_date &lt; #{endDate,jdbcType=VARCHAR})
   </select>
+  <update id="clearClique" parameterType="java.lang.Long" >
+    update long_hu_detail set clique_id=null where long_hu_id=#{longHuId,jdbcType=BIGINT}
+  </update>
 </mapper>

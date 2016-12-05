@@ -40,4 +40,10 @@ public interface LongHuDetailService extends BaseService<LongHuDetail, LongHuDet
 	 * @return
 	 */
 	public int count4Clique(String deptCode, String symbol, long cliqueId, String startDate, String endDate);
+	
+	/**
+	 * 清除帮派信息
+	 * @param longHuId
+	 */
+	public void clearClique(long longHuId);
 }

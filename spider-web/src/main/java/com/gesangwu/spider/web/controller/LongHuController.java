@@ -166,6 +166,7 @@ public class LongHuController {
 		}
 		long longhuId = Long.valueOf(longHuIdStr);
 		LongHu longhu = lhService.selectByPrimaryKey(longhuId);
+		lhDetailService.clearClique(longhu.getId());
 		lhService.analyzeClique(longhu);
 	}
 	

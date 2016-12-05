@@ -23,4 +23,7 @@ public interface LongHuDetailMapper extends BaseMapper<LongHuDetail, LongHuDetai
 	
 	int count4Clique(@Param("deptCode")String deptCode, @Param("symbol")String symbol,
 			@Param("cliqueId")Long cliqueId, @Param("startDate")String startDate, @Param("endDate")String endDate);
+
+	void clearClique(@Param("longHuId")Long longHuId);
+	
 }
