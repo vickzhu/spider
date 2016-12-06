@@ -20,6 +20,8 @@ import com.gesangwu.spider.biz.service.HolderNumService;
 @RequestMapping("/holder-num")
 public class HolderNumController {
 	
+	private static int cpp = 15;
+	
 	@Resource
 	private HolderNumService hnService;
 	
@@ -45,7 +47,7 @@ public class HolderNumController {
 		criteria.andEndDateLessThanOrEqualTo(end);
 		example.setOrderByClause("chg_rate asc");
 		
-		Page<HolderNum> page = new Page<HolderNum>(curPage, 10);
+		Page<HolderNum> page = new Page<HolderNum>(curPage, cpp);
 		hnService.selectByPagination(example, page);
 		
 		ModelAndView mav = new ModelAndView("holderNumList");

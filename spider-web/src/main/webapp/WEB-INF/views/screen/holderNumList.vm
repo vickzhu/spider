@@ -38,7 +38,7 @@
 					<a href="#springUrl('/stock')?symbol=$!{hn.symbol}" target="_blank">$!{companyTool.getStockName($!{hn.symbol})}</a>
 				  </td>
 				  <td>$!{hn.totality}</td>
-				  <td style="color:#if($!{hn.chgRate}>0)red#else($!{hn.chgRate}<0)green#end">$!{hn.chgRate}%</td>
+				  <td style="color:#if($!{hn.chgRate}>0)red#elseif($!{hn.chgRate}<0)green#end">$!{hn.chgRate}%</td>
 				  <td>$!{hn.endDate}</td>
 				  <td>$!{date.format("yyyy-MM-dd",$!{hn.gmtCreate})}</td>
 				  <td>查看历史</td>
@@ -65,8 +65,7 @@ $(function(){
 <script src="#resources('js/pagination.js')"></script>
 <script type="text/javascript">
 	function gotoPage(pageNo){
-		$("#curPage").val(pageNo);
-		$("#searchForm").submit();
+		window.location.href="#springUrl('/holder-num/list')?start=$!{start}&end=$!{end}&curPage="+pageNo;
 	}
 	$('#page_nav').html(new Pagination($!{page.curPage},$!{page.totalPages}, gotoPage).getHtml());
 </script>
