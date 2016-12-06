@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.gandalf.framework.mybatis.BaseMapper;
 import com.gandalf.framework.mybatis.BaseServiceImpl;
+import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.dao.mapper.HolderNumMapper;
 import com.gesangwu.spider.biz.dao.model.HolderNum;
 import com.gesangwu.spider.biz.dao.model.HolderNumExample;
@@ -33,6 +34,17 @@ public class HolderNumServiceImpl extends BaseServiceImpl<HolderNum, HolderNumEx
 	@Override
 	public void insertBatch(List<HolderNum> hnList) {
 		mapper.insertBatch(hnList);		
+	}
+
+	@Override
+	public void selectByPagination(HolderNumExample example,
+			Page<HolderNum> page) {
+		example.setOffset(page.getOffset());
+        example.setRows(page.getPageSize());
+        int totalCounts = mapper.countByExample(example);
+        page.setTotalCounts(totalCounts);
+        List<HolderNum> hnList = mapper.selectByExample(example);
+        page.setRecords(hnList);
 	}
 
 }

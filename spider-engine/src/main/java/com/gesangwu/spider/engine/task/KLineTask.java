@@ -60,7 +60,7 @@ public class KLineTask {
 		long end = c.getTimeInMillis();
 		execute(start, end);
 		long endMil = System.currentTimeMillis();
-		logger.info("Fetch the k-line used:"+(endMil-startMil)+"ms!");
+		logger.info("Fetch the k-line used:"+(endMil-startMil)/1000+"s!");
 	}
 	
 	public void execute(long start, long end) {
