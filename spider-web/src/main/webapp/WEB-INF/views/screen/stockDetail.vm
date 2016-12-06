@@ -80,13 +80,13 @@
                     </tr>
                   </thead>
                   <tbody>
-    				#foreach($history in ${page.records})
+    				#foreach($lvs in ${lvsList})
                     <tr>
     				  <td>$!{velocityCount}</td>
-    				  <td>$!{history.sellTotal}</td>
-    				  <td>$!{history.buyTotal}</td>
-    				  <td>$!{history.equalTotal}</td>
-    				  <td>$!{history.tradeDate}</td>
+    				  <td>$!{lvs.sellTotal}</td>
+    				  <td>$!{lvs.buyTotal}</td>
+    				  <td>$!{lvs.equalTotal}</td>
+    				  <td>$!{lvs.tradeDate}</td>
                     </tr>
     				#end
                   </tbody>
