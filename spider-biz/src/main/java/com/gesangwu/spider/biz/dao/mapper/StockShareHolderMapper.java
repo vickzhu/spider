@@ -21,4 +21,6 @@ public interface StockShareHolderMapper extends BaseMapper<StockShareHolder, Sto
 	
 	List<StockShareHolderExt> selectLatestBySymbol(String symbol);
 	
+	Integer countCliqueByExample(StockShareHolderExample example);
+	
 }

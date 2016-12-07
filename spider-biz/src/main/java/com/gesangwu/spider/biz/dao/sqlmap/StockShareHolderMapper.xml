@@ -416,6 +416,14 @@
       limit ${offset},${rows}
     </if>
   </select>
+  <select id="countCliqueByExample" parameterType="com.gesangwu.spider.biz.dao.model.StockShareHolderExample" resultType="java.lang.Integer" >
+    SELECT 
+    	count(*) 
+	FROM 
+    	stock_shareholder ssh, shareholder sh 
+    WHERE 
+    	ssh.`shareholder` = sh.`id` AND sh.`holder_type`=1 AND sh.`clique_id` IS NOT NULL 
+  </select>
   <select id="selectLatestBySymbol" parameterType="java.lang.String" resultMap="ExtResultMap">
   	SELECT 
     	sh.`holder_name`, sh.`clique_id`, ssh.* 

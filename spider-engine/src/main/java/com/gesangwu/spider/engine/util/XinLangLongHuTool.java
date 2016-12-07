@@ -35,17 +35,4 @@ public class XinLangLongHuTool {
 		}
 		return longHuMap;
 	}
-	
-	public static void main(String[] args){
-		String url="http://vip.stock.finance.sina.com.cn/q/go.php/vInvestConsult/kind/lhb/index.phtml";
-		long start = System.currentTimeMillis();
-		Map<String, String> headerMap = new HashMap<String, String>();
-		headerMap.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36");
-		headerMap.put("Accept-Encoding", "gzip, deflate, sdch");
-		String result = HttpTool.get(url, headerMap, Charset.forName("GBK"));
-		long end = System.currentTimeMillis();
-		System.out.println(result);
-		System.out.println(result.length()/1024);
-		System.out.println(end-start);
-	}
 }

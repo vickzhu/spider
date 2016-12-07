@@ -65,7 +65,7 @@ public class StockShareHolderServiceImpl extends BaseServiceImpl<StockShareHolde
 			Page<StockShareHolderExt> page) {
 		example.setOffset(page.getOffset());
         example.setRows(page.getPageSize());
-        int totalCounts = mapper.countByExample(example);
+        int totalCounts = mapper.countCliqueByExample(example);
         page.setTotalCounts(totalCounts);
         List<StockShareHolderExt> companyList = mapper.selectCliqueByExample(example);
         page.setRecords(companyList);

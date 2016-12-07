@@ -55,7 +55,7 @@ public class FiveRangeTask {
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < size; i++) {
 			Company company = companyList.get(i);
-			if(company.getLastPrice().doubleValue() <= 5){//估计太低的不予计算
+			if(company.getLastPrice().doubleValue() <= 5){//股价太低的不予计算
 				continue;
 			}
 			String stockName = company.getStockName();

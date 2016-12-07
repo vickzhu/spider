@@ -79,8 +79,7 @@
 <script src="#resources('js/pagination.js')"></script>
 <script type="text/javascript">
 	function gotoPage(pageNo){
-		$("#curPage").val(pageNo);
-		$("#searchForm").submit();
+		window.location.href="#springUrl('/shareholder/clique')?curPage="+pageNo;
 	}
 	$('#page_nav').html(new Pagination($!{page.curPage},$!{page.totalPages}, gotoPage).getHtml());
 </script>
