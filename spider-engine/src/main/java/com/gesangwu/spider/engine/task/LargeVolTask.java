@@ -65,6 +65,7 @@ public class LargeVolTask {
 		execute(timePeriod);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void execute(String timePeriod){
 		Date now = new Date();
 		long start = System.currentTimeMillis();
