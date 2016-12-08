@@ -1,7 +1,8 @@
 package com.gesangwu.spider.engine.task;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,20 +15,43 @@ import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
-import com.gesangwu.spider.biz.common.DecimalUtil;
-import com.gesangwu.spider.biz.dao.model.Company;
+import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.service.CompanyService;
-import com.gesangwu.spider.engine.util.UnicodeUtil;
+import com.gesangwu.spider.biz.service.KLineService;
 
 /**
+ * 1"symbol",
+ * 2"code",
+ * 3"name",
+ * 4"trade",当前价格
+ * 5"pricechange",涨跌额
+ * 6"changepercent",涨跌幅
+ * 7"buy",买1
+ * 8"sell",卖1
+ * 9"settlement",昨收
+ * 10"open",今开
+ * 11"high",最高
+ * 12"low",最低
+ * 13"volume",成交量
+ * 14"amount",成交额
+ * 15"ticktime",成交时间
+ * 16"per",
+ * 17"per_d",
+ * 18"nta",
+ * 19"pb",市净率
+ * 20"mktcap",总市值
+ * 21"nmc",流通市值
+ * 22"turnoverratio",换手率
+ * 23"favor",
+ * 24"guba"
  * 公司信息更新
  * @author zhuxb
  *
  */
 @Component
-public class CompanyUpdateTask {
+public class KLineSinaTask {
 	
-	private static final Logger logger = LoggerFactory.getLogger(CompanyUpdateTask.class);
+	private static final Logger logger = LoggerFactory.getLogger(KLineSinaTask.class);
 	
 	private static final String r1 = "\"day\"\\:\"([0-9\\-]*)\",\"count\"\\:([0-9]*).*\"items\"\\:\\[\\[(.*)\\]\\]\\}\\]\\)";
 	private static final String r2 = "\"items\"\\:\\[\\[(.*)\\]\\]\\}\\]\\)";
@@ -37,8 +61,10 @@ public class CompanyUpdateTask {
 	
 	@Resource
 	private CompanyService companyService;
+	@Resource
+	private KLineService kLineService;
 
-	@Scheduled(cron="0 10 9 * * ?")
+	@Scheduled(cron="0 10 15 * * ?")
 	public void execute(){
 		long start = System.currentTimeMillis();
 		
@@ -50,7 +76,7 @@ public class CompanyUpdateTask {
 		String totalCounts = matcher.group(2);
 		int pages = (Integer.valueOf(totalCounts)+cpp-1)/cpp;
 		String detailList = matcher.group(3);
-		sou(detailList);
+		save(detailList);
 		for(int curPage = 2; curPage <= pages; curPage++){
 			result = HttpTool.get(buildUrl(curPage));
 			matcher = p2.matcher(result);
@@ -58,10 +84,10 @@ public class CompanyUpdateTask {
 				continue;
 			}
 			detailList = matcher.group(1);
-			sou(detailList);
+			save(detailList);
 		}	
 		long end = System.currentTimeMillis();
-		logger.info("Update Company use:" + (end-start)+"ms!");
+		logger.info("Fetch KLine from sina used:" + (end-start)+"ms!");
 	}
 	
 	private String buildUrl(int curPage){
@@ -78,40 +104,39 @@ public class CompanyUpdateTask {
 	 * save or update
 	 * @param detailList
 	 */
-	private void sou(String detailList){
+	private void save(String detailList){
 		detailList = detailList.replaceAll("\"", "");
 		String[] details = detailList.split("\\],\\[");
 		Date now = new Date();
+		List<KLine> kLineList = new ArrayList<KLine>();
 		for(String detail : details) {
+			KLine kLine = new KLine();
 			String[] columns = detail.split(SymbolConstant.COMMA);
 			String symbol = columns[0];
-			String code = columns[1];
-			String stockName = columns[2];
-			String encodeStockName = UnicodeUtil.decodeUnicode(stockName);
-			String marketValue = columns[19];
-			String circMarketValue = columns[20];
-			String lastPrice = columns[8];
-			double mv = Double.valueOf(marketValue)*10000;
-			double fmv = DecimalUtil.format(Double.valueOf(circMarketValue)*10000, 2).doubleValue();
-			Company company = companyService.selectBySymbol(symbol);
-			if(company == null){
-				company = new Company();
-				company.setSymbol(symbol);
-				company.setStockCode(code);
-				company.setStockName(encodeStockName);
-				company.setMarketValue(mv);
-				company.setFloatMarketValue(fmv);
-				company.setLastPrice(new BigDecimal(lastPrice));
-				company.setGmtCreate(now);
-				companyService.insert(company);
-			} else {
-				company.setStockName(encodeStockName);
-				company.setMarketValue(mv);
-				company.setFloatMarketValue(fmv);
-				company.setLastPrice(new BigDecimal(lastPrice));
-				company.setGmtUpdate(now);
-				companyService.updateByPrimaryKey(company);
-			}
+			String lastPrice = columns[8];//昨收
+			String volume = columns[12];
+			String amt = columns[13];//成交额
+			String open = columns[9];
+			String close = columns[3];
+			String high = columns[10];
+			String low = columns[11];
+			String chgAmt = columns[4];
+			String chgPct = columns[5];
+			String turnrate = columns[21];
+			
+			kLine.setSymbol(symbol);
+			kLine.setVolume(Long.valueOf(volume));
+			kLine.setOpen(Double.valueOf(open));
+			kLine.setClose(Double.valueOf(close));
+			kLine.setHigh(Double.valueOf(high));
+			kLine.setLow(Double.valueOf(low));
+			kLine.setChangeAmount(Double.valueOf(chgAmt));
+			kLine.setPercent(Double.valueOf(chgPct));
+			kLine.setTurnrate(Double.valueOf(turnrate));
+			kLine.setGmtCreate(now);
+			
+			kLineList.add(kLine);
 		}
+		kLineService.batchInsert(kLineList);
 	}
 }

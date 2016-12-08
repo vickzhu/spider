@@ -3,7 +3,10 @@
 <!--breadcrumbs-->
   <div id="content-header">
     <div id="breadcrumb"> <a href="#springUrl('/')" title="回到首页" class="tip-bottom"><i class="icon-home"></i>首页</a><a href="javascript:;" class="current">股票详情</a> </div>
-	<h1>$!{company.stockName}</h1>
+	<h1>$!{company.stockName}
+		<span class="label label-info">
+			<a href="#springUrl('/longhu/detail')?symbol=$!{company.symbol}" target="_blank">查看龙虎榜</a>
+		</span></h1>
   </div>
 <!--End-breadcrumbs-->
 	<div class="container-fluid">

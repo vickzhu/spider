@@ -19,8 +19,10 @@ import com.gandalf.framework.net.HttpTool;
 import com.gesangwu.spider.biz.common.DecimalUtil;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.FiveRangeStatis;
+import com.gesangwu.spider.biz.dao.model.JdStatis;
 import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.FiveRangeStatisService;
+import com.gesangwu.spider.biz.service.JdStatisService;
 import com.gesangwu.spider.engine.util.LittleCompanyHolder;
 import com.gesangwu.spider.engine.util.TradeTimeUtil;
 
@@ -44,6 +46,8 @@ public class FiveRangeTask {
 	private CompanyService companyService;
 	@Resource
 	private FiveRangeStatisService statisService;
+	@Resource
+	private JdStatisService jdStatisService;
 	
 	@Scheduled(cron = "0 0/1 9-14 * * MON-FRI")
 	public void execute(){
@@ -117,9 +121,24 @@ public class FiveRangeTask {
 				}
 				s = checkSuperBigPrice(bigSellPrice);
 			}
-			
+			String tradeDate = details[30];
 			if(jiadan == 2){//上下夹单成立
-				
+				JdStatis jdStatis = jdStatisService.selectBySymbolAndDate(symbol, tradeDate);
+				if(jdStatis == null){
+					Company company = companyService.selectBySymbol(symbol);
+					jdStatis = new JdStatis();
+					double amv = DecimalUtil.format(company.getActiveMarketValue()/100000000,2).doubleValue();
+					jdStatis.setActiveFloatMarket(amv);
+					jdStatis.setGmtCreate(now);
+					jdStatis.setJdTotal(1);
+					jdStatis.setSymbol(symbol);
+					jdStatis.setTradeDate(tradeDate);
+					jdStatisService.insert(jdStatis);
+				} else {
+					jdStatis.setJdTotal(jdStatis.getJdTotal()+1);
+					jdStatis.setGmtUpdate(now);
+					jdStatisService.updateByPrimaryKey(jdStatis);
+				}
 			}
 			
 //			if(checkBuy(details)){
@@ -129,9 +148,9 @@ public class FiveRangeTask {
 //			if(checkSell(details)){
 //				s = true;
 //			}
-			String date = details[30];
+			
 			if(b||s){
-				FiveRangeStatis statis = statisService.selectBySymbolAndDate(symbol, date);
+				FiveRangeStatis statis = statisService.selectBySymbolAndDate(symbol, tradeDate);
 				if(statis == null){
 					statis = new FiveRangeStatis();
 					if(b){
@@ -143,7 +162,7 @@ public class FiveRangeTask {
 						statis.setBigBuy(0);
 					}
 					Company company = companyService.selectBySymbol(symbol);
-					statis.setTradeDate(date);
+					statis.setTradeDate(tradeDate);
 					statis.setSymbol(symbol);
 					double amv = DecimalUtil.format(company.getActiveMarketValue()/100000000, 2).doubleValue();
 					statis.setActiveMarketValue(amv);
