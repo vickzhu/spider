@@ -33,6 +33,10 @@ public class KLine {
 
     private String tradeDate;
 
+    private Double amount;
+
+    private Double yesterdayClose;
+
     private Date gmtCreate;
 
     public Long getId() {
@@ -153,6 +157,22 @@ public class KLine {
 
     public void setTradeDate(String tradeDate) {
         this.tradeDate = tradeDate == null ? null : tradeDate.trim();
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public Double getYesterdayClose() {
+        return yesterdayClose;
+    }
+
+    public void setYesterdayClose(Double yesterdayClose) {
+        this.yesterdayClose = yesterdayClose;
     }
 
     public Date getGmtCreate() {

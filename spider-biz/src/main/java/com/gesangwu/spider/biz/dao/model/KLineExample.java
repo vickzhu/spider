@@ -1045,6 +1045,126 @@ public class KLineExample {
             return (Criteria) this;
         }
 
+        public Criteria andAmountIsNull() {
+            addCriterion("amount is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountIsNotNull() {
+            addCriterion("amount is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountEqualTo(Double value) {
+            addCriterion("amount =", value, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountNotEqualTo(Double value) {
+            addCriterion("amount <>", value, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountGreaterThan(Double value) {
+            addCriterion("amount >", value, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountGreaterThanOrEqualTo(Double value) {
+            addCriterion("amount >=", value, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountLessThan(Double value) {
+            addCriterion("amount <", value, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountLessThanOrEqualTo(Double value) {
+            addCriterion("amount <=", value, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountIn(List<Double> values) {
+            addCriterion("amount in", values, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountNotIn(List<Double> values) {
+            addCriterion("amount not in", values, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountBetween(Double value1, Double value2) {
+            addCriterion("amount between", value1, value2, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountNotBetween(Double value1, Double value2) {
+            addCriterion("amount not between", value1, value2, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andYesterdayCloseIsNull() {
+            addCriterion("yesterday_close is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYesterdayCloseIsNotNull() {
+            addCriterion("yesterday_close is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYesterdayCloseEqualTo(Double value) {
+            addCriterion("yesterday_close =", value, "yesterdayClose");
+            return (Criteria) this;
+        }
+
+        public Criteria andYesterdayCloseNotEqualTo(Double value) {
+            addCriterion("yesterday_close <>", value, "yesterdayClose");
+            return (Criteria) this;
+        }
+
+        public Criteria andYesterdayCloseGreaterThan(Double value) {
+            addCriterion("yesterday_close >", value, "yesterdayClose");
+            return (Criteria) this;
+        }
+
+        public Criteria andYesterdayCloseGreaterThanOrEqualTo(Double value) {
+            addCriterion("yesterday_close >=", value, "yesterdayClose");
+            return (Criteria) this;
+        }
+
+        public Criteria andYesterdayCloseLessThan(Double value) {
+            addCriterion("yesterday_close <", value, "yesterdayClose");
+            return (Criteria) this;
+        }
+
+        public Criteria andYesterdayCloseLessThanOrEqualTo(Double value) {
+            addCriterion("yesterday_close <=", value, "yesterdayClose");
+            return (Criteria) this;
+        }
+
+        public Criteria andYesterdayCloseIn(List<Double> values) {
+            addCriterion("yesterday_close in", values, "yesterdayClose");
+            return (Criteria) this;
+        }
+
+        public Criteria andYesterdayCloseNotIn(List<Double> values) {
+            addCriterion("yesterday_close not in", values, "yesterdayClose");
+            return (Criteria) this;
+        }
+
+        public Criteria andYesterdayCloseBetween(Double value1, Double value2) {
+            addCriterion("yesterday_close between", value1, value2, "yesterdayClose");
+            return (Criteria) this;
+        }
+
+        public Criteria andYesterdayCloseNotBetween(Double value1, Double value2) {
+            addCriterion("yesterday_close not between", value1, value2, "yesterdayClose");
+            return (Criteria) this;
+        }
+
         public Criteria andGmtCreateIsNull() {
             addCriterion("gmt_create is null");
             return (Criteria) this;

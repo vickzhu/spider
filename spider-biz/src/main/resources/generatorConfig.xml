@@ -141,19 +141,23 @@
 		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
 		</table>
 		
-		
-		<table tableName="k_line" domainObjectName="KLine"> 
-			<property name="suppressAllComments" value="true"/> 
-		    <property name="suppressDate" value="true"/>
-		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
-		</table>
-		-->	
 		<table tableName="upper_shadow" domainObjectName="UpperShadow"> 
 			<property name="suppressAllComments" value="true"/> 
 		    <property name="suppressDate" value="true"/>
 		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
 		</table>
-		
+			
+		<table tableName="k_line" domainObjectName="KLine"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
+		-->
+		<table tableName="jd_statis" domainObjectName="JdStatis"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
 	</context>
 	
 </generatorConfiguration> 

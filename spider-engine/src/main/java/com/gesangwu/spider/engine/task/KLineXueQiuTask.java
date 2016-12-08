@@ -15,8 +15,6 @@ import javax.annotation.Resource;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.util.StringUtil;
@@ -30,10 +28,10 @@ import com.gesangwu.spider.biz.service.KLineService;
  * @author zhuxb
  *
  */
-@Component
-public class KLineTask {
+//@Component
+public class KLineXueQiuTask {
 	
-	private static final Logger logger = LoggerFactory.getLogger(KLineTask.class);
+	private static final Logger logger = LoggerFactory.getLogger(KLineXueQiuTask.class);
 	
 	private static final String r = "\\{\"volume\"\\:([0-9]*),\"open\"\\:([0-9\\.]*),\"high\"\\:([0-9\\.]*),\"close\"\\:([0-9\\.]*),\"low\"\\:([0-9\\.]*),\"chg\"\\:(\\-?[0-9\\.]*),\"percent\"\\:(\\-?[0-9\\.]*),\"turnrate\"\\:([0-9\\.]*),\"ma5\"\\:([0-9\\.]*),\"ma10\"\\:([0-9\\.]*),\"ma20\"\\:([0-9\\.]*),\"ma30\"\\:([0-9\\.]*),\"dif\"\\:\\-?[0-9\\.]*,\"dea\"\\:\\-?[0-9\\.]*,\"macd\"\\:\\-?[0-9\\.]*,\"time\"\\:\"([^\"]*)\"\\}";
 	private static Pattern p = Pattern.compile(r);
@@ -45,7 +43,7 @@ public class KLineTask {
 	@Resource
 	private KLineService kLineService;
 	
-	@Scheduled(cron = "0 05 15 * * MON-FRI")
+//	@Scheduled(cron = "0 05 15 * * MON-FRI")
 	public void execute(){
 		long startMil = System.currentTimeMillis();
 		Calendar c = Calendar.getInstance();
