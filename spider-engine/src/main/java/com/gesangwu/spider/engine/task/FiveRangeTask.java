@@ -105,22 +105,24 @@ public class FiveRangeTask {
 			}
 			String[] buyPriceArr = {details[11],details[13],details[15],details[17],details[19]};
 			String[] buyVolArr = {details[10],details[12],details[14],details[16],details[18]};
-			List<Double> bigBuyPrice = getBigPrice(buyPriceArr, buyVolArr);
-			if(bigBuyPrice.size() > 0){
-				if(bigBuyPrice.size() == 1){
+			List<Double> bigBuyAmt = getBigPrice(buyPriceArr, buyVolArr);
+			if(bigBuyAmt.size() > 0){
+				b = checkSuperBigPrice(bigBuyAmt);
+				if(existJiadan(buyVolArr)){
 					jiadan++;
 				}
-				b = checkSuperBigPrice(bigBuyPrice);
 			}
+			
 			String[] sellPriceArr = {details[21],details[23],details[25],details[27],details[29]};
 			String[] sellVolArr = {details[20],details[22],details[24],details[26],details[28]};
-			List<Double> bigSellPrice = getBigPrice(sellPriceArr, sellVolArr);
-			if(bigSellPrice.size() > 0){
-				if(bigSellPrice.size() == 1){
+			List<Double> bigSellAmt = getBigPrice(sellPriceArr, sellVolArr);
+			if(bigSellAmt.size() > 0){				
+				s = checkSuperBigPrice(bigSellAmt);
+				if(jiadan == 1 && existJiadan(sellVolArr)){
 					jiadan++;
 				}
-				s = checkSuperBigPrice(bigSellPrice);
 			}
+			
 			String tradeDate = details[30];
 			if(jiadan == 2){//上下夹单成立
 				JdStatis jdStatis = jdStatisService.selectBySymbolAndDate(symbol, tradeDate);
@@ -140,14 +142,6 @@ public class FiveRangeTask {
 					jdStatisService.updateByPrimaryKey(jdStatis);
 				}
 			}
-			
-//			if(checkBuy(details)){
-//				b = true;
-//			}
-//
-//			if(checkSell(details)){
-//				s = true;
-//			}
 			
 			if(b||s){
 				FiveRangeStatis statis = statisService.selectBySymbolAndDate(symbol, tradeDate);
@@ -185,6 +179,27 @@ public class FiveRangeTask {
 	
 	private static final double minBigPrice = 2000000;
 	private static final int min_price = 10000000;
+
+	
+	/**
+	 * 是否存在夹单，判断依据，最大
+	 * @param volArr
+	 * @return
+	 */
+	private boolean existJiadan(String[] volArr){
+		int maxLen = 0;
+		int count = 0;
+		for (String vol : volArr) {
+			int tmpLen = vol.length();
+			if(tmpLen > maxLen){
+				maxLen = tmpLen;
+				count = 1;
+			} else if(tmpLen == maxLen){
+				count++;
+			}
+		}
+		return count == 1;
+	}
 	
 	/**
 	 * 获得大单
@@ -214,108 +229,6 @@ public class FiveRangeTask {
 		}
 		return false;
 	}
-	
-//	public static void main(String[] args){
-//		FiveRangeTask task = new FiveRangeTask();
-//		String result = HttpTool.get("http://hq.sinajs.cn/etag.php?list=sz002211",Charset.forName("GBK"));
-//		Matcher matcher = r.matcher(result);
-//		while(matcher.find()){
-//			String detail = matcher.group(2);
-//			String[] details = detail.split(SymbolConstant.COMMA);
-//			if(details.length < 30){
-//				continue;
-//			}
-//			String[] buyPriceArr = {details[11],details[13],details[15],details[17],details[19]};
-//			String[] buyVolArr = {details[10],details[12],details[14],details[16],details[18]};
-//			List<Double> bigBuyPrice = task.getBigPrice(buyPriceArr, buyVolArr);
-//			if(bigBuyPrice.size() > 0){
-//				boolean superBigBuy = task.checkSuperBigPrice(bigBuyPrice);
-//				System.out.println(superBigBuy);
-//			}
-//			for (Double double1 : bigBuyPrice) {
-//				System.out.println(double1);
-//			}
-//			String[] sellPriceArr = {details[21],details[23],details[25],details[27],details[29]};
-//			String[] sellVolArr = {details[20],details[22],details[24],details[26],details[28]};
-//			List<Double> bigSellPrice = task.getBigPrice(sellPriceArr, sellVolArr);
-//			for (Double double1 : bigSellPrice) {
-//				System.out.println(double1);
-//			}
-//			if(bigSellPrice.size() > 0){
-//				boolean superBigSell = task.checkSuperBigPrice(bigSellPrice);
-//				System.out.println(superBigSell);
-//			}
-//		}
-//	}
-	
-	
-//	private boolean checkBuy(String[] details){
-//		String b_1_c = details[10];
-//		String b_2_c = details[12];
-//		String b_3_c = details[14];
-//		String b_4_c = details[16];
-//		String b_5_c = details[18];
-//		String buy_1_price = details[11];
-//		String buy_2_price = details[13];
-//		String buy_3_price = details[15];
-//		String buy_4_price = details[17];
-//		String buy_5_price = details[19];
-//		double b1amt = calcAmt(b_1_c, buy_1_price);
-//		if(b1amt >= min_price){
-//			return true;
-//		}
-//		double b2amt = calcAmt(b_2_c, buy_2_price);
-//		if(b2amt >= min_price){
-//			return true;
-//		}
-//		double b3amt = calcAmt(b_3_c, buy_3_price);
-//		if(b3amt >= min_price){
-//			return true;
-//		}
-//		double b4amt = calcAmt(b_4_c, buy_4_price);
-//		if(b4amt >= min_price){
-//			return true;
-//		}
-//		double b5amt = calcAmt(b_5_c, buy_5_price);
-//		if(b5amt >= min_price){
-//			return true;
-//		}
-//		return false;
-//	}
-	
-//	private boolean checkSell(String[] details){
-//		String s_1_c = details[20];
-//		String s_2_c = details[22];
-//		String s_3_c = details[24];
-//		String s_4_c = details[26];
-//		String s_5_c = details[28];
-//		String sell_1_price = details[21];
-//		String sell_2_price = details[23];
-//		String sell_3_price = details[25];
-//		String sell_4_price = details[27];
-//		String sell_5_price = details[29];
-//		double b1amt = calcAmt(s_1_c, sell_1_price);
-//		if(b1amt >= min_price){
-//			return true;
-//		}
-//		double b2amt = calcAmt(s_2_c, sell_2_price);
-//		if(b2amt >= min_price){
-//			return true;
-//		}
-//		double b3amt = calcAmt(s_3_c, sell_3_price);
-//		if(b3amt >= min_price){
-//			return true;
-//		}
-//		double b4amt = calcAmt(s_4_c, sell_4_price);
-//		if(b4amt >= min_price){
-//			return true;
-//		}
-//		double b5amt = calcAmt(s_5_c, sell_5_price);
-//		if(b5amt >= min_price){
-//			return true;
-//		}
-//		return false;
-//	}
 	
 	/**
 	 * 计算涨跌幅

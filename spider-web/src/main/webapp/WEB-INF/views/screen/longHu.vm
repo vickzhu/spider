@@ -94,7 +94,7 @@
 	$(function(){
 		$(".lh_detail").click(function(){
 			var symbol = $(this).parent().parent().attr("symbol");
-			window.location.href="#springUrl('/longhu/detail')?symbol="+symbol+"&tradeDate=${tradeDate}";
+			window.open("#springUrl('/longhu/detail')?symbol="+symbol+"&tradeDate=${tradeDate}");
 		});
 		$('.datepicker').datepicker({format: 'yyyy-mm-dd',
             weekStart: 1,
