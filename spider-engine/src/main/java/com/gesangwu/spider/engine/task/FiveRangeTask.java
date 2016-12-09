@@ -132,6 +132,7 @@ public class FiveRangeTask {
 					double amv = DecimalUtil.format(company.getActiveMarketValue()/100000000,2).doubleValue();
 					jdStatis.setActiveFloatMarket(amv);
 					jdStatis.setGmtCreate(now);
+					jdStatis.setGmtUpdate(now);
 					jdStatis.setJdTotal(1);
 					jdStatis.setSymbol(symbol);
 					jdStatis.setTradeDate(tradeDate);
@@ -177,7 +178,7 @@ public class FiveRangeTask {
 		}
 	}
 	
-	private static final double minBigPrice = 2000000;
+	private static final double minBigPrice = 3000000;
 	private static final int min_price = 10000000;
 
 	
