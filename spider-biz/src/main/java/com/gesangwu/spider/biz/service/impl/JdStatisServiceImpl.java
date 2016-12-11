@@ -36,4 +36,10 @@ public class JdStatisServiceImpl extends BaseServiceImpl<JdStatis, JdStatisExamp
 		return CollectionUtils.isEmpty(jdList) ? null : jdList.get(0);
 	}
 
+	@Override
+	public List<JdStatis> selectByTradeDate(String tradeDate, double minAmv,
+			double maxAmv) {
+		return mapper.selectByTradeDate(tradeDate, minAmv, maxAmv);
+	}
+
 }

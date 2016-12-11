@@ -1,3 +1,6 @@
+############
+## 夹单列表  ##
+############
 <link rel="stylesheet" href="#resources('css/datepicker.css')" />
 <div id="content">
   <div id="content-header">
@@ -9,7 +12,7 @@
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
             <h5>大单成交列表</h5>
-			<a class="label label-info" style="line-height:20px;">成交金额&gt;=800万</a>
+			<a class="label label-info" style="line-height:20px;">夹单金额&gt;=300万</a>
           </div>
 		  <div class="widget-content nopadding">
 			<form id="searchForm" method="get" class="form-horizontal">
@@ -40,28 +43,24 @@
                   <th>代码</th>
 				  <th>股票</th>
 				  <th>可流通市值</th>
-                  <th>卖</th>
-				  <th>买</th>
-				  <th>平</th>
+				  <th>次数</th>
+				  <th>创建时间</th>
 				  <th>更新时间</th>
-                  <th>操作</th>
                 </tr>
               </thead>
               <tbody>
-				#foreach($statis in ${list})
+				#foreach($statis in ${jdStatisList})
                 <tr>
 				  <td>$!{velocityCount}</td>
                   <td>$!{statis.symbol}</td>
                   <td><a href="#springUrl('/stock?symbol=')$!{statis.symbol}" target="_blank">$!{companyTool.getStockName($!{statis.symbol})}</a></td>
-				  <td>$!{statis.activeMarketValue}亿</td>
-				  <td #if($!{statis.sellTotal}>0)style="color:green"#end>$!{statis.sellTotal}</td>
-				  <td #if($!{statis.buyTotal}>0)style="color:red"#end>$!{statis.buyTotal}</td>
-				  <td>$!{statis.equalTotal}</td>
+				  <td>$!{statis.activeFloatMarket}亿</td>
+				  <td>$!{statis.jdTotal}</td>
 				  <td>
-					$!{date.format("HH:mm:ss",$!{statis.gmtUpdate})}</td>
-                  <td symbol="$!{statis.symbol}">
-					<a class="ddxq" href="javascript:;">查看详情</a>
-					<a class="ddls" href="javascript:;">查看历史</a>
+					$!{date.format("HH:mm:ss",$!{statis.gmtCreate})}
+				  </td>
+				  <td>
+					$!{date.format("HH:mm:ss",$!{statis.gmtUpdate})}
 				  </td>
                 </tr>
 				#end
@@ -75,26 +74,16 @@
 </div>
 <script src="#resources('layer/layer.js')"></script>
 <script type="text/javascript">
-	var url = "http://vip.stock.finance.sina.com.cn/quotes_service/view/cn_bill.php?symbol=";
 	$(function(){
-		$(".ddxq").click(function(){
-			var symbol = $(this).parent().attr("symbol");
-			window.open(url+symbol);
-		});
-		
-		$(".ddls").click(function(){
-			var symbol = $(this).parent().attr("symbol");
-			window.open("#springUrl('/largeVol/history')?symbol="+symbol);
-		});
 		
 		$("#lvSearch").click(function(){
-			$("#searchForm").attr("action","#springUrl('/largeVol/r')$!{amvRange}");
+			$("#searchForm").attr("action","#springUrl('/jd/r')$!{amvRange}");
 			$("#searchForm").submit();
 		});
 		
 		$(".search-by-range").click(function(){
 			var range = $(this).attr("range");
-			$("#searchForm").attr("action","#springUrl('/largeVol/r')"+range);
+			$("#searchForm").attr("action","#springUrl('/jd/r')"+range);
 			$("#searchForm").submit();
 		});
 	})

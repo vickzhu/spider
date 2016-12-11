@@ -30,7 +30,7 @@ public class LargeVolController {
 	private LargeVolStatisService lvsService;
 
 	@RequestMapping(value = "/r{range}", method = RequestMethod.GET)
-	public ModelAndView list(HttpServletRequest request,String tradeDate, @PathVariable("range")String range){
+	public ModelAndView list(HttpServletRequest request, String tradeDate, @PathVariable("range")String range){
 		double min = 0;
 		double max = 50;
 		if("1".equals(range)){//一档

@@ -243,4 +243,20 @@
       gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <select id="selectByTradeDate" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from jd_statis
+  	where trade_date = 
+    <choose>
+    	<when test="tradeDate != null and tradeDate != ''">
+    		#{tradeDate,jdbcType=VARCHAR}
+    	</when>
+    	<otherwise>
+    		(SELECT trade_date FROM jd_statis ORDER BY trade_date DESC LIMIT 1)
+    	</otherwise>
+    </choose>
+    and active_float_market&gt;#{minAmv,jdbcType=DOUBLE} and active_float_market&lt;=#{maxAmv,jdbcType=DOUBLE}
+    order by gmt_update desc
+  </select>
 </mapper>
