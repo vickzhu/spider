@@ -128,11 +128,17 @@ public class KLineSinaTask {
 			String chgPct = columns[5];
 			String turnrate = columns[21];
 			
+			long vol = Long.valueOf(volume);
+			double openPrice = Double.valueOf(open);
+			if(vol==0 && openPrice == 0){
+				continue;
+			}			
+			
 			kLine.setSymbol(symbol);
 			kLine.setYesterdayClose(Double.valueOf(yesterdayClose));
-			kLine.setVolume(Long.valueOf(volume));
+			kLine.setVolume(vol);
 			kLine.setAmount(Double.valueOf(amt));
-			kLine.setOpen(Double.valueOf(open));
+			kLine.setOpen(openPrice);
 			kLine.setClose(Double.valueOf(close));
 			kLine.setHigh(Double.valueOf(high));
 			kLine.setLow(Double.valueOf(low));
