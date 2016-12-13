@@ -11,7 +11,7 @@
       <div class="span12">
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-            <h5>大单成交列表</h5>
+            <h5>夹单统计列表</h5>
 			<a class="label label-info" style="line-height:20px;">夹单金额&gt;=300万</a>
           </div>
 		  <div class="widget-content nopadding">
