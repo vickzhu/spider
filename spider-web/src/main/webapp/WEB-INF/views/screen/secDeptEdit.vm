@@ -11,8 +11,8 @@
               <h5>编辑</h5>
             </div>
             <div class="widget-content nopadding">
+				$!{tokenTool.enableAjaxToken()}
               <form id="dept-form" class="form-horizontal">
-				<input type="hidden" id="stock_token" name="$!{tokenTool.tokenKey}" value="$!{tokenTool.token}" />
 				<input type="hidden" id="deptId" name="deptId" value="$!{secDept.id}"/>
 				<input type="hidden" id="deptCode" name="deptCode" value="$!{secDept.code}"/>
 				<div class="control-group">

@@ -39,7 +39,7 @@
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
             <h5>股东人数</h5>
-			<a class="label label-info" style="line-height:20px;">更多</a>
+			<a href="#springUrl('/holder-num/list')" class="label label-info" style="line-height:20px;">更多</a>
           </div>
           <div class="widget-content nopadding">
             <table class="table table-bordered table-striped">
