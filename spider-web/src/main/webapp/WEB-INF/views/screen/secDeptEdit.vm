@@ -115,7 +115,7 @@
 			$("#delete-submit").attr("cliqueId",$(this).attr("cliqueId"));
 		})
 		$("#delete-submit").click(function(){
-			var param={deptCode:$("#deptCode").val(),cliqueId:$(this).attr("cliqueId"),$!{tokenTool.tokenKey}:$("#stock_token").val()};
+			var param={deptCode:$("#deptCode").val(),cliqueId:$(this).attr("cliqueId")};
 			jQuery.post("#springUrl('/sec-dept/exit-clique')",param,function(result){
 				window.location.reload();
 			});
@@ -124,7 +124,7 @@
 			var parentTr = $(this).parent().parent();
 			var cdId = parentTr.attr("cdId");
 			var deptType = parentTr.find("select").val();
-			var param={cdId:cdId,deptType:deptType,$!{tokenTool.tokenKey}:$("#stock_token").val()};
+			var param={cdId:cdId,deptType:deptType};
 			jQuery.post("#springUrl('/sec-dept/edit-clique')",param,function(result){
 				window.location.reload();
 			});
