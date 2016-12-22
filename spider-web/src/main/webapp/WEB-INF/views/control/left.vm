@@ -2,12 +2,12 @@
 
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> Dashboard2</a>
   <ul>
-    <li class="active open"> 
-		<a href="#springUrl('/')"><i class="icon icon-file"></i> <span>首页</span></a>
+    <li class=""> 
+		<a href="#springUrl('/')"><i class="icon icon-home"></i> <span>首页</span></a>
 	</li>
-	<li class="submenu open"> <a href="#"><i class="icon icon-file"></i> <span>股票</span> <span class="label label-important">6</span></a>
+	<li class="submenu open"> <a href="#"><i class="icon icon-signal"></i> <span>股票</span> <span class="label label-important">6</span></a>
       <ul>
-        <li class=""><a href="#springUrl('/longhu/')">龙虎榜</a></li>
+        <li><a href="#springUrl('/longhu/')">龙虎榜</a></li>
 		<li><a href="#springUrl('/clique/')">帮派管理</a></li>
 		<li><a href="#springUrl('/fiverange/ra')">压托大单</a></li>
 		<li><a href="#springUrl('/largeVol/ra')">大单成交</a></li>
@@ -17,13 +17,13 @@
 		<li><a href="#springUrl('/upper-shadow/')">上影线</a></li>
       </ul>
     </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-list"></i> <span>资讯管理</span> <span class="label label-important">2</span></a>
+    <li class="submenu open"> <a href="#"><i class="icon icon-list"></i> <span>资讯管理</span> <span class="label label-important">2</span></a>
       <ul>
         <li><a href="#springUrl('/news/category')">资讯类别</a></li>
         <li><a href="#springUrl('/news')">资讯</a></li>
       </ul>
     </li>
-	<li class="submenu"> <a href="#"><i class="icon icon-cog"></i> <span>系统管理</span><span class="label label-important">4</span></a>
+	<li class="submenu open"> <a href="#"><i class="icon icon-cog"></i> <span>系统管理</span><span class="label label-important">4</span></a>
       <ul>
         <li><a href="#springUrl('/system/user')">用户管理</a></li>
         <li><a href="#springUrl('/system/resourcePermissionGroup')">资源组管理</a></li>
@@ -48,3 +48,28 @@
     </li>
   </ul>
 </div>
+<script type="text/javascript">
+$(function(){
+	var pathname = window.location.pathname;
+	$("#sidebar .submenu").each(function(){
+		$(this).removeClass("open");
+	});
+	$("#sidebar li").each(function(){
+		var href = $(this).find("a:first").attr("href");
+		var indexUrl = "#springUrl('/')";
+		if(pathname == href && href == "#springUrl('/')"){
+			$(this).addClass("active");
+		} else {
+			if(href != "#springUrl('/')" && pathname.indexOf(href) == 0){
+    			$(this).addClass("active");
+    			var p = $(this).parent().parent(".submenu");
+    			if(p){
+    				p.addClass("open");
+    			}
+    			
+    		}
+		}
+		
+	});
+})
+</script>

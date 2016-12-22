@@ -117,7 +117,7 @@
 		$("#delete-submit").click(function(){
 			var param={deptCode:$("#deptCode").val(),cliqueId:$(this).attr("cliqueId")};
 			jQuery.post("#springUrl('/sec-dept/exit-clique')",param,function(result){
-				window.location.reload();
+				
 			});
 		});
 		$(".update-clique").click(function(){
@@ -126,7 +126,7 @@
 			var deptType = parentTr.find("select").val();
 			var param={cdId:cdId,deptType:deptType};
 			jQuery.post("#springUrl('/sec-dept/edit-clique')",param,function(result){
-				window.location.reload();
+				
 			});
 		});
 	});
