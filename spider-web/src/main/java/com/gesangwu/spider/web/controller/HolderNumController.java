@@ -45,6 +45,7 @@ public class HolderNumController {
 		HolderNumExample.Criteria criteria = example.createCriteria();
 		criteria.andEndDateGreaterThanOrEqualTo(start);
 		criteria.andEndDateLessThanOrEqualTo(end);
+		criteria.andChgRateNotEqualTo(0d);
 		example.setOrderByClause("chg_rate asc");
 		
 		Page<HolderNum> page = new Page<HolderNum>(curPage, cpp);

@@ -7,7 +7,7 @@
       <div class="span12">
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-            <h5>股东人数更新</h5>
+            <h5>股东人数变更</h5>
 			<a class="label label-info" style="line-height:20px;"></a>
           </div>
 		  <div class="widget-title">
@@ -41,7 +41,7 @@
 				  <td style="color:#if($!{hn.chgRate}>0)red#elseif($!{hn.chgRate}<0)green#end">$!{hn.chgRate}%</td>
 				  <td>$!{hn.endDate}</td>
 				  <td>$!{date.format("yyyy-MM-dd",$!{hn.gmtCreate})}</td>
-				  <td>查看历史</td>
+				  <td><a href="#springUrl('/stock')?symbol=$!{hn.symbol}" target="_blank">查看详情</a></td>
                 </tr>
 				#end
               </tbody>
