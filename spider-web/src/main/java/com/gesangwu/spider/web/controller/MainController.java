@@ -43,6 +43,8 @@ public class MainController {
 		example.setOrderByClause("end_date desc");
 		example.setOffset(0);
 		example.setRows(10);
+		HolderNumExample.Criteria criteria = example.createCriteria();
+		criteria.andChgRateNotEqualTo(0d);
 		return hnService.selectByExample(example);
 	}
 	

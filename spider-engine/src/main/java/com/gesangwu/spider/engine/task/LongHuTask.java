@@ -134,6 +134,10 @@ public class LongHuTask {
 		if(StringUtil.isNotBlank(longHu.getSrType())){
 			lhdList.addAll(fetchDetail(3, longHu.getSrType(), longHu));
 		}
+		if(lhdList.size() == 0){
+			logger.error("Can't find longhu detail for stock:"+longHu.getSymbol());
+			return;
+		}
 		lhService.insert(longHu, lhdList);
 		lhService.analyzeClique(longHu);
 	}
