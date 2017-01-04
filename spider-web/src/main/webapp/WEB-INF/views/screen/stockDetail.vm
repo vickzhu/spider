@@ -162,7 +162,6 @@
                   <thead>
                     <tr>
     				  <th>姓名</th>
-    				  <th>持股数</th>
 					  <th>持股比例</th>
     				  <th>持股时间</th>
     				  <th>帮派</th>				  
@@ -172,8 +171,7 @@
     				#foreach($sshExt in ${sshExtList})
                     <tr>
     				  <td>$!{sshExt.holderName}</td>
-					  <td>$!{sshExt.holdCount}</td>
-					  <td>$!{sshExt.holdFloatRate}</td>
+					  <td>$!{sshExt.holdFloatRate}%</td>
     				  <td>$!{sshExt.endDate}</td>
     				  <td>$!{longHuTool.getClique($!{sshExt.cliqueId})}</td>
                     </tr>

@@ -135,9 +135,9 @@ public class ShareHolderTask {
 		return sb.toString();
 	}
 	
-	private String getContent(String symbol){
+	public String getContent(String symbol){
 		String url = "https://xueqiu.com/stock/f10/otsholder.json?symbol=" + symbol;
-		return HttpTool.get(url, Charset.forName("GBK"));
+		return HttpTool.get(url, Charset.forName("UTF-8"));
 	}
 	
 	private Long souShareHolder(String holderType, String holderCode, String holderName){
