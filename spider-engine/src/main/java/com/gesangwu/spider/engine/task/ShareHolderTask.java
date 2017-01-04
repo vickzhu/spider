@@ -60,69 +60,73 @@ public class ShareHolderTask {
     	int cpp = 100;
 		int count = companyService.countByExample(null);
 		int totalPages = (count + cpp -1)/cpp;
-		Date now = new Date();
+		
 		for(int cur = 1; cur <= totalPages; cur++){
 			Page<Company> page = new Page<Company>(cur, cpp);
 			companyService.selectByPagination(new CompanyExample(), page);
 			List<Company> companyList = page.getRecords();
 			for (Company company : companyList) {
-				String symbol = company.getSymbol();
-				String result = getContent(symbol);
-				Matcher m = p.matcher(result);
-				List<StockShareHolder> holderList = new ArrayList<StockShareHolder>();
-		    	while(m.find()){    	
-		    		String publishDate = formatDate(m.group(1));
-		    		String endDate = formatDate(m.group(2));
-		    		String latestDate = sshService.selectLatestDate(symbol);
-		    		if(StringUtil.isNotBlank(latestDate) && latestDate.compareTo(endDate) >= 0){
-		    			break;
-		    		}
-		    		if(EARLIEST_DATE.compareTo(endDate) > 0){
-		    			break;
-		    		}
-		    		String holderCode = m.group(3).replaceAll("\"", StringUtil.EMPTY);
-		    		String holderName = m.group(4);
-		    		String holderType = m.group(5);
-		    		String rank = m.group(6);
-		    		String stockCounts = m.group(7);//持股数量
-		    		String pctOfShares = m.group(8);//持股比例
-		    		String pctOfFloatShares = m.group(9);//持流通股比例
-		    		String isNotNew = m.group(10);
-		    		String chgCount = m.group(11);
-		    		Long holderId = souShareHolder(holderType, holderCode, holderName);
-		    		StockShareHolder ssh = new StockShareHolder();
-		    		ssh.setShareholder(holderId);
-		    		ssh.setSymbol(company.getSymbol());
-		    		ssh.setEndDate(endDate);
-		    		Double sc = Double.valueOf(stockCounts);
-		    		ssh.setHoldCount(sc.intValue());
-		    		ssh.setHoldFloatRate(Double.valueOf(pctOfFloatShares));
-		    		ssh.setHoldRate(Double.valueOf(pctOfShares));
-		    		ssh.setRanking(Integer.valueOf(rank));
-		    		ssh.setPublishDate(publishDate);
-		    		if("1".equals(isNotNew)){//非新股东
-		    			ssh.setIsNewHolder(0);
-		    			if("null".equals(chgCount)){
-		    				ssh.setChgCount(0);
-		    				ssh.setChgRate(0d);
-		    			} else {
-		    				int changeCount = Double.valueOf(chgCount).intValue();
-			    			double preSc = sc - changeCount;
-			    			double chgRate = DecimalUtil.format(changeCount/preSc, 4).doubleValue();
-			    			ssh.setChgCount(changeCount);
-			    			ssh.setChgRate(chgRate);
-		    			}		    			
-		    		} else {
-		    			ssh.setIsNewHolder(1);
-		    		}
-		    		ssh.setGmtCreate(now);
-		    		holderList.add(ssh);
-		    	}
-		    	sshService.insertBatch(holderList);
+				fetch(company.getSymbol());
 			}
 		}
 		long end = System.currentTimeMillis();
 		logger.info("Fetch share holder used:" + (end - start) + "ms!");
+	}
+	
+	public void fetch(String symbol){
+		Date now = new Date();
+		String result = getContent(symbol);
+		Matcher m = p.matcher(result);
+		List<StockShareHolder> holderList = new ArrayList<StockShareHolder>();
+    	while(m.find()){    	
+    		String publishDate = formatDate(m.group(1));
+    		String endDate = formatDate(m.group(2));
+    		String latestDate = sshService.selectLatestDate(symbol);
+    		if(StringUtil.isNotBlank(latestDate) && latestDate.compareTo(endDate) >= 0){
+    			break;
+    		}
+    		if(EARLIEST_DATE.compareTo(endDate) > 0){
+    			break;
+    		}
+    		String holderCode = m.group(3).replaceAll(SymbolConstant.DOUBLE_QUOTE, StringUtil.EMPTY);
+    		String holderName = m.group(4);
+    		String holderType = m.group(5);
+    		String rank = m.group(6);
+    		String stockCounts = m.group(7);//持股数量
+    		String pctOfShares = m.group(8);//持股比例
+    		String pctOfFloatShares = m.group(9);//持流通股比例
+    		String isNotNew = m.group(10);
+    		String chgCount = m.group(11);
+    		Long holderId = souShareHolder(holderType, holderCode, holderName);
+    		StockShareHolder ssh = new StockShareHolder();
+    		ssh.setShareholder(holderId);
+    		ssh.setSymbol(symbol);
+    		ssh.setEndDate(endDate);
+    		Double sc = Double.valueOf(stockCounts);
+    		ssh.setHoldCount(sc.intValue());
+    		ssh.setHoldFloatRate(Double.valueOf(pctOfFloatShares));
+    		ssh.setHoldRate(Double.valueOf(pctOfShares));
+    		ssh.setRanking(Integer.valueOf(rank));
+    		ssh.setPublishDate(publishDate);
+    		if("1".equals(isNotNew)){//非新股东
+    			ssh.setIsNewHolder(0);
+    			if("null".equals(chgCount)){
+    				ssh.setChgCount(0);
+    				ssh.setChgRate(0d);
+    			} else {
+    				int changeCount = Double.valueOf(chgCount).intValue();
+	    			double preSc = sc - changeCount;
+	    			double chgRate = DecimalUtil.format(changeCount/preSc, 4).doubleValue();
+	    			ssh.setChgCount(changeCount);
+	    			ssh.setChgRate(chgRate);
+    			}		    			
+    		} else {
+    			ssh.setIsNewHolder(1);
+    		}
+    		ssh.setGmtCreate(now);
+    		holderList.add(ssh);
+    	}
+    	sshService.insertBatch(holderList);
 	}
 	
 	private String formatDate(String date){
@@ -142,7 +146,7 @@ public class ShareHolderTask {
 	
 	private Long souShareHolder(String holderType, String holderCode, String holderName){
 		if("个人".equals(holderType)){//个人
-			ShareHolder sh = shService.selectPersonByName(holderName);
+			ShareHolder sh = shService.selectHolder(HolderType.PERSON.getType(), holderName);
 			if(sh == null){
 				sh = new ShareHolder();
 				sh.setGmtCreate(new Date());
@@ -152,16 +156,31 @@ public class ShareHolderTask {
 			}
 			return sh.getId();
 		} else {//机构
-			ShareHolder sh = shService.selectByHoldCode(holderCode);
-			if(sh == null){
-				sh = new ShareHolder();
-				sh.setGmtCreate(new Date());
-				sh.setHolderCode(holderCode);
-				sh.setHolderName(holderName);
-				sh.setHolderType(HolderType.ORG.getType());
-				shService.insert(sh);
+			Long holderId = null;
+			if("null".equals(holderCode)){
+				ShareHolder sh = shService.selectHolder(HolderType.ORG.getType(), holderName);
+				if(sh == null){
+					sh = new ShareHolder();
+					sh.setGmtCreate(new Date());
+					sh.setHolderCode(holderCode);
+					sh.setHolderName(holderName);
+					sh.setHolderType(HolderType.ORG.getType());
+					shService.insert(sh);
+				}
+				holderId = sh.getId();
+			} else {
+				ShareHolder sh = shService.selectByHoldCode(holderCode);
+				if(sh == null){
+					sh = new ShareHolder();
+					sh.setGmtCreate(new Date());
+					sh.setHolderCode(holderCode);
+					sh.setHolderName(holderName);
+					sh.setHolderType(HolderType.ORG.getType());
+					shService.insert(sh);
+				}
+				holderId = sh.getId();
 			}
-			return sh.getId();
+			return holderId;
 		}
 	}
 

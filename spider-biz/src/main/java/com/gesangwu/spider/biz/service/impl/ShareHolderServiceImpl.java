@@ -36,10 +36,10 @@ public class ShareHolderServiceImpl extends BaseServiceImpl<ShareHolder, ShareHo
 	}
 
 	@Override
-	public ShareHolder selectPersonByName(String holderName) {
+	public ShareHolder selectHolder(int holderType, String holderName) {
 		ShareHolderExample example = new ShareHolderExample();
 		ShareHolderExample.Criteria criteria = example.createCriteria();
-		criteria.andHolderTypeEqualTo(1);
+		criteria.andHolderTypeEqualTo(holderType);
 		criteria.andHolderNameEqualTo(holderName);
 		List<ShareHolder> shList = mapper.selectByExample(example);
 		return CollectionUtils.isEmpty(shList) ? null : shList.get(0);

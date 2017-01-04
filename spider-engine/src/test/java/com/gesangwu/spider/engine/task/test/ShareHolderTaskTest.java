@@ -20,7 +20,7 @@ public class ShareHolderTaskTest extends BaseTest {
 		HttpTool.get(cookieUrl);//这个链接只是为了获得cookie信息，因为后面的请求需要用到cookie
 	}
 
-	@Test
+//	@Test
 	public void test(){
 		task.execute();
 	}
@@ -29,5 +29,14 @@ public class ShareHolderTaskTest extends BaseTest {
 	public void getContent(){
 		String content = task.getContent("sh603010");
 		System.out.println(content);
+	}
+	
+	@Test
+	public void fetch(){
+		String[] symbolArr = new String[]{"sh603703","sh603003","sh600802","sh600610","sh600281","sh600210"};
+		for (String symbol : symbolArr) {
+			task.fetch(symbol);
+		}
+		
 	}
 }

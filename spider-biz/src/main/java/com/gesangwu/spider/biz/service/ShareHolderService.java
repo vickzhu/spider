@@ -8,6 +8,6 @@ public interface ShareHolderService extends BaseService<ShareHolder, ShareHolder
 	
 	public ShareHolder selectByHoldCode(String holderCode);
 	
-	public ShareHolder selectPersonByName(String holderName);
+	public ShareHolder selectHolder(int holderType, String holderName);
 	
 }
