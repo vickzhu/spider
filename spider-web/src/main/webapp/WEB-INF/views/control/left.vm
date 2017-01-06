@@ -9,9 +9,9 @@
       <ul>
         <li><a href="#springUrl('/longhu/')">龙虎榜</a></li>
 		<li><a href="#springUrl('/clique/')">帮派管理</a></li>
-		<li><a href="#springUrl('/fiverange/ra')">压托大单</a></li>
-		<li><a href="#springUrl('/largeVol/ra')">大单成交</a></li>
-		<li><a href="#springUrl('/jd/ra')">夹单</a></li>
+		<li><a href="#springUrl('/fiverange/r')">压托大单</a></li>
+		<li><a href="#springUrl('/largeVol/r')">大单成交</a></li>
+		<li><a href="#springUrl('/jd/r')">夹单</a></li>
 		<li><a href="#springUrl('/shareholder/clique')">个人持股</a></li>
 		<li><a href="#springUrl('/holder-num/list')">股东人数</a></li>
 		<li><a href="#springUrl('/upper-shadow/')">上影线</a></li>
