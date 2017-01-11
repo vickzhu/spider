@@ -170,7 +170,7 @@
                   <tbody>
     				#foreach($sshExt in ${sshExtList})
                     <tr>
-    				  <td>$!{sshExt.holderName}</td>
+    				  <td><a href="#springUrl('/shareholder/detail')?holderId=$!{sshExt.shareholder}">$!{sshExt.holderName}</a></td>
 					  <td>$!{sshExt.holdFloatRate}%</td>
     				  <td>$!{sshExt.endDate}</td>
     				  <td>$!{longHuTool.getClique($!{sshExt.cliqueId})}</td>

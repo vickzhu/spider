@@ -1,0 +1,65 @@
+<link rel="stylesheet" href="#resources('css/datepicker.css')" />
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="#springUrl('/')" title="回到首页" class="tip-bottom"><i class="icon-home"></i> 首页</a><a href="javascript:;" class="current">股东关联</a> </div>
+  </div>
+  <div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+    		<div class="widget-box">
+    			<div class="widget-title">
+    				<span class="icon"><i class="icon-th"></i></span>
+    				<h5>股东关联</h5>
+    			</div>
+    			<div class="widget-content">
+					<div style="display:inline-block;border:thin solid #bce8f1;padding:10px;margin:10px;background-color:#d9edf7;">
+						<span style="font-size:15px;margin-right:10px;">
+						来接收到
+						</span>
+						<a class="close" data-dismiss="alert" href="#">×</a>
+					</div>
+					<a href="#modal-add-event" data-toggle="modal" class="btn btn-warning">添加股票</a>
+    			</div>
+				<div class="widget-content">
+				<button type="submit" class="btn btn-success">开始分析</button>	
+				</div>
+    		</div>
+			<div class="widget-box">
+    			<div class="widget-title">
+    				<span class="icon"><i class="icon-th"></i></span>
+    				<h5>关联结果</h5>
+    			</div>
+    			<div class="widget-content nopadding">
+					
+    			</div>
+    		</div>
+		</div>
+    </div>
+  </div>
+</div>
+<div class="modal hide" id="modal-add-event">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+		<h3>添加股票</h3>
+    </div>
+    <div class="modal-body">
+    	<p>
+    		<input id="keyword" type="text" placeholder="股票名称/代码"/>
+    	</p>
+    </div>
+    <div class="modal-footer"> 
+		<a href="#" class="btn" data-dismiss="modal">取消</a> 
+		<a href="#" id="add-event-submit" class="btn btn-primary">确定</a> 
+	</div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$("#add-event-submit").click(function(){
+		var keyword = $("#keyword").val();
+		jQuery.get("#springUrl('/shareholder/relation/search')?keyword="+encodeURIComponent(keyword),function(result){
+			$("#keyword").val("");
+		});
+	});
+})
+</script>
+
