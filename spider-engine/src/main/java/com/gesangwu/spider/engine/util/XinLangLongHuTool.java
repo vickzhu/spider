@@ -35,4 +35,12 @@ public class XinLangLongHuTool {
 		}
 		return longHuMap;
 	}
+	
+	public static void main(String[] args){
+		Map<String,List<String>> typeMap = getLongHuType("2017-01-17");
+		System.out.println(typeMap.size());
+		for(Map.Entry<String, List<String>> entry : typeMap.entrySet()){
+			System.out.println(entry.getKey());
+		}
+	}
 }

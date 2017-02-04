@@ -15,6 +15,7 @@ import javax.annotation.Resource;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.util.StringUtil;
@@ -28,7 +29,7 @@ import com.gesangwu.spider.biz.service.KLineService;
  * @author zhuxb
  *
  */
-//@Component
+@Component
 public class KLineXueQiuTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(KLineXueQiuTask.class);
