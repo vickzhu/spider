@@ -29,6 +29,7 @@ import com.gesangwu.spider.biz.service.KLineService;
  * @author zhuxb
  *
  */
+@Deprecated
 @Component
 public class KLineXueQiuTask {
 	

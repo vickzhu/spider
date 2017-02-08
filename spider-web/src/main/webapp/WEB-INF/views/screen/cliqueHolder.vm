@@ -36,7 +36,11 @@
                 <tr holderId="$!{ssh.shareholder}">
 				  <td>$!{velocityCount}</td>
                   <td><a class="lh_detail" onclick="javascript:;">$!{ssh.holderName}</a></td>
-				  <td>$!{companyTool.getStockName($!{ssh.symbol})}</td>
+				  <td>
+					<a href="#springUrl('/stock')?symbol=$!{ssh.symbol}" target="_blank">
+					$!{companyTool.getStockName($!{ssh.symbol})}
+                    </a>
+				  </td>
 				  <td>$!{ssh.holdCount}</td>
 				  <td>
 					#if($!{ssh.chgCount})

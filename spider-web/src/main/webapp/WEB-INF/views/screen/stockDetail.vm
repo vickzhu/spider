@@ -161,19 +161,44 @@
                 <table class="table table-bordered table-striped">
                   <thead>
                     <tr>
-    				  <th>姓名</th>
+    				  <th>股东</th>
 					  <th>持股比例</th>
-    				  <th>持股时间</th>
-    				  <th>帮派</th>				  
+					  <th>变化</th>
+    				  <th>持股时间</th>			  
                     </tr>
                   </thead>
                   <tbody>
     				#foreach($sshExt in ${sshExtList})
                     <tr>
-    				  <td><a href="#springUrl('/shareholder/detail')?holderId=$!{sshExt.shareholder}">$!{sshExt.holderName}</a></td>
+    				  <td>
+						<a href="#springUrl('/shareholder/detail')?holderId=$!{sshExt.shareholder}">
+							$!{sshExt.holderName}
+						</a>
+						<span class="label label-important">$!{longHuTool.getClique($!{sshExt.cliqueId})}</span>
+					  </td>
 					  <td>$!{sshExt.holdFloatRate}%</td>
+					  <td>
+    					#if($!{sshExt.chgCount})
+    						#if($!{sshExt.chgCount}==0)
+    							不变
+    						#else
+    							#if($!{sshExt.chgCount} > 0)
+    								<i class="icon-arrow-up"></i>
+    								<font style="color:red">
+    									$!{sshExt.chgCount}
+                                    </font>
+    							#else
+    								<i class="icon-arrow-down"></i>
+    								<font style="color:green">
+    									$!{sshExt.chgCount}
+                                    </font>
+    							#end
+    						#end
+    					#else
+    						新进
+    					#end
+    				  </td>
     				  <td>$!{sshExt.endDate}</td>
-    				  <td>$!{longHuTool.getClique($!{sshExt.cliqueId})}</td>
                     </tr>
     				#end
                   </tbody>
