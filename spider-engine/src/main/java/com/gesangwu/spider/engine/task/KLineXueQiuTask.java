@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.dao.model.Company;
+import com.gesangwu.spider.biz.dao.model.CompanyExample;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.KLineService;
@@ -66,7 +67,11 @@ public class KLineXueQiuTask {
 	public void execute(long start, long end) {
 		String cookieUrl = "https://xueqiu.com/account/lostpasswd";
 		HttpTool.get(cookieUrl);//这个链接只是为了获得cookie信息，因为后面的请求需要用到cookie
-		List<Company> companyList = companyService.selectByExample(null);
+		CompanyExample example = new CompanyExample();
+//		CompanyExample.Criteria criteria = example.createCriteria();
+//		criteria.andGmtCreateGreaterThan(new Date(1486051200000l));
+//		criteria.andGmtCreateLessThan(new Date(1486137599000l));
+		List<Company> companyList = companyService.selectByExample(example);
 		for (Company company : companyList) {
 			String symbol = company.getSymbol();
 			String url = buildUrl(symbol, start, end);

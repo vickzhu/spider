@@ -22,7 +22,7 @@ import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.KLineService;
 import com.gesangwu.spider.biz.service.UpperShadowService;
 
-@Component
+//@Component
 public class UpperShadowTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(UpperShadowTask.class);

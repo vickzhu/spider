@@ -3,7 +3,6 @@ package com.gesangwu.spider.web.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,8 +12,8 @@ import com.gesangwu.spider.biz.dao.model.UpperShadow;
 import com.gesangwu.spider.biz.dao.model.UpperShadowExample;
 import com.gesangwu.spider.biz.service.UpperShadowService;
 
-@Controller
-@RequestMapping("/upper-shadow")
+//@Controller
+//@RequestMapping("/upper-shadow")
 public class UpperShadowController {
 	
 	@Resource

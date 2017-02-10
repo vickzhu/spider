@@ -19,7 +19,7 @@ public class KLineTaskTest extends BaseTest {
 	public void executTest(){
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.MILLISECOND, 0);
-		c.set(2017, 0, 23, 0, 0, 0);
+		c.set(2017, 0, 21, 0, 0, 0);
 		
 //		c.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH)-1);
 		long start = c.getTimeInMillis();
@@ -29,7 +29,16 @@ public class KLineTaskTest extends BaseTest {
 //		c.set(Calendar.MINUTE, 59);
 //		c.set(Calendar.SECOND, 59);
 		long end = c.getTimeInMillis();
-		task.execute(start, end);
+		task.execute(start, System.currentTimeMillis());
 //		task.execute();
+	}
+	
+	public static void main(String[] args){
+		Calendar c = Calendar.getInstance();
+		c.set(Calendar.MILLISECOND, 0);
+		c.set(2017, 1, 3, 0, 0, 0);
+		System.out.println(c.getTimeInMillis());
+		c.set(2017, 1, 3, 23, 59, 59);
+		System.out.println(c.getTimeInMillis());
 	}
 }
