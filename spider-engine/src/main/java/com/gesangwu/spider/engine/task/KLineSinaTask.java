@@ -46,6 +46,7 @@ import com.gesangwu.spider.biz.service.KLineService;
  * 23"favor",
  * 24"guba"
  * 公司信息更新
+ * 获取当日所有K线数据
  * @author zhuxb
  *
  */

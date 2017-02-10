@@ -25,7 +25,7 @@ import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.KLineService;
 /**
- * 用于获取日K线，每天15:10执行
+ * 负责拉取单个股票的指定时间内K线数据
  * url:https://xueqiu.com/stock/forchartk/stocklist.json?symbol=SH600526&period=1day&type=before&begin=1437148330951&end=1468684330951&_=1468684330951
  * @author zhuxb
  *
