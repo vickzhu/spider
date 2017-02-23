@@ -76,6 +76,10 @@ public class ShareHolderTask {
 	public void fetch(String symbol){
 		Date now = new Date();
 		String result = getContent(symbol);
+		if(StringUtil.isBlank(result)) {
+			logger.error("Can't get data from xueqiu!");
+			return;
+		}
 		Matcher m = p.matcher(result);
 		List<StockShareHolder> holderList = new ArrayList<StockShareHolder>();
     	while(m.find()){    	
