@@ -18,6 +18,11 @@ import com.gesangwu.spider.biz.dao.model.ext.StockShareHolderExt;
 import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.StockShareHolderService;
 
+/**
+ * 股东关联
+ * @author zhuxb
+ *
+ */
 @Controller
 @RequestMapping("/shareholder/relation")
 public class ShareHolderRelationController {
