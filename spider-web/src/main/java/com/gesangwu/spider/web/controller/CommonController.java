@@ -171,7 +171,9 @@ public class CommonController {
 	
 	private String getKLineList(String symbol){
 		KLineExample example = new KLineExample();
+		example.setOrderByClause("trade_date");
 		KLineExample.Criteria criteria = example.createCriteria();
+		
 		criteria.andSymbolEqualTo(symbol);
 		List<KLine> klList = kLineService.selectByExample(example);
 		List<Object[]> objList = new ArrayList<Object[]>();
