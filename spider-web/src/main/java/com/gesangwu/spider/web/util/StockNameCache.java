@@ -15,6 +15,7 @@ public class StockNameCache {
 	public static void setNameSymbolMap(Map<String, String> nameSymbolMap) {
 		StockNameCache.nameSymbolMap = nameSymbolMap;
 	}
+	
 	public static String getStockName(String symbol){
 		return nameSymbolMap.get(symbol);
 	}
