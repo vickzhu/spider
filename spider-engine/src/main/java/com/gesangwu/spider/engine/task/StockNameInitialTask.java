@@ -51,6 +51,7 @@ public class StockNameInitialTask {
 					StockNameInitial initial = new StockNameInitial();
 					initial.setSymbol(company.getSymbol());
 					initial.setInitialGroup(sb.toString());
+					initial.setStockName(stockName);
 					initial.setGmtCreate(now);
 					initialList.add(initial);
 				}
@@ -91,7 +92,7 @@ public class StockNameInitialTask {
     	// 判断是否为汉字字符  
         if (Character.toString(hz).matches(HZ_SCOPE)) {  
             String[] pyArr = PinyinHelper.toHanyuPinyinStringArray(hz, getPinyinFormat());//这里可能有多音字
-            String[] ca = delDupli(pyArr);//声调不同的多音字，去掉重复的
+            String[] ca = delDupli(pyArr, onlyInitial);//声调不同的多音字，去掉重复的
             List<StringBuilder> cpList = null;
             if(ca.length > 1){
             	cpList = new ArrayList<StringBuilder>();
@@ -103,20 +104,12 @@ public class StockNameInitialTask {
 				if(j > 0) {//说明该字为多音字
 					List<StringBuilder> sbTmpList = new ArrayList<StringBuilder>();
 					for (StringBuilder sb : cpList) {
-						if(onlyInitial){
-							sbTmpList.add(new StringBuilder(sb).append(ca[j].charAt(0)));
-						} else {
-							sbTmpList.add(new StringBuilder(sb).append(ca[j]));
-						}
+						sbTmpList.add(new StringBuilder(sb).append(ca[j]));
 					}
 					sbList.addAll(sbTmpList);
 				} else {
 					for (StringBuilder sb : sbList) {
-						if(onlyInitial){
-							sb.append(ca[j].charAt(0));
-						} else {
-							sb.append(ca[j]);
-						}
+						sb.append(ca[j]);
 					}
 				}
 				
@@ -150,17 +143,22 @@ public class StockNameInitialTask {
      * 去掉重复
      * @return
      */
-    private static String[] delDupli(String[] pyArr){
+    private static String[] delDupli(String[] pyArr, boolean onlyInitial){
     	Set<String> pySet = new HashSet<String>();
         for(String py : pyArr){
-        	pySet.add(py);
+        	if(onlyInitial){
+        		pySet.add(String.valueOf(py.charAt(0)));
+        	} else {
+        		pySet.add(py);
+        	}
+        	
         }
         String[] result = new String[pySet.size()];
         return pySet.toArray(result);
     }
   
     public static void main(String[] args) {
-        String cnStr = "藏红花";  
+        String cnStr = "龙大肉食";  
         List<StringBuilder> sbList = getPinYin(cnStr, Boolean.TRUE);
         System.out.println("原文：" + cnStr);
         for (StringBuilder sb : sbList) {

@@ -7,6 +7,8 @@ public class StockNameInitial {
 
     private String symbol;
 
+    private String stockName;
+
     private String initialGroup;
 
     private Date gmtCreate;
@@ -25,6 +27,14 @@ public class StockNameInitial {
 
     public void setSymbol(String symbol) {
         this.symbol = symbol == null ? null : symbol.trim();
+    }
+
+    public String getStockName() {
+        return stockName;
+    }
+
+    public void setStockName(String stockName) {
+        this.stockName = stockName == null ? null : stockName.trim();
     }
 
     public String getInitialGroup() {

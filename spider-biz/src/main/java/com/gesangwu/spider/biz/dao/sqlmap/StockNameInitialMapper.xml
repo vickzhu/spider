@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.gesangwu.spider.biz.dao.model.StockNameInitial" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="symbol" property="symbol" jdbcType="VARCHAR" />
+    <result column="stock_name" property="stockName" jdbcType="VARCHAR" />
     <result column="initial_group" property="initialGroup" jdbcType="VARCHAR" />
     <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -66,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, symbol, initial_group, gmt_create
+    id, symbol, stock_name, initial_group, gmt_create
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.StockNameInitialExample" >
     select
@@ -105,10 +106,10 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into stock_name_initial (symbol, initial_group, gmt_create
-      )
-    values (#{symbol,jdbcType=VARCHAR}, #{initialGroup,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}
-      )
+    insert into stock_name_initial (symbol, stock_name, initial_group, 
+      gmt_create)
+    values (#{symbol,jdbcType=VARCHAR}, #{stockName,jdbcType=VARCHAR}, #{initialGroup,jdbcType=VARCHAR}, 
+      #{gmtCreate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.StockNameInitial" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -118,6 +119,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="symbol != null" >
         symbol,
+      </if>
+      <if test="stockName != null" >
+        stock_name,
       </if>
       <if test="initialGroup != null" >
         initial_group,
@@ -129,6 +133,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="symbol != null" >
         #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="stockName != null" >
+        #{stockName,jdbcType=VARCHAR},
       </if>
       <if test="initialGroup != null" >
         #{initialGroup,jdbcType=VARCHAR},
@@ -153,6 +160,9 @@
       <if test="record.symbol != null" >
         symbol = #{record.symbol,jdbcType=VARCHAR},
       </if>
+      <if test="record.stockName != null" >
+        stock_name = #{record.stockName,jdbcType=VARCHAR},
+      </if>
       <if test="record.initialGroup != null" >
         initial_group = #{record.initialGroup,jdbcType=VARCHAR},
       </if>
@@ -168,6 +178,7 @@
     update stock_name_initial
     set id = #{record.id,jdbcType=BIGINT},
       symbol = #{record.symbol,jdbcType=VARCHAR},
+      stock_name = #{record.stockName,jdbcType=VARCHAR},
       initial_group = #{record.initialGroup,jdbcType=VARCHAR},
       gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -179,6 +190,9 @@
     <set >
       <if test="symbol != null" >
         symbol = #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="stockName != null" >
+        stock_name = #{stockName,jdbcType=VARCHAR},
       </if>
       <if test="initialGroup != null" >
         initial_group = #{initialGroup,jdbcType=VARCHAR},
@@ -192,16 +206,17 @@
   <update id="updateByPrimaryKey" parameterType="com.gesangwu.spider.biz.dao.model.StockNameInitial" >
     update stock_name_initial
     set symbol = #{symbol,jdbcType=VARCHAR},
+      stock_name = #{stockName,jdbcType=VARCHAR},
       initial_group = #{initialGroup,jdbcType=VARCHAR},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
   
   <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true">
-    insert into stock_name_initial (symbol, initial_group, gmt_create)
+    insert into stock_name_initial (symbol, stock_name, initial_group, gmt_create)
     values
     <foreach collection="list" index="index" item="initial" separator=","> 
-    (#{initial.symbol,jdbcType=VARCHAR}, #{initial.initialGroup,jdbcType=VARCHAR}, #{initial.gmtCreate,jdbcType=TIMESTAMP}
+    (#{initial.symbol,jdbcType=VARCHAR}, #{initial.stockName,jdbcType=VARCHAR}, #{initial.initialGroup,jdbcType=VARCHAR}, #{initial.gmtCreate,jdbcType=TIMESTAMP}
       )
     </foreach>
   </insert>

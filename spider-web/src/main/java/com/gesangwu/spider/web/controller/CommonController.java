@@ -2,7 +2,9 @@ package com.gesangwu.spider.web.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gandalf.framework.util.StringUtil;
+import com.gandalf.framework.web.tool.AjaxResult;
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.common.StockUtil;
 import com.gesangwu.spider.biz.dao.model.Company;
@@ -31,6 +34,8 @@ import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
 import com.gesangwu.spider.biz.dao.model.LargeVolStatis;
 import com.gesangwu.spider.biz.dao.model.LargeVolStatisExample;
+import com.gesangwu.spider.biz.dao.model.StockNameInitial;
+import com.gesangwu.spider.biz.dao.model.StockNameInitialExample;
 import com.gesangwu.spider.biz.dao.model.ext.StockShareHolderExt;
 import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.FiveRangeStatisService;
@@ -39,6 +44,7 @@ import com.gesangwu.spider.biz.service.JdStatisService;
 import com.gesangwu.spider.biz.service.KLineService;
 import com.gesangwu.spider.biz.service.LargeVolStatisService;
 import com.gesangwu.spider.biz.service.LongHuService;
+import com.gesangwu.spider.biz.service.StockNameInitialService;
 import com.gesangwu.spider.biz.service.StockShareHolderService;
 
 @Controller
@@ -62,11 +68,16 @@ public class CommonController {
 	private KLineService kLineService;
 	@Resource
 	private JdStatisService jdStatisService;
+	@Resource
+	private StockNameInitialService initialService;
 	
 	private static final String r1 = "[0-9]{6}";
 	private static final String r2 = "(sh|sz)[0-9]{6}";
+	private static final String r3 = "[a-zA-Z]+";
+	
 	private static Pattern p1 = Pattern.compile(r1);
 	private static Pattern p2 = Pattern.compile(r2);
+	private static Pattern p3 = Pattern.compile(r3);
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public String search(HttpServletRequest request){
@@ -83,6 +94,25 @@ public class CommonController {
 			}
 		}
 		return "forward:/stock?symbol="+symbol;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/suggestion", method = RequestMethod.GET)
+	public AjaxResult suggestion(HttpServletRequest request){
+		String keyword = request.getParameter("keyword");
+		StockNameInitialExample example = new StockNameInitialExample();
+		example.setOffset(0);
+		example.setRows(20);
+		StockNameInitialExample.Criteria criteria = example.createCriteria();
+		if(p3.matcher(keyword).matches()){
+			criteria.andInitialGroupLike(keyword + "%");
+		}
+		List<StockNameInitial> initialList = initialService.selectByExample(example);
+		Map<String, String> resultMap = new HashMap<String, String>();
+		for (StockNameInitial initial : initialList) {
+			resultMap.put(initial.getSymbol(), initial.getStockName());
+		}
+		return new AjaxResult(Boolean.TRUE, null, resultMap);
 	}
 	
 	@RequestMapping(value = "/stock", method = RequestMethod.GET)
