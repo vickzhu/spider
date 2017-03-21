@@ -35,7 +35,20 @@
 <!--start-top-serch-->
 <div id="search">
 <form action="#springUrl('/search')" method="get">
-  <input name="keyword" type="text" placeholder="股票代码/名称"/>
+  <input id="search_keyword" name="keyword" type="text" placeholder="股票代码/名称" />
   <button type="submit" class="tip-bottom" title="搜索"><i class="icon-search icon-white"></i></button>
 </form>
 </div>
+<script type="text/javascript">
+	$(function(){
+		$("#search_keyword").keyup(function(){
+			var keyword=jQuery.trim($("#search_keyword").val());
+			if(keyword == ''){
+				return;
+			}
+			jQuery.get("#springUrl('/suggestion')?keyword="+keyword, function(result){
+				
+			});
+		});
+	})
+</script>

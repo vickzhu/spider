@@ -100,6 +100,10 @@ public class CommonController {
 	@RequestMapping(value = "/suggestion", method = RequestMethod.GET)
 	public AjaxResult suggestion(HttpServletRequest request){
 		String keyword = request.getParameter("keyword");
+		if(StringUtil.isBlank(keyword)){
+			return null; 
+		}
+		keyword = keyword.trim().toLowerCase();
 		StockNameInitialExample example = new StockNameInitialExample();
 		example.setOffset(0);
 		example.setRows(20);
