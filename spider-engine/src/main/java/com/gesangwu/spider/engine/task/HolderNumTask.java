@@ -140,7 +140,7 @@ public class HolderNumTask {
 		Matcher m = p3.matcher(result);
 		if(m.find()){
 			String content = m.group(1);
-			content = content.replaceAll("[\\n\\t]|  ", StringUtil.EMPTY);
+			content = content.replaceAll("[\\r\\n\\t]|  ", StringUtil.EMPTY);
 			try{
 				Parser parser = Parser.createParser(content, "UTF-8");
 				NodeList nodeList = parser.parse(null);
@@ -162,7 +162,7 @@ public class HolderNumTask {
 				TagNode tn = (TagNode)node;
 				if("LI".equals(tn.getTagName())){
 					String clz = tn.getAttribute("class");
-					if(clz!=null && clz.startsWith("c-")){
+					if(clz != null && clz.startsWith("c-")){
 						String chgStr = tn.getFirstChild().getText();
 						chgStr = chgStr.replace("%", StringUtil.EMPTY);
 						String endDate = tn.getParent().getFirstChild().getFirstChild().getText();
