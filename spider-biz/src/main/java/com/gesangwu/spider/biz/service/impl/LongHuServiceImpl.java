@@ -109,7 +109,7 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 			}
 			if(cliqueSize > 3){//已成帮派
 				List<LongHuDetail> lhdList = detailMap.get(cliqueId);
-				updateCliqueOperate(cliqueId, longhu, lhdList);
+				updateCliqueOperate(dateType, cliqueId, longhu, lhdList);
 				detailList.removeAll(lhdList);
 				if(dateType == 1){
 					calcOtherDept(cliqueId, detailList);
@@ -131,7 +131,7 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 					}
 					if(cliqueSize + tmpList.size() > 3){//可以判断为一个帮派操作
 						lhdList.addAll(tmpList);
-						updateCliqueOperate(cliqueId, longhu, lhdList);
+						updateCliqueOperate(dateType, cliqueId, longhu, lhdList);
 						detailList.removeAll(tmpList);
 						calcOtherDept(cliqueId, detailList);
 					} else {
@@ -201,10 +201,14 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 		return detailMap;
 	}
 	
-	private void updateCliqueOperate(long cliqueId, LongHu longHu, List<LongHuDetail> lhdList){
+	private void updateCliqueOperate(int dateType, long cliqueId, LongHu longHu, List<LongHuDetail> lhdList){
 		Date now = new Date();
-		longHu.setOperateClique(cliqueId);
-		longHu.setSecDeptRelation(lhdList.size());
+		if(longHu.getOperateClique() == null || dateType == 1){			
+			longHu.setOperateClique(cliqueId);
+		}
+		if(longHu.getSecDeptRelation() == null || lhdList.size() > longHu.getSecDeptRelation()){
+			longHu.setSecDeptRelation(lhdList.size());
+		}
 		longHu.setGmtUpdate(now);
 		updateByPrimaryKey(longHu);
 		for (LongHuDetail longHuDetail : lhdList) {

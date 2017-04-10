@@ -37,7 +37,9 @@ public class CompanyUpdateTask {
 	
 	@Resource
 	private CompanyService companyService;
-
+	@Resource
+	private StCompanyUpdateTask stCompanyTask;
+	
 	@Scheduled(cron="0 15 9 * * ?")
 	public void execute(){
 		long start = System.currentTimeMillis();
@@ -59,7 +61,8 @@ public class CompanyUpdateTask {
 			}
 			detailList = matcher.group(1);
 			sou(detailList);
-		}	
+		}
+		stCompanyTask.execute();//这里是更新st企业的信息
 		long end = System.currentTimeMillis();
 		logger.info("Update Company use:" + (end-start)+"ms!");
 	}

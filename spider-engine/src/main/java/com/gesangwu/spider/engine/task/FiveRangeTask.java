@@ -179,7 +179,8 @@ public class FiveRangeTask {
 	}
 	
 	private static final double minBigPrice = 3000000;
-	private static final int min_price = 10000000;
+	private static final int min_price = 5000000;
+	private static final int min_max_price = 10000000;
 
 	
 	/**
@@ -223,12 +224,14 @@ public class FiveRangeTask {
 	 * @return
 	 */
 	private boolean checkSuperBigPrice(List<Double> bigPrice){
+		double total = 0;
 		for (Double price : bigPrice) {
 			if(price >= min_price ){
-				return true;
+				total += price;
+//				return true;
 			}
 		}
-		return false;
+		return total >= min_max_price;
 	}
 	
 	/**
