@@ -158,7 +158,7 @@ public class StockNameInitialTask {
     }
   
     public static void main(String[] args) {
-        String cnStr = "龙大肉食";  
+        String cnStr = "华林证券股份有限公司拉萨柳梧新区察古大道证券营业部";  
         List<StringBuilder> sbList = getPinYin(cnStr, Boolean.TRUE);
         System.out.println("原文：" + cnStr);
         for (StringBuilder sb : sbList) {

@@ -38,7 +38,8 @@ import com.gesangwu.spider.engine.util.UnicodeUtil;
  */
 @Component
 public class StCompanyUpdateTask {
-	private static final Logger logger = LoggerFactory.getLogger(CompanyUpdateTask_163.class);
+	
+	private static final Logger logger = LoggerFactory.getLogger(StCompanyUpdateTask.class);
 
 	private static final String r1 = "\"total\"\\:([0-9]*),\"pagecount\"\\:([0-9]*)";
 	private static final String r2 = "\"MCAP\"\\:([0-9\\.]*),\"NAME\"\\:\"([^\"]*)\",\"PRICE\"\\:([0-9\\.]*),\"SYMBOL\"\\:\"([0-9]*)\",\"TCAP\"\\:([0-9\\.]*)";
@@ -105,7 +106,6 @@ public class StCompanyUpdateTask {
 				company.setGmtUpdate(now);
 				companyService.updateByPrimaryKey(company);
 			}
-		}
-	
+		}	
 	}
 }

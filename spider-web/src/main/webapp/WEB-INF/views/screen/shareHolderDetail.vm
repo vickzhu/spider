@@ -25,7 +25,7 @@
               </thead>
               <tbody>
 				#foreach($sshExt in ${sshExtList})
-                <tr>
+                <tr symbol="$!{sshExt.symbol}">
 				  <td>$!{velocityCount}</td>
 				  <td>$!{sshExt.symbol}</td>
                   <td>
@@ -75,7 +75,7 @@
 	$(function(){
 		$(".lh_detail").click(function(){
 			var symbol = $(this).parent().parent().attr("symbol");
-			window.location.href="#springUrl('/longhu/detail')?symbol="+symbol+"&tradeDate=${tradeDate}";
+			window.location.href="#springUrl('/stock')?symbol="+symbol;
 		});
 		$('.datepicker').datepicker({format: 'yyyy-mm-dd',
             weekStart: 1,
