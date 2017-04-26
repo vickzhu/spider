@@ -5,18 +5,20 @@ import javax.annotation.Resource;
 import org.junit.Test;
 
 import com.gesangwu.spider.engine.task.CompanyUpdateTask;
+import com.gesangwu.spider.engine.task.StCompanyUpdateTask;
 import com.gesangwu.spider.engine.test.BaseTest;
 
 public class CompanyUpdateTest extends BaseTest {
 	
 	@Resource
-	private CompanyUpdateTask companyUpdate;
-//	@Resource
-//	private StCompanyUpdateTask companyUpdate;
+	private CompanyUpdateTask company1Update;
+	@Resource
+	private StCompanyUpdateTask company2Update;
 
 	@Test
 	public void test(){
-		companyUpdate.execute();
+		company1Update.execute();
+		company2Update.execute();
 	}
 	
 }

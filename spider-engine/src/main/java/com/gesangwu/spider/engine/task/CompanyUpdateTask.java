@@ -40,7 +40,7 @@ public class CompanyUpdateTask {
 	@Resource
 	private StCompanyUpdateTask stCompanyTask;
 	
-	@Scheduled(cron="0 15 9 * * ?")
+	@Scheduled(cron="0 25 9 * * ?")
 	public void execute(){
 		long start = System.currentTimeMillis();
 		

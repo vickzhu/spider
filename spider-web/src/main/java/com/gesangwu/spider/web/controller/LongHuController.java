@@ -21,6 +21,7 @@ import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.common.LongHuDateType;
 import com.gesangwu.spider.biz.common.LongHuDetailPair;
 import com.gesangwu.spider.biz.dao.model.CliqueDept;
+import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.LongHu;
 import com.gesangwu.spider.biz.dao.model.LongHuDetailExample;
 import com.gesangwu.spider.biz.dao.model.LongHuDetailExt;
@@ -53,7 +54,7 @@ public class LongHuController {
 	private LongHuTaskSina sinaTask;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView index(HttpServletRequest request, String tradeDate){
+	public ModelAndView index(HttpServletRequest request, String tradeDate, Company company){
 		ModelAndView mav = new ModelAndView("longHu");
 		List<LongHu> lhList = lhService.selectByTradeDate(tradeDate);
 		mav.addObject("lhList", lhList);
