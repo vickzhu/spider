@@ -1,0 +1,49 @@
+<link rel="stylesheet" href="#resources('css/datepicker.css')" />
+<div id="content">
+	<div id="content-header">
+		<div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">股票</a> <a href="#" class="current">帮派成员</a> </div>
+		<h1>${holder.holderName}</h1>
+	</div>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="widget-box">
+					<div class="widget-title">
+						<ul class="nav nav-tabs">
+							<li class="active"><a data-toggle="tab" href="#tab1">流通股东</a></li>
+							<li class=""><a data-toggle="tab" href="#tab2">十大股东</a></li>
+						</ul>
+					</div>
+					<div class="widget-content tab-content">
+						<div id="tab1" class="tab-pane active">
+							<p>And is full of waffle to It has multiple paragraphs and is full of waffle to pad out the comment. Usually, you just wish these sorts of comments would come to an end.multiple paragraphs and is full of waffle to pad out the comment.</p>
+							<img src="img/demo/demo-image1.jpg" alt="demo-image" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+#macro(showAmt $amt)
+	#set($amtArr = ${amt.split(",")})
+	<td style="color:red">$!amtArr[0]</td>
+	<td style="color:green">$!amtArr[1]</td>
+	<td>$!amtArr[2]</td>
+#end
+<script src="#resources('js/bootstrap-datepicker.js')"></script> 
+<script type="text/javascript">
+	$(function(){
+		$(".lh_detail").click(function(){
+			var symbol = $(this).parent().parent().attr("symbol");
+			window.location.href="#springUrl('/stock')?symbol="+symbol;
+		});
+		$('.datepicker').datepicker({format: 'yyyy-mm-dd',
+            weekStart: 1,
+            autoclose: true,
+            todayBtn: 'linked',
+            language: 'zh-CN'}).on('changeDate',function(){
+				$("#searchForm").submit();
+			});
+	});
+</script>

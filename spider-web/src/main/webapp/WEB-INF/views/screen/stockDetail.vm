@@ -127,24 +127,24 @@
             <div class="widget-box">
               <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
                 <h5>股东人数</h5>
-    			<a class="label label-info" style="line-height:20px;"></a>
+    			<a class="label label-info" style="line-height:20px;">查看更多</a>
               </div>
               <div class="widget-content nopadding">
                 <table class="table table-bordered table-striped">
                   <thead>
                     <tr>
+					  <th>截止时间</th>
     				  <th>人数</th>
                       <th>变化</th>
-					  <th>截止时间</th>
     				  <th>更新时间</th>
                     </tr>
                   </thead>
                   <tbody>
     				#foreach($hn in ${hnList})
                     <tr>
-    				  <td>$!{hn.totality}</td>
-    				  <td>$!{hn.chgRate}</td>
 					  <td>${hn.endDate}</td>
+    				  <td>$!{hn.totality}</td>
+    				  <td>$!{hn.chgRate}%</td>
     				  <td>$!{date.format("yyyy-MM-dd",$!{hn.gmtCreate})}</td>
                     </tr>
     				#end
@@ -155,7 +155,7 @@
 			<div class="widget-box">
               <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
                 <h5>流通股东</h5>
-    			<a class="label label-info" style="line-height:20px;"></a>
+    			<a class="label label-info" style="line-height:20px;">查看更多</a>
               </div>
               <div class="widget-content nopadding">
                 <table class="table table-bordered table-striped">

@@ -32,7 +32,7 @@
 					<a class="lh_detail" onclick="javascript:;">$!{companyTool.getStockName($!{sshExt.symbol})}</a>
 				  </td>			  
 				  <td>$!{sshExt.endDate}</td>
-                  <td>$!{sshExt.holdCount}</td>
+                  <td>$number.format("###,##0.00",$!{sshExt.holdCount})</td>
 				  <td>
 					#if($!{sshExt.chgCount})
 						#if($!{sshExt.chgCount}==0)

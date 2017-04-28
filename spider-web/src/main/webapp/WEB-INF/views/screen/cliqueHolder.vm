@@ -41,7 +41,7 @@
 					$!{companyTool.getStockName($!{ssh.symbol})}
                     </a>
 				  </td>
-				  <td>$!{ssh.holdCount}</td>
+				  <td>$number.format("###,##0.00",$!{ssh.holdCount})</td>
 				  <td>
 					#if($!{ssh.chgCount})
 						#if($!{ssh.chgCount}==0)

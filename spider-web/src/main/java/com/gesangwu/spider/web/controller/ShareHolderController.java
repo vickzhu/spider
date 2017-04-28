@@ -63,7 +63,7 @@ public class ShareHolderController {
 	}
 	
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
-	public ModelAndView detail(HttpServletRequest request,long holderId){
+	public ModelAndView detail(HttpServletRequest request, long holderId){
 		ShareHolder holder = holderService.selectByPrimaryKey(holderId);
 		List<StockShareHolder> sshExtList = sshService.selectByShareHolder(holderId);
 		ModelAndView mav = new ModelAndView("shareHolderDetail");
@@ -72,12 +72,12 @@ public class ShareHolderController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/search", method = RequestMethod.GET)
-	public ModelAndView search(HttpServletRequest request){
-		String keyword = request.getParameter("keyword");
-		List<StockShareHolder> sshList = sshService.selectByPersonalName(keyword);
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("sshList", sshList);
+	@RequestMapping(value = "/stock", method = RequestMethod.GET)
+	public ModelAndView stockShareHolder(HttpServletRequest request, String symbol){
+		StockShareHolderExample example = new StockShareHolderExample();
+		StockShareHolderExample.Criteria criteria = example.createCriteria();
+		criteria.andSymbolEqualTo(symbol);
+		ModelAndView mav = new ModelAndView("holderDetail");
 		return mav;
 	}
 	
