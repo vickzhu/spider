@@ -92,6 +92,7 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 
 	@Override
 	public void analyzeClique(LongHu longhu) {
+		longhu.setOperateClique(null);
 		Map<Integer,List<LongHuDetail>> resultMap = getLongHuDetailList(longhu);
 		for (Map.Entry<Integer,List<LongHuDetail>> detailEntry : resultMap.entrySet()) {//不同日期类型的龙虎榜详情(一日，二日，三日)
 			int dateType = detailEntry.getKey();
@@ -145,7 +146,7 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 					updateByPrimaryKey(longhu);
 				}
 			} else {
-				continue;
+				mapper.updateByPrimaryKey(longhu);//在更新的情况下，可能以前有值
 			}
 		}
 	}

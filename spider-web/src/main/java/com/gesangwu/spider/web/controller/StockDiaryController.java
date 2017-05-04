@@ -10,6 +10,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gesangwu.spider.biz.service.StockDiaryService;
 
+/**
+ * 股票日记
+ * @author zhuxb
+ *
+ */
 @Controller
 @RequestMapping("/diary")
 public class StockDiaryController {

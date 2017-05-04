@@ -432,4 +432,15 @@
     where 
     	ssh.symbol=#{symbol,jdbcType=VARCHAR} AND ssh.`shareholder`=sh.`id` and end_date=(select max(end_date) from stock_shareholder where symbol=#{symbol,jdbcType=VARCHAR})
   </select>
+  <select id="selectByEndDate" resultMap="ExtResultMap">
+  	SELECT 
+    	sh.`holder_name`, sh.`clique_id`, ssh.* 
+    FROM 
+    	stock_shareholder ssh, shareholder sh
+    where 
+    	ssh.symbol=#{symbol,jdbcType=VARCHAR} AND ssh.`shareholder`=sh.`id` and end_date=#{endDate,jdbcType=VARCHAR}
+  </select>
+  <select id="selectEndDate" resultType="java.lang.String" parameterType="java.lang.String">
+  	select end_date from stock_shareholder where symbol = #{symbol,jdbcType=VARCHAR} order by end_date DESC
+  </select>
 </mapper>

@@ -24,4 +24,8 @@ public interface StockShareHolderService extends BaseService<StockShareHolder, S
 	
 	public List<StockShareHolderExt> selectLatestBySymbol(String symbol);
 	
+	public List<String> selectEndDate(String symbol);
+	
+	public List<StockShareHolderExt> selectByEndDate(String symbol, String endDate);
+	
 }

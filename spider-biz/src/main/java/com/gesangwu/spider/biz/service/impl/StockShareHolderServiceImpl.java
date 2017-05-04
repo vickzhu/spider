@@ -77,4 +77,15 @@ public class StockShareHolderServiceImpl extends BaseServiceImpl<StockShareHolde
 		return mapper.selectLatestBySymbol(symbol);
 	}
 
+	@Override
+	public List<String> selectEndDate(String symbol) {
+		return mapper.selectEndDate(symbol);
+	}
+
+	@Override
+	public List<StockShareHolderExt> selectByEndDate(String symbol,
+			String endDate) {
+		return mapper.selectByEndDate(symbol, endDate);
+	}
+
 }

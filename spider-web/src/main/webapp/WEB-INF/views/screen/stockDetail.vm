@@ -155,7 +155,7 @@
 			<div class="widget-box">
               <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
                 <h5>流通股东</h5>
-    			<a class="label label-info" style="line-height:20px;">查看更多</a>
+    			<a href="#springUrl('/shareholder/stock')?symbol=$!{company.symbol}" target="_blank" class="label label-info" style="line-height:20px;">查看更多</a>
               </div>
               <div class="widget-content nopadding">
                 <table class="table table-bordered table-striped">

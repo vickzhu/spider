@@ -2,7 +2,7 @@
 <div id="content">
 	<div id="content-header">
 		<div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">股票</a> <a href="#" class="current">帮派成员</a> </div>
-		<h1>${holder.holderName}</h1>
+		<h1>$!{companyTool.getStockName($!{symbol})}</h1>
 	</div>
 	<div class="container-fluid">
 		<div class="row-fluid">
