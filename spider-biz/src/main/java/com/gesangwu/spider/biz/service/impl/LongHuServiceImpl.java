@@ -119,6 +119,7 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 				if(dateType == 1){//单日行情才计算其他帮派
 					List<LongHuDetail> lhdList = detailMap.get(cliqueId);
 					detailList.removeAll(lhdList);
+					//注意，这里虽然通过计算将营业部本次操作归结为某个帮派，但是并没有将该营业部加入到相应帮派中
 					List<LongHuDetail> tmpList = new ArrayList<LongHuDetail>();
 					for (LongHuDetail detail : detailList) {
 						String deptCode = detail.getSecDeptCode();

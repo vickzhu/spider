@@ -75,17 +75,19 @@ public class ShareHolderController {
 	@RequestMapping(value = "/stock", method = RequestMethod.GET)
 	public ModelAndView stockShareHolder(HttpServletRequest request, String symbol){
 		String endDate = request.getParameter("end_date");
-		List<StockShareHolderExt> sshList = null;
+		
 		if(StringUtil.isBlank(endDate)){//如果不存在截止日期
-			sshList = sshService.selectLatestBySymbol(symbol);
-		} else {
-			sshList = sshService.selectByEndDate(symbol, endDate);
+			endDate = sshService.selectLatestDate(symbol);
 		}
+		
+		List<StockShareHolderExt> sshExtList = sshService.selectByEndDate(symbol, endDate);
 		List<String> endDateList = sshService.selectEndDate(symbol);
 		
 		ModelAndView mav = new ModelAndView("holderDetail");
 		mav.addObject("endDateList", endDateList);
-		mav.addObject("sshList", sshList);
+		mav.addObject("sshExtList", sshExtList);
+		mav.addObject("curDate", endDate);
+		mav.addObject("symbol", symbol);
 		return mav;
 	}
 	

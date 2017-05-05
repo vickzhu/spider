@@ -15,10 +15,66 @@
 						</ul>
 					</div>
 					<div class="widget-content tab-content">
-						<div id="tab1" class="tab-pane active">
-							<p>And is full of waffle to It has multiple paragraphs and is full of waffle to pad out the comment. Usually, you just wish these sorts of comments would come to an end.multiple paragraphs and is full of waffle to pad out the comment.</p>
-							<img src="img/demo/demo-image1.jpg" alt="demo-image" />
-						</div>
+						<div class="widget-box">
+                          <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                            <h5>流通股东</h5>
+							<select id="date-selector" style="margin:auto;">
+								#foreach($endDate in $endDateList)
+								<option value="$!endDate" #if($curDate == $endDate)selected #end>$!endDate</option>
+								#end
+                            </select>
+							
+                          </div>
+                          <div class="widget-content nopadding">
+                            <table class="table table-bordered table-striped">
+                              <thead>
+                                <tr>
+                				  <th>股东</th>
+								  <th>持股数</th>
+            					  <th>持股比例</th>
+            					  <th>变化</th>
+                				  <th>持股时间</th>			  
+                                </tr>
+                              </thead>
+                              <tbody>
+                				#foreach($sshExt in ${sshExtList})
+                                <tr>
+                				  <td>
+            						<a href="#springUrl('/shareholder/detail')?holderId=$!{sshExt.shareholder}">
+            							$!{sshExt.holderName}
+            						</a>
+            						<span class="label label-important">$!{longHuTool.getClique($!{sshExt.cliqueId})}</span>
+            					  </td>
+								  <td>$!{number.format("##0.00",$!{sshExt.holdCount})}</td>
+            					  <td>$!{sshExt.holdFloatRate}%</td>
+            					  <td>
+                					#if($!{sshExt.chgCount})
+                						#if($!{sshExt.chgCount}==0)
+                							不变
+                						#else
+                							#if($!{sshExt.chgCount} > 0)
+                								<i class="icon-arrow-up"></i>
+                								<font style="color:red">
+                									$!{sshExt.chgCount}
+                                                </font>
+                							#else
+                								<i class="icon-arrow-down"></i>
+                								<font style="color:green">
+                									$!{sshExt.chgCount}
+                                                </font>
+                							#end
+                						#end
+                					#else
+                						新进
+                					#end
+                				  </td>
+                				  <td>$!{sshExt.endDate}</td>
+                                </tr>
+                				#end
+                              </tbody>
+                             </table>
+                			</div>
+                        </div>
 					</div>
 				</div>
 			</div>
@@ -34,16 +90,9 @@
 <script src="#resources('js/bootstrap-datepicker.js')"></script> 
 <script type="text/javascript">
 	$(function(){
-		$(".lh_detail").click(function(){
-			var symbol = $(this).parent().parent().attr("symbol");
-			window.location.href="#springUrl('/stock')?symbol="+symbol;
+		$("#date-selector").change(function(){
+			var endDate = $(this).val();
+			window.location.href="#springUrl('/shareholder/stock')?symbol=$!{symbol}&end_date="+endDate;
 		});
-		$('.datepicker').datepicker({format: 'yyyy-mm-dd',
-            weekStart: 1,
-            autoclose: true,
-            todayBtn: 'linked',
-            language: 'zh-CN'}).on('changeDate',function(){
-				$("#searchForm").submit();
-			});
 	});
 </script>
