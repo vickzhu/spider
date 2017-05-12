@@ -127,7 +127,7 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 						String startDate = getStartDate(tradeDate, 3);
 						int cliqueCount = detailService.count4Clique(deptCode, detail.getSymbol(), cliqueId, startDate, tradeDate);
 						int upCount = countDept(deptCode, tradeDate, 3);
-						if(cliqueCount > 0 && cliqueCount * 2 >= upCount){//跟帮操作次数占总上榜次数50%及以上
+						if(upCount > 4 && cliqueCount > 1 && cliqueCount * 2 >= upCount){//跟帮操作次数占总上榜次数50%及以上
 							tmpList.add(detail);
 						}
 					}

@@ -411,7 +411,7 @@
     	stock_shareholder ssh, shareholder sh 
     WHERE 
     	ssh.`shareholder` = sh.`id` AND sh.`holder_type`=1 AND sh.`clique_id` IS NOT NULL 
-    ORDER BY ssh.`end_date` DESC, ssh.`shareholder`
+    ORDER BY ssh.`end_date` desc, ssh.`gmt_create` DESC
     <if test="offset != null and offset > -1" >
       limit ${offset},${rows}
     </if>
@@ -431,6 +431,7 @@
     	stock_shareholder ssh, shareholder sh
     where 
     	ssh.symbol=#{symbol,jdbcType=VARCHAR} AND ssh.`shareholder`=sh.`id` and end_date=(select max(end_date) from stock_shareholder where symbol=#{symbol,jdbcType=VARCHAR})
+    order by ssh.ranking
   </select>
   <select id="selectByEndDate" resultMap="ExtResultMap">
   	SELECT 
@@ -442,5 +443,18 @@
   </select>
   <select id="selectEndDate" resultType="java.lang.String" parameterType="java.lang.String">
   	select distinct end_date from stock_shareholder where symbol = #{symbol,jdbcType=VARCHAR} order by end_date DESC
+  </select>
+  <select id="selectStockByClique" resultMap="ExtResultMap" parameterType="java.lang.Long" >
+    SELECT 
+    	sh.`holder_name`, sh.`clique_id`, ssh.* 
+    FROM 
+    	stock_shareholder ssh, shareholder sh 
+    WHERE 
+    	ssh.`shareholder` = sh.`id` AND sh.`holder_type`=1 AND sh.`clique_id` IS NOT NULL 
+    GROUP BY symbol, end_date
+    ORDER BY ssh.`end_date` desc, ssh.`gmt_create` DESC
+    <if test="offset != null and offset > -1" >
+      limit ${offset},${rows}
+    </if>
   </select>
 </mapper>

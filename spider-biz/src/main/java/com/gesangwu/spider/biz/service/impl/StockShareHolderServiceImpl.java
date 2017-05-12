@@ -88,4 +88,15 @@ public class StockShareHolderServiceImpl extends BaseServiceImpl<StockShareHolde
 		return mapper.selectByEndDate(symbol, endDate);
 	}
 
+	@Override
+	public void selectStockByClique(
+			StockShareHolderExample example, Page<StockShareHolderExt> page) {
+		example.setOffset(page.getOffset());
+        example.setRows(page.getPageSize());
+        int totalCounts = mapper.countCliqueByExample(example);
+        page.setTotalCounts(totalCounts);
+        List<StockShareHolderExt> companyList = mapper.selectStockByClique(example);
+        page.setRecords(companyList);
+	}
+
 }

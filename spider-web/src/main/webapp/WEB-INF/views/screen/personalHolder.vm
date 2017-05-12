@@ -1,5 +1,5 @@
 ##########
-##帮派持股##
+##个人持股##
 ##########
 <link rel="stylesheet" href="#resources('css/datepicker.css')" />
 <div id="content">
@@ -11,12 +11,12 @@
       <div class="span12">
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-            <h5>帮派持股</h5>
+            <h5>个人持股</h5>
           </div>
 		  <div class="widget-title">
             <ul class="nav nav-tabs">
-              <li class="active"><a data-toggle="tab" href="#tab1">帮派持股</a></li>
-			  <li class=""><a href="#springUrl('/shareholder/personal')">帮派成员持股</a></li>
+              <li class=""><a href="#springUrl('/shareholder/clique')">帮派持股</a></li>
+			  <li class="active"><a data-toggle="tab" href="#tab1">帮派成员持股</a></li>
               <li class=""><a data-toggle="tab" href="#tab2">牛散持股</a></li>
             </ul>
           </div>
@@ -25,8 +25,11 @@
               <thead>
                 <tr>
 				  <th style="width:5%;">序号</th>
+                  <th>姓名</th>
                   <th>股票</th>
-				  <th>截止时间</th>
+				  <th>持股量</th>
+				  <th>较上期变化</th>
+				  <th>持股时间</th>
 				  <th>更新时间</th>
 				  <th>帮派</th>
 				  <th>操作</th>
@@ -34,18 +37,41 @@
               </thead>
               <tbody>
 				#foreach($ssh in ${page.records})
-                <tr>
+                <tr holderId="$!{ssh.shareholder}">
 				  <td>$!{velocityCount}</td>
+                  <td><a class="lh_detail" onclick="javascript:;">$!{ssh.holderName}</a></td>
 				  <td>
 					<a href="#springUrl('/stock')?symbol=$!{ssh.symbol}" target="_blank">
 					$!{companyTool.getStockName($!{ssh.symbol})}
                     </a>
 				  </td>
+				  <td>$number.format("###,##0.00",$!{ssh.holdCount})</td>
+				  <td>
+					#if($!{ssh.chgCount})
+						#if($!{ssh.chgCount}==0)
+							不变
+						#else
+							#if($!{ssh.chgCount} > 0)
+								<i class="icon-arrow-up"></i>
+								<font style="color:red">
+									$!{ssh.chgCount}
+                                </font>
+							#else
+								<i class="icon-arrow-down"></i>
+								<font style="color:green">
+									$!{ssh.chgCount}
+                                </font>
+							#end
+						#end
+					#else
+						新进
+					#end
+				  </td>
 				  <td>$!{ssh.endDate}</td>
 				  <td>${date.format("yyyy-MM-dd",$!{ssh.gmtCreate})}</td>
 				  <td>$!{longHuTool.getClique($!{ssh.cliqueId})}</td>
                   <td>
-					<a class="lh_detail" href="#springUrl('/stock')?symbol=$!{ssh.symbol}">查看详情</a>
+					<a class="lh_detail" onclick="javascript:;">历史持股</a>
 				  </td>
                 </tr>
 				#end
@@ -64,4 +90,12 @@
 		window.location.href="#springUrl('/shareholder/clique')?curPage="+pageNo;
 	}
 	$('#page_nav').html(new Pagination($!{page.curPage},$!{page.totalPages}, gotoPage).getHtml());
+</script>
+<script type="text/javascript">
+	$(function(){
+		$(".lh_detail").click(function(){
+			var holderId = $(this).parent().parent().attr("holderId");
+			window.location.href="#springUrl('/shareholder/detail')?holderId="+holderId;
+		});
+	});
 </script>

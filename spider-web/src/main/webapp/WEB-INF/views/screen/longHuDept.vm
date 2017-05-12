@@ -52,7 +52,8 @@
 				  </td>
 				  <td>$!{detail.tradeDate}</td>
 				  <td>$!{detail.price}</td>
-				  <td>$!{detail.chgPercent}</td>
+				  <td style="color:#if($!{detail.chgPercent}>0)red#else green#end" >
+					$!{detail.chgPercent}%</td>
 				  <td>$!{detail.turnover}</td>
 				  <td style="color:red">$!{detail.buyAmt}</td>
 				  <td style="color:green">$!{detail.sellAmt}</td>

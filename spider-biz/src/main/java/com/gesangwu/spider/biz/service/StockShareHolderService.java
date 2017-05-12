@@ -28,4 +28,6 @@ public interface StockShareHolderService extends BaseService<StockShareHolder, S
 	
 	public List<StockShareHolderExt> selectByEndDate(String symbol, String endDate);
 	
+	public void selectStockByClique(StockShareHolderExample example, Page<StockShareHolderExt> page);
+	
 }

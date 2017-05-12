@@ -45,8 +45,28 @@ public class ShareHolderController {
 		}
 		Page<StockShareHolderExt> page = new Page<StockShareHolderExt>(curPage, 20);
 		StockShareHolderExample example = new StockShareHolderExample();
-		sshService.selectCliqueByPagination(example, page);
+		sshService.selectStockByClique(example, page);
 		ModelAndView mav = new ModelAndView("cliqueHolder");
+		mav.addObject("page", page);
+		return mav;
+	}
+	
+	/**
+	 * 个人持股
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/personal", method = RequestMethod.GET)
+	public ModelAndView personal(HttpServletRequest request){
+		int curPage = 1;
+		String pageStr = request.getParameter("curPage");
+		if(StringUtil.isNotBlank(pageStr)){
+			curPage = Integer.valueOf(pageStr);
+		}
+		Page<StockShareHolderExt> page = new Page<StockShareHolderExt>(curPage, 20);
+		StockShareHolderExample example = new StockShareHolderExample();
+		sshService.selectCliqueByPagination(example, page);
+		ModelAndView mav = new ModelAndView("personalHolder");
 		mav.addObject("page", page);
 		return mav;
 	}

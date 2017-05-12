@@ -20,7 +20,7 @@ public interface StockShareHolderMapper extends BaseMapper<StockShareHolder, Sto
 	List<StockShareHolder> selectByPersonalName(String name);
 	
 	/**
-	 * 帮派持股
+	 * 个人持股
 	 * @param example
 	 * @return
 	 */
@@ -50,5 +50,12 @@ public interface StockShareHolderMapper extends BaseMapper<StockShareHolder, Sto
 	 * @return
 	 */
 	List<String> selectEndDate(@Param("symbol")String symbol);
+	
+	/**
+	 * 帮派持股
+	 * @param example
+	 * @return
+	 */
+	List<StockShareHolderExt> selectStockByClique(StockShareHolderExample example);
 	
 }
