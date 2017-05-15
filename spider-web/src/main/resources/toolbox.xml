@@ -12,5 +12,6 @@
    		<tool class="com.gesangwu.spider.web.velocity.tool.CompanyTool"/>
    		<tool class="com.gesangwu.spider.web.velocity.tool.LongHuTool"/>
    		<tool class="com.gesangwu.spider.web.velocity.tool.DecimalTool"/>
+   		<tool class="com.gesangwu.spider.web.velocity.tool.SecDeptTool"/>
    	</toolbox>
 </tools>
