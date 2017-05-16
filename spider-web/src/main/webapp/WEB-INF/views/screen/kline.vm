@@ -134,6 +134,7 @@
                 '最低价：<font color="' + getPriceColor(ki, ki.low) + '">' + toMoney(ki.low) + '</font><br/>' +
                '收盘价：<font color="' + getPriceColor(ki, ki.close) + '">' + toMoney(ki.close) + '</font><br/>' +
                 '成交量：' + bigNumberToText(ki.volume / 100) + '手<br/>' +
+				'开盘涨幅：' + ((ki.open-ki.yc)*100/ki.yc).toFixed(2)+"%<br/>"+
 				'涨跌额：' + ki.chgAmt+"元<br/>"+
                 '涨跌幅：' + ki.percent+'%';
                 return tipHtml;
@@ -714,7 +715,8 @@ function getKLData() {
             close: rawData[4],
             volume: rawData[5],
 			percent: rawData[6],
-			chgAmt: rawData[7]
+			chgAmt: rawData[7],
+			yc:rawData[8]
         };
         if (ks.length == 0) {
             result.low = item.low;
