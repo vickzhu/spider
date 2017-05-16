@@ -171,4 +171,14 @@ public class LongHuController {
 		lhService.analyzeClique(longhu);
 	}
 	
+	/**
+	 * 分析营业部的情况
+	 * @param request
+	 */
+	public void analyzeDept(HttpServletRequest request){
+		String symbol = request.getParameter("symbol");
+		String[] dates = request.getParameterValues("date");
+		
+	}
+	
 }

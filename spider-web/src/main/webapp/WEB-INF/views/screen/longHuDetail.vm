@@ -100,7 +100,8 @@
     			<a class="sec-dept" href="javascript:;" code="${sellDetail.code}">$!{sellDetail.deptAddr}</a>
     			#if(${sellDetail.deptType})
     			<span class="label label-info">${longHuTool.getDeptType(${sellDetail.deptType})}</span>
-    			#end
+				#end
+				<span class="badge badge-success">$!{sellDetail.getSeat(${buyDetail.secDeptCode})}</span>
     		  </td>
     		  <td style="color:green">$!{sellDetail.sellAmt}</td>
     		  <td style="color:red">$!{sellDetail.buyAmt}</td>
