@@ -1,7 +1,10 @@
 package com.gesangwu.spider.web.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -22,17 +25,22 @@ import com.gesangwu.spider.biz.common.LongHuDateType;
 import com.gesangwu.spider.biz.common.LongHuDetailPair;
 import com.gesangwu.spider.biz.dao.model.CliqueDept;
 import com.gesangwu.spider.biz.dao.model.Company;
+import com.gesangwu.spider.biz.dao.model.KLine;
+import com.gesangwu.spider.biz.dao.model.KLineExample;
 import com.gesangwu.spider.biz.dao.model.LongHu;
 import com.gesangwu.spider.biz.dao.model.LongHuDetailExample;
 import com.gesangwu.spider.biz.dao.model.LongHuDetailExt;
 import com.gesangwu.spider.biz.dao.model.LongHuType;
 import com.gesangwu.spider.biz.dao.model.SecDept;
+import com.gesangwu.spider.biz.dao.model.ext.LongHuDetailDept;
 import com.gesangwu.spider.biz.service.CliqueDeptService;
+import com.gesangwu.spider.biz.service.KLineService;
 import com.gesangwu.spider.biz.service.LongHuDetailService;
 import com.gesangwu.spider.biz.service.LongHuService;
 import com.gesangwu.spider.biz.service.LongHuTypeService;
 import com.gesangwu.spider.biz.service.SecDeptService;
 import com.gesangwu.spider.engine.task.LongHuTaskSina;
+import com.gesangwu.spider.web.common.DeptAmount;
 
 @Controller
 @RequestMapping(value="/longhu")
@@ -50,6 +58,8 @@ public class LongHuController {
 	private SecDeptService secDeptService;
 	@Resource
 	private CliqueDeptService cliqueDeptService;
+	@Resource
+	private KLineService kLineService;
 	@Resource
 	private LongHuTaskSina sinaTask;
 	
@@ -177,8 +187,92 @@ public class LongHuController {
 	 */
 	public void analyzeDept(HttpServletRequest request){
 		String symbol = request.getParameter("symbol");
-		String[] dates = request.getParameterValues("date");
+		String beginDate = request.getParameter("beginDate");
+		String endDate = request.getParameter("endDate");
+		List<KLine> kLineList = selKLineList(symbol, beginDate, endDate);
+		List<LongHuDetailDept> detailList = selLongHuDetailList(symbol, beginDate, endDate);
+		Map<String, DeptAmount> daMap = new HashMap<String, DeptAmount>();
+		for (LongHuDetailDept lhdd : detailList) {
+			DeptAmount da = daMap.get(lhdd.getSecDeptCode());
+			if(da == null){
+				da = new DeptAmount(lhdd.getSecDeptCode(), lhdd.getDeptAddr());
+			}
+			da.addLongHu(lhdd);
+			daMap.put(lhdd.getTradeDate(), da);
+		}
+		for(int i = 0; i< kLineList.size(); i++){
+			KLine kl = kLineList.get(i);
+			String tradeDate = kl.getTradeDate();
+			for(DeptAmount da : daMap.values()){
+				double maxRemain = calcAmount(da.getRemainAmount(), kl.getPercent());
+				String sAmounts = da.getDateSell().get(tradeDate);
+				//存在卖出
+				//有底仓
+				if(StringUtil.isNotBlank(sAmounts) && da.getRemainAmount() > 0){
+					double reduce = 0;
+					String[] smArr = sAmounts.split(SymbolConstant.COMMA);
+					for (String sm : smArr) {
+						String[] smPair = sm.split(SymbolConstant.U_LINE);
+						int dateType = Integer.valueOf(smPair[0]);
+						double amount = Double.valueOf(smPair[1]);
+						if(dateType == 1){
+							reduce = amount;
+						} else {
+							double diff = Math.abs(da.getRemainAmount() - amount);
+							double scale = diff / da.getRemainAmount();
+							if(scale <= 2){//20%范围内的金额则认为全出完了
+								reduce = da.getRemainAmount();
+							} else {//实际减仓需要计算
+								reduce = amount;
+							}
+						}
+					}
+				}
+				
+				String bAmounts = da.getDateBuy().get(tradeDate);
+				if(StringUtil.isNotBlank(bAmounts)){//存在当天的买入龙虎榜
+					double add = 0;
+					String[] bmArr = bAmounts.split(SymbolConstant.COMMA);
+					for (String bm : bmArr) {
+						String[] bmPair = bm.split(SymbolConstant.U_LINE);
+						double amount = Double.valueOf(bmPair[1]);
+						if(amount > add) {
+							add = amount;
+						}
+					}
+				}
+				
+			}
+		}
+	}
+	
+	private double calcAmount(double remainAmount, double changeRate){
+		BigDecimal bd = new BigDecimal(remainAmount/100);
+		bd = bd.multiply(new BigDecimal(changeRate)).setScale(2, BigDecimal.ROUND_HALF_UP);
+		double result = remainAmount + bd.doubleValue(); 
+		return result > 0 ? result : 0;
+	}
+	
+	private List<KLine> selKLineList(String symbol, String beginDate, String endDate){
+		KLineExample example = new KLineExample();
+		example.setOrderByClause("trade_date");
+		KLineExample.Criteria criteria = example.createCriteria();
+		criteria.andSymbolEqualTo(symbol);
+		criteria.andTradeDateGreaterThanOrEqualTo(beginDate);
+		criteria.andTradeDateLessThanOrEqualTo(endDate);
+		return kLineService.selectByExample(example);
+	}
+	
+	private List<LongHuDetailDept> selLongHuDetailList(String symbol, String beginDate, String endDate){
 		
+		LongHuDetailExample example = new LongHuDetailExample();
+		example.setOrderByClause("trade_date, date_type");
+		LongHuDetailExample.Criteria criteria = example.createCriteria();
+		criteria.andSymbolEqualTo(symbol);
+		criteria.andTradeDateGreaterThanOrEqualTo(beginDate);
+		criteria.andTradeDateLessThanOrEqualTo(endDate);
+		
+		return lhDetailService.selectDetailDeptByExample(example);
 	}
 	
 }
