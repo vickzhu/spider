@@ -185,10 +185,15 @@ public class LongHuController {
 	 * 分析营业部的情况
 	 * @param request
 	 */
-	public void analyzeDept(HttpServletRequest request){
+	@RequestMapping(value = "/analyze", method = RequestMethod.GET)
+	public ModelAndView analyzeDept(HttpServletRequest request){
 		String symbol = request.getParameter("symbol");
-		String beginDate = request.getParameter("beginDate");
+		String beginDate = request.getParameter("startDate");
 		String endDate = request.getParameter("endDate");
+		if(StringUtil.isBlank(symbol) || StringUtil.isBlank(beginDate) || StringUtil.isBlank(endDate)){
+			logger.error("Params is needed!!!");
+			return null;
+		}
 		List<KLine> kLineList = selKLineList(symbol, beginDate, endDate);
 		List<LongHuDetailDept> detailList = selLongHuDetailList(symbol, beginDate, endDate);
 		Map<String, DeptAmount> daMap = new HashMap<String, DeptAmount>();
@@ -198,13 +203,13 @@ public class LongHuController {
 				da = new DeptAmount(lhdd.getSecDeptCode(), lhdd.getDeptAddr());
 			}
 			da.addLongHu(lhdd);
-			daMap.put(lhdd.getTradeDate(), da);
+			daMap.put(lhdd.getSecDeptCode(), da);
 		}
 		for(int i = 0; i< kLineList.size(); i++){
 			KLine kl = kLineList.get(i);
 			String tradeDate = kl.getTradeDate();
 			for(DeptAmount da : daMap.values()){
-				double maxRemain = calcAmount(da.getRemainAmount(), kl.getPercent());
+				
 				String sAmounts = da.getDateSell().get(tradeDate);
 				//存在卖出
 				//有底仓
@@ -215,20 +220,26 @@ public class LongHuController {
 						String[] smPair = sm.split(SymbolConstant.U_LINE);
 						int dateType = Integer.valueOf(smPair[0]);
 						double amount = Double.valueOf(smPair[1]);
+						double diff = Math.abs(da.getRemainAmount() - amount);
+						double scale = diff / da.getRemainAmount();
 						if(dateType == 1){
+							if(scale <= 0.2){//20%范围内的金额则认为全出完了
+								reduce = da.getRemainAmount();
+							} else {//实际减仓需要计算
+								reduce = amount;
+							}
 							reduce = amount;
-						} else {
-							double diff = Math.abs(da.getRemainAmount() - amount);
-							double scale = diff / da.getRemainAmount();
-							if(scale <= 2){//20%范围内的金额则认为全出完了
+						} else {							
+							if(scale <= 0.3){//20%范围内的金额则认为全出完了
 								reduce = da.getRemainAmount();
 							} else {//实际减仓需要计算
 								reduce = amount;
 							}
 						}
 					}
+					double ra = da.getRemainAmount() - reduce;
+					da.setRemainAmount(ra<0?0:ra);
 				}
-				
 				String bAmounts = da.getDateBuy().get(tradeDate);
 				if(StringUtil.isNotBlank(bAmounts)){//存在当天的买入龙虎榜
 					double add = 0;
@@ -240,12 +251,23 @@ public class LongHuController {
 							add = amount;
 						}
 					}
+					double remain = calcAmount(da.getRemainAmount(), kl.getPercent());
+					da.setRemainAmount(remain + add);
 				}
 				
 			}
 		}
+		ModelAndView mav = new ModelAndView("deptAmount");
+		mav.addObject("daMap", daMap);
+		return mav;
 	}
 	
+	/**
+	 * 计算剩余持仓
+	 * @param remainAmount
+	 * @param changeRate
+	 * @return
+	 */
 	private double calcAmount(double remainAmount, double changeRate){
 		BigDecimal bd = new BigDecimal(remainAmount/100);
 		bd = bd.multiply(new BigDecimal(changeRate)).setScale(2, BigDecimal.ROUND_HALF_UP);

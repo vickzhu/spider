@@ -1,0 +1,33 @@
+#############
+##  持仓分析  ##
+#############
+#set($layout="/layout/null.vm")
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+	  <th>序号</th>
+      <th>营业部</th>
+      <th colspan="2">持仓</th>
+      <th>剩余仓位</th>
+    </tr>
+  </thead>
+  <tbody>
+	#foreach($da in ${daMap.values()})
+    <tr>
+	  <td>$velocityCount</td>
+      <td>$!{da.deptName}</td>
+      <td>
+		#foreach($b in ${da.dateBuy.entrySet()})
+			$b.key 买 $b.value<br/>
+		#end
+	  </td>
+	  <td>
+		#foreach($s in ${da.dateSell.entrySet()})
+			$s.key 卖 $s.value<br/>
+		#end
+	  </td>
+      <td>$!{da.remainAmount}</td>
+    </tr>
+	#end
+  </tbody>
+</table>

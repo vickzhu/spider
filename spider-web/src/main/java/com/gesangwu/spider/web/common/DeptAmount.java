@@ -74,6 +74,19 @@ public class DeptAmount {
 		int dateType = lhDetail.getDateType();
 		String tradeDate = lhDetail.getTradeDate();
 		
+		//1、存在买入才给予计算，否则可能是第一天卖出，则不计算仓位
+		//2、大于100万才计算在内
+		if(dateBuy.size() > 0 && lhDetail.getSellAmt().doubleValue() > 100){
+			String amount = formatAmount(dateType, lhDetail.getSellAmt().doubleValue());
+			String amounts = dateSell.get(tradeDate);
+			if(StringUtil.isBlank(amounts)){
+				dateSell.put(tradeDate, amount);
+			} else {
+				amounts = amounts+SymbolConstant.COMMA + amount;
+				dateSell.put(tradeDate, amounts);
+			}
+		}
+		
 		if(lhDetail.getBuyAmt().doubleValue() > 100){//大于100万才计算
 			String amount = formatAmount(dateType, lhDetail.getBuyAmt().doubleValue());
 			String amounts = dateBuy.get(tradeDate);
@@ -82,18 +95,6 @@ public class DeptAmount {
 			} else {
 				amounts = amounts+SymbolConstant.COMMA + amount;
 				dateBuy.put(tradeDate, amounts);
-			}
-		}
-		//1、卖出日期大于0，表示第一天个龙虎榜的卖出不予计算
-		//2、大于100万才计算在内
-		if(dateSell.size() > 0 && lhDetail.getSellAmt().doubleValue() > 100){
-			String amount = formatAmount(dateType, lhDetail.getSellAmt().doubleValue());
-			String amounts = dateSell.get(tradeDate);
-			if(StringUtil.isBlank(amounts)){
-				dateSell.put(tradeDate, amount);
-			} else {
-				amounts = amounts+SymbolConstant.COMMA + amount;
-				dateSell.put(tradeDate, amounts);
 			}
 		}
 	}
