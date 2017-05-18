@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gandalf.framework.constant.SymbolConstant;
+import com.gandalf.framework.util.CalculateUtil;
 import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.common.LongHuDateType;
@@ -220,25 +221,23 @@ public class LongHuController {
 						String[] smPair = sm.split(SymbolConstant.U_LINE);
 						int dateType = Integer.valueOf(smPair[0]);
 						double amount = Double.valueOf(smPair[1]);
-						double diff = Math.abs(da.getRemainAmount() - amount);
-						double scale = diff / da.getRemainAmount();
+						double scale = calcScale(da.getRemainAmount(), amount);
 						if(dateType == 1){
-							if(scale <= 0.2){//20%范围内的金额则认为全出完了
+							if(scale <= 0.3){//30%范围内的金额则认为全出完了
 								reduce = da.getRemainAmount();
 							} else {//实际减仓需要计算
 								reduce = amount;
 							}
-							reduce = amount;
 						} else {							
-							if(scale <= 0.3){//20%范围内的金额则认为全出完了
+							if(scale <= 0.3){//30%范围内的金额则认为全出完了
 								reduce = da.getRemainAmount();
 							} else {//实际减仓需要计算
 								reduce = amount;
 							}
 						}
 					}
-					double ra = da.getRemainAmount() - reduce;
-					da.setRemainAmount(ra<0?0:ra);
+					double ra = CalculateUtil.sub(da.getRemainAmount(), reduce);
+					da.setRemainAmount(ra < 0 ? 0 : ra);
 				}
 				String bAmounts = da.getDateBuy().get(tradeDate);
 				if(StringUtil.isNotBlank(bAmounts)){//存在当天的买入龙虎榜
@@ -273,6 +272,18 @@ public class LongHuController {
 		bd = bd.multiply(new BigDecimal(changeRate)).setScale(2, BigDecimal.ROUND_HALF_UP);
 		double result = remainAmount + bd.doubleValue(); 
 		return result > 0 ? result : 0;
+	}
+	
+	/**
+	 * 计算买入/卖出金额和持仓之间的比例
+	 * @param remainAmount
+	 * @param amount
+	 * @return
+	 */
+	private double calcScale(double remainAmount, double amount){
+		double diff = CalculateUtil.sub(remainAmount, amount, 2);
+		double scale = CalculateUtil.div(diff, remainAmount, 2);
+		return Math.abs(scale);
 	}
 	
 	private List<KLine> selKLineList(String symbol, String beginDate, String endDate){

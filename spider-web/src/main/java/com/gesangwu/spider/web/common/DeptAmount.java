@@ -76,13 +76,13 @@ public class DeptAmount {
 		
 		//1、存在买入才给予计算，否则可能是第一天卖出，则不计算仓位
 		//2、大于100万才计算在内
-		if(dateBuy.size() > 0 && lhDetail.getSellAmt().doubleValue() > 100){
+		if(lhDetail.getSellAmt().doubleValue() > 100){
 			String amount = formatAmount(dateType, lhDetail.getSellAmt().doubleValue());
 			String amounts = dateSell.get(tradeDate);
 			if(StringUtil.isBlank(amounts)){
 				dateSell.put(tradeDate, amount);
 			} else {
-				amounts = amounts+SymbolConstant.COMMA + amount;
+				amounts = amounts + SymbolConstant.COMMA + amount;
 				dateSell.put(tradeDate, amounts);
 			}
 		}
