@@ -93,7 +93,7 @@ public class DeptAmount {
 			if(StringUtil.isBlank(amounts)){
 				dateBuy.put(tradeDate, amount);
 			} else {
-				amounts = amounts+SymbolConstant.COMMA + amount;
+				amounts = amounts + SymbolConstant.COMMA + amount;
 				dateBuy.put(tradeDate, amounts);
 			}
 		}

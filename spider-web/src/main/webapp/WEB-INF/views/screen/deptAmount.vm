@@ -18,12 +18,18 @@
       <td><a href="#springUrl('/longhu/dept')?deptCode=${da.deptCode}" target="_blank">$!{da.deptName}</a></td>
       <td style="color:red">
 		#foreach($b in ${da.dateBuy.entrySet()})
-			$b.key 买 #parseAmount(${b.value})<br/>
+			#set($amountArr = $b.value.split(","))
+			#foreach($ar in $amountArr)
+				$b.key 买 #parseAmount($ar)<br/>
+			#end
 		#end
 	  </td>
 	  <td style="color:green">
 		#foreach($s in ${da.dateSell.entrySet()})
-			$s.key 卖 #parseAmount(${s.value})<br/>
+			#set($amountArr = $s.value.split(","))
+			#foreach($ar in $amountArr)
+			$s.key 卖 #parseAmount($ar)<br/>
+			#end
 		#end
 	  </td>
       <td>$!{da.remainAmount}</td>

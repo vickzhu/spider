@@ -42,6 +42,7 @@ import com.gesangwu.spider.biz.service.LongHuTypeService;
 import com.gesangwu.spider.biz.service.SecDeptService;
 import com.gesangwu.spider.engine.task.LongHuTaskSina;
 import com.gesangwu.spider.web.common.DeptAmount;
+import com.gesangwu.spider.web.common.DeptAmountFormat;
 
 @Controller
 @RequestMapping(value="/longhu")
@@ -221,19 +222,30 @@ public class LongHuController {
 						String[] smPair = sm.split(SymbolConstant.U_LINE);
 						int dateType = Integer.valueOf(smPair[0]);
 						double amount = Double.valueOf(smPair[1]);
-						double scale = calcScale(da.getRemainAmount(), amount);
 						if(dateType == 1){
+							double scale = calcScale(da.getRemainAmount(), amount);
 							if(scale <= 0.3){//30%范围内的金额则认为全出完了
 								reduce = da.getRemainAmount();
 							} else {//实际减仓需要计算
 								reduce = amount;
 							}
-						} else {							
-							if(scale <= 0.3){//30%范围内的金额则认为全出完了
-								reduce = da.getRemainAmount();
-							} else {//实际减仓需要计算
-								reduce = amount;
+						} else {
+							//这里计算三日的减仓情况
+							//如果前两日内龙虎榜有减仓，需要在三日龙虎内去掉这部分金额
+							double sellTotal = calcTotal(i, da.getDateSell(), dateType, kLineList);
+							double diff = amount - sellTotal;
+							if(diff < 100){//说明三日龙虎数据和之前的数据基本一致，不需要减少剩余仓位
+								continue;
+							} else {
+								double scale = calcScale(da.getRemainAmount(), diff);
+								if(scale <= 0.3){//30%范围内的金额则认为全出完了
+									reduce = da.getRemainAmount();
+								} else {//实际减仓需要计算
+									reduce = amount;
+								}
 							}
+							
+							
 						}
 					}
 					double ra = CalculateUtil.sub(da.getRemainAmount(), reduce);
@@ -245,10 +257,22 @@ public class LongHuController {
 					String[] bmArr = bAmounts.split(SymbolConstant.COMMA);
 					for (String bm : bmArr) {
 						String[] bmPair = bm.split(SymbolConstant.U_LINE);
+						int dateType = Integer.valueOf(bmPair[0]);
 						double amount = Double.valueOf(bmPair[1]);
-						if(amount > add) {
-							add = amount;
+						if(dateType == 1){							
+							if(amount > add) {
+								add = amount;
+							}
+						} else {
+							double buyTotal = calcTotal(i, da.getDateBuy(), dateType, kLineList);
+							double diff = amount - buyTotal;
+							if(diff < 100){//说明三日龙虎数据和之前的数据基本一致，不需要增加剩余仓位
+								continue;
+							} else {
+								add = CalculateUtil.add(add, diff);
+							}
 						}
+						
 					}
 					double remain = calcAmount(da.getRemainAmount(), kl.getPercent());
 					da.setRemainAmount(remain + add);
@@ -284,6 +308,35 @@ public class LongHuController {
 		double diff = CalculateUtil.sub(remainAmount, amount, 2);
 		double scale = CalculateUtil.div(diff, remainAmount, 2);
 		return Math.abs(scale);
+	}
+	
+	/**
+	 * 计算3日龙虎总买或总卖
+	 * @return
+	 */
+	private double calcTotal(int curIndex, Map<String, String> dateAmountMap,int dateType,List<KLine> kLineList){
+		double total = 0d;
+		for(int j = dateType-1; j >= 0; j--){
+			int index = curIndex - j;
+			if(index < 0){//会导致K线数组越界
+				continue;
+			}
+			String date = kLineList.get(index).getTradeDate();
+			String at = dateAmountMap.get(date);
+			if(StringUtil.isBlank(at)){
+				continue;
+			}
+			Map<Integer,Double> aMap = DeptAmountFormat.parse(at);
+			
+			for (Map.Entry<Integer, Double> entry : aMap.entrySet()) {
+				if(entry.getKey() > 1){
+					continue;
+				}
+				total = CalculateUtil.add(total, entry.getValue(), 2);
+			}
+			
+		}
+		return total;
 	}
 	
 	private List<KLine> selKLineList(String symbol, String beginDate, String endDate){
