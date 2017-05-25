@@ -41,7 +41,7 @@
             <div class="widget-box">
               <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
                 <h5>托压单</h5>
-    			<a class="label label-info" style="line-height:20px;"></a>
+    			<a href="#springUrl('/fiverange/history')?symbol=$!{company.symbol}" class="label label-info" style="line-height:20px;">查看更多</a>
               </div>
               <div class="widget-content nopadding">
                 <table class="table table-bordered table-striped">
