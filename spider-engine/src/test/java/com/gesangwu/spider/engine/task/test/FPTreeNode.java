@@ -31,7 +31,7 @@ public class FPTreeNode implements Comparable<FPTreeNode>{
 		this.count = count;
 	}
 	public void Sum(Integer count) {
-		this.count =this.count+count;
+		this.count =this.count + count;
 	}
 	public FPTreeNode getParent() {
 		return parent;

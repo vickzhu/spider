@@ -49,10 +49,12 @@
     <div class="modal-body">
     	<p>
     		<input id="keyword" type="text" placeholder="股票名称/代码"/>
+			<label id="search_tips" style="margin-left:10px;color:red;display:none;" ></label>
     	</p>
+		
     </div>
     <div class="modal-footer"> 
-		<a href="#" class="btn" data-dismiss="modal">取消</a> 
+		<a href="#" id="cancel-add-event" class="btn" data-dismiss="modal">取消</a> 
 		<a href="#" id="add-event-submit" class="btn btn-primary">确定</a> 
 	</div>
 </div>
@@ -61,6 +63,12 @@ $(function(){
 	$("#add-event-submit").click(function(){
 		var keyword = $("#keyword").val();
 		jQuery.get("#springUrl('/shareholder/relation/search')?keyword="+encodeURIComponent(keyword),function(result){
+			if(result.records == null){
+				$("#search_tips").text("股票不存在");
+				$("#search_tips").show();
+			}
+			$("#cancel-add-event").click();
+			$("#keyword").val("");
 			var stockName = result.records.stockName;
 			var tmp = "<div class=\"stock-border\">";
 			tmp += stockName;

@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
+import com.gandalf.framework.constant.SymbolConstant;
+import com.gandalf.framework.util.StringUtil;
 
 /**
  * 基于FP-Tree的关联规则FP-Growth推荐算法
@@ -40,40 +42,41 @@ public class FPGrowthUtil {
 		records.add(l1);
 		return records;
     }
+	
 	//创建表头链
 	public LinkedList<FPTreeNode> buildHeaderLink(LinkedList<LinkedList<String>> records){
-		LinkedList<FPTreeNode> header=null;
-		if(records.size()>0){
-			header=new LinkedList<FPTreeNode>();
-		}else{
+		if(records.size() <= 0){
 			return null;
 		}
+		
 		Map<String, FPTreeNode> map = new HashMap<String, FPTreeNode>();
-		for(LinkedList<String> items:records){
-			
-			for(String item:items){
+		for(LinkedList<String> items : records){//遍历记录
+			for(String item : items){
 				//如果存在数量增1，不存在则新增
 				if(map.containsKey(item)){
 					map.get(item).Sum(1);
 				}else{
-					FPTreeNode node=new FPTreeNode();
+					FPTreeNode node = new FPTreeNode();
 					node.setName(item);
 					node.setCount(1);
 					map.put(item, node);
 				}
 		     }
 		}
-		 // 把支持度大于（或等于）minSup的项加入到F1中
-		Set<String> names = map.keySet();
-		for (String name : names) {
-		    FPTreeNode tnode = map.get(name);
-		    if (tnode.getCount() >= support) {
-		    	header.add(tnode);
-		    }
+		
+		LinkedList<FPTreeNode> header = new LinkedList<FPTreeNode>();
+		// 把支持度大于（或等于）最小支持度的项加入到F1中
+		for(Map.Entry<String, FPTreeNode> entry : map.entrySet()){
+			FPTreeNode tNode = entry.getValue();
+			if(tNode.getCount() >= support){
+				header.add(tNode);
+			}
 		}
+		
 		sort(header);
 		return header;
 	}
+	
 	//选择法排序,如果次数相等，则按名字排序,字典顺序,先小写后大写
 	public List<FPTreeNode> sort(List<FPTreeNode> list){
 		int len=list.size();
@@ -105,8 +108,6 @@ public class FPGrowthUtil {
 						list.remove(i);
 						list.add(i,tmp);
 					}
-					
-
 				}
 			}
 		}
@@ -148,6 +149,7 @@ public class FPGrowthUtil {
 		}
 		return lis;
 	}
+	
 	public Integer findcountByname(String itemname,List<FPTreeNode> header){
 		Integer count=-1;
 		for(FPTreeNode node:header){
@@ -165,49 +167,49 @@ public class FPGrowthUtil {
 	 * @return 返回构建好的树
 	 */
 	public FPTreeNode builderFpTree(LinkedList<LinkedList<String>> records,List<FPTreeNode> header){
-		
-		   FPTreeNode root;
-		   if(records.size()<=0){
-			   return null;
-		   }
-		   root=new FPTreeNode();
-		   for(LinkedList<String> items:records){
-			   itemsort(items,header);
-			  addNode(root,items,header);
-			}
-		return root;
+	   if(records.size() <= 0){
+		   return null;
+	   }
+	   FPTreeNode root = new FPTreeNode();
+	   for(LinkedList<String> items : records){
+		   itemsort(items, header);
+		   addNode(root, items, header);
+	   }
+	   return root;
 	}
+	
 	//当已经有分枝存在的时候，判断新来的节点是否属于该分枝的某个节点，或全部重合，递归
-	public  FPTreeNode addNode(FPTreeNode root,LinkedList<String> items,List<FPTreeNode> header){
-		if(items.size()<=0)return null;
-		String item=items.poll();
+	public  FPTreeNode addNode(FPTreeNode root, LinkedList<String> items,List<FPTreeNode> header){
+		if(items.size() <= 0){
+			return null;
+		}
+		String item = items.poll();
 		//当前节点的孩子节点不包含该节点，那么另外创建一支分支。
-		FPTreeNode node=root.findChild(item);
-		if(node==null){
-	    node=new FPTreeNode();
+		FPTreeNode node = root.findChild(item);
+		if(node == null){
+			node = new FPTreeNode();
 			node.setName(item);
 			node.setCount(1);
 			node.setParent(root);
 			root.addChild(node);
 			
-			//加将各个节点加到链头中 
-			for(FPTreeNode head:header){
+			//将各个节点加到链头中 
+			for(FPTreeNode head : header){
 				if(head.getName().equals(item)){
-					while(head.getNextHomonym()!=null){
-						head=head.getNextHomonym();
+					while(head.getNextHomonym() != null){//存在下一个同名节点
+						head = head.getNextHomonym();
 					}
 					head.setNextHomonym(node);
 					break;
 				}
 			}
-			//加将各个节点加到链头中
 		}else{
 			node.setCount(node.getCount()+1);
 		}
- 
-		addNode(node,items,header);
+		addNode(node, items, header);
 		return root;
 	}
+	
 	//从叶子找到根节点，递归之
 	public void toroot(FPTreeNode node,LinkedList<String> newrecord){
 		if(node.getParent()==null)return;
@@ -215,6 +217,7 @@ public class FPGrowthUtil {
 		newrecord.add(name);
 		toroot(node.getParent(),newrecord);
 	}
+	
 	//对条件FP-tree树进行组合，以求出频繁项集
 	public void combineItem(FPTreeNode node,LinkedList<String> newrecord,String Item){
 		if(node.getParent()==null)return;
@@ -222,62 +225,79 @@ public class FPGrowthUtil {
 		newrecord.add(name);
 		toroot(node.getParent(),newrecord);
 	}
+	
 	//fp-growth
-	public void fpgrowth(LinkedList<LinkedList<String>> records,String item){
-		//保存新的条件模式基的各个记录，以重新构造FP-tree
-		LinkedList<LinkedList<String>> newrecords=new LinkedList<LinkedList<String>>();
+	public Map<String, Integer> fpgrowth(LinkedList<LinkedList<String>> records, String item){
 		//构建链头
-		LinkedList<FPTreeNode> header=buildHeaderLink(records);
+		LinkedList<FPTreeNode> header = buildHeaderLink(records);
 		//创建FP-Tree
-		FPTreeNode fptree= builderFpTree(records,header);
+		FPTreeNode fptree = builderFpTree(records, header);
 		//结束递归的条件
-		if(header.size()<=0||fptree==null){
-			return;
+		Map<String, Integer> resultMap = new HashMap<String, Integer>();
+		if(header.size() <= 0|| fptree == null){
+			return resultMap;
 		}
 		//打印结果,输出频繁项集
-		if(item!=null){
+		if(item != null){
 			//寻找条件模式基,从链尾开始
-			for(int i=header.size()-1;i>=0;i--){
-				FPTreeNode head=header.get(i);
-				Integer count=0;
-				while(head.getNextHomonym()!=null){
-					head=head.getNextHomonym();
+			for(int i = header.size() - 1; i >= 0; i--){
+				FPTreeNode head = header.get(i);
+				Integer count = 0;
+				while(head.getNextHomonym() != null){
+					head = head.getNextHomonym();
 					//叶子count等于多少，就算多少条记录
-					count=count+head.getCount();
+					count = count + head.getCount();
 					
 				}
 				//打印频繁项集
 				System.out.println(head.getName()+","+item+"\t"+count);
+				resultMap.put(head.getName(), count);
 			}
 		}
+		
+		//保存新的条件模式基的各个记录，以重新构造FP-tree
+		LinkedList<LinkedList<String>> newrecords = new LinkedList<LinkedList<String>>();
+		
 		//寻找条件模式基,从链尾开始
-		for(int i=header.size()-1;i>=0;i--){
-			FPTreeNode head=header.get(i);
-			String itemname;
-			//再组合
-			if(item==null){
-				itemname=head.getName();
-			}else{
-				itemname=head.getName()+","+item;
-			}
-			
-			while(head.getNextHomonym()!=null){
-				head=head.getNextHomonym();
+		for(int i = header.size() - 1; i >= 0; i--){
+			FPTreeNode head = header.get(i);
+			String itemname = buildItemName(item, head);
+			while(head.getNextHomonym() != null){
+				head = head.getNextHomonym();
 				//叶子count等于多少，就算多少条记录
-				Integer count=head.getCount();
-				for(int n=0;n<count;n++){
+				Integer count = head.getCount();
+				for(int j = 0; j < count; j++){
 				   LinkedList<String> record=new LinkedList<String>();
 				   toroot(head.getParent(),record);
 				   newrecords.add(record);
 				}
 			}
-			//递归之,以求子FP-Tree
-			fpgrowth(newrecords,itemname);
+			//递归求子FP-Tree
+			resultMap.putAll(fpgrowth(newrecords,itemname));
 		}
+		return resultMap;
     }
+	
+	/**
+	 * 构建频繁项名称(如：啤酒，尿不湿)
+	 * @param item
+	 * @param head
+	 * @return
+	 */
+	private String buildItemName(String item, FPTreeNode head){
+		StringBuilder sb = new StringBuilder();
+		sb.append(head.getName());
+		//再组合
+		if(StringUtil.isNotBlank(item)){
+			sb.append(SymbolConstant.COMMA);
+			sb.append(item);
+		}
+		return sb.toString();
+	}
+	
 	//保存次序，此步也可以省略，为了减少再加工结果的麻烦而加
 	public void orderF1(LinkedList<FPTreeNode> orderheader){
-		for(int i=0;i<orderheader.size();i++){
+		for(int i=0;i < orderheader.size();i++){
 			FPTreeNode node=orderheader.get(i);
 			ordermap.put(node.getName(), i);
 		}
@@ -288,6 +308,10 @@ public class FPGrowthUtil {
 		FPGrowthUtil fpg=new FPGrowthUtil();
 		LinkedList<LinkedList<String>> records=fpg.readF1();
 		LinkedList<FPTreeNode> orderheader=fpg.buildHeaderLink(records);
+		for (FPTreeNode fpTreeNode : orderheader) {
+			System.out.println(fpTreeNode.getName());
+			
+		}
 		fpg.orderF1(orderheader);
 		fpg.fpgrowth(records,null);
 	}
