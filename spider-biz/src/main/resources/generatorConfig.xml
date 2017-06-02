@@ -152,8 +152,39 @@
 		    <property name="suppressDate" value="true"/>
 		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
 		</table>
-		-->
+		
 		<table tableName="jd_statis" domainObjectName="JdStatis"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
+		
+		<table tableName="stock_diary" domainObjectName="StockDiary"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
+		
+		<table tableName="stock_name_initial" domainObjectName="StockNameInitial"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
+		
+		<table tableName="my_follow_dept" domainObjectName="MyFollowDept"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
+		-->
+		
+		<table tableName="synergy" domainObjectName="Synergy"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
+		
+		<table tableName="synergy_detail" domainObjectName="SynergyDetail"> 
 			<property name="suppressAllComments" value="true"/> 
 		    <property name="suppressDate" value="true"/>
 		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>

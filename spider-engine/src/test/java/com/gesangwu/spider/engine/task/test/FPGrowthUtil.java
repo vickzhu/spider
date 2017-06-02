@@ -249,9 +249,7 @@ public class FPGrowthUtil {
 					count = count + head.getCount();
 					
 				}
-				//打印频繁项集
-				System.out.println(head.getName()+","+item+"\t"+count);
-				resultMap.put(head.getName(), count);
+				resultMap.put(head.getName()+ "," + item, count);
 			}
 		}
 		
