@@ -144,7 +144,7 @@
     			#if(${sellDetail.deptType})
     			<span class="label label-info">${longHuTool.getDeptType(${sellDetail.deptType})}</span>
 				#end
-				<span class="badge badge-success">$!{sellDetail.getSeat(${buyDetail.secDeptCode})}</span>
+				<span class="badge badge-success">$!{secDeptTool.getSeat(${sellDetail.secDeptCode})}</span>
     		  </td>
     		  <td style="color:green">$!{sellDetail.sellAmt}</td>
     		  <td style="color:red">$!{sellDetail.buyAmt}</td>
