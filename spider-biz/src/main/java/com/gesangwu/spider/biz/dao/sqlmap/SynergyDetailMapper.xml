@@ -187,4 +187,25 @@
     (#{sd.sG,jdbcType=INTEGER}, #{sd.dept,jdbcType=VARCHAR})
     </foreach>
   </insert>
+  <resultMap type="com.gandalf.framework.mybatis.KeyValue" id="relateDeptResult">
+  	<result property="key" column="s_g"/>
+  	<result property="value" column="c"/>
+  </resultMap>
+  <!-- 关联营业部 -->
+  <select id="relateDept" parameterType="java.util.List" resultMap="relateDeptResult">
+  	SELECT 
+  		s_g,COUNT(*) c 
+  	FROM 
+  		synergy_detail 
+  	WHERE 
+  	<foreach collection="list" index="index" item="d" separator="OR">
+  		dept=#{d,jdbcType=VARCHAR} 
+  	</foreach>
+  	GROUP BY 
+  		s_g 
+  	HAVING 
+  		COUNT(*)>1
+  	ORDER BY 
+  		c DESC;
+  </select>
 </mapper>

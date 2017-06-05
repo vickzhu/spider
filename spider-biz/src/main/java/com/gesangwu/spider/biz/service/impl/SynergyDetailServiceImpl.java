@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.gandalf.framework.mybatis.BaseMapper;
 import com.gandalf.framework.mybatis.BaseServiceImpl;
+import com.gandalf.framework.mybatis.KeyValue;
 import com.gesangwu.spider.biz.dao.mapper.SynergyDetailMapper;
 import com.gesangwu.spider.biz.dao.model.SynergyDetail;
 import com.gesangwu.spider.biz.dao.model.SynergyDetailExample;
@@ -29,6 +30,11 @@ public class SynergyDetailServiceImpl extends
 	@Override
 	public void insertSynergyDetailBatch(List<SynergyDetail> sdList) {
 		mapper.insertSynergyDetailBatch(sdList);		
+	}
+
+	@Override
+	public List<KeyValue<Integer, Integer>> relateDept(List<String> list) {
+		return mapper.relateDept(list);
 	}
 
 }

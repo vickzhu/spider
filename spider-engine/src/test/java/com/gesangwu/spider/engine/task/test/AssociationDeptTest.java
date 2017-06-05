@@ -55,7 +55,7 @@ public class AssociationDeptTest extends BaseTest {
 		Map<String, Map<String, LinkedList<String>>> maps = new HashMap<String, Map<String, LinkedList<String>>>();
 		LongHuDetailExample lhdExample = new LongHuDetailExample();
 		LongHuDetailExample.Criteria lhdCriteria = lhdExample.createCriteria();
-		lhdCriteria.andTradeDateGreaterThanOrEqualTo("2017-04-01");
+		lhdCriteria.andTradeDateGreaterThanOrEqualTo("2017-03-05");
 		List<LongHuDetail> detailList = lhdService.selectByExample(lhdExample);
 		System.out.println("读取数据库花费" + (System.currentTimeMillis() - start) +"ms!");
 		for (LongHuDetail longHuDetail : detailList) {
