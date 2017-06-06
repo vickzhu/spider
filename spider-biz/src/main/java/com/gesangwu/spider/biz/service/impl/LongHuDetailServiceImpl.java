@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.gandalf.framework.mybatis.BaseMapper;
 import com.gandalf.framework.mybatis.BaseServiceImpl;
+import com.gandalf.framework.mybatis.KeyValue;
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.common.LongHuDetailPair;
 import com.gesangwu.spider.biz.dao.mapper.LongHuDetailMapper;
@@ -108,6 +109,12 @@ public class LongHuDetailServiceImpl extends BaseServiceImpl<LongHuDetail, LongH
 	@Override
 	public void clearClique(long longHuId) {
 		mapper.clearClique(longHuId);		
+	}
+
+	@Override
+	public List<KeyValue<String, String>> selectRelationStock(String startDate,
+			String endDate, int synergyGroup) {
+		return mapper.selectRelationStock(startDate, endDate, synergyGroup);
 	}
 
 }

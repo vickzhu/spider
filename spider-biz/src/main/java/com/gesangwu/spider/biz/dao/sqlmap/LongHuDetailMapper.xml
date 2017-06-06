@@ -1,55 +1,56 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gesangwu.spider.biz.dao.mapper.LongHuDetailMapper" >
-  <resultMap id="BaseResultMap" type="com.gesangwu.spider.biz.dao.model.LongHuDetail" >
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="long_hu_id" property="longHuId" jdbcType="BIGINT" />
-    <result column="symbol" property="symbol" jdbcType="VARCHAR" />
-    <result column="trade_date" property="tradeDate" jdbcType="VARCHAR" />
-    <result column="buy_amt" property="buyAmt" jdbcType="DECIMAL" />
-    <result column="sell_amt" property="sellAmt" jdbcType="DECIMAL" />
-    <result column="net_buy" property="netBuy" jdbcType="DECIMAL" />
-    <result column="sec_dept_code" property="secDeptCode" jdbcType="VARCHAR" />
-    <result column="date_type" property="dateType" jdbcType="INTEGER" />
-    <result column="clique_id" property="cliqueId" jdbcType="BIGINT" />
-    <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
-    <result column="gmt_update" property="gmtUpdate" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gesangwu.spider.biz.dao.mapper.LongHuDetailMapper">
+  <resultMap id="BaseResultMap" type="com.gesangwu.spider.biz.dao.model.LongHuDetail">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="long_hu_id" jdbcType="BIGINT" property="longHuId" />
+    <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+    <result column="trade_date" jdbcType="VARCHAR" property="tradeDate" />
+    <result column="buy_amt" jdbcType="DECIMAL" property="buyAmt" />
+    <result column="sell_amt" jdbcType="DECIMAL" property="sellAmt" />
+    <result column="net_buy" jdbcType="DECIMAL" property="netBuy" />
+    <result column="sec_dept_code" jdbcType="VARCHAR" property="secDeptCode" />
+    <result column="date_type" jdbcType="INTEGER" property="dateType" />
+    <result column="clique_id" jdbcType="BIGINT" property="cliqueId" />
+    <result column="relation" jdbcType="INTEGER" property="relation" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_update" jdbcType="TIMESTAMP" property="gmtUpdate" />
   </resultMap>
-  <resultMap id="DetailResultMap" type="com.gesangwu.spider.biz.dao.model.LongHuDetailExt" extends="BaseResultMap">
-    <result column="stock_name" property="stockName" jdbcType="VARCHAR" />
-    <result column="price" property="price" jdbcType="DOUBLE" />
-    <result column="chg" property="chg" jdbcType="DOUBLE" />
-    <result column="chg_percent" property="chgPercent" jdbcType="DOUBLE" />
-    <result column="turnover" property="turnover" jdbcType="DOUBLE" />
-    <result column="amplitude" property="amplitude" jdbcType="DOUBLE" />
-    <result column="tot_mkt_val" property="totMktVal" jdbcType="DOUBLE" />
-    <result column="neg_mkt_val" property="negMktVal" jdbcType="DOUBLE" />
-    <result column="operate_clique" property="operateClique" jdbcType="BIGINT" />
+   <resultMap extends="BaseResultMap" id="DetailResultMap" type="com.gesangwu.spider.biz.dao.model.LongHuDetailExt">
+    <result column="stock_name" jdbcType="VARCHAR" property="stockName" />
+    <result column="price" jdbcType="DOUBLE" property="price" />
+    <result column="chg" jdbcType="DOUBLE" property="chg" />
+    <result column="chg_percent" jdbcType="DOUBLE" property="chgPercent" />
+    <result column="turnover" jdbcType="DOUBLE" property="turnover" />
+    <result column="amplitude" jdbcType="DOUBLE" property="amplitude" />
+    <result column="tot_mkt_val" jdbcType="DOUBLE" property="totMktVal" />
+    <result column="neg_mkt_val" jdbcType="DOUBLE" property="negMktVal" />
+    <result column="operate_clique" jdbcType="BIGINT" property="operateClique" />
   </resultMap>
-  <resultMap id="DetailDeptResultMap" type="com.gesangwu.spider.biz.dao.model.ext.LongHuDetailDept" extends="BaseResultMap">
-    <result column="dept_addr" property="deptAddr" jdbcType="VARCHAR" />
-    <result column="code" property="code" jdbcType="VARCHAR" />
-    <result column="dept_type" property="deptType" jdbcType="INTEGER" />
+  <resultMap extends="BaseResultMap" id="DetailDeptResultMap" type="com.gesangwu.spider.biz.dao.model.ext.LongHuDetailDept">
+    <result column="dept_addr" jdbcType="VARCHAR" property="deptAddr" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="dept_type" jdbcType="INTEGER" property="deptType" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -60,25 +61,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -89,183 +90,194 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, long_hu_id, symbol, trade_date, buy_amt, sell_amt, net_buy, sec_dept_code, date_type, 
-    clique_id, gmt_create, gmt_update
+    clique_id, relation, gmt_create, gmt_update
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetailExample" >
+  <select id="selectByExample" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetailExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from long_hu_detail
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
-    <if test="offset != null and offset > -1" >
+    <if test="offset != null and offset &gt; -1">
       limit ${offset},${rows}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from long_hu_detail
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from long_hu_detail
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetailExample" >
+  <delete id="deleteByExample" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetailExample">
     delete from long_hu_detail
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetail" >
-    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetail">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into long_hu_detail (long_hu_id, symbol, trade_date, 
       buy_amt, sell_amt, net_buy, 
       sec_dept_code, date_type, clique_id, 
-      gmt_create, gmt_update)
+      relation, gmt_create, gmt_update
+      )
     values (#{longHuId,jdbcType=BIGINT}, #{symbol,jdbcType=VARCHAR}, #{tradeDate,jdbcType=VARCHAR}, 
       #{buyAmt,jdbcType=DECIMAL}, #{sellAmt,jdbcType=DECIMAL}, #{netBuy,jdbcType=DECIMAL}, 
       #{secDeptCode,jdbcType=VARCHAR}, #{dateType,jdbcType=INTEGER}, #{cliqueId,jdbcType=BIGINT}, 
-      #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP})
+      #{relation,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetail" >
-    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetail">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into long_hu_detail
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="longHuId != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="longHuId != null">
         long_hu_id,
       </if>
-      <if test="symbol != null" >
+      <if test="symbol != null">
         symbol,
       </if>
-      <if test="tradeDate != null" >
+      <if test="tradeDate != null">
         trade_date,
       </if>
-      <if test="buyAmt != null" >
+      <if test="buyAmt != null">
         buy_amt,
       </if>
-      <if test="sellAmt != null" >
+      <if test="sellAmt != null">
         sell_amt,
       </if>
-      <if test="netBuy != null" >
+      <if test="netBuy != null">
         net_buy,
       </if>
-      <if test="secDeptCode != null" >
+      <if test="secDeptCode != null">
         sec_dept_code,
       </if>
-      <if test="dateType != null" >
+      <if test="dateType != null">
         date_type,
       </if>
-      <if test="cliqueId != null" >
+      <if test="cliqueId != null">
         clique_id,
       </if>
-      <if test="gmtCreate != null" >
+      <if test="relation != null">
+        relation,
+      </if>
+      <if test="gmtCreate != null">
         gmt_create,
       </if>
-      <if test="gmtUpdate != null" >
+      <if test="gmtUpdate != null">
         gmt_update,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="longHuId != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="longHuId != null">
         #{longHuId,jdbcType=BIGINT},
       </if>
-      <if test="symbol != null" >
+      <if test="symbol != null">
         #{symbol,jdbcType=VARCHAR},
       </if>
-      <if test="tradeDate != null" >
+      <if test="tradeDate != null">
         #{tradeDate,jdbcType=VARCHAR},
       </if>
-      <if test="buyAmt != null" >
+      <if test="buyAmt != null">
         #{buyAmt,jdbcType=DECIMAL},
       </if>
-      <if test="sellAmt != null" >
+      <if test="sellAmt != null">
         #{sellAmt,jdbcType=DECIMAL},
       </if>
-      <if test="netBuy != null" >
+      <if test="netBuy != null">
         #{netBuy,jdbcType=DECIMAL},
       </if>
-      <if test="secDeptCode != null" >
+      <if test="secDeptCode != null">
         #{secDeptCode,jdbcType=VARCHAR},
       </if>
-      <if test="dateType != null" >
+      <if test="dateType != null">
         #{dateType,jdbcType=INTEGER},
       </if>
-      <if test="cliqueId != null" >
+      <if test="cliqueId != null">
         #{cliqueId,jdbcType=BIGINT},
       </if>
-      <if test="gmtCreate != null" >
+      <if test="relation != null">
+        #{relation,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null">
         #{gmtCreate,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtUpdate != null" >
+      <if test="gmtUpdate != null">
         #{gmtUpdate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetailExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetailExample" resultType="java.lang.Integer">
     select count(*) from long_hu_detail
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update long_hu_detail
-    <set >
-      <if test="record.id != null" >
+    <set>
+      <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.longHuId != null" >
+      <if test="record.longHuId != null">
         long_hu_id = #{record.longHuId,jdbcType=BIGINT},
       </if>
-      <if test="record.symbol != null" >
+      <if test="record.symbol != null">
         symbol = #{record.symbol,jdbcType=VARCHAR},
       </if>
-      <if test="record.tradeDate != null" >
+      <if test="record.tradeDate != null">
         trade_date = #{record.tradeDate,jdbcType=VARCHAR},
       </if>
-      <if test="record.buyAmt != null" >
+      <if test="record.buyAmt != null">
         buy_amt = #{record.buyAmt,jdbcType=DECIMAL},
       </if>
-      <if test="record.sellAmt != null" >
+      <if test="record.sellAmt != null">
         sell_amt = #{record.sellAmt,jdbcType=DECIMAL},
       </if>
-      <if test="record.netBuy != null" >
+      <if test="record.netBuy != null">
         net_buy = #{record.netBuy,jdbcType=DECIMAL},
       </if>
-      <if test="record.secDeptCode != null" >
+      <if test="record.secDeptCode != null">
         sec_dept_code = #{record.secDeptCode,jdbcType=VARCHAR},
       </if>
-      <if test="record.dateType != null" >
+      <if test="record.dateType != null">
         date_type = #{record.dateType,jdbcType=INTEGER},
       </if>
-      <if test="record.cliqueId != null" >
+      <if test="record.cliqueId != null">
         clique_id = #{record.cliqueId,jdbcType=BIGINT},
       </if>
-      <if test="record.gmtCreate != null" >
+      <if test="record.relation != null">
+        relation = #{record.relation,jdbcType=INTEGER},
+      </if>
+      <if test="record.gmtCreate != null">
         gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.gmtUpdate != null" >
+      <if test="record.gmtUpdate != null">
         gmt_update = #{record.gmtUpdate,jdbcType=TIMESTAMP},
       </if>
     </set>
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update long_hu_detail
     set id = #{record.id,jdbcType=BIGINT},
       long_hu_id = #{record.longHuId,jdbcType=BIGINT},
@@ -277,52 +289,56 @@
       sec_dept_code = #{record.secDeptCode,jdbcType=VARCHAR},
       date_type = #{record.dateType,jdbcType=INTEGER},
       clique_id = #{record.cliqueId,jdbcType=BIGINT},
+      relation = #{record.relation,jdbcType=INTEGER},
       gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
       gmt_update = #{record.gmtUpdate,jdbcType=TIMESTAMP}
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetail" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetail">
     update long_hu_detail
-    <set >
-      <if test="longHuId != null" >
+    <set>
+      <if test="longHuId != null">
         long_hu_id = #{longHuId,jdbcType=BIGINT},
       </if>
-      <if test="symbol != null" >
+      <if test="symbol != null">
         symbol = #{symbol,jdbcType=VARCHAR},
       </if>
-      <if test="tradeDate != null" >
+      <if test="tradeDate != null">
         trade_date = #{tradeDate,jdbcType=VARCHAR},
       </if>
-      <if test="buyAmt != null" >
+      <if test="buyAmt != null">
         buy_amt = #{buyAmt,jdbcType=DECIMAL},
       </if>
-      <if test="sellAmt != null" >
+      <if test="sellAmt != null">
         sell_amt = #{sellAmt,jdbcType=DECIMAL},
       </if>
-      <if test="netBuy != null" >
+      <if test="netBuy != null">
         net_buy = #{netBuy,jdbcType=DECIMAL},
       </if>
-      <if test="secDeptCode != null" >
+      <if test="secDeptCode != null">
         sec_dept_code = #{secDeptCode,jdbcType=VARCHAR},
       </if>
-      <if test="dateType != null" >
+      <if test="dateType != null">
         date_type = #{dateType,jdbcType=INTEGER},
       </if>
-      <if test="cliqueId != null" >
+      <if test="cliqueId != null">
         clique_id = #{cliqueId,jdbcType=BIGINT},
       </if>
-      <if test="gmtCreate != null" >
+      <if test="relation != null">
+        relation = #{relation,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null">
         gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtUpdate != null" >
+      <if test="gmtUpdate != null">
         gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetail" >
+  <update id="updateByPrimaryKey" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetail">
     update long_hu_detail
     set long_hu_id = #{longHuId,jdbcType=BIGINT},
       symbol = #{symbol,jdbcType=VARCHAR},
@@ -333,50 +349,51 @@
       sec_dept_code = #{secDeptCode,jdbcType=VARCHAR},
       date_type = #{dateType,jdbcType=INTEGER},
       clique_id = #{cliqueId,jdbcType=BIGINT},
+      relation = #{relation,jdbcType=INTEGER},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
   
-  <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true" >
+  <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true">
     insert into long_hu_detail (long_hu_id, symbol, trade_date, buy_amt, 
-      sell_amt, net_buy, sec_dept_code, date_type, clique_id, gmt_create, 
+      sell_amt, net_buy, sec_dept_code, date_type, clique_id, relation, gmt_create, 
       gmt_update)
     values 
     <foreach collection="list" index="index" item="detail" separator=",">
     (#{detail.longHuId,jdbcType=BIGINT}, #{detail.symbol,jdbcType=VARCHAR},
       #{detail.tradeDate,jdbcType=VARCHAR}, #{detail.buyAmt,jdbcType=DECIMAL}, 
       #{detail.sellAmt,jdbcType=DECIMAL}, #{detail.netBuy,jdbcType=DECIMAL}, #{detail.secDeptCode,jdbcType=VARCHAR}, 
-      #{detail.dateType,jdbcType=INTEGER}, #{detail.cliqueId,jdbcType=BIGINT},
+      #{detail.dateType,jdbcType=INTEGER}, #{detail.cliqueId,jdbcType=BIGINT}, #{detail.relation,jdbcType=INTEGER},
       #{detail.gmtCreate,jdbcType=TIMESTAMP}, #{detail.gmtUpdate,jdbcType=TIMESTAMP})
     </foreach>
   </insert>
-  <select id="selectDetailExtByExample" resultMap="DetailResultMap" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetailExample" >
+  <select id="selectDetailExtByExample" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetailExample" resultMap="DetailResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     lhd.*, lh.stock_name, lh.price, lh.chg, lh.chg_percent, lh.turnover, lh.amplitude, 
     lh.tot_mkt_val, lh.neg_mkt_val, lh.operate_clique
     from long_hu_detail lhd, long_hu lh where lhd.symbol=lh.symbol and lhd.trade_date = lh.trade_date 
-    <if test="_parameter != null" >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-	      <if test="criteria.valid" >
-	        <trim prefixOverrides="and" prefix="and" >
-	          <foreach collection="criteria.criteria" item="criterion" >
-	            <choose >
-	              <when test="criterion.noValue" >
+    <if test="_parameter != null">
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+	      <if test="criteria.valid">
+	        <trim prefix="and" prefixOverrides="and">
+	          <foreach collection="criteria.criteria" item="criterion">
+	            <choose>
+	              <when test="criterion.noValue">
 	                and lhd.${criterion.condition}
 	              </when>
-	              <when test="criterion.singleValue" >
+	              <when test="criterion.singleValue">
 	                and lhd.${criterion.condition} #{criterion.value}
 	              </when>
-	              <when test="criterion.betweenValue" >
+	              <when test="criterion.betweenValue">
 	                and lhd.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
 	              </when>
-	              <when test="criterion.listValue" >
+	              <when test="criterion.listValue">
 	                and lhd.${criterion.condition}
-	                <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+	                <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
 	                  #{listItem}
 	                </foreach>
 	              </when>
@@ -386,38 +403,38 @@
 	      </if>
 	    </foreach>
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
-    <if test="offset != null and offset > -1" >
+    <if test="offset != null and offset &gt; -1">
       limit ${offset},${rows}
     </if>
   </select>
-  <select id="selectDetailDeptByExample" resultMap="DetailDeptResultMap" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetailExample" >
+  <select id="selectDetailDeptByExample" parameterType="com.gesangwu.spider.biz.dao.model.LongHuDetailExample" resultMap="DetailDeptResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     lhd.*, sd.dept_addr, sd.code, sd.dept_type
     from long_hu_detail lhd, sec_dept sd where lhd.sec_dept_code=sd.code 
-    <if test="_parameter != null" >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-	      <if test="criteria.valid" >
-	        <trim prefixOverrides="and" prefix="and" >
-	          <foreach collection="criteria.criteria" item="criterion" >
-	            <choose >
-	              <when test="criterion.noValue" >
+    <if test="_parameter != null">
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+	      <if test="criteria.valid">
+	        <trim prefix="and" prefixOverrides="and">
+	          <foreach collection="criteria.criteria" item="criterion">
+	            <choose>
+	              <when test="criterion.noValue">
 	                and lhd.${criterion.condition}
 	              </when>
-	              <when test="criterion.singleValue" >
+	              <when test="criterion.singleValue">
 	                and lhd.${criterion.condition} #{criterion.value}
 	              </when>
-	              <when test="criterion.betweenValue" >
+	              <when test="criterion.betweenValue">
 	                and lhd.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
 	              </when>
-	              <when test="criterion.listValue" >
+	              <when test="criterion.listValue">
 	                and lhd.${criterion.condition}
-	                <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+	                <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
 	                  #{listItem}
 	                </foreach>
 	              </when>
@@ -427,14 +444,14 @@
 	      </if>
 	    </foreach>
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
-    <if test="offset != null and offset > -1" >
+    <if test="offset != null and offset &gt; -1">
       limit ${offset},${rows}
     </if>
   </select>
-  <select id="selectDetail" resultMap="BaseResultMap" parameterType="map" >
+  <select id="selectDetail" parameterType="map" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from 
@@ -449,7 +466,7 @@
   			operate_clique=#{cliqueId,jdbcType=BIGINT} AND trade_date &gt; #{startDate,jdbcType=VARCHAR} 
   			AND trade_date &lt; #{endDate,jdbcType=VARCHAR})
   </select>
-  <select id="count4Clique" resultType="int" parameterType="map">
+  <select id="count4Clique" parameterType="map" resultType="int">
   	SELECT 
   		count(*) 
   	FROM 
@@ -464,7 +481,24 @@
   			operate_clique=#{cliqueId,jdbcType=BIGINT}  
   			AND trade_date &gt; #{startDate,jdbcType=VARCHAR} AND trade_date &lt; #{endDate,jdbcType=VARCHAR})
   </select>
-  <update id="clearClique" parameterType="java.lang.Long" >
+  <update id="clearClique" parameterType="java.lang.Long">
     update long_hu_detail set clique_id = null where long_hu_id=#{longHuId,jdbcType=BIGINT}
   </update>
+  <resultMap type="com.gandalf.framework.mybatis.KeyValue" id="relationStockResult">
+  	<result property="key" column="trade_date"/>
+  	<result property="value" column="symbol"/>
+  </resultMap>
+  <select id="selectRelationStock" resultMap="relationStockResult">
+  	SELECT 
+  		trade_date, symbol 
+  	FROM 
+  		long_hu_detail 
+  	WHERE 
+  		trade_date &gt;= #{startDate,jdbcType=VARCHAR} AND trade_date &lt;= #{endDate,jdbcType=VARCHAR}
+  		AND sec_dept_code IN (SELECT dept FROM synergy_detail WHERE s_g=#{synergyGroup,jdbcType=INTEGER})
+  	GROUP BY 
+  		long_hu_id HAVING COUNT(*) = (SELECT count(*) FROM synergy_detail WHERE s_g=#{synergyGroup,jdbcType=INTEGER}) 
+  	ORDER BY 
+  		trade_date DESC;
+  </select>
 </mapper>

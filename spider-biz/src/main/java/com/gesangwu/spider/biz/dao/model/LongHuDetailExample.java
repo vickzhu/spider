@@ -756,6 +756,66 @@ public class LongHuDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andRelationIsNull() {
+            addCriterion("relation is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationIsNotNull() {
+            addCriterion("relation is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationEqualTo(Integer value) {
+            addCriterion("relation =", value, "relation");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationNotEqualTo(Integer value) {
+            addCriterion("relation <>", value, "relation");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationGreaterThan(Integer value) {
+            addCriterion("relation >", value, "relation");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationGreaterThanOrEqualTo(Integer value) {
+            addCriterion("relation >=", value, "relation");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationLessThan(Integer value) {
+            addCriterion("relation <", value, "relation");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationLessThanOrEqualTo(Integer value) {
+            addCriterion("relation <=", value, "relation");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationIn(List<Integer> values) {
+            addCriterion("relation in", values, "relation");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationNotIn(List<Integer> values) {
+            addCriterion("relation not in", values, "relation");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationBetween(Integer value1, Integer value2) {
+            addCriterion("relation between", value1, value2, "relation");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationNotBetween(Integer value1, Integer value2) {
+            addCriterion("relation not between", value1, value2, "relation");
+            return (Criteria) this;
+        }
+
         public Criteria andGmtCreateIsNull() {
             addCriterion("gmt_create is null");
             return (Criteria) this;

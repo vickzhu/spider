@@ -3,6 +3,7 @@ package com.gesangwu.spider.biz.service;
 import java.util.List;
 
 import com.gandalf.framework.mybatis.BaseService;
+import com.gandalf.framework.mybatis.KeyValue;
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.common.LongHuDetailPair;
 import com.gesangwu.spider.biz.dao.model.LongHuDetail;
@@ -46,4 +47,13 @@ public interface LongHuDetailService extends BaseService<LongHuDetail, LongHuDet
 	 * @param longHuId
 	 */
 	public void clearClique(long longHuId);
+	
+	/**
+	 * 查找关联的股票
+	 * @param startDate
+	 * @param endDate
+	 * @param synergyGroup
+	 * @return
+	 */
+	public List<KeyValue<String, String>> selectRelationStock(String startDate, String endDate, int synergyGroup);
 }

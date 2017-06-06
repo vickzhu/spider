@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.gandalf.framework.mybatis.BaseMapper;
+import com.gandalf.framework.mybatis.KeyValue;
 import com.gesangwu.spider.biz.dao.model.LongHuDetail;
 import com.gesangwu.spider.biz.dao.model.LongHuDetailExample;
 import com.gesangwu.spider.biz.dao.model.LongHuDetailExt;
@@ -25,5 +26,14 @@ public interface LongHuDetailMapper extends BaseMapper<LongHuDetail, LongHuDetai
 			@Param("cliqueId")Long cliqueId, @Param("startDate")String startDate, @Param("endDate")String endDate);
 
 	void clearClique(@Param("longHuId")Long longHuId);
+	
+	/**
+	 * 查找关联的股票
+	 * @param startDate
+	 * @param endDate
+	 * @param synergyGroup
+	 * @return
+	 */
+	List<KeyValue<String, String>> selectRelationStock(@Param("startDate")String startDate, @Param("endDate")String endDate,  @Param("synergyGroup")int synergyGroup);
 	
 }
