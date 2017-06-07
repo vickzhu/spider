@@ -1,6 +1,5 @@
 package com.gesangwu.spider.web.controller;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -213,9 +212,8 @@ public class LongHuController {
 			for(DeptAmount da : daMap.values()){
 				
 				String sAmounts = da.getDateSell().get(tradeDate);
-				//存在卖出
-				//有底仓
-				if(StringUtil.isNotBlank(sAmounts) && da.getRemainAmount() > 0){
+				//卖出
+				if(StringUtil.isNotBlank(sAmounts) && da.getRemainAmount() > 0){//有底仓
 					double reduce = 0;
 					String[] smArr = sAmounts.split(SymbolConstant.COMMA);
 					for (String sm : smArr) {
@@ -244,28 +242,29 @@ public class LongHuController {
 									reduce = amount;
 								}
 							}
-							
-							
 						}
 					}
-					double ra = CalculateUtil.sub(da.getRemainAmount(), reduce);
+					double ra = CalculateUtil.sub(da.getRemainAmount(), reduce, 2);
 					da.setRemainAmount(ra < 0 ? 0 : ra);
 				}
 				String bAmounts = da.getDateBuy().get(tradeDate);
+				double remain = calcAmount(da.getRemainAmount(), kl.getPercent());
+				//买入
 				if(StringUtil.isNotBlank(bAmounts)){//存在当天的买入龙虎榜
-					double add = 0;
+					double add = 0;//增仓金额
 					String[] bmArr = bAmounts.split(SymbolConstant.COMMA);
 					for (String bm : bmArr) {
 						String[] bmPair = bm.split(SymbolConstant.U_LINE);
 						int dateType = Integer.valueOf(bmPair[0]);
 						double amount = Double.valueOf(bmPair[1]);
 						if(dateType == 1){							
-							if(amount > add) {
+//							if(amount > add) {
 								add = amount;
-							}
+//							}
 						} else {
+							//如果是3日龙虎，则计算3天总的买入量，如果是2日龙虎，则计算2天总的买入量
 							double buyTotal = calcTotal(i, da.getDateBuy(), dateType, kLineList);
-							double diff = amount - buyTotal;
+							double diff = amount - buyTotal;//三日龙虎和之前三天总买入量的差额
 							if(diff < 100){//说明三日龙虎数据和之前的数据基本一致，不需要增加剩余仓位
 								continue;
 							} else {
@@ -274,8 +273,10 @@ public class LongHuController {
 						}
 						
 					}
-					double remain = calcAmount(da.getRemainAmount(), kl.getPercent());
-					da.setRemainAmount(remain + add);
+					
+					da.setRemainAmount(CalculateUtil.add(remain , add));
+				} else {//当日不存在，需要根据当日涨跌幅，更新最新持仓金额
+					da.setRemainAmount(remain);
 				}
 				
 			}
@@ -292,10 +293,14 @@ public class LongHuController {
 	 * @return
 	 */
 	private double calcAmount(double remainAmount, double changeRate){
-		BigDecimal bd = new BigDecimal(remainAmount/100);
-		bd = bd.multiply(new BigDecimal(changeRate)).setScale(2, BigDecimal.ROUND_HALF_UP);
-		double result = remainAmount + bd.doubleValue(); 
+		double result = (double)Math.round(remainAmount*(100 + changeRate))/100;
 		return result > 0 ? result : 0;
+	}
+	
+	public static void main(String[] args){
+		LongHuController lhc = new LongHuController();
+		double result = lhc.calcAmount(5158.13, 9.991);
+		System.out.println(result);
 	}
 	
 	/**
