@@ -1,5 +1,5 @@
 ##########
-##个人持股##
+##帮派成员持股##
 ##########
 <link rel="stylesheet" href="#resources('css/datepicker.css')" />
 <div id="content">
@@ -87,7 +87,7 @@
 <script src="#resources('js/pagination.js')"></script>
 <script type="text/javascript">
 	function gotoPage(pageNo){
-		window.location.href="#springUrl('/shareholder/clique')?curPage="+pageNo;
+		window.location.href="#springUrl('/shareholder/personal')?curPage="+pageNo;
 	}
 	$('#page_nav').html(new Pagination($!{page.curPage},$!{page.totalPages}, gotoPage).getHtml());
 </script>
