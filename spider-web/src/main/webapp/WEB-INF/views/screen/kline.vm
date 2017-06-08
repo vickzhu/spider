@@ -128,15 +128,15 @@
                 if (index >= me.data.ks.length) index = me.data.ks.length - 1;
                 if (index < 0) index = 0;
                 var ki = me.data.ks[index];
+				var op = ((ki.open-ki.yc)*100/ki.yc).toFixed(2)+"%";
                 var tipHtml = '<div><b>' + convertDate(ki.quoteTime) + '</b></div>' +
-                '开盘价：<font color="' + getPriceColor(ki, ki.open) + '">' + toMoney(ki.open) + '</font><br/>' +
+                '开盘价：<font color="' + getPriceColor(ki, ki.open) + '">' + toMoney(ki.open) + '(' +op+')</font><br/>' +
                 '最高价：<font color="' + getPriceColor(ki, ki.high) + '">' + toMoney(ki.high) + '</font><br/>' +
                 '最低价：<font color="' + getPriceColor(ki, ki.low) + '">' + toMoney(ki.low) + '</font><br/>' +
                '收盘价：<font color="' + getPriceColor(ki, ki.close) + '">' + toMoney(ki.close) + '</font><br/>' +
                 '成交量：' + bigNumberToText(ki.volume / 100) + '手<br/>' +
-				'开盘涨幅：' + ((ki.open-ki.yc)*100/ki.yc).toFixed(2)+"%<br/>"+
-				'涨跌额：' + ki.chgAmt+"元<br/>"+
-                '涨跌幅：' + ki.percent+'%';
+				'换手率：' + ki.tt.toFixed(2)+"<br/>"+
+				'涨跌：' + ki.percent+'%(' + ki.chgAmt+"元)<br/>";
                 return tipHtml;
             }
 
@@ -202,7 +202,7 @@
                         getTipHtml: function (ev) {
 							return getTipHtml(ev.offsetX); 
 						},
-                        size:{width:120,height:150},
+                        size:{width:150,height:150},
                         position:{x:false,y:region.y+(region.height-150)/3}, //position中的值是相对于canvas的左上角的
                         opacity:80,
                         cssClass:'',
@@ -347,9 +347,11 @@
                         candleHeight = getY(ki.close) - candleY;
                     } else {
 						candleY = getY(ki.close);
-						candleHeight = 0.5;
+						candleHeight = 0.7;
 					}
-
+					if(candleHeight < 0.7){
+						candleHeight = 0.9
+					}
                     //画线
                     ctx.beginPath();
                     ctx.moveTo(lineX, topY);
@@ -670,7 +672,7 @@
                 }
             },
             priceLine: {
-                region:{ x: 45.5, y: 380.5, height: 60, width: initialWidth - 45.5 - 20.5 },
+                region:{ x: 45.5, y: 390.5, height: 60, width: initialWidth - 45.5 - 20.5 },
                 verticalLineCount: 7,
                 horizontalLineCount: 1, lineStyle: 'solid', borderColor: 'gray', splitLineColor: '#eeeeee',fillColor:'lightgray',alpha:.5,
                 yAxis: {
@@ -716,7 +718,8 @@ function getKLData() {
             volume: rawData[5],
 			percent: rawData[6],
 			chgAmt: rawData[7],
-			yc:rawData[8]
+			yc:rawData[8],
+			tt:rawData[9]
         };
         if (ks.length == 0) {
             result.low = item.low;
