@@ -12,7 +12,7 @@
     </tr>
   </thead>
   <tbody>
-	#foreach($da in ${daMap.values()})
+	#foreach($da in ${daList})
     <tr>
 	  <td>$velocityCount</td>
       <td><a href="#springUrl('/longhu/dept')?deptCode=${da.deptCode}" target="_blank">$!{da.deptName}</a></td>
@@ -32,11 +32,23 @@
 			#end
 		#end
 	  </td>
-      <td>$!{da.remainAmount}</td>
+      <td class="remain-amt">$!{da.remainAmount}</td>
     </tr>
 	#end
+	<tr>
+		<td colspan="5" style="text-align:right;">剩余仓位合计：<span id="total-remain" style="color:red;font-size:20px;"></span> 万</td>
+	</tr>
   </tbody>
 </table>
+<script type="text/javascript">
+$(function(){
+	var remainAmt = 0;
+	$(".remain-amt").each(function(){
+		remainAmt += parseFloat($(this).text());
+	});
+	$("#total-remain").text(remainAmt.toFixed(2));
+})
+</script>
 #macro(parseAmount $amount)
     #set($ap = $amount.split("_"))
     $ap[1]

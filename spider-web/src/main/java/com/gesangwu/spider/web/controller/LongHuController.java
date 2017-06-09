@@ -1,6 +1,8 @@
 package com.gesangwu.spider.web.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -273,16 +275,18 @@ public class LongHuController {
 						}
 						
 					}
-					
 					da.setRemainAmount(CalculateUtil.add(remain , add));
 				} else {//当日不存在，需要根据当日涨跌幅，更新最新持仓金额
 					da.setRemainAmount(remain);
 				}
-				
 			}
 		}
+		List<DeptAmount> daList = new ArrayList<DeptAmount>();
+		daList.addAll(daMap.values());
+		Collections.sort(daList);
 		ModelAndView mav = new ModelAndView("deptAmount");
 		mav.addObject("daMap", daMap);
+		mav.addObject("daList", daList);
 		return mav;
 	}
 	

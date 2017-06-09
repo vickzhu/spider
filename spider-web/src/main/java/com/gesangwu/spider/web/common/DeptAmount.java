@@ -14,7 +14,7 @@ import com.gesangwu.spider.biz.dao.model.LongHuDetail;
  * @author zhuxb
  *
  */
-public class DeptAmount {
+public class DeptAmount implements Comparable<DeptAmount> {
 	
 	private String deptCode;
 	private String deptName;
@@ -123,5 +123,10 @@ public class DeptAmount {
 		list.add("2017-05-05");
 		System.out.println(list.indexOf("2017-05-04"));
 		
+	}
+
+	@Override
+	public int compareTo(DeptAmount o) {
+		return (int)(o.getRemainAmount() - remainAmount);
 	}
 }
