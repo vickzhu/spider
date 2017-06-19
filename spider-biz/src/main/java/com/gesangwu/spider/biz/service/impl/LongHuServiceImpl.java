@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.gandalf.framework.mybatis.BaseMapper;
 import com.gandalf.framework.mybatis.BaseServiceImpl;
+import com.gandalf.framework.mybatis.KeyValue;
 import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.common.DeptCliqueType;
 import com.gesangwu.spider.biz.dao.mapper.LongHuMapper;
@@ -27,6 +28,7 @@ import com.gesangwu.spider.biz.dao.model.LongHuExample;
 import com.gesangwu.spider.biz.service.CliqueDeptService;
 import com.gesangwu.spider.biz.service.LongHuDetailService;
 import com.gesangwu.spider.biz.service.LongHuService;
+import com.gesangwu.spider.biz.service.SynergyDetailService;
 
 @Service
 public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
@@ -38,6 +40,8 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 	private LongHuDetailService detailService;
 	@Resource
 	private CliqueDeptService cdService;
+	@Resource
+	private SynergyDetailService sdService;
 
 	@Override
 	protected BaseMapper<LongHu, LongHuExample> getMapper() {
@@ -149,7 +153,37 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 			} else {
 				mapper.updateByPrimaryKey(longhu);//在更新的情况下，可能以前有值
 			}
+			
 		}
+	}
+	
+	private void synergyDept(String tradeDate, List<LongHuDetail> lhdList){
+		List<String> depts = new ArrayList<String>();
+		for (LongHuDetail longHuDetail : lhdList) {
+			depts.add(longHuDetail.getSecDeptCode());
+		}
+		List<KeyValue<Integer, Integer>> list = sdService.relateDept(depts);
+		for(KeyValue<Integer, Integer> kv: list){
+			System.out.println(kv.getKey()+":" + kv.getValue());
+			String beginDate = getBeginDate(tradeDate);
+			List<KeyValue<String, String>> tmpList = detailService.selectRelationStock(beginDate, tradeDate, kv.getKey());
+			for (KeyValue<String, String> tmpKv : tmpList) {
+				System.out.println(tmpKv.getKey()+"---"+tmpKv.getValue());
+			}
+			System.out.println("***************");
+		}
+	}
+	
+	private String getBeginDate(String tradeDate){
+		Calendar c = Calendar.getInstance();
+		try {
+			Date date = sdf.parse(tradeDate);
+			c.setTime(date);
+			c.set(Calendar.MONTH, c.get(Calendar.MONTH) - 3);
+		} catch (ParseException e) {
+			//TODO 怎么处理错误
+		}
+		return sdf.format(c.getTime());
 	}
 	
 	/**

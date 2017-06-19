@@ -62,7 +62,7 @@ public class HolderNumController {
 	private String[][] getDateRange(){
 		String[][] dateArr = new String[3][2];
 		Calendar c = Calendar.getInstance();
-		int day = c.get(Calendar.DAY_OF_MONTH);
+		int day = c.get(Calendar.DAY_OF_MONTH) - 1;
 		int curMaxDay = c.getActualMaximum(Calendar.DAY_OF_MONTH);
 		if(day > 15){
 			int curMonth = c.get(Calendar.MONTH)+1;

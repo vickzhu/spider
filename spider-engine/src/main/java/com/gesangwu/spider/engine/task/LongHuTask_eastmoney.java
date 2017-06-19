@@ -53,7 +53,8 @@ import com.gesangwu.spider.engine.util.TradeTimeUtil;
  * @author zhuxb
  *
  */
-@Component
+@Deprecated
+//@Component
 public class LongHuTask_eastmoney {
 	
 	private static final Logger logger = LoggerFactory.getLogger(LongHuTask_eastmoney.class);

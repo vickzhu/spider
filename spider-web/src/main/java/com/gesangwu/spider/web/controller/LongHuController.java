@@ -1,7 +1,6 @@
 package com.gesangwu.spider.web.controller;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +40,8 @@ import com.gesangwu.spider.biz.service.LongHuDetailService;
 import com.gesangwu.spider.biz.service.LongHuService;
 import com.gesangwu.spider.biz.service.LongHuTypeService;
 import com.gesangwu.spider.biz.service.SecDeptService;
-import com.gesangwu.spider.engine.task.LongHuTaskSina;
+import com.gesangwu.spider.engine.common.LongHuTaskChannelEnum;
+import com.gesangwu.spider.engine.task.LongHuTask;
 import com.gesangwu.spider.web.common.DeptAmount;
 import com.gesangwu.spider.web.common.DeptAmountFormat;
 
@@ -64,7 +64,7 @@ public class LongHuController {
 	@Resource
 	private KLineService kLineService;
 	@Resource
-	private LongHuTaskSina sinaTask;
+	private LongHuTask lhTask;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request, String tradeDate, Company company){
@@ -168,7 +168,7 @@ public class LongHuController {
 	@ResponseBody
 	@RequestMapping(value = "/fetch/sina", method = RequestMethod.GET)
 	public void fetchSina(HttpServletRequest request){
-		sinaTask.execute();
+		lhTask.execute(null, LongHuTaskChannelEnum.SINA);
 	}
 	
 	@ResponseBody
