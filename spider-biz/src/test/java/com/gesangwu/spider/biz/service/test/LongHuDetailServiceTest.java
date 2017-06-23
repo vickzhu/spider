@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
+import com.gandalf.framework.mybatis.KeyValue;
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.dao.model.LongHuDetailExample;
 import com.gesangwu.spider.biz.dao.model.LongHuDetailExt;
@@ -42,7 +43,7 @@ public class LongHuDetailServiceTest extends BaseTest {
 		}
 	}
 	
-	@Test
+//	@Test
 	public void selectDetailExt(){
 		lhDetailService.selectDetail("80000000", 1001, "2016-01-01", "2016-02-25");
 	}
@@ -51,5 +52,14 @@ public class LongHuDetailServiceTest extends BaseTest {
 	public void count4Clique(){
 		int count = lhDetailService.count4Clique("80000000", "600110", 1001, "2016-01-01", "2016-02-25");
 		System.out.println(count);
+	}
+	
+	@Test
+	public void selectRelationStock(){
+		List<KeyValue<String, String>> tmpList = lhDetailService.selectRelationStock("2017-03-20", "2017-06-20", 4684);
+		for (KeyValue<String, String> tmpKv : tmpList) {
+			System.out.println(tmpKv.getKey()+"---"+tmpKv.getValue());
+		}
+		System.out.println("***************");
 	}
 }

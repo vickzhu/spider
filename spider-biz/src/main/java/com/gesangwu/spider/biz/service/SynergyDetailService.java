@@ -12,6 +12,11 @@ public interface SynergyDetailService extends
 	
 	public void insertSynergyDetailBatch(List<SynergyDetail> sdList);
 	
+	/**
+	 * 关联营业部
+	 * @param list
+	 * @return	 key:分组 value:关联的营业部数量
+	 */
 	public List<KeyValue<Integer, Integer>> relateDept(List<String> list);
 	
 }

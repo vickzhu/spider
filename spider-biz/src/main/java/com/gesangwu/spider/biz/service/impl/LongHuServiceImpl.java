@@ -157,35 +157,6 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 		}
 	}
 	
-	private void synergyDept(String tradeDate, List<LongHuDetail> lhdList){
-		List<String> depts = new ArrayList<String>();
-		for (LongHuDetail longHuDetail : lhdList) {
-			depts.add(longHuDetail.getSecDeptCode());
-		}
-		List<KeyValue<Integer, Integer>> list = sdService.relateDept(depts);
-		for(KeyValue<Integer, Integer> kv: list){
-			System.out.println(kv.getKey()+":" + kv.getValue());
-			String beginDate = getBeginDate(tradeDate);
-			List<KeyValue<String, String>> tmpList = detailService.selectRelationStock(beginDate, tradeDate, kv.getKey());
-			for (KeyValue<String, String> tmpKv : tmpList) {
-				System.out.println(tmpKv.getKey()+"---"+tmpKv.getValue());
-			}
-			System.out.println("***************");
-		}
-	}
-	
-	private String getBeginDate(String tradeDate){
-		Calendar c = Calendar.getInstance();
-		try {
-			Date date = sdf.parse(tradeDate);
-			c.setTime(date);
-			c.set(Calendar.MONTH, c.get(Calendar.MONTH) - 3);
-		} catch (ParseException e) {
-			//TODO 怎么处理错误
-		}
-		return sdf.format(c.getTime());
-	}
-	
 	/**
 	 * 返回一日，二日，三日龙虎榜
 	 * @param longHu

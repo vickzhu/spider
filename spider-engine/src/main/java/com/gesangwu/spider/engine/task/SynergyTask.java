@@ -1,6 +1,8 @@
 package com.gesangwu.spider.engine.task;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -9,7 +11,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -32,6 +33,7 @@ import com.gesangwu.spider.engine.task.test.FPTreeNode;
 public class SynergyTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SynergyTask.class);
+	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 	@Resource
 	private LongHuDetailService lhdService;
@@ -42,17 +44,19 @@ public class SynergyTask {
 	
 	@Scheduled(cron = "0 0 12 * * MON-FRI")
 	public void execute(){
-		
+		Calendar c = Calendar.getInstance();
+		c.set(Calendar.MONTH, c.get(Calendar.MONTH) - 3);
+		String startDate = sdf.format(c.getTime());
+		analyze(startDate);
 	}
 	
-	@Test
-	public void test(String startDate, String endDate){
+	public void analyze(String startDate){
 		long start = System.currentTimeMillis();
 		LinkedList<LinkedList<String>> records = new LinkedList<LinkedList<String>>();
 		Map<String, Map<String, LinkedList<String>>> maps = new HashMap<String, Map<String, LinkedList<String>>>();
 		LongHuDetailExample lhdExample = new LongHuDetailExample();
 		LongHuDetailExample.Criteria lhdCriteria = lhdExample.createCriteria();
-		lhdCriteria.andTradeDateGreaterThanOrEqualTo("2017-03-05");
+		lhdCriteria.andTradeDateGreaterThanOrEqualTo(startDate);
 		List<LongHuDetail> detailList = lhdService.selectByExample(lhdExample);
 
 		for (LongHuDetail longHuDetail : detailList) {
@@ -103,7 +107,6 @@ public class SynergyTask {
 				sd.setsG(group);
 				sdList.add(sd);
 			}
-			
 			group++;
 		}
 		sService.insertSynergyBatch(sList);

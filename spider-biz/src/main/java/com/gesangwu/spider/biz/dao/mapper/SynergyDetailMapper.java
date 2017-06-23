@@ -11,6 +11,11 @@ public interface SynergyDetailMapper extends BaseMapper<SynergyDetail, SynergyDe
 	
     void insertSynergyDetailBatch(List<SynergyDetail> list);
     
+    /**
+     * 
+     * @param list
+     * @return key:分组 value:关联的营业部数量
+     */
     List<KeyValue<Integer, Integer>> relateDept(List<String> list);
     
 }

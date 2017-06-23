@@ -53,7 +53,7 @@ public class LongHuSinaTask extends LongHuTaskTemplate {
 		Map<String,List<String>> typeMap = XinLangLongHuTool.getLongHuType(tradeDate);
 		if(typeMap == null || typeMap.size() == 0){
 			logger.error("No type Map fund from Sina!");
-			return null;
+			return longHuList;
 		}
 		while(m.find()){
 			String code = m.group(1);

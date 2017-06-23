@@ -250,6 +250,7 @@ public class FPGrowthUtil {
 					
 				}
 				resultMap.put(head.getName()+ "," + item, count);
+				System.out.println(head.getName()+ "," + item+"--->" + count);
 			}
 		}
 		

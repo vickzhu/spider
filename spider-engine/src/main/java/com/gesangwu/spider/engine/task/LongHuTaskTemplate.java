@@ -1,8 +1,10 @@
 package com.gesangwu.spider.engine.task;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -14,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.gandalf.framework.constant.SymbolConstant;
+import com.gandalf.framework.mybatis.KeyValue;
 import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.dao.model.LongHu;
 import com.gesangwu.spider.biz.dao.model.LongHuDetail;
@@ -22,6 +25,7 @@ import com.gesangwu.spider.biz.service.LongHuDetailService;
 import com.gesangwu.spider.biz.service.LongHuService;
 import com.gesangwu.spider.biz.service.LongHuTypeService;
 import com.gesangwu.spider.biz.service.SecDeptService;
+import com.gesangwu.spider.biz.service.SynergyDetailService;
 
 public abstract class LongHuTaskTemplate {
 	
@@ -37,6 +41,8 @@ public abstract class LongHuTaskTemplate {
 	private LongHuTypeService typeService;
 	@Resource
 	private SecDeptService deptService;
+	@Resource
+	private SynergyDetailService sdService;
 
 	public void execute(String tradeDate){
 		long start = System.currentTimeMillis();
@@ -88,10 +94,39 @@ public abstract class LongHuTaskTemplate {
 			logger.error("Can't find longhu detail for stock:"+longHu.getSymbol());
 			return;
 		}
+//		synergyDept(longHu.getTradeDate(), lhdList);
 		lhService.insert(longHu, lhdList);
 		lhService.analyzeClique(longHu);
 	}
 	
+	public void synergyDept(String tradeDate, List<LongHuDetail> lhdList){
+		List<String> depts = new ArrayList<String>();
+		for (LongHuDetail longHuDetail : lhdList) {
+			depts.add(longHuDetail.getSecDeptCode());
+		}
+		List<KeyValue<Integer, Integer>> list = sdService.relateDept(depts);
+		for(KeyValue<Integer, Integer> kv: list){
+			System.out.println(kv.getKey() + ":" + kv.getValue());
+			String beginDate = getBeginDate(tradeDate);
+			List<KeyValue<String, String>> tmpList = lhdService.selectRelationStock(beginDate, tradeDate, kv.getKey());
+			for (KeyValue<String, String> tmpKv : tmpList) {
+				System.out.println(tmpKv.getKey()+"---"+tmpKv.getValue());
+			}
+			System.out.println("***************");
+		}
+	}
+	
+	private String getBeginDate(String tradeDate){
+		Calendar c = Calendar.getInstance();
+		try {
+			Date date = sdf.parse(tradeDate);
+			c.setTime(date);
+			c.set(Calendar.MONTH, c.get(Calendar.MONTH) - 3);
+		} catch (ParseException e) {
+			logger.error("Parse date failed when synergy dept!");
+		}
+		return sdf.format(c.getTime());
+	}
 	
 	protected String buildAmt(BigDecimal buyTotal, BigDecimal sellTotal){
 		BigDecimal netBuy = buyTotal.subtract(sellTotal);

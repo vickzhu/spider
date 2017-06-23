@@ -64,7 +64,7 @@ public class LongHuTask {
 		} else if(LongHuTaskChannelEnum.SINA.equals(channel)){
 			return lhSinaTask;
 		} else {
-			return lhSinaTask;
+			return lh163Task;
 		}
 	}
 	
