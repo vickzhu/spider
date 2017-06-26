@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
+import com.gandalf.framework.util.CalculateUtil;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.KLineService;
@@ -134,23 +135,44 @@ public class KLineSinaTask {
 			if(vol==0 && openPrice == 0){
 				continue;
 			}			
-			
+			double amount = Double.valueOf(amt);
+			double dClose = Double.valueOf(close);
+			double percent = Double.valueOf(chgPct);
 			kLine.setSymbol(symbol);
 			kLine.setYesterdayClose(Double.valueOf(yesterdayClose));
 			kLine.setVolume(vol);
-			kLine.setAmount(Double.valueOf(amt));
+			kLine.setAmount(amount);
 			kLine.setOpen(openPrice);
-			kLine.setClose(Double.valueOf(close));
+			kLine.setClose(dClose);
 			kLine.setHigh(Double.valueOf(high));
 			kLine.setLow(Double.valueOf(low));
 			kLine.setChangeAmount(Double.valueOf(chgAmt));
-			kLine.setPercent(Double.valueOf(chgPct));
+			kLine.setPercent(percent);
 			kLine.setTurnrate(Double.valueOf(turnrate));
 			kLine.setTradeDate(tradeDate);
 			kLine.setGmtCreate(now);
-			
+			double avg = calcAvg(vol, amount);
+			double dca = calcDiff(dClose, avg, percent);
+			kLine.setDiffCloseAvg(dca);
 			kLineList.add(kLine);
 		}
 		kLineService.batchInsert(kLineList);
+	}
+	
+	private static double calcAvg(long volume, double amount){
+		return  CalculateUtil.div(amount, volume, 2);
+	}
+	
+	private static double calcDiff(double close, double avg, double percent){
+		double d1 = CalculateUtil.mul(avg, 100 + percent, 4);
+		double d2 = CalculateUtil.div(d1, close * 100, 4);
+		return CalculateUtil.sub(d2*100, 100, 2);
+	}
+	
+	public static void main(String[] args){
+		double avg = calcAvg(1101633, 20543768);
+		System.out.println(avg);
+		double diff = calcDiff(18.76, avg, 0.698);
+		System.out.println(diff);
 	}
 }

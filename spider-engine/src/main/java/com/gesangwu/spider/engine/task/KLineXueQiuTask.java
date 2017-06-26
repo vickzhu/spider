@@ -31,7 +31,7 @@ import com.gesangwu.spider.biz.service.KLineService;
  *
  */
 @Deprecated
-@Component
+//@Component
 public class KLineXueQiuTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(KLineXueQiuTask.class);

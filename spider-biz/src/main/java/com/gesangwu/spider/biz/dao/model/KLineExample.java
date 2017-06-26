@@ -1165,6 +1165,66 @@ public class KLineExample {
             return (Criteria) this;
         }
 
+        public Criteria andDiffCloseAvgIsNull() {
+            addCriterion("diff_close_avg is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiffCloseAvgIsNotNull() {
+            addCriterion("diff_close_avg is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiffCloseAvgEqualTo(Double value) {
+            addCriterion("diff_close_avg =", value, "diffCloseAvg");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiffCloseAvgNotEqualTo(Double value) {
+            addCriterion("diff_close_avg <>", value, "diffCloseAvg");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiffCloseAvgGreaterThan(Double value) {
+            addCriterion("diff_close_avg >", value, "diffCloseAvg");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiffCloseAvgGreaterThanOrEqualTo(Double value) {
+            addCriterion("diff_close_avg >=", value, "diffCloseAvg");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiffCloseAvgLessThan(Double value) {
+            addCriterion("diff_close_avg <", value, "diffCloseAvg");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiffCloseAvgLessThanOrEqualTo(Double value) {
+            addCriterion("diff_close_avg <=", value, "diffCloseAvg");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiffCloseAvgIn(List<Double> values) {
+            addCriterion("diff_close_avg in", values, "diffCloseAvg");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiffCloseAvgNotIn(List<Double> values) {
+            addCriterion("diff_close_avg not in", values, "diffCloseAvg");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiffCloseAvgBetween(Double value1, Double value2) {
+            addCriterion("diff_close_avg between", value1, value2, "diffCloseAvg");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiffCloseAvgNotBetween(Double value1, Double value2) {
+            addCriterion("diff_close_avg not between", value1, value2, "diffCloseAvg");
+            return (Criteria) this;
+        }
+
         public Criteria andGmtCreateIsNull() {
             addCriterion("gmt_create is null");
             return (Criteria) this;

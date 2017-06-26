@@ -19,6 +19,7 @@
     <result column="trade_date" property="tradeDate" jdbcType="VARCHAR" />
     <result column="amount" property="amount" jdbcType="DOUBLE" />
     <result column="yesterday_close" property="yesterdayClose" jdbcType="DOUBLE" />
+    <result column="diff_close_avg" property="diffCloseAvg" jdbcType="DOUBLE" />
     <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -81,7 +82,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, symbol, volume, open, close, high, low, change_amount, percent, turnrate, ma5, 
-    ma10, ma20, ma30, trade_date, amount, yesterday_close, gmt_create
+    ma10, ma20, ma30, trade_date, amount, yesterday_close, diff_close_avg, gmt_create
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.KLineExample" >
     select
@@ -124,14 +125,14 @@
       close, high, low, change_amount, 
       percent, turnrate, ma5, 
       ma10, ma20, ma30, trade_date, 
-      amount, yesterday_close, gmt_create
-      )
+      amount, yesterday_close, diff_close_avg, 
+      gmt_create)
     values (#{symbol,jdbcType=VARCHAR}, #{volume,jdbcType=BIGINT}, #{open,jdbcType=DOUBLE}, 
       #{close,jdbcType=DOUBLE}, #{high,jdbcType=DOUBLE}, #{low,jdbcType=DOUBLE}, #{changeAmount,jdbcType=DOUBLE}, 
       #{percent,jdbcType=DOUBLE}, #{turnrate,jdbcType=DOUBLE}, #{ma5,jdbcType=DOUBLE}, 
       #{ma10,jdbcType=DOUBLE}, #{ma20,jdbcType=DOUBLE}, #{ma30,jdbcType=DOUBLE}, #{tradeDate,jdbcType=VARCHAR}, 
-      #{amount,jdbcType=DOUBLE}, #{yesterdayClose,jdbcType=DOUBLE}, #{gmtCreate,jdbcType=TIMESTAMP}
-      )
+      #{amount,jdbcType=DOUBLE}, #{yesterdayClose,jdbcType=DOUBLE}, #{diffCloseAvg,jdbcType=DOUBLE}, 
+      #{gmtCreate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.KLine" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -187,6 +188,9 @@
       <if test="yesterdayClose != null" >
         yesterday_close,
       </if>
+      <if test="diffCloseAvg != null" >
+        diff_close_avg,
+      </if>
       <if test="gmtCreate != null" >
         gmt_create,
       </if>
@@ -239,6 +243,9 @@
       </if>
       <if test="yesterdayClose != null" >
         #{yesterdayClose,jdbcType=DOUBLE},
+      </if>
+      <if test="diffCloseAvg != null" >
+        #{diffCloseAvg,jdbcType=DOUBLE},
       </if>
       <if test="gmtCreate != null" >
         #{gmtCreate,jdbcType=TIMESTAMP},
@@ -305,6 +312,9 @@
       <if test="record.yesterdayClose != null" >
         yesterday_close = #{record.yesterdayClose,jdbcType=DOUBLE},
       </if>
+      <if test="record.diffCloseAvg != null" >
+        diff_close_avg = #{record.diffCloseAvg,jdbcType=DOUBLE},
+      </if>
       <if test="record.gmtCreate != null" >
         gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
       </if>
@@ -332,6 +342,7 @@
       trade_date = #{record.tradeDate,jdbcType=VARCHAR},
       amount = #{record.amount,jdbcType=DOUBLE},
       yesterday_close = #{record.yesterdayClose,jdbcType=DOUBLE},
+      diff_close_avg = #{record.diffCloseAvg,jdbcType=DOUBLE},
       gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -388,6 +399,9 @@
       <if test="yesterdayClose != null" >
         yesterday_close = #{yesterdayClose,jdbcType=DOUBLE},
       </if>
+      <if test="diffCloseAvg != null" >
+        diff_close_avg = #{diffCloseAvg,jdbcType=DOUBLE},
+      </if>
       <if test="gmtCreate != null" >
         gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       </if>
@@ -412,6 +426,7 @@
       trade_date = #{tradeDate,jdbcType=VARCHAR},
       amount = #{amount,jdbcType=DOUBLE},
       yesterday_close = #{yesterdayClose,jdbcType=DOUBLE},
+      diff_close_avg = #{diffCloseAvg,jdbcType=DOUBLE},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -420,7 +435,7 @@
       close, high, low, change_amount, 
       percent, turnrate, ma5, 
       ma10, ma20, ma30, trade_date, 
-      amount, yesterday_close, gmt_create
+      amount, yesterday_close, diff_close_avg, gmt_create
       )
     values 
     <foreach collection="list" index="index" item="kLine" separator=",">
@@ -428,7 +443,8 @@
       #{kLine.close,jdbcType=DOUBLE}, #{kLine.high,jdbcType=DOUBLE}, #{kLine.low,jdbcType=DOUBLE}, #{kLine.changeAmount,jdbcType=DOUBLE}, 
       #{kLine.percent,jdbcType=DOUBLE}, #{kLine.turnrate,jdbcType=DOUBLE}, #{kLine.ma5,jdbcType=DOUBLE}, #{kLine.ma10,jdbcType=DOUBLE}, #{kLine.ma20,jdbcType=DOUBLE}, 
       #{kLine.ma30,jdbcType=DOUBLE}, #{kLine.tradeDate,jdbcType=VARCHAR}, 
-      #{kLine.amount,jdbcType=DOUBLE}, #{kLine.yesterdayClose,jdbcType=DOUBLE}, #{kLine.gmtCreate,jdbcType=TIMESTAMP}
+      #{kLine.amount,jdbcType=DOUBLE}, #{kLine.yesterdayClose,jdbcType=DOUBLE}, 
+      #{diffCloseAvg,jdbcType=DOUBLE}, #{kLine.gmtCreate,jdbcType=TIMESTAMP}
       )
     </foreach>
   </insert>

@@ -37,6 +37,8 @@ public class KLine {
 
     private Double yesterdayClose;
 
+    private Double diffCloseAvg;
+
     private Date gmtCreate;
 
     public Long getId() {
@@ -173,6 +175,14 @@ public class KLine {
 
     public void setYesterdayClose(Double yesterdayClose) {
         this.yesterdayClose = yesterdayClose;
+    }
+
+    public Double getDiffCloseAvg() {
+        return diffCloseAvg;
+    }
+
+    public void setDiffCloseAvg(Double diffCloseAvg) {
+        this.diffCloseAvg = diffCloseAvg;
     }
 
     public Date getGmtCreate() {
