@@ -8,7 +8,7 @@
       <div class="span12">
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-            <h5>套</h5>
+            <h5>均利</h5>
 			<a class="label label-info" style="line-height:20px;"></a>
           </div>
 		  <div class="widget-content nopadding">
@@ -34,7 +34,7 @@
 				  <th style="width:5%;">序号</th>
                   <th>股票</th>
 				  <th>涨跌幅</th>
-				  <th>套幅</th>
+				  <th>均利</th>
 				  <th>日期</th>
                 </tr>
               </thead>
@@ -43,7 +43,7 @@
                 <tr>
 				  <td>$!{velocityCount}</td>
 				  <td><a href="#springUrl('/stock?symbol=')$!{kl.symbol}" target="_blank">$!{companyTool.getStockName($!{kl.symbol})}</a></td>
-				  <td>$!{kl.percent}%</td>
+				  <td style="color:#if($!{kl.percent}>0)red#elseif($!{kl.percent}<0)green#end">$!{kl.percent}%</td>
 				  <td>$!{kl.diffCloseAvg}%</td>
 				  <td>$!{kl.tradeDate}</td>
                 </tr>

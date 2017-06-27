@@ -136,7 +136,8 @@
                '收盘价：<font color="' + getPriceColor(ki, ki.close) + '">' + toMoney(ki.close) + '</font><br/>' +
                 '成交量：' + bigNumberToText(ki.volume / 100) + '手<br/>' +
 				'换手率：' + ki.tt.toFixed(2)+"<br/>"+
-				'涨跌：' + ki.percent+'%(' + ki.chgAmt+"元)<br/>";
+				'涨跌：' + ki.percent+'%(' + ki.chgAmt+"元)<br/>"+
+				'均利：' + ki.dca+"%";
                 return tipHtml;
             }
 
@@ -202,7 +203,7 @@
                         getTipHtml: function (ev) {
 							return getTipHtml(ev.offsetX); 
 						},
-                        size:{width:150,height:150},
+                        size:{width:150,height:160},
                         position:{x:false,y:region.y+(region.height-150)/3}, //position中的值是相对于canvas的左上角的
                         opacity:80,
                         cssClass:'',
@@ -719,7 +720,8 @@ function getKLData() {
 			percent: rawData[6],
 			chgAmt: rawData[7],
 			yc:rawData[8],
-			tt:rawData[9]
+			tt:rawData[9],
+			dca:rawData[10]
         };
         if (ks.length == 0) {
             result.low = item.low;
