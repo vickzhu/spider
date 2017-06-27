@@ -444,8 +444,11 @@
       #{kLine.percent,jdbcType=DOUBLE}, #{kLine.turnrate,jdbcType=DOUBLE}, #{kLine.ma5,jdbcType=DOUBLE}, #{kLine.ma10,jdbcType=DOUBLE}, #{kLine.ma20,jdbcType=DOUBLE}, 
       #{kLine.ma30,jdbcType=DOUBLE}, #{kLine.tradeDate,jdbcType=VARCHAR}, 
       #{kLine.amount,jdbcType=DOUBLE}, #{kLine.yesterdayClose,jdbcType=DOUBLE}, 
-      #{diffCloseAvg,jdbcType=DOUBLE}, #{kLine.gmtCreate,jdbcType=TIMESTAMP}
+      #{kLine.diffCloseAvg,jdbcType=DOUBLE}, #{kLine.gmtCreate,jdbcType=TIMESTAMP}
       )
     </foreach>
   </insert>
+  <select id="selectLatestDate" resultType="java.lang.String">
+  	SELECT MAX(trade_date) FROM k_line
+  </select>
 </mapper>

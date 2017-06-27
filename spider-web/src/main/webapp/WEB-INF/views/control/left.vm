@@ -12,6 +12,7 @@
 		<li><a href="#springUrl('/fiverange/r')">压托大单</a></li>
 		<li><a href="#springUrl('/largeVol/r')">大单成交</a></li>
 		<li><a href="#springUrl('/jd/r')">夹单</a></li>
+		<li><a href="#springUrl('/dca/list')">套单</a></li>
 		<li><a href="#springUrl('/shareholder/clique')">股东持股</a></li>
 		<li><a href="#springUrl('/holder-num/list')">股东人数</a></li>
 		<li><a href="#springUrl('/shareholder/relation/')">股东关联</a></li>

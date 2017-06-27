@@ -10,4 +10,6 @@ public interface KLineMapper extends BaseMapper<KLine, KLineExample> {
     
 	public void batchInsert(List<KLine> kLineList);
 	
+	public String selectLatestDate();
+	
 }

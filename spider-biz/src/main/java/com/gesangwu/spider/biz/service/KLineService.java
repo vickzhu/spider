@@ -13,4 +13,6 @@ public interface KLineService extends BaseService<KLine, KLineExample> {
 	
 	public void selectByPagination(KLineExample example, Page<KLine> page);
 	
+	public String selectLatestDate();
+	
 }

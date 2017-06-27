@@ -67,7 +67,7 @@ public class KLineSinaTask {
 	@Resource
 	private KLineService kLineService;
 
-	@Scheduled(cron="0 05 15 * * MON-FRI")
+	@Scheduled(cron="0 08 15 * * MON-FRI")
 	public void execute(){
 		long start = System.currentTimeMillis();
 		
@@ -153,7 +153,7 @@ public class KLineSinaTask {
 			kLine.setGmtCreate(now);
 			double avg = calcAvg(vol, amount);
 			double dca = calcDiff(dClose, avg, percent);
-			kLine.setDiffCloseAvg(dca);
+			kLine.setDiffCloseAvg(CalculateUtil.sub(percent, dca, 2));
 			kLineList.add(kLine);
 		}
 		kLineService.batchInsert(kLineList);
@@ -165,8 +165,8 @@ public class KLineSinaTask {
 	
 	private static double calcDiff(double close, double avg, double percent){
 		double d1 = CalculateUtil.mul(avg, 100 + percent, 4);
-		double d2 = CalculateUtil.div(d1, close * 100, 4);
-		return CalculateUtil.sub(d2*100, 100, 2);
+		double d2 = CalculateUtil.div(d1, close, 4);
+		return CalculateUtil.sub(d2, 100, 2);
 	}
 	
 	public static void main(String[] args){

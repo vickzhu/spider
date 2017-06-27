@@ -41,4 +41,9 @@ public class KLineServiceImpl extends BaseServiceImpl<KLine, KLineExample> imple
         page.setRecords(list);
 	}
 
+	@Override
+	public String selectLatestDate() {
+		return mapper.selectLatestDate();
+	}
+
 }
