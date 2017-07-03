@@ -698,6 +698,12 @@
     }
 
 </script>
+<div>
+    MA:<span style="color:rgb(255,70,251)">-----5</span>
+    <span style="color:rgb(227,150,34)">-----10</span>
+    <span style="color:rgb(53,71,107)">-----20</span>
+    <span style="color:rgb(0,0,0)">-----60</span>
+</div>
 <canvas id="canvasKL" width="984" height="390" style="z-index: 2; border: 1px solid #69c">
     <p>hey,您的浏览器不支持html5，换个浏览器吧，比如google chrome，firefox</p>
 </canvas>
