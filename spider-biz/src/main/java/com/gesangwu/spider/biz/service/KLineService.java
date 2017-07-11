@@ -15,4 +15,7 @@ public interface KLineService extends BaseService<KLine, KLineExample> {
 	
 	public String selectLatestDate();
 	
+	public List<Double> selectLastest30Close(String symbol, String lastDate);
+
+	
 }

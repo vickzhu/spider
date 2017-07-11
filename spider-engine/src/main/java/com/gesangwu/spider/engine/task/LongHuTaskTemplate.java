@@ -90,7 +90,7 @@ public abstract class LongHuTaskTemplate {
 		if(StringUtil.isNotBlank(longHu.getSrType())){
 			lhdList.addAll(getLongHuDetailList(3, longHu.getSrType(), longHu));
 		}
-		if(lhdList.size() == 0 || lhdList.size() < 5){
+		if(lhdList.size() == 0 || lhdList.size() < 4){
 			logger.error("Can't find longhu detail for stock:"+longHu.getSymbol());
 			return;
 		}

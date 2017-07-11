@@ -451,4 +451,15 @@
   <select id="selectLatestDate" resultType="java.lang.String">
   	SELECT MAX(trade_date) FROM k_line
   </select>
+  <select id="selectLastest30Close" resultType="java.lang.Double">
+  	SELECT
+  		close 
+  	FROM 
+  		k_line 
+  	WHERE 
+  		symbol=#{symbol,jdbcType=VARCHAR} AND trade_date&lt;=#{lastDate,jdbcType=VARCHAR} 
+  	ORDER BY 
+  		trade_date DESC 
+  	LIMIT 30
+  </select>
 </mapper>

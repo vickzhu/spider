@@ -46,4 +46,9 @@ public class KLineServiceImpl extends BaseServiceImpl<KLine, KLineExample> imple
 		return mapper.selectLatestDate();
 	}
 
+	@Override
+	public List<Double> selectLastest30Close(String symbol, String lastDate) {
+		return mapper.selectLastest30Close(symbol, lastDate);
+	}
+
 }
