@@ -155,8 +155,30 @@ public class KLineSinaTask {
 			double dca = calcDiff(dClose, avg, percent);
 			kLine.setDiffCloseAvg(CalculateUtil.sub(percent, dca, 2));
 			kLineList.add(kLine);
+			
+			List<Double> closeList = kLineService.selectLastest30Close(symbol, tradeDate);
+			Double ma5 = calcMA(closeList, 5);
+			Double ma10 = calcMA(closeList, 10);
+			Double ma20 = calcMA(closeList, 20);
+			Double ma30 = calcMA(closeList, 30);
+			kLine.setMa5(ma5);
+			kLine.setMa10(ma10);
+			kLine.setMa20(ma20);
+			kLine.setMa30(ma30);
 		}
 		kLineService.batchInsert(kLineList);
+	}
+	
+	public Double calcMA(List<Double> closeList, int period){
+		if(closeList.size() < period){
+			return null;
+		}
+		int sum = 0;
+		for (int i = 0; i < period; i++) {
+			sum += closeList.get(i) * 100;
+		}
+		double d = CalculateUtil.div(sum, 100, 2);
+		return CalculateUtil.div(d, period, 2);
 	}
 	
 	private static double calcAvg(long volume, double amount){

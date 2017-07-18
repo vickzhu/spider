@@ -31,12 +31,12 @@ import com.gesangwu.spider.biz.service.KLineService;
  *
  */
 @Deprecated
-//@Component
+@Component
 public class KLineXueQiuTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(KLineXueQiuTask.class);
 	
-	private static final String r = "\\{\"volume\"\\:([0-9]*),\"open\"\\:([0-9\\.]*),\"high\"\\:([0-9\\.]*),\"close\"\\:([0-9\\.]*),\"low\"\\:([0-9\\.]*),\"chg\"\\:(\\-?[0-9\\.]*),\"percent\"\\:(\\-?[0-9\\.]*),\"turnrate\"\\:([0-9\\.]*),\"ma5\"\\:([0-9\\.]*),\"ma10\"\\:([0-9\\.]*),\"ma20\"\\:([0-9\\.]*),\"ma30\"\\:([0-9\\.]*),\"dif\"\\:\\-?[0-9\\.]*,\"dea\"\\:\\-?[0-9\\.]*,\"macd\"\\:\\-?[0-9\\.]*,\"time\"\\:\"([^\"]*)\"\\}";
+	private static final String r = "\\{\"volume\"\\:([0-9]*),\"open\"\\:([0-9\\.]*),\"high\"\\:([0-9\\.]*),\"close\"\\:([0-9\\.]*),\"low\"\\:([0-9\\.]*),\"chg\"\\:(\\-?[0-9\\.]*),\"percent\"\\:(\\-?[0-9\\.]*),\"turnrate\"\\:([0-9\\.]*),\"ma5\"\\:([0-9\\.]*),\"ma10\"\\:([0-9\\.]*),\"ma20\"\\:([0-9\\.]*),\"ma30\"\\:([0-9\\.]*),\"dif\"\\:\\-?[0-9\\.]*,\"dea\"\\:\\-?[0-9\\.]*,\"macd\"\\:\\-?[0-9\\.]*,\"lot_volume\"\\:[0-9]*,\"timestamp\"\\:[0-9]*,\"time\"\\:\"([^\"]*)\"\\}";
 	private static Pattern p = Pattern.compile(r);
 	private static SimpleDateFormat sdf1 = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy",Locale.US);
 	private static SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
@@ -69,6 +69,7 @@ public class KLineXueQiuTask {
 		HttpTool.get(cookieUrl);//这个链接只是为了获得cookie信息，因为后面的请求需要用到cookie
 		CompanyExample example = new CompanyExample();
 //		CompanyExample.Criteria criteria = example.createCriteria();
+//		criteria.andSymbolEqualTo("sz300673");
 //		criteria.andGmtCreateGreaterThan(new Date(1486051200000l));
 //		criteria.andGmtCreateLessThan(new Date(1486137599000l));
 		List<Company> companyList = companyService.selectByExample(example);
