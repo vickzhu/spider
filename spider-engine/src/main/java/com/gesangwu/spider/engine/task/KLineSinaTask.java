@@ -151,9 +151,6 @@ public class KLineSinaTask {
 			kLine.setTurnrate(Double.valueOf(turnrate));
 			kLine.setTradeDate(tradeDate);
 			kLine.setGmtCreate(now);
-			double avg = calcAvg(vol, amount);
-			double dca = calcDiff(dClose, avg, percent);
-			kLine.setDiffCloseAvg(CalculateUtil.sub(percent, dca, 2));
 			kLineList.add(kLine);
 			
 			List<Double> closeList = kLineService.selectLastest30Close(symbol, tradeDate);
@@ -185,16 +182,8 @@ public class KLineSinaTask {
 		return  CalculateUtil.div(amount, volume, 2);
 	}
 	
-	private static double calcDiff(double close, double avg, double percent){
-		double d1 = CalculateUtil.mul(avg, 100 + percent, 4);
-		double d2 = CalculateUtil.div(d1, close, 4);
-		return CalculateUtil.sub(d2, 100, 2);
-	}
-	
 	public static void main(String[] args){
 		double avg = calcAvg(1101633, 20543768);
 		System.out.println(avg);
-		double diff = calcDiff(18.76, avg, 0.698);
-		System.out.println(diff);
 	}
 }

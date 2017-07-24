@@ -224,7 +224,6 @@ public class CommonController {
 			objArr[7] = kLine.getChangeAmount();
 			objArr[8] = kLine.getYesterdayClose();
 			objArr[9] = kLine.getTurnrate();
-			objArr[10] = kLine.getDiffCloseAvg();
 			objList.add(objArr);
 		}
 		ObjectMapper om = new ObjectMapper();

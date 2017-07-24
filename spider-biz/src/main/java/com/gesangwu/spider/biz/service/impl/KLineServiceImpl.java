@@ -62,4 +62,9 @@ public class KLineServiceImpl extends BaseServiceImpl<KLine, KLineExample> imple
 		return mapper.selectByShape(tradeDate);
 	}
 
+	@Override
+	public void updateShape(int shape, List<Long> idList) {
+		mapper.updateShape(shape, idList);		
+	}
+
 }

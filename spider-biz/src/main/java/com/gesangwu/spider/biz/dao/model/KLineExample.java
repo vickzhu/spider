@@ -1165,63 +1165,63 @@ public class KLineExample {
             return (Criteria) this;
         }
 
-        public Criteria andDiffCloseAvgIsNull() {
-            addCriterion("diff_close_avg is null");
+        public Criteria andShapeIsNull() {
+            addCriterion("shape is null");
             return (Criteria) this;
         }
 
-        public Criteria andDiffCloseAvgIsNotNull() {
-            addCriterion("diff_close_avg is not null");
+        public Criteria andShapeIsNotNull() {
+            addCriterion("shape is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDiffCloseAvgEqualTo(Double value) {
-            addCriterion("diff_close_avg =", value, "diffCloseAvg");
+        public Criteria andShapeEqualTo(Integer value) {
+            addCriterion("shape =", value, "shape");
             return (Criteria) this;
         }
 
-        public Criteria andDiffCloseAvgNotEqualTo(Double value) {
-            addCriterion("diff_close_avg <>", value, "diffCloseAvg");
+        public Criteria andShapeNotEqualTo(Integer value) {
+            addCriterion("shape <>", value, "shape");
             return (Criteria) this;
         }
 
-        public Criteria andDiffCloseAvgGreaterThan(Double value) {
-            addCriterion("diff_close_avg >", value, "diffCloseAvg");
+        public Criteria andShapeGreaterThan(Integer value) {
+            addCriterion("shape >", value, "shape");
             return (Criteria) this;
         }
 
-        public Criteria andDiffCloseAvgGreaterThanOrEqualTo(Double value) {
-            addCriterion("diff_close_avg >=", value, "diffCloseAvg");
+        public Criteria andShapeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("shape >=", value, "shape");
             return (Criteria) this;
         }
 
-        public Criteria andDiffCloseAvgLessThan(Double value) {
-            addCriterion("diff_close_avg <", value, "diffCloseAvg");
+        public Criteria andShapeLessThan(Integer value) {
+            addCriterion("shape <", value, "shape");
             return (Criteria) this;
         }
 
-        public Criteria andDiffCloseAvgLessThanOrEqualTo(Double value) {
-            addCriterion("diff_close_avg <=", value, "diffCloseAvg");
+        public Criteria andShapeLessThanOrEqualTo(Integer value) {
+            addCriterion("shape <=", value, "shape");
             return (Criteria) this;
         }
 
-        public Criteria andDiffCloseAvgIn(List<Double> values) {
-            addCriterion("diff_close_avg in", values, "diffCloseAvg");
+        public Criteria andShapeIn(List<Integer> values) {
+            addCriterion("shape in", values, "shape");
             return (Criteria) this;
         }
 
-        public Criteria andDiffCloseAvgNotIn(List<Double> values) {
-            addCriterion("diff_close_avg not in", values, "diffCloseAvg");
+        public Criteria andShapeNotIn(List<Integer> values) {
+            addCriterion("shape not in", values, "shape");
             return (Criteria) this;
         }
 
-        public Criteria andDiffCloseAvgBetween(Double value1, Double value2) {
-            addCriterion("diff_close_avg between", value1, value2, "diffCloseAvg");
+        public Criteria andShapeBetween(Integer value1, Integer value2) {
+            addCriterion("shape between", value1, value2, "shape");
             return (Criteria) this;
         }
 
-        public Criteria andDiffCloseAvgNotBetween(Double value1, Double value2) {
-            addCriterion("diff_close_avg not between", value1, value2, "diffCloseAvg");
+        public Criteria andShapeNotBetween(Integer value1, Integer value2) {
+            addCriterion("shape not between", value1, value2, "shape");
             return (Criteria) this;
         }
 

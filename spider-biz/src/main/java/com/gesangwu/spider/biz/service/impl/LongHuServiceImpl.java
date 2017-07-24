@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import com.gandalf.framework.mybatis.BaseMapper;
 import com.gandalf.framework.mybatis.BaseServiceImpl;
-import com.gandalf.framework.mybatis.KeyValue;
 import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.common.DeptCliqueType;
 import com.gesangwu.spider.biz.dao.mapper.LongHuMapper;
@@ -102,7 +101,7 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 			int dateType = detailEntry.getKey();
 			List<LongHuDetail> detailList = detailEntry.getValue();
 			Map<Long,List<LongHuDetail>> detailMap = listToCliqueMap(detailList);
-			//TODO clique_stock数据没有保存
+			
 			long cliqueId = 0;
 			int cliqueSize = 0;
 			for(Map.Entry<Long,List<LongHuDetail>> entry : detailMap.entrySet()){//遍历所有数据，统计帮派

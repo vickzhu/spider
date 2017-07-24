@@ -37,7 +37,7 @@ public class KLine {
 
     private Double yesterdayClose;
 
-    private Double diffCloseAvg;
+    private Integer shape;
 
     private Date gmtCreate;
 
@@ -177,12 +177,12 @@ public class KLine {
         this.yesterdayClose = yesterdayClose;
     }
 
-    public Double getDiffCloseAvg() {
-        return diffCloseAvg;
+    public Integer getShape() {
+        return shape;
     }
 
-    public void setDiffCloseAvg(Double diffCloseAvg) {
-        this.diffCloseAvg = diffCloseAvg;
+    public void setShape(Integer shape) {
+        this.shape = shape;
     }
 
     public Date getGmtCreate() {

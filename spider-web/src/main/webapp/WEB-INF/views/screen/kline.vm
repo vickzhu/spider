@@ -136,8 +136,7 @@
                '收盘价：<font color="' + getPriceColor(ki, ki.close) + '">' + toMoney(ki.close) + '</font><br/>' +
                 '成交量：' + bigNumberToText(ki.volume / 100) + '手<br/>' +
 				'换手率：' + ki.tt.toFixed(2)+"<br/>"+
-				'涨跌：' + ki.percent+'%(' + ki.chgAmt+"元)<br/>"+
-				'均利：' + ki.dca+"%";
+				'涨跌：' + ki.percent+'%(' + ki.chgAmt+"元)<br/>";
                 return tipHtml;
             }
 
@@ -726,8 +725,7 @@ function getKLData() {
 			percent: rawData[6],
 			chgAmt: rawData[7],
 			yc:rawData[8],
-			tt:rawData[9],
-			dca:rawData[10]
+			tt:rawData[9]
         };
         if (ks.length == 0) {
             result.low = item.low;

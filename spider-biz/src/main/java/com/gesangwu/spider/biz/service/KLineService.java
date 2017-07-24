@@ -22,4 +22,6 @@ public interface KLineService extends BaseService<KLine, KLineExample> {
 	
 	public List<KLine> selectByShape(String tradeDate);
 	
+	public void updateShape(int shape, List<Long> idList);
+	
 }

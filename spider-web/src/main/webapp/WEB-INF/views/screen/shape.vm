@@ -8,12 +8,11 @@
       <div class="span12">
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-            <h5>均利</h5>
+            <h5>多头</h5>
 			<a class="label label-info" style="line-height:20px;"></a>
           </div>
 		  <div class="widget-content nopadding">
 			<form id="searchForm" method="get" class="form-horizontal">
-				<input type="hidden" id="curPage" name="curPage" value="" />
                 <div class="search_option">
 					<div>
                         <label>日期：</label>
@@ -34,17 +33,19 @@
 				  <th style="width:5%;">序号</th>
                   <th>股票</th>
 				  <th>涨跌幅</th>
-				  <th>均利</th>
+				  <th>成交量</th>
+				  <th>换手率</th>
 				  <th>日期</th>
                 </tr>
               </thead>
               <tbody>
-				#foreach($kl in ${page.records})
+				#foreach($kl in ${klList})
                 <tr>
 				  <td>$!{velocityCount}</td>
 				  <td><a href="#springUrl('/stock?symbol=')$!{kl.symbol}" target="_blank">$!{companyTool.getStockName($!{kl.symbol})}</a></td>
 				  <td style="color:#if($!{kl.percent}>0)red#elseif($!{kl.percent}<0)green#end">$!{kl.percent}%</td>
-				  <td>$!{kl.diffCloseAvg}%</td>
+				  <td>$number.format("###.00",$!{kl.volume})</td>
+				  <td>$!{kl.turnrate}</td>
 				  <td>$!{kl.tradeDate}</td>
                 </tr>
 				#end
@@ -58,14 +59,6 @@
   </div>
 </div>
 
-<script src="#resources('js/pagination.js')"></script>
-<script type="text/javascript">
-	function gotoPage(pageNo){
-		$("#curPage").val(pageNo);
-		$("#searchForm").submit();
-	}
-	$('#page_nav').html(new Pagination($!{page.curPage},$!{page.totalPages}, gotoPage).getHtml());
-</script>
 <link rel="stylesheet" href="#resources('css/datepicker.css')" />
 <script src="#resources('js/bootstrap-datepicker.js')"></script> 
 <script type="text/javascript">
