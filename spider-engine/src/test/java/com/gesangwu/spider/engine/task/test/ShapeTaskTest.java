@@ -4,13 +4,13 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
-import com.gesangwu.spider.engine.task.CalcMATask;
+import com.gesangwu.spider.engine.task.ShapeTask;
 import com.gesangwu.spider.engine.test.BaseTest;
 
-public class CalcMATaskTest extends BaseTest {
+public class ShapeTaskTest extends BaseTest {
 	
 	@Resource
-	private CalcMATask task;
+	private ShapeTask task;
 	
 	@Test
 	public void execute(){
