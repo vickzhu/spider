@@ -22,6 +22,10 @@
     <result column="diff_close_avg" property="diffCloseAvg" jdbcType="DOUBLE" />
     <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
   </resultMap>
+  <resultMap type="com.gandalf.framework.mybatis.KeyValue" id="closeTradeDateMap">
+  	<result property="key" column="trade_date"/>
+  	<result property="value" column="close"/>
+  </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -461,5 +465,24 @@
   	ORDER BY 
   		trade_date DESC 
   	LIMIT 30
+  </select>
+  <select id="selectLastest90Close" resultMap="closeTradeDateMap">
+  	SELECT
+  		close,trade_date 
+  	FROM 
+  		k_line 
+  	WHERE 
+  		symbol=#{symbol,jdbcType=VARCHAR} AND trade_date&lt;=#{lastDate,jdbcType=VARCHAR} 
+  	ORDER BY 
+  		close DESC
+  	limit 90
+  </select>
+  <select id="selectByShape" resultMap="BaseResultMap" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM 
+    	k_line
+    WHERE
+    	trade_date=#{tradeDate,jdbcType=VARCHAR} AND ma5>ma20 AND ma10>ma20 AND ma20>ma30
   </select>
 </mapper>

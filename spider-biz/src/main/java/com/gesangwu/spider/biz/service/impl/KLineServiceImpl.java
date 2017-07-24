@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.gandalf.framework.mybatis.BaseMapper;
 import com.gandalf.framework.mybatis.BaseServiceImpl;
+import com.gandalf.framework.mybatis.KeyValue;
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.dao.mapper.KLineMapper;
 import com.gesangwu.spider.biz.dao.model.KLine;
@@ -49,6 +50,16 @@ public class KLineServiceImpl extends BaseServiceImpl<KLine, KLineExample> imple
 	@Override
 	public List<Double> selectLastest30Close(String symbol, String lastDate) {
 		return mapper.selectLastest30Close(symbol, lastDate);
+	}
+
+	@Override
+	public List<KeyValue<String, Double>> selectLastest90Close(String symbol, String lastDate) {
+		return mapper.selectLastest90Close(symbol, lastDate);
+	}
+
+	@Override
+	public List<KLine> selectByShape(String tradeDate) {
+		return mapper.selectByShape(tradeDate);
 	}
 
 }
