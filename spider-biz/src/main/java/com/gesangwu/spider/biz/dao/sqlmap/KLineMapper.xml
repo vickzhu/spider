@@ -450,7 +450,7 @@
       #{kLine.percent,jdbcType=DOUBLE}, #{kLine.turnrate,jdbcType=DOUBLE}, #{kLine.ma5,jdbcType=DOUBLE}, #{kLine.ma10,jdbcType=DOUBLE}, #{kLine.ma20,jdbcType=DOUBLE}, 
       #{kLine.ma30,jdbcType=DOUBLE}, #{kLine.tradeDate,jdbcType=VARCHAR}, 
       #{kLine.amount,jdbcType=DOUBLE}, #{kLine.yesterdayClose,jdbcType=DOUBLE}, 
-      #{kLine.shape,jdbcType=INT}, #{kLine.gmtCreate,jdbcType=TIMESTAMP}
+      #{kLine.shape,jdbcType=INTEGER}, #{kLine.gmtCreate,jdbcType=TIMESTAMP}
       )
     </foreach>
   </insert>
