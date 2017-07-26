@@ -477,7 +477,7 @@
   		symbol=#{symbol,jdbcType=VARCHAR} AND trade_date&lt;=#{lastDate,jdbcType=VARCHAR} 
   	ORDER BY 
   		close DESC
-  	limit 90
+  	limit 30
   </select>
   <select id="selectByShape" resultMap="BaseResultMap" >
     SELECT
