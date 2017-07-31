@@ -72,9 +72,9 @@ public class HolderNumController {
 			
 			dateArr[1][0] = c.get(Calendar.YEAR)+"-"+curMonthStr+"-"+"01";
 			dateArr[1][1] = c.get(Calendar.YEAR)+"-"+curMonthStr+"-"+15;
-			
-			c.set(Calendar.MONTH, c.get(Calendar.MONTH)-1);
+			c.add(Calendar.MONTH, -1);
 			int preMonth = c.get(Calendar.MONTH)+1;
+			
 			String preMonthStr = preMonth < 10 ? "0"+preMonth : String.valueOf(preMonth);
 			int preMaxDay = c.getActualMaximum(Calendar.DAY_OF_MONTH);
 			
