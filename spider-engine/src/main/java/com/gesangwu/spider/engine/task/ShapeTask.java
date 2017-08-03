@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import com.gandalf.framework.mybatis.KeyValue;
 import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.dao.model.KLine;
+import com.gesangwu.spider.biz.dao.model.KLineExample;
 import com.gesangwu.spider.biz.service.KLineService;
 
 /**
@@ -27,6 +28,7 @@ public class ShapeTask {
 	@Resource
 	private KLineService klService;
 	
+//	@Scheduled(cron = "0 30 15 * * MON-FRI")
 	public void execute(){
 		execute(null);		
 	}
@@ -47,9 +49,16 @@ public class ShapeTask {
 	}
 	
 	public boolean isValid(String tradeDate, KLine kl){
-		List<KeyValue<String, Double>> cList = klService.selectLastest90Close(kl.getSymbol(), tradeDate);
+		KLineExample example = new KLineExample();
+		example.setOffset(0);
+		example.setRows(10);
+		example.setOrderByClause("trade_date desc");
+		KLineExample.Criteria criteria = example.createCriteria();
+		criteria.andSymbolEqualTo(kl.getSymbol());
+		criteria.andTradeDateLessThanOrEqualTo(tradeDate);
+		List<KeyValue<String, Double>> cList = klService.selectLastestClose(example);
 		KeyValue<String, Double> maxKV = cList.get(0);
-		KeyValue<String, Double> minKV = cList.get(cList.size()-1);
+		KeyValue<String, Double> minKV = cList.get(cList.size() - 1);
 		if(maxKV.getKey().compareTo(minKV.getKey()) < 0){//最高点日期小于最低点日期，说明是上一波的高峰
 			return false;
 		}

@@ -17,7 +17,7 @@ public interface KLineMapper extends BaseMapper<KLine, KLineExample> {
 	
 	public List<Double> selectLastest30Close(@Param("symbol")String symbol, @Param("lastDate")String lastDate);
 	
-	public List<KeyValue<String, Double>> selectLastest90Close(@Param("symbol")String symbol, @Param("lastDate")String lastDate);
+	public List<KeyValue<String, Double>> selectLastestClose(KLineExample example);
 	
 	public List<KLine> selectByShape(@Param("tradeDate")String tradeDate);
 	

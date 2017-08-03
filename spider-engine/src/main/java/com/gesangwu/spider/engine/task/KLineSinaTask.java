@@ -15,9 +15,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
+import com.gandalf.framework.mybatis.KeyValue;
 import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.util.CalculateUtil;
 import com.gesangwu.spider.biz.dao.model.KLine;
+import com.gesangwu.spider.biz.dao.model.KLineExample;
 import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.KLineService;
 
@@ -153,11 +155,15 @@ public class KLineSinaTask {
 			kLine.setGmtCreate(now);
 			kLineList.add(kLine);
 			
-			List<Double> closeList = kLineService.selectLastest30Close(symbol, tradeDate);
-			Double ma5 = calcMA(closeList, 5);
-			Double ma10 = calcMA(closeList, 10);
-			Double ma20 = calcMA(closeList, 20);
-			Double ma30 = calcMA(closeList, 30);
+			
+			List<KeyValue<String, Double>> tList = getCloseList(symbol, tradeDate);
+			List<KeyValue<String, Double>> kvList = new ArrayList<KeyValue<String, Double>>();
+			kvList.add(new KeyValue<String, Double>(tradeDate, dClose));
+			kvList.addAll(tList);
+			Double ma5 = calcMA(kvList, 5);			
+			Double ma10 = calcMA(kvList, 10);
+			Double ma20 = calcMA(kvList, 20);
+			Double ma30 = calcMA(kvList, 30);
 			kLine.setMa5(ma5);
 			kLine.setMa10(ma10);
 			kLine.setMa20(ma20);
@@ -166,13 +172,24 @@ public class KLineSinaTask {
 		kLineService.batchInsert(kLineList);
 	}
 	
-	public Double calcMA(List<Double> closeList, int period){
-		if(closeList.size() < period){
+	public List<KeyValue<String, Double>> getCloseList(String symbol, String tradeDate){
+		KLineExample example = new KLineExample();
+		example.setOrderByClause("trade_date desc");
+		example.setOffset(0);
+		example.setRows(30);
+		KLineExample.Criteria criteria = example.createCriteria();
+		criteria.andSymbolEqualTo(symbol);
+		criteria.andTradeDateLessThanOrEqualTo(tradeDate);
+		return kLineService.selectLastestClose(example);
+	}
+	
+	public Double calcMA(List<KeyValue<String, Double>> kvList, int period){
+		if(kvList.size() < period){
 			return null;
 		}
 		int sum = 0;
 		for (int i = 0; i < period; i++) {
-			sum += closeList.get(i) * 100;
+			sum += kvList.get(i).getValue() * 100;
 		}
 		double d = CalculateUtil.div(sum, 100, 2);
 		return CalculateUtil.div(d, period, 2);

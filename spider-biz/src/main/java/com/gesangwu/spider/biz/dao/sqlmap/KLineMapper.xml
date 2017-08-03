@@ -468,16 +468,20 @@
   		trade_date DESC 
   	LIMIT 30
   </select>
-  <select id="selectLastest90Close" resultMap="closeTradeDateMap">
+  <select id="selectLastestClose" resultMap="closeTradeDateMap" parameterType="com.gesangwu.spider.biz.dao.model.KLineExample">
   	SELECT
-  		close,trade_date 
+  		close, trade_date 
   	FROM 
-  		k_line 
-  	WHERE 
-  		symbol=#{symbol,jdbcType=VARCHAR} AND trade_date&lt;=#{lastDate,jdbcType=VARCHAR} 
-  	ORDER BY 
-  		close DESC
-  	limit 30
+  		k_line
+  	<if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="offset != null and offset &gt; -1">
+      limit ${offset},${rows}
+    </if>
   </select>
   <select id="selectByShape" resultMap="BaseResultMap" >
     SELECT

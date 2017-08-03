@@ -16,12 +16,17 @@ public interface KLineService extends BaseService<KLine, KLineExample> {
 	
 	public String selectLatestDate();
 	
-	public List<Double> selectLastest30Close(String symbol, String lastDate);
-	
-	public List<KeyValue<String, Double>> selectLastest90Close(String symbol, String lastDate);
-	
 	public List<KLine> selectByShape(String tradeDate);
 	
 	public void updateShape(int shape, List<Long> idList);
+	
+	/**
+	 * 获取截止时间前的指定条数记录
+	 * @param symbol
+	 * @param lastDate	截止时间
+	 * @param rows	记录数
+	 * @return	KeyValue key:trade_date,value:close
+	 */
+	public List<KeyValue<String, Double>> selectLastestClose(KLineExample example);
 	
 }

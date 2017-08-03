@@ -48,16 +48,6 @@ public class KLineServiceImpl extends BaseServiceImpl<KLine, KLineExample> imple
 	}
 
 	@Override
-	public List<Double> selectLastest30Close(String symbol, String lastDate) {
-		return mapper.selectLastest30Close(symbol, lastDate);
-	}
-
-	@Override
-	public List<KeyValue<String, Double>> selectLastest90Close(String symbol, String lastDate) {
-		return mapper.selectLastest90Close(symbol, lastDate);
-	}
-
-	@Override
 	public List<KLine> selectByShape(String tradeDate) {
 		return mapper.selectByShape(tradeDate);
 	}
@@ -65,6 +55,11 @@ public class KLineServiceImpl extends BaseServiceImpl<KLine, KLineExample> imple
 	@Override
 	public void updateShape(int shape, List<Long> idList) {
 		mapper.updateShape(shape, idList);		
+	}
+
+	@Override
+	public List<KeyValue<String, Double>> selectLastestClose(KLineExample example) {
+		return mapper.selectLastestClose(example);
 	}
 
 }
