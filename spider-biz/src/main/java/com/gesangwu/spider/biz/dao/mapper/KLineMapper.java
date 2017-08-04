@@ -19,7 +19,19 @@ public interface KLineMapper extends BaseMapper<KLine, KLineExample> {
 	
 	public List<KeyValue<String, Double>> selectLastestClose(KLineExample example);
 	
-	public List<KLine> selectByShape(@Param("tradeDate")String tradeDate);
+	/**
+	 * 适合判断形态的K线，包括多头和五日线低于十日线的多头
+	 * @param tradeDate
+	 * @return
+	 */
+	public List<KLine> selectForShape(@Param("tradeDate")String tradeDate);
+	
+	/**
+	 * 多头
+	 * @param tradeDate
+	 * @return
+	 */
+	public List<KLine> selectByPositive(@Param("tradeDate")String tradeDate);
 	
 	public void updateShape(@Param("shape")int shape, @Param("idList")List<Long> idList);
 

@@ -16,8 +16,25 @@ public interface KLineService extends BaseService<KLine, KLineExample> {
 	
 	public String selectLatestDate();
 	
-	public List<KLine> selectByShape(String tradeDate);
+	/**
+	 * 适合判断形态的K线，包括多头和五日线低于十日线的多头
+	 * @param tradeDate
+	 * @return
+	 */
+	public List<KLine> selectForShape(String tradeDate);
 	
+	/**
+	 * 多头
+	 * @param tradeDate
+	 * @return
+	 */
+	public List<KLine> selectByPositive(String tradeDate);
+	
+	/**
+	 * 更改形态
+	 * @param shape
+	 * @param idList
+	 */
 	public void updateShape(int shape, List<Long> idList);
 	
 	/**

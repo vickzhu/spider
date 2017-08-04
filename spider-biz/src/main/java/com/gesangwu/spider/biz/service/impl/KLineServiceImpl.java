@@ -48,8 +48,8 @@ public class KLineServiceImpl extends BaseServiceImpl<KLine, KLineExample> imple
 	}
 
 	@Override
-	public List<KLine> selectByShape(String tradeDate) {
-		return mapper.selectByShape(tradeDate);
+	public List<KLine> selectForShape(String tradeDate) {
+		return mapper.selectForShape(tradeDate);
 	}
 
 	@Override
@@ -60,6 +60,11 @@ public class KLineServiceImpl extends BaseServiceImpl<KLine, KLineExample> imple
 	@Override
 	public List<KeyValue<String, Double>> selectLastestClose(KLineExample example) {
 		return mapper.selectLastestClose(example);
+	}
+
+	@Override
+	public List<KLine> selectByPositive(String tradeDate) {
+		return mapper.selectByPositive(tradeDate);
 	}
 
 }
