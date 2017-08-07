@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.gandalf.framework.util.CalculateUtil;
 import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
@@ -34,7 +35,32 @@ public class ShapeTask {
 		return date;
 	}
 	
+	/**
+	 * 是否为向上走势
+	 * @return
+	 */
+	public boolean isUpTrend(KLine kline, int days){
+		List<KLine> klList = listByCloseDesc(kline.getSymbol(), kline.getTradeDate(), days);
+		KLine high = klList.get(0);
+		KLine low = klList.get(klList.size() - 1);
+		if(high.getTradeDate().compareTo(low.getTradeDate()) < 0){//最高在最低左侧
+			return false;
+		}
+		double curClose = kline.getClose();
+		double maxClose = high.getClose();
+		double scale = CalculateUtil.div(curClose, maxClose, 2);
+		double diff = Math.abs(CalculateUtil.sub(scale, 1, 2));
+		return diff < 0.1;
+	}
 	
+	
+	/**
+	 * 查找截止时间指定天数的记录，并根据close倒序
+	 * @param symbol
+	 * @param tradeDate
+	 * @param days
+	 * @return
+	 */
 	public List<KLine> listByCloseDesc(String symbol, String tradeDate, int days){
 		String startDate = subDate(tradeDate, days);
 		KLineExample example = new KLineExample();
@@ -43,6 +69,7 @@ public class ShapeTask {
 		example.setOrderByClause("close desc");
 		KLineExample.Criteria criteria = example.createCriteria();
 		criteria.andSymbolEqualTo(symbol);
+		criteria.andTradeDateLessThan(tradeDate);
 		criteria.andTradeDateGreaterThanOrEqualTo(startDate);
 		return klService.selectByExample(example);
 	}

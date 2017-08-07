@@ -17,6 +17,9 @@ import com.gesangwu.spider.biz.dao.model.KLine;
 @Component
 public class FirstNegativeTask extends ShapeTask {
 	
+	private int incDays = 3;
+	private double minInc = incDays * 0.03;//最小涨幅
+	
 	public void execute(){
 		execute(null);
 	}
@@ -37,7 +40,12 @@ public class FirstNegativeTask extends ShapeTask {
 					continue;
 				}
 			}
-			List<KLine> list = listByTradeDateDesc(kl.getSymbol(), tradeDate, 3);
+			double upShadow = CalculateUtil.div(high, kl.getClose(), 3);
+			double upShadowScale = Math.abs(CalculateUtil.sub(upShadow, 1, 3));
+			if(upShadowScale < 0.02){//套牢太少
+				continue;
+			}
+			List<KLine> list = listByTradeDateDesc(kl.getSymbol(), tradeDate, incDays);
 			KLine yesterday = list.get(0);
 			if(kl.getHigh() <= yesterday.getHigh()){//今天最高点没有创新高
 				continue;
@@ -52,15 +60,17 @@ public class FirstNegativeTask extends ShapeTask {
 			if(!isFirst){
 				continue;
 			}
-//			double max = yesterday.getClose();
-//			double min = list.get(list.size()-1).getClose();
-//			double raise = CalculateUtil.div((max - min), min, 2);
-//			if(raise < 0.15){
-//				continue;
-//			}
+			double max = yesterday.getClose();
+			double min = list.get(list.size()-1).getClose();
+			double raise = CalculateUtil.div((max - min), min, 2);
+			if(raise < minInc){
+				continue;
+			}
 			idList.add(kl.getId());
 		}
-		klService.updateShape(ShapeEnum.FIRST_NEG.getCode(), idList);
+		if(idList.size() > 0){
+			klService.updateShape(ShapeEnum.FIRST_NEG.getCode(), idList);
+		}
 	}
 	
 }

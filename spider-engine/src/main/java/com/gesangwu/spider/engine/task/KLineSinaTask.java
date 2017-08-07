@@ -69,7 +69,7 @@ public class KLineSinaTask {
 	@Resource
 	private KLineService kLineService;
 
-	@Scheduled(cron="0 45 15 * * MON-FRI")
+	@Scheduled(cron="0 05 15 * * MON-FRI")
 	public void execute(){
 		long start = System.currentTimeMillis();
 		
@@ -154,7 +154,6 @@ public class KLineSinaTask {
 			kLine.setTradeDate(tradeDate);
 			kLine.setGmtCreate(now);
 			kLineList.add(kLine);
-			
 			
 			List<KeyValue<String, Double>> tList = getCloseList(symbol, tradeDate);
 			List<KeyValue<String, Double>> kvList = new ArrayList<KeyValue<String, Double>>();

@@ -4,18 +4,18 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
-import com.gesangwu.spider.engine.kshape.task.DoubleBreakTask;
+import com.gesangwu.spider.engine.kshape.task.MaAdhesiveTask;
 import com.gesangwu.spider.engine.test.BaseTest;
 
-public class DoubleBreakTaskTest extends BaseTest {
-	
-	@Resource
-	private DoubleBreakTask task;
+public class MaAdhesiveTaskTest extends BaseTest {
 
+	@Resource
+	private MaAdhesiveTask task;
+	
 	@Test
 	public void execute(){
 		task.execute();
-//		task.execute("2017-07-31");
+//		task.execute("2017-08-04");
 	}
 	
 }
