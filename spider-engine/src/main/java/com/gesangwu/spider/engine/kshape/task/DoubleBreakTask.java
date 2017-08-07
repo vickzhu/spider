@@ -31,16 +31,10 @@ public class DoubleBreakTask extends ShapeTask {
 			List<KLine> list = getLatestKL(kl.getSymbol(), tradeDate);
 			for(int i=0; i < list.size(); i++){
 				KLine k = list.get(i);
-				if(i == 0){
-					if(k.getMa5() > k.getMa10()){//前一天为多头
-						break;
-					}
-				}else {
-					if(k.getMa5() > k.getMa10() && k.getMa10() > k.getMa20()){//出现多头
-						System.out.println(kl.getSymbol() + ":" + kl.getTradeDate());
-						idList.add(kl.getId());
-						break;
-					}
+				if(k.getMa5() > k.getMa10() && k.getMa10() > k.getMa20()){//出现多头
+					System.out.println(kl.getSymbol() + ":" + kl.getTradeDate());
+					idList.add(kl.getId());
+					break;
 				}
 			}
 		}
