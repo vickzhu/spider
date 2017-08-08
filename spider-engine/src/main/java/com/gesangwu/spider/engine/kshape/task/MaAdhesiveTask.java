@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.util.CalculateUtil;
+import com.gesangwu.spider.biz.common.ShapeEnum;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
 
@@ -34,60 +35,35 @@ public class MaAdhesiveTask extends ShapeTask {
 			if(diff > 0.005) {
 				continue;
 			}
-			List<KLine> list = getKLList(kl.getSymbol(), tradeDate);
-			if(!isUpTrend(kl, 30)){
-				continue;
-			}
-			
-			boolean isValid = true;
-			for(int i = 0; i < list.size(); i++){
-				KLine curK = list.get(i);
-				if(i == 0){
-					if(kl.getMa5() < curK.getMa5() || kl.getMa10() < curK.getMa10()){
-						isValid = false;
-						break;
-					}
-				} else {
-					KLine nextK = list.get(i-1);
-					if(curK.getMa5() > nextK.getMa5() || curK.getMa10() > nextK.getMa10()){
-						isValid = false;
-						break;
-					}
-				}
-			}
-			if(isValid){
-				System.out.println(kl.getSymbol() + ":" + kl.getTradeDate());
+			boolean valid = isValid(kl);
+			if(valid){
 				idList.add(kl.getId());
 			}
 		}
+		if(idList.size() > 0){
+			klService.updateShape(ShapeEnum.MA_ADH.getCode(), idList);
+		}
 	}
 	
-	public void check(KLine kl){
+	public boolean isValid(KLine kl){
 		List<KLine> list = getKLList(kl.getSymbol(), kl.getTradeDate());
 		if(!isUpTrend(kl, 30)){
-			return;
+			return false;
 		}
-		
-		boolean isValid = true;
 		for(int i = 0; i < list.size(); i++){
 			KLine curK = list.get(i);
 			if(i == 0){
 				if(kl.getMa5() < curK.getMa5() || kl.getMa10() < curK.getMa10()){
-					isValid = false;
-					break;
+					return false;
 				}
 			} else {
 				KLine nextK = list.get(i-1);
 				if(curK.getMa5() >= nextK.getMa5() || curK.getMa10() > nextK.getMa10()){
-					isValid = false;
-					break;
+					return false;
 				}
 			}
 		}
-		if(isValid){
-			System.out.println(kl.getSymbol() + ":" + kl.getTradeDate());
-//			idList.add(kl.getId());
-		}
+		return true;
 	}
 	
 	private List<KLine> getKLList(String symbol, String tradeDate){

@@ -46,6 +46,8 @@ public class ShapeController {
 		ModelAndView mav = new ModelAndView("shape");
 		mav.addObject("tradeDate", date);
 		mav.addObject("klList", klList);
+		mav.addObject("shapeEnum", ShapeEnum.values());
+		mav.addObject("curShape", shape);
 		return mav;
 	}
 }

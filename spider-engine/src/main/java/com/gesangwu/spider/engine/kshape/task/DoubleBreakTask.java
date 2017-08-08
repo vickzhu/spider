@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.gesangwu.spider.biz.common.ShapeEnum;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
 
@@ -37,6 +38,9 @@ public class DoubleBreakTask extends ShapeTask {
 					break;
 				}
 			}
+		}
+		if(klList.size() > 0){
+			klService.updateShape(ShapeEnum.DOUBLE_BREAK.getCode(), idList);
 		}
 	}
 	
