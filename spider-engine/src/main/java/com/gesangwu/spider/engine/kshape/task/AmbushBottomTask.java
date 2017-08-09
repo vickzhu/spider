@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.gandalf.framework.util.CalculateUtil;
 import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.common.ShapeEnum;
@@ -94,6 +95,24 @@ public class AmbushBottomTask extends ShapeTask {
 				isBreak = false;
 				continue;
 			}
+			if(kl.getOpen() > kl.getClose()){//阴
+				double scale = CalculateUtil.div(kl.getHigh(), kl.getOpen(), 3);
+				double percent = Math.abs(CalculateUtil.add(1, scale, 3));
+				if(percent > 0.03){
+					isMs = false;
+					isBreak = false;
+					continue;
+				}
+			} else {//阳
+				double scale = CalculateUtil.div(kl.getOpen(), kl.getClose(), 3);
+				double percent = Math.abs(CalculateUtil.add(1, scale, 3));
+				if(percent > 0.03){
+					isMs = false;
+					isBreak = false;
+					continue;
+				}
+			}
+				
 			if(kl.getMa5() > kl.getMa10()){
 				isBreak = true;
 			} else {
