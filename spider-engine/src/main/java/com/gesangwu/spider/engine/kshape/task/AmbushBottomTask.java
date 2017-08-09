@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.util.CalculateUtil;
@@ -24,6 +25,7 @@ public class AmbushBottomTask extends ShapeTask {
 	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
+	@Scheduled(cron="0 25 15 * * MON-FRI")
 	public void execute(){
 		execute(null);
 	}
@@ -97,15 +99,29 @@ public class AmbushBottomTask extends ShapeTask {
 			}
 			if(kl.getOpen() > kl.getClose()){//阴
 				double scale = CalculateUtil.div(kl.getHigh(), kl.getOpen(), 3);
-				double percent = Math.abs(CalculateUtil.add(1, scale, 3));
+				double percent = Math.abs(CalculateUtil.sub(1, scale, 3));
+				if(percent > 0.03){
+					isMs = false;
+					isBreak = false;
+					continue;
+				}
+				scale = CalculateUtil.div(kl.getClose(), kl.getLow(), 3);
+				percent = Math.abs(CalculateUtil.sub(1, scale, 3));
 				if(percent > 0.03){
 					isMs = false;
 					isBreak = false;
 					continue;
 				}
 			} else {//阳
-				double scale = CalculateUtil.div(kl.getOpen(), kl.getClose(), 3);
-				double percent = Math.abs(CalculateUtil.add(1, scale, 3));
+				double scale = CalculateUtil.div(kl.getHigh(), kl.getClose(), 3);
+				double percent = Math.abs(CalculateUtil.sub(1, scale, 3));
+				if(percent > 0.03){
+					isMs = false;
+					isBreak = false;
+					continue;
+				}
+				scale = CalculateUtil.div(kl.getOpen(), kl.getLow(), 3);
+				percent = Math.abs(CalculateUtil.sub(1, scale, 3));
 				if(percent > 0.03){
 					isMs = false;
 					isBreak = false;

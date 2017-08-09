@@ -3,6 +3,7 @@ package com.gesangwu.spider.engine.kshape.task;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gesangwu.spider.biz.common.ShapeEnum;
@@ -17,6 +18,7 @@ import com.gesangwu.spider.biz.dao.model.KLineExample;
 @Component
 public class DoubleBreakTask extends ShapeTask {
 	
+	@Scheduled(cron="0 10 15 * * MON-FRI")
 	public void execute(){
 		execute(null);
 	}

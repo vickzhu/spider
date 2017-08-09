@@ -3,6 +3,7 @@ package com.gesangwu.spider.engine.kshape.task;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.util.CalculateUtil;
@@ -20,6 +21,7 @@ public class FirstNegativeTask extends ShapeTask {
 	private int incDays = 3;
 	private double minInc = incDays * 0.03;//最小涨幅
 	
+	@Scheduled(cron="0 20 15 * * MON-FRI")
 	public void execute(){
 		execute(null);
 	}
