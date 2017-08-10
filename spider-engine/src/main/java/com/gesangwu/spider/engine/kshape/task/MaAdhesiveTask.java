@@ -60,7 +60,7 @@ public class MaAdhesiveTask extends ShapeTask {
 				}
 			} else {
 				KLine nextK = list.get(i-1);
-				if(curK.getMa5() >= nextK.getMa5() || curK.getMa10() > nextK.getMa10()){
+				if(curK.getMa5() > nextK.getMa5() || curK.getMa10() > nextK.getMa10()){
 					return false;
 				}
 			}
@@ -72,7 +72,7 @@ public class MaAdhesiveTask extends ShapeTask {
 		KLineExample example = new KLineExample();
 		example.setOrderByClause("trade_date desc");
 		example.setOffset(0);
-		example.setRows(3);
+		example.setRows(2);
 		KLineExample.Criteria criteria = example.createCriteria();
 		criteria.andSymbolEqualTo(symbol);
 		criteria.andTradeDateLessThan(tradeDate);

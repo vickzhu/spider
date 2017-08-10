@@ -34,8 +34,8 @@ public class DoubleBreakTask extends ShapeTask {
 			List<KLine> list = getLatestKL(kl.getSymbol(), tradeDate);
 			for(int i=0; i < list.size(); i++){
 				KLine k = list.get(i);
-				if(k.getMa5() > k.getMa10() && k.getMa10() > k.getMa20()){//出现多头
-					System.out.println(kl.getSymbol() + ":" + kl.getTradeDate());
+				if(k.getMa5() > k.getMa10() && k.getMa10() > k.getMa20()){//五日内出现多头
+//					System.out.println(kl.getSymbol() + ":" + kl.getTradeDate());
 					idList.add(kl.getId());
 					break;
 				}
@@ -58,11 +58,11 @@ public class DoubleBreakTask extends ShapeTask {
 	}
 	
 	/**
-	 * 十日上，五日下，突破十日
+	 * 当日涨幅3%~7%之间，十日上，五日下，突破十日
 	 * @param kl
 	 */
 	private boolean isBreak(KLine kl){
-		if(kl.getPercent() < 3 || kl.getPercent() > 7){
+		if(kl.getPercent() < 1 || kl.getPercent() > 7){
 			return false;
 		}
 		if(kl.getMa5() > kl.getMa10()){
