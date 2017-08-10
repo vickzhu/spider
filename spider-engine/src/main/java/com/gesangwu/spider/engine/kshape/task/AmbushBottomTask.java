@@ -67,6 +67,8 @@ public class AmbushBottomTask extends ShapeTask {
 		}
 	}
 	
+	private double shadow = 0.05;
+	
 	public boolean isValid(String tradeDate, String symbol){
 		boolean isValid = false;
 		KLineExample example = new KLineExample();
@@ -78,7 +80,9 @@ public class AmbushBottomTask extends ShapeTask {
 		criteria.andTradeDateLessThanOrEqualTo(tradeDate);
 		List<KLine> klList = klService.selectByExample(example);
 		boolean isMs = false;
-		boolean isBreak = false;
+//		boolean isBreak = false;
+		double top = 0;
+		double floor = 0;
 		
 		for (int i = klList.size()-1; i >=0; i--) {
 			KLine kl = klList.get(i);
@@ -87,55 +91,64 @@ public class AmbushBottomTask extends ShapeTask {
 			}
 			if(kl.getPercent() < -5 && kl.getMa5() < kl.getMa10() && kl.getMa5()< kl.getMa20()){
 				isMs = true;
+				double diff = CalculateUtil.mul(kl.getClose(), 0.05, 2);
+				top = CalculateUtil.add(kl.getClose(), diff, 2);
+				diff = CalculateUtil.mul(kl.getClose(), 0.03, 2);
+				floor = CalculateUtil.sub(kl.getClose(), diff, 2);
 				continue;
 			}
 			if(!isMs){//有里程碑才往下继续走
 				continue;
 			}
-			if(Math.abs(kl.getPercent()) > 3){//有里程碑，并且单日涨跌幅大于3，直接不玩了
+			if(kl.getClose() >= top || kl.getClose() <= floor){
 				isMs = false;
-				isBreak = false;
+//				isBreak = false;
 				continue;
 			}
+//			if(Math.abs(kl.getPercent()) > 3){//有里程碑，并且单日涨跌幅大于3，直接不玩了
+//				isMs = false;
+//				isBreak = false;
+//				continue;
+//			}
 			if(kl.getOpen() > kl.getClose()){//阴
 				double scale = CalculateUtil.div(kl.getHigh(), kl.getOpen(), 3);
 				double percent = Math.abs(CalculateUtil.sub(1, scale, 3));
-				if(percent > 0.03){
+				if(percent > shadow){
 					isMs = false;
-					isBreak = false;
+//					isBreak = false;
 					continue;
 				}
 				scale = CalculateUtil.div(kl.getClose(), kl.getLow(), 3);
 				percent = Math.abs(CalculateUtil.sub(1, scale, 3));
-				if(percent > 0.03){
+				if(percent > shadow){
 					isMs = false;
-					isBreak = false;
+//					isBreak = false;
 					continue;
 				}
 			} else {//阳
 				double scale = CalculateUtil.div(kl.getHigh(), kl.getClose(), 3);
 				double percent = Math.abs(CalculateUtil.sub(1, scale, 3));
-				if(percent > 0.03){
+				if(percent > shadow){
 					isMs = false;
-					isBreak = false;
+//					isBreak = false;
 					continue;
 				}
 				scale = CalculateUtil.div(kl.getOpen(), kl.getLow(), 3);
 				percent = Math.abs(CalculateUtil.sub(1, scale, 3));
-				if(percent > 0.03){
+				if(percent > shadow){
 					isMs = false;
-					isBreak = false;
+//					isBreak = false;
 					continue;
 				}
 			}
 				
-			if(kl.getMa5() > kl.getMa10()){
-				isBreak = true;
-			} else {
-				isBreak = false;
-			}
+//			if(kl.getMa5() > kl.getMa10()){
+//				isBreak = true;
+//			} else {
+//				isBreak = false;
+//			}
 		}
-		if(isMs && isBreak){
+		if(isMs){
 			isValid = true;
 		}
 		return isValid;
