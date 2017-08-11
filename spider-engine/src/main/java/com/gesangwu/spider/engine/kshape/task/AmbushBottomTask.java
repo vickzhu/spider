@@ -39,7 +39,7 @@ public class AmbushBottomTask extends ShapeTask {
 		Page<KLine> page = new Page<KLine>(1, cpp);
 		KLineExample example = new KLineExample();
 		KLineExample.Criteria criteria = example.createCriteria();
-		criteria.andPercentGreaterThan(0d);
+//		criteria.andPercentGreaterThan(0d);
 		criteria.andTradeDateEqualTo(tradeDate);
 		klService.selectByPagination(example, page);
 		int totalPages = page.getTotalPages();
@@ -70,6 +70,9 @@ public class AmbushBottomTask extends ShapeTask {
 	private double shadow = 0.05;
 	
 	public boolean isValid(String tradeDate, String symbol){
+		if("sz002104".equals(symbol)){
+			System.out.println("来了。。。");
+		}
 		boolean isValid = false;
 		KLineExample example = new KLineExample();
 		example.setOrderByClause("trade_date desc");
@@ -80,7 +83,7 @@ public class AmbushBottomTask extends ShapeTask {
 		criteria.andTradeDateLessThanOrEqualTo(tradeDate);
 		List<KLine> klList = klService.selectByExample(example);
 		boolean isMs = false;
-//		boolean isBreak = false;
+		boolean isBreak = false;
 		double top = 0;
 		double floor = 0;
 		
@@ -91,9 +94,8 @@ public class AmbushBottomTask extends ShapeTask {
 			}
 			if(kl.getPercent() < -5 && kl.getMa5() < kl.getMa10() && kl.getMa5()< kl.getMa20()){
 				isMs = true;
-				double diff = CalculateUtil.mul(kl.getClose(), 0.05, 2);
-				top = CalculateUtil.add(kl.getClose(), diff, 2);
-				diff = CalculateUtil.mul(kl.getClose(), 0.03, 2);
+				top = CalculateUtil.mul(kl.getClose(), 1.111, 2);
+				double diff = CalculateUtil.mul(kl.getClose(), 0.03, 2);
 				floor = CalculateUtil.sub(kl.getClose(), diff, 2);
 				continue;
 			}
@@ -102,7 +104,7 @@ public class AmbushBottomTask extends ShapeTask {
 			}
 			if(kl.getClose() >= top || kl.getClose() <= floor){
 				isMs = false;
-//				isBreak = false;
+				isBreak = false;
 				continue;
 			}
 //			if(Math.abs(kl.getPercent()) > 3){//有里程碑，并且单日涨跌幅大于3，直接不玩了
@@ -115,14 +117,14 @@ public class AmbushBottomTask extends ShapeTask {
 				double percent = Math.abs(CalculateUtil.sub(1, scale, 3));
 				if(percent > shadow){
 					isMs = false;
-//					isBreak = false;
+					isBreak = false;
 					continue;
 				}
 				scale = CalculateUtil.div(kl.getClose(), kl.getLow(), 3);
 				percent = Math.abs(CalculateUtil.sub(1, scale, 3));
 				if(percent > shadow){
 					isMs = false;
-//					isBreak = false;
+					isBreak = false;
 					continue;
 				}
 			} else {//阳
@@ -130,14 +132,14 @@ public class AmbushBottomTask extends ShapeTask {
 				double percent = Math.abs(CalculateUtil.sub(1, scale, 3));
 				if(percent > shadow){
 					isMs = false;
-//					isBreak = false;
+					isBreak = false;
 					continue;
 				}
 				scale = CalculateUtil.div(kl.getOpen(), kl.getLow(), 3);
 				percent = Math.abs(CalculateUtil.sub(1, scale, 3));
 				if(percent > shadow){
 					isMs = false;
-//					isBreak = false;
+					isBreak = false;
 					continue;
 				}
 			}
@@ -147,8 +149,11 @@ public class AmbushBottomTask extends ShapeTask {
 //			} else {
 //				isBreak = false;
 //			}
+			if(kl.getClose() > kl.getMa5()){
+				isBreak = true;
+			}
 		}
-		if(isMs){
+		if(isMs && isBreak){
 			isValid = true;
 		}
 		return isValid;

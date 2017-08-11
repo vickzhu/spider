@@ -14,8 +14,8 @@ public class DoubleBreakTaskTest extends BaseTest {
 
 	@Test
 	public void execute(){
-		task.execute();
-//		task.execute("2017-07-31");
+//		task.execute();
+		task.execute("2017-08-09");
 	}
 	
 }
