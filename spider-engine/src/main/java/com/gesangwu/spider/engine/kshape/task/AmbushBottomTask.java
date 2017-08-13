@@ -39,7 +39,6 @@ public class AmbushBottomTask extends ShapeTask {
 		Page<KLine> page = new Page<KLine>(1, cpp);
 		KLineExample example = new KLineExample();
 		KLineExample.Criteria criteria = example.createCriteria();
-//		criteria.andPercentGreaterThan(0d);
 		criteria.andTradeDateEqualTo(tradeDate);
 		klService.selectByPagination(example, page);
 		int totalPages = page.getTotalPages();
@@ -70,9 +69,6 @@ public class AmbushBottomTask extends ShapeTask {
 	private double shadow = 0.05;
 	
 	public boolean isValid(String tradeDate, String symbol){
-		if("sz002104".equals(symbol)){
-			System.out.println("来了。。。");
-		}
 		boolean isValid = false;
 		KLineExample example = new KLineExample();
 		example.setOrderByClause("trade_date desc");
@@ -86,17 +82,18 @@ public class AmbushBottomTask extends ShapeTask {
 		boolean isBreak = false;
 		double top = 0;
 		double floor = 0;
-		
+		long volume = 0;
 		for (int i = klList.size()-1; i >=0; i--) {
 			KLine kl = klList.get(i);
 			if(kl.getMa5() == null || kl.getMa10() == null || kl.getMa20() == null){
 				continue;
 			}
-			if(kl.getPercent() < -5 && kl.getMa5() < kl.getMa10() && kl.getMa5()< kl.getMa20()){
+			if(kl.getPercent() < -5 && kl.getMa5() < kl.getMa10() && kl.getMa5()< kl.getMa20()){//里程碑
 				isMs = true;
-				top = CalculateUtil.mul(kl.getClose(), 1.111, 2);
+				top = CalculateUtil.div(kl.getClose(), 1 + kl.getPercent()/100, 2);;
 				double diff = CalculateUtil.mul(kl.getClose(), 0.03, 2);
 				floor = CalculateUtil.sub(kl.getClose(), diff, 2);
+				volume = kl.getVolume();
 				continue;
 			}
 			if(!isMs){//有里程碑才往下继续走
@@ -107,11 +104,30 @@ public class AmbushBottomTask extends ShapeTask {
 				isBreak = false;
 				continue;
 			}
-//			if(Math.abs(kl.getPercent()) > 3){//有里程碑，并且单日涨跌幅大于3，直接不玩了
-//				isMs = false;
-//				isBreak = false;
-//				continue;
-//			}
+			if(Math.abs(kl.getPercent()) > 5){//有里程碑，并且单日涨跌幅大于5，直接不玩了
+				isMs = false;
+				isBreak = false;
+				continue;
+			}
+			if(kl.getVolume() > volume * 3){
+				isMs = false;
+				isBreak = false;
+				continue;
+			}
+			double yc = CalculateUtil.div(kl.getClose(), 1 + kl.getPercent()/100, 2);
+			double op = CalculateUtil.sub(kl.getOpen()/yc, 1, 2);
+			double hp = CalculateUtil.sub(kl.getHigh()/yc, 1, 2);
+			if(op > 0.05){//开盘大于5%
+				isMs = false;
+				isBreak = false;
+				continue;
+			}
+			if(hp > 0.07){//最高涨幅大于7%
+				isMs = false;
+				isBreak = false;
+				continue;
+			}
+			//判断上下影线长度
 			if(kl.getOpen() > kl.getClose()){//阴
 				double scale = CalculateUtil.div(kl.getHigh(), kl.getOpen(), 3);
 				double percent = Math.abs(CalculateUtil.sub(1, scale, 3));

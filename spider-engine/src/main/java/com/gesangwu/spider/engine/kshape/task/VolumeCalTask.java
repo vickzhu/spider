@@ -68,7 +68,7 @@ public class VolumeCalTask extends ShapeTask {
 	
 	private static String buildUrl(String symbol){
 		StringBuilder sb = new StringBuilder();
-		sb.append("http://vip.stock.finance.sina.com.cn/quotes_service/view/vML_DataList.php?desc=j&num=31&symbol=");
+		sb.append("http://vip.stock.finance.sina.com.cn/quotes_service/view/vML_DataList.php?desc=j&num=36&symbol=");
 		sb.append(symbol);
 		return sb.toString();
 	}
