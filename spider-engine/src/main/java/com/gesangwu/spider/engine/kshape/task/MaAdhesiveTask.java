@@ -12,7 +12,7 @@ import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
 
 /**
- * 五日、十日均线粘合，集体并向上发散
+ * 五日、十日均线粘合，集体并向上发散 TODO 是否改为最高点接近近一年的历史高点(1-2个点)，参考安洁科技和中炬高新2017-08-11
  * @author bran
  *
  */

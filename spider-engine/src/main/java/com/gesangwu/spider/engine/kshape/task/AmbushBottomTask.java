@@ -100,11 +100,16 @@ public class AmbushBottomTask extends ShapeTask {
 		long volume = 0;//里程碑日成交量
 		for (int i = klList.size()-1; i >=0; i--) {
 			KLine kl = klList.get(i);
+			if("sz300465".equals(kl.getSymbol())&&"2017-08-10".equals(kl.getTradeDate())){
+				System.out.println("进入...");
+			}
 			if(kl.getMa5() == null || kl.getMa10() == null || kl.getMa20() == null){
 				continue;
 			}
+			//TODO 里程碑最大跌幅是否可控制在4%内？
 			if(kl.getPercent() < -5 && kl.getMa5() < kl.getMa10() && kl.getMa5()< kl.getMa20()){//里程碑
 				isMs = true;
+				//TODO 这是最大值是否升为15？
 				top = CalculateUtil.mul(kl.getClose(), 1.11, 2);;
 				double diff = CalculateUtil.mul(kl.getClose(), 0.03, 2);
 				floor = CalculateUtil.sub(kl.getClose(), diff, 2);
@@ -142,7 +147,7 @@ public class AmbushBottomTask extends ShapeTask {
 				isBreak = false;
 				continue;
 			}
-			//判断上下影线长度
+			//判断上下影线长度 TODO 下影线长度是否可以放宽至5%
 			if(kl.getOpen() > kl.getClose()){//阴
 				double scale = CalculateUtil.div(kl.getHigh(), kl.getOpen(), 3);
 				double percent = Math.abs(CalculateUtil.sub(1, scale, 3));
