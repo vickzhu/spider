@@ -30,7 +30,7 @@
 						</div>
 						
 					</div>
-					<button id="searchFr" type="button" class="btn btn-success">搜索</button>
+					<button id="searchFr" type="submit" class="btn btn-success">搜索</button>
                 </div>
 			</form>
           </div>

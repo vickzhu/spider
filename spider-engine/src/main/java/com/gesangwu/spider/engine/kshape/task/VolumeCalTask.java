@@ -1,11 +1,14 @@
 package com.gesangwu.spider.engine.kshape.task;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -26,13 +29,26 @@ import com.gesangwu.spider.engine.util.SpiderMailSender;
 @Component
 public class VolumeCalTask extends ShapeTask {
 	
+	private static final Logger logger = LoggerFactory.getLogger(VolumeCalTask.class);
+	
 	@Resource
 	private KLineService klService;
 	@Resource
 	private SpiderMailSender sender;
 
-	@Scheduled(cron="0 35,40,45,50,55,59 9 * * MON-FRI")
+	@Scheduled(cron="0 0/5 9,10 * * MON-FRI")
 	public void execute(){
+		Calendar c = Calendar.getInstance();
+		int hod = c.get(Calendar.HOUR_OF_DAY);
+		int min = c.get(Calendar.MINUTE);
+		if(hod == 9 && min <= 30){//<=9:30
+			return;
+		}
+		if(hod == 10 && min > 5){//>10:05
+			return;
+		}
+		logger.info("begin calc volume...");
+		long start = System.currentTimeMillis();
 		String latestDate = klService.selectLatestDate();
 		KLineExample example = new KLineExample();
 		KLineExample.Criteria criteria = example.createCriteria();
@@ -47,9 +63,12 @@ public class VolumeCalTask extends ShapeTask {
 				sb.append(SymbolConstant.COMMA);
 			}
 		}
+		long end = System.currentTimeMillis();
+		logger.info("Calc volume used:"+(end - start)/1000);
 		if(sb.length() > 0){
 			sender.send(sb.toString());
 		}
+		
 	}
 	
 	private static final String r = ", '([0-9]*)'\\]";
