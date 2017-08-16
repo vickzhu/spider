@@ -1,7 +1,10 @@
 package com.gesangwu.spider.engine.kshape.task;
 
+import java.nio.charset.Charset;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,10 +17,13 @@ import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
+import com.gandalf.framework.util.CalculateUtil;
 import com.gesangwu.spider.biz.common.ShapeEnum;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
 import com.gesangwu.spider.biz.service.KLineService;
+import com.gesangwu.spider.engine.task.init.CompanyInit;
+import com.gesangwu.spider.engine.util.AmbushBottomHolder;
 import com.gesangwu.spider.engine.util.SpiderMailSender;
 
 /**
@@ -35,6 +41,8 @@ public class VolumeCalTask extends ShapeTask {
 	private KLineService klService;
 	@Resource
 	private SpiderMailSender sender;
+	
+	private static Set<String> symbolSet = new HashSet<String>();
 
 	@Scheduled(cron="0 0/5 9,10 * * MON-FRI")
 	public void execute(){
@@ -42,9 +50,10 @@ public class VolumeCalTask extends ShapeTask {
 		int hod = c.get(Calendar.HOUR_OF_DAY);
 		int min = c.get(Calendar.MINUTE);
 		if(hod == 9 && min <= 30){//<=9:30
+			symbolSet.clear();
 			return;
 		}
-		if(hod == 10 && min > 5){//>10:05
+		if(hod == 10 && min > 30){//>10:05
 			return;
 		}
 		logger.info("begin calc volume...");
@@ -56,44 +65,75 @@ public class VolumeCalTask extends ShapeTask {
 		criteria.andShapeEqualTo(ShapeEnum.DI_BU.getCode());
 		List<KLine> klList = klService.selectByExample(example);
 		StringBuilder sb = new StringBuilder();
-		for (KLine kl : klList) {
-			int totalVolume = getTotalVolume(kl.getSymbol());
-			if(totalVolume * 2 > kl.getVolume()){
-				sb.append(kl.getSymbol());
-				sb.append(SymbolConstant.COMMA);
+		for (int i = 0; i < klList.size(); i++) {
+			KLine kl = klList.get(i);
+			sb.append(kl.getSymbol());
+			sb.append(SymbolConstant.COMMA);
+			if(i % 300 == 0 || i == klList.size() -1){
+				String result = calc(sb.toString());
+				System.out.println(result);
+				sb = new StringBuilder();
 			}
 		}
 		long end = System.currentTimeMillis();
 		logger.info("Calc volume used:"+(end - start)/1000);
-		if(sb.length() > 0){
-			sender.send(sb.toString());
-		}
+//		if(sb.length() > 0){
+//			sender.send(sb.toString());
+//		}
 		
 	}
 	
-	private static final String r = ", '([0-9]*)'\\]";
-	private static final Pattern p = Pattern.compile(r);
-
-	private static int getTotalVolume(String symbol){
-		String url = buildUrl(symbol);
-		String result = HttpTool.get(url);
-		Matcher m = p.matcher(result);
-		int total = 0;
-		while(m.find()){
-			total += Integer.valueOf(m.group(1));
-		}
-		return total;
-	}
+	private static final String regex = "var hq_str_([\\w]{8})=\"(.*)\";";
+	private static final Pattern r = Pattern.compile(regex);
 	
-	private static String buildUrl(String symbol){
+	
+	private static String calc(String symbolArr){
 		StringBuilder sb = new StringBuilder();
-		sb.append("http://vip.stock.finance.sina.com.cn/quotes_service/view/vML_DataList.php?desc=j&num=36&symbol=");
-		sb.append(symbol);
+		String result = HttpTool.get("http://hq.sinajs.cn/?list=" + symbolArr,Charset.forName("GBK"));
+		Matcher matcher = r.matcher(result);
+		while(matcher.find()){
+			String symbol = matcher.group(1);
+			String detail = matcher.group(2);
+			String[] details = detail.split(SymbolConstant.COMMA);
+			if(details.length < 30){
+				continue;
+			}
+			String name = details[0];//名字
+			double open = Double.valueOf(details[1]);//今开
+			double yc = Double.valueOf(details[2]);//昨收
+			double cp = Double.valueOf(details[3]);//现价
+			//4最高 5最低 6 买一 7 卖一
+			long volume = Long.valueOf(details[8]);//成交量
+			//9成交额
+			KLine kl = AmbushBottomHolder.get(symbol);
+			if(kl == null){
+				continue;
+			}
+			if(cp < open){
+				continue;
+			}
+			double op = CalculateUtil.div((open - yc), yc, 3);
+			if(op > 0.03){//开幅太大
+				continue;
+			}
+			if(kl.getVolume() > volume * 2){
+				continue;
+			}
+			if(!symbolSet.contains(symbol)){
+				symbolSet.add(symbol);
+				sb.append(name);
+				sb.append(SymbolConstant.H_LINE);
+				sb.append(symbol);
+				sb.append(SymbolConstant.COMMA);
+			}
+		}
+		
 		return sb.toString();
 	}
 	
 	public static void main(String[] args){
-		getTotalVolume("sh600706");
+		String result = calc("sh601336");
+		System.out.println(result);
 	}
 	
 }

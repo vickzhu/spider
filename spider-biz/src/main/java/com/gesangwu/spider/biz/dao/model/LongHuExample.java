@@ -1355,6 +1355,76 @@ public class LongHuExample {
             return (Criteria) this;
         }
 
+        public Criteria andMainForceIsNull() {
+            addCriterion("main_force is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainForceIsNotNull() {
+            addCriterion("main_force is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainForceEqualTo(String value) {
+            addCriterion("main_force =", value, "mainForce");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainForceNotEqualTo(String value) {
+            addCriterion("main_force <>", value, "mainForce");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainForceGreaterThan(String value) {
+            addCriterion("main_force >", value, "mainForce");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainForceGreaterThanOrEqualTo(String value) {
+            addCriterion("main_force >=", value, "mainForce");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainForceLessThan(String value) {
+            addCriterion("main_force <", value, "mainForce");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainForceLessThanOrEqualTo(String value) {
+            addCriterion("main_force <=", value, "mainForce");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainForceLike(String value) {
+            addCriterion("main_force like", value, "mainForce");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainForceNotLike(String value) {
+            addCriterion("main_force not like", value, "mainForce");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainForceIn(List<String> values) {
+            addCriterion("main_force in", values, "mainForce");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainForceNotIn(List<String> values) {
+            addCriterion("main_force not in", values, "mainForce");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainForceBetween(String value1, String value2) {
+            addCriterion("main_force between", value1, value2, "mainForce");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainForceNotBetween(String value1, String value2) {
+            addCriterion("main_force not between", value1, value2, "mainForce");
+            return (Criteria) this;
+        }
+
         public Criteria andGmtCreateIsNull() {
             addCriterion("gmt_create is null");
             return (Criteria) this;

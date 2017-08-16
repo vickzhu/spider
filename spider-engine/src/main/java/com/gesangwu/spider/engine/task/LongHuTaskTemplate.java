@@ -6,8 +6,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -22,6 +24,7 @@ import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.dao.model.LongHu;
 import com.gesangwu.spider.biz.dao.model.LongHuDetail;
 import com.gesangwu.spider.biz.dao.model.SecDept;
+import com.gesangwu.spider.biz.dao.model.SecDeptExample;
 import com.gesangwu.spider.biz.service.LongHuDetailService;
 import com.gesangwu.spider.biz.service.LongHuService;
 import com.gesangwu.spider.biz.service.LongHuTypeService;
@@ -44,6 +47,8 @@ public abstract class LongHuTaskTemplate {
 	private SecDeptService deptService;
 	@Resource
 	private SynergyDetailService sdService;
+	
+	private Map<String, String> seatMap = null;
 
 	public void execute(String tradeDate){
 		long start = System.currentTimeMillis();
@@ -51,6 +56,7 @@ public abstract class LongHuTaskTemplate {
 			Date now = new Date();
 			tradeDate = sdf.format(now);
 		}
+		cacheMainForce();
 		Set<String> lhSet = completedLongHuMap(tradeDate);
 		List<LongHu> longHuList = getLongHuList(tradeDate);
 		for (LongHu longHu : longHuList) {
@@ -61,6 +67,34 @@ public abstract class LongHuTaskTemplate {
 		}
 		long end = System.currentTimeMillis();
 		logger.info("Fetch LongHu used:" + (end-start) + "ms!");
+	}
+
+	/**
+	 * 判断主力
+	 * @param lhdList
+	 * @return
+	 */
+	private void cacheMainForce(){
+		seatMap = new HashMap<String, String>();
+		SecDeptExample example = new SecDeptExample();
+		SecDeptExample.Criteria criteria = example.createCriteria();
+		criteria.andDeptAddrShortIsNotNull();
+		List<SecDept> list = deptService.selectByExample(example);
+		for (SecDept secDept : list) {
+			seatMap.put(secDept.getCode(), secDept.getDeptAddrShort());
+		}	
+	}
+	
+	private String judgeMainForce(List<LongHuDetail> lhdList){
+		Set<String> set = new HashSet<String>();
+		for (LongHuDetail lhd : lhdList) {
+			String deptCode = lhd.getSecDeptCode();
+			String mainForce = seatMap.get(deptCode);
+			if(StringUtil.isNotBlank(mainForce)){
+				set.add(mainForce);
+			}
+		}
+		return StringUtil.join(set, SymbolConstant.COMMA);
 	}
 	
 	protected abstract List<LongHu> getLongHuList(String tradeDate);
@@ -94,6 +128,10 @@ public abstract class LongHuTaskTemplate {
 		if(lhdList.size() == 0 || lhdList.size() < 4){
 			logger.error("Can't find longhu detail for stock:"+longHu.getSymbol());
 			return;
+		}
+		String mainForce = judgeMainForce(lhdList);
+		if(StringUtil.isNotBlank(mainForce)){
+			longHu.setMainForce(mainForce);
 		}
 //		synergyDept(longHu.getTradeDate(), lhdList);
 		lhService.insert(longHu, lhdList);

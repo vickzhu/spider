@@ -41,6 +41,8 @@ public class LongHu {
 
     private String srAmt;
 
+    private String mainForce;
+
     private Date gmtCreate;
 
     private Date gmtUpdate;
@@ -195,6 +197,14 @@ public class LongHu {
 
     public void setSrAmt(String srAmt) {
         this.srAmt = srAmt == null ? null : srAmt.trim();
+    }
+
+    public String getMainForce() {
+        return mainForce;
+    }
+
+    public void setMainForce(String mainForce) {
+        this.mainForce = mainForce == null ? null : mainForce.trim();
     }
 
     public Date getGmtCreate() {

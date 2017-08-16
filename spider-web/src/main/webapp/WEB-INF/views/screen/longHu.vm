@@ -42,7 +42,7 @@
 				  <th>买入(万)</th>
 				  <th>卖出(万)</th>
 				  <th>净买入(万)</th>
-				  <th>帮派</th>
+				  <th>帮派/主力</th>
                 </tr>
               </thead>
               <tbody>
@@ -72,7 +72,12 @@
 				  #elseif(${lh.srAmt})
 					#showAmt(${lh.srAmt})
 				  #end				  
-				  <td>$!{longHuTool.getClique($!{lh.operateClique})}</td>
+				  <td>
+					$!{longHuTool.getClique($!{lh.operateClique})}
+					#if(${lh.mainForce})
+					${lh.mainForce}
+					#end
+				  </td>
                 </tr>
 				#end
               </tbody>

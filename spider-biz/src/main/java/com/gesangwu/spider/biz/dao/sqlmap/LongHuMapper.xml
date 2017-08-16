@@ -1,48 +1,49 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gesangwu.spider.biz.dao.mapper.LongHuMapper" >
-  <resultMap id="BaseResultMap" type="com.gesangwu.spider.biz.dao.model.LongHu" >
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="symbol" property="symbol" jdbcType="VARCHAR" />
-    <result column="stock_name" property="stockName" jdbcType="VARCHAR" />
-    <result column="trade_date" property="tradeDate" jdbcType="VARCHAR" />
-    <result column="price" property="price" jdbcType="DOUBLE" />
-    <result column="chg" property="chg" jdbcType="DOUBLE" />
-    <result column="chg_percent" property="chgPercent" jdbcType="DOUBLE" />
-    <result column="turnover" property="turnover" jdbcType="DOUBLE" />
-    <result column="amplitude" property="amplitude" jdbcType="DOUBLE" />
-    <result column="tot_mkt_val" property="totMktVal" jdbcType="DOUBLE" />
-    <result column="neg_mkt_val" property="negMktVal" jdbcType="DOUBLE" />
-    <result column="sec_dept_relation" property="secDeptRelation" jdbcType="INTEGER" />
-    <result column="operate_clique" property="operateClique" jdbcType="BIGINT" />
-    <result column="yr_type" property="yrType" jdbcType="VARCHAR" />
-    <result column="yr_amt" property="yrAmt" jdbcType="VARCHAR" />
-    <result column="er_type" property="erType" jdbcType="VARCHAR" />
-    <result column="er_amt" property="erAmt" jdbcType="VARCHAR" />
-    <result column="sr_type" property="srType" jdbcType="VARCHAR" />
-    <result column="sr_amt" property="srAmt" jdbcType="VARCHAR" />
-    <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
-    <result column="gmt_update" property="gmtUpdate" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gesangwu.spider.biz.dao.mapper.LongHuMapper">
+  <resultMap id="BaseResultMap" type="com.gesangwu.spider.biz.dao.model.LongHu">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+    <result column="stock_name" jdbcType="VARCHAR" property="stockName" />
+    <result column="trade_date" jdbcType="VARCHAR" property="tradeDate" />
+    <result column="price" jdbcType="DOUBLE" property="price" />
+    <result column="chg" jdbcType="DOUBLE" property="chg" />
+    <result column="chg_percent" jdbcType="DOUBLE" property="chgPercent" />
+    <result column="turnover" jdbcType="DOUBLE" property="turnover" />
+    <result column="amplitude" jdbcType="DOUBLE" property="amplitude" />
+    <result column="tot_mkt_val" jdbcType="DOUBLE" property="totMktVal" />
+    <result column="neg_mkt_val" jdbcType="DOUBLE" property="negMktVal" />
+    <result column="sec_dept_relation" jdbcType="INTEGER" property="secDeptRelation" />
+    <result column="operate_clique" jdbcType="BIGINT" property="operateClique" />
+    <result column="yr_type" jdbcType="VARCHAR" property="yrType" />
+    <result column="yr_amt" jdbcType="VARCHAR" property="yrAmt" />
+    <result column="er_type" jdbcType="VARCHAR" property="erType" />
+    <result column="er_amt" jdbcType="VARCHAR" property="erAmt" />
+    <result column="sr_type" jdbcType="VARCHAR" property="srType" />
+    <result column="sr_amt" jdbcType="VARCHAR" property="srAmt" />
+    <result column="main_force" jdbcType="VARCHAR" property="mainForce" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_update" jdbcType="TIMESTAMP" property="gmtUpdate" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -53,25 +54,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -82,46 +83,46 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, symbol, stock_name, trade_date, price, chg, chg_percent, turnover, amplitude, 
     tot_mkt_val, neg_mkt_val, sec_dept_relation, operate_clique, yr_type, yr_amt, er_type, 
-    er_amt, sr_type, sr_amt, gmt_create, gmt_update
+    er_amt, sr_type, sr_amt, main_force, gmt_create, gmt_update
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.LongHuExample" >
+  <select id="selectByExample" parameterType="com.gesangwu.spider.biz.dao.model.LongHuExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from long_hu
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
-    <if test="offset != null and offset > -1" >
+    <if test="offset != null and offset &gt; -1">
       limit ${offset},${rows}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from long_hu
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from long_hu
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.gesangwu.spider.biz.dao.model.LongHuExample" >
+  <delete id="deleteByExample" parameterType="com.gesangwu.spider.biz.dao.model.LongHuExample">
     delete from long_hu
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.gesangwu.spider.biz.dao.model.LongHu" >
-    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.gesangwu.spider.biz.dao.model.LongHu">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into long_hu (symbol, stock_name, trade_date, 
@@ -130,223 +131,234 @@
       neg_mkt_val, sec_dept_relation, operate_clique, 
       yr_type, yr_amt, er_type, 
       er_amt, sr_type, sr_amt, 
-      gmt_create, gmt_update)
+      main_force, gmt_create, gmt_update
+      )
     values (#{symbol,jdbcType=VARCHAR}, #{stockName,jdbcType=VARCHAR}, #{tradeDate,jdbcType=VARCHAR}, 
       #{price,jdbcType=DOUBLE}, #{chg,jdbcType=DOUBLE}, #{chgPercent,jdbcType=DOUBLE}, 
       #{turnover,jdbcType=DOUBLE}, #{amplitude,jdbcType=DOUBLE}, #{totMktVal,jdbcType=DOUBLE}, 
       #{negMktVal,jdbcType=DOUBLE}, #{secDeptRelation,jdbcType=INTEGER}, #{operateClique,jdbcType=BIGINT}, 
       #{yrType,jdbcType=VARCHAR}, #{yrAmt,jdbcType=VARCHAR}, #{erType,jdbcType=VARCHAR}, 
       #{erAmt,jdbcType=VARCHAR}, #{srType,jdbcType=VARCHAR}, #{srAmt,jdbcType=VARCHAR}, 
-      #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP})
+      #{mainForce,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.LongHu" >
-    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.LongHu">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into long_hu
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="symbol != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="symbol != null">
         symbol,
       </if>
-      <if test="stockName != null" >
+      <if test="stockName != null">
         stock_name,
       </if>
-      <if test="tradeDate != null" >
+      <if test="tradeDate != null">
         trade_date,
       </if>
-      <if test="price != null" >
+      <if test="price != null">
         price,
       </if>
-      <if test="chg != null" >
+      <if test="chg != null">
         chg,
       </if>
-      <if test="chgPercent != null" >
+      <if test="chgPercent != null">
         chg_percent,
       </if>
-      <if test="turnover != null" >
+      <if test="turnover != null">
         turnover,
       </if>
-      <if test="amplitude != null" >
+      <if test="amplitude != null">
         amplitude,
       </if>
-      <if test="totMktVal != null" >
+      <if test="totMktVal != null">
         tot_mkt_val,
       </if>
-      <if test="negMktVal != null" >
+      <if test="negMktVal != null">
         neg_mkt_val,
       </if>
-      <if test="secDeptRelation != null" >
+      <if test="secDeptRelation != null">
         sec_dept_relation,
       </if>
-      <if test="operateClique != null" >
+      <if test="operateClique != null">
         operate_clique,
       </if>
-      <if test="yrType != null" >
+      <if test="yrType != null">
         yr_type,
       </if>
-      <if test="yrAmt != null" >
+      <if test="yrAmt != null">
         yr_amt,
       </if>
-      <if test="erType != null" >
+      <if test="erType != null">
         er_type,
       </if>
-      <if test="erAmt != null" >
+      <if test="erAmt != null">
         er_amt,
       </if>
-      <if test="srType != null" >
+      <if test="srType != null">
         sr_type,
       </if>
-      <if test="srAmt != null" >
+      <if test="srAmt != null">
         sr_amt,
       </if>
-      <if test="gmtCreate != null" >
+      <if test="mainForce != null">
+        main_force,
+      </if>
+      <if test="gmtCreate != null">
         gmt_create,
       </if>
-      <if test="gmtUpdate != null" >
+      <if test="gmtUpdate != null">
         gmt_update,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="symbol != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="symbol != null">
         #{symbol,jdbcType=VARCHAR},
       </if>
-      <if test="stockName != null" >
+      <if test="stockName != null">
         #{stockName,jdbcType=VARCHAR},
       </if>
-      <if test="tradeDate != null" >
+      <if test="tradeDate != null">
         #{tradeDate,jdbcType=VARCHAR},
       </if>
-      <if test="price != null" >
+      <if test="price != null">
         #{price,jdbcType=DOUBLE},
       </if>
-      <if test="chg != null" >
+      <if test="chg != null">
         #{chg,jdbcType=DOUBLE},
       </if>
-      <if test="chgPercent != null" >
+      <if test="chgPercent != null">
         #{chgPercent,jdbcType=DOUBLE},
       </if>
-      <if test="turnover != null" >
+      <if test="turnover != null">
         #{turnover,jdbcType=DOUBLE},
       </if>
-      <if test="amplitude != null" >
+      <if test="amplitude != null">
         #{amplitude,jdbcType=DOUBLE},
       </if>
-      <if test="totMktVal != null" >
+      <if test="totMktVal != null">
         #{totMktVal,jdbcType=DOUBLE},
       </if>
-      <if test="negMktVal != null" >
+      <if test="negMktVal != null">
         #{negMktVal,jdbcType=DOUBLE},
       </if>
-      <if test="secDeptRelation != null" >
+      <if test="secDeptRelation != null">
         #{secDeptRelation,jdbcType=INTEGER},
       </if>
-      <if test="operateClique != null" >
+      <if test="operateClique != null">
         #{operateClique,jdbcType=BIGINT},
       </if>
-      <if test="yrType != null" >
+      <if test="yrType != null">
         #{yrType,jdbcType=VARCHAR},
       </if>
-      <if test="yrAmt != null" >
+      <if test="yrAmt != null">
         #{yrAmt,jdbcType=VARCHAR},
       </if>
-      <if test="erType != null" >
+      <if test="erType != null">
         #{erType,jdbcType=VARCHAR},
       </if>
-      <if test="erAmt != null" >
+      <if test="erAmt != null">
         #{erAmt,jdbcType=VARCHAR},
       </if>
-      <if test="srType != null" >
+      <if test="srType != null">
         #{srType,jdbcType=VARCHAR},
       </if>
-      <if test="srAmt != null" >
+      <if test="srAmt != null">
         #{srAmt,jdbcType=VARCHAR},
       </if>
-      <if test="gmtCreate != null" >
+      <if test="mainForce != null">
+        #{mainForce,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
         #{gmtCreate,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtUpdate != null" >
+      <if test="gmtUpdate != null">
         #{gmtUpdate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.gesangwu.spider.biz.dao.model.LongHuExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.gesangwu.spider.biz.dao.model.LongHuExample" resultType="java.lang.Integer">
     select count(*) from long_hu
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update long_hu
-    <set >
-      <if test="record.id != null" >
+    <set>
+      <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.symbol != null" >
+      <if test="record.symbol != null">
         symbol = #{record.symbol,jdbcType=VARCHAR},
       </if>
-      <if test="record.stockName != null" >
+      <if test="record.stockName != null">
         stock_name = #{record.stockName,jdbcType=VARCHAR},
       </if>
-      <if test="record.tradeDate != null" >
+      <if test="record.tradeDate != null">
         trade_date = #{record.tradeDate,jdbcType=VARCHAR},
       </if>
-      <if test="record.price != null" >
+      <if test="record.price != null">
         price = #{record.price,jdbcType=DOUBLE},
       </if>
-      <if test="record.chg != null" >
+      <if test="record.chg != null">
         chg = #{record.chg,jdbcType=DOUBLE},
       </if>
-      <if test="record.chgPercent != null" >
+      <if test="record.chgPercent != null">
         chg_percent = #{record.chgPercent,jdbcType=DOUBLE},
       </if>
-      <if test="record.turnover != null" >
+      <if test="record.turnover != null">
         turnover = #{record.turnover,jdbcType=DOUBLE},
       </if>
-      <if test="record.amplitude != null" >
+      <if test="record.amplitude != null">
         amplitude = #{record.amplitude,jdbcType=DOUBLE},
       </if>
-      <if test="record.totMktVal != null" >
+      <if test="record.totMktVal != null">
         tot_mkt_val = #{record.totMktVal,jdbcType=DOUBLE},
       </if>
-      <if test="record.negMktVal != null" >
+      <if test="record.negMktVal != null">
         neg_mkt_val = #{record.negMktVal,jdbcType=DOUBLE},
       </if>
-      <if test="record.secDeptRelation != null" >
+      <if test="record.secDeptRelation != null">
         sec_dept_relation = #{record.secDeptRelation,jdbcType=INTEGER},
       </if>
-      <if test="record.operateClique != null" >
+      <if test="record.operateClique != null">
         operate_clique = #{record.operateClique,jdbcType=BIGINT},
       </if>
-      <if test="record.yrType != null" >
+      <if test="record.yrType != null">
         yr_type = #{record.yrType,jdbcType=VARCHAR},
       </if>
-      <if test="record.yrAmt != null" >
+      <if test="record.yrAmt != null">
         yr_amt = #{record.yrAmt,jdbcType=VARCHAR},
       </if>
-      <if test="record.erType != null" >
+      <if test="record.erType != null">
         er_type = #{record.erType,jdbcType=VARCHAR},
       </if>
-      <if test="record.erAmt != null" >
+      <if test="record.erAmt != null">
         er_amt = #{record.erAmt,jdbcType=VARCHAR},
       </if>
-      <if test="record.srType != null" >
+      <if test="record.srType != null">
         sr_type = #{record.srType,jdbcType=VARCHAR},
       </if>
-      <if test="record.srAmt != null" >
+      <if test="record.srAmt != null">
         sr_amt = #{record.srAmt,jdbcType=VARCHAR},
       </if>
-      <if test="record.gmtCreate != null" >
+      <if test="record.mainForce != null">
+        main_force = #{record.mainForce,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreate != null">
         gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.gmtUpdate != null" >
+      <if test="record.gmtUpdate != null">
         gmt_update = #{record.gmtUpdate,jdbcType=TIMESTAMP},
       </if>
     </set>
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update long_hu
     set id = #{record.id,jdbcType=BIGINT},
       symbol = #{record.symbol,jdbcType=VARCHAR},
@@ -367,79 +379,83 @@
       er_amt = #{record.erAmt,jdbcType=VARCHAR},
       sr_type = #{record.srType,jdbcType=VARCHAR},
       sr_amt = #{record.srAmt,jdbcType=VARCHAR},
+      main_force = #{record.mainForce,jdbcType=VARCHAR},
       gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
       gmt_update = #{record.gmtUpdate,jdbcType=TIMESTAMP}
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.gesangwu.spider.biz.dao.model.LongHu" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.gesangwu.spider.biz.dao.model.LongHu">
     update long_hu
-    <set >
-      <if test="symbol != null" >
+    <set>
+      <if test="symbol != null">
         symbol = #{symbol,jdbcType=VARCHAR},
       </if>
-      <if test="stockName != null" >
+      <if test="stockName != null">
         stock_name = #{stockName,jdbcType=VARCHAR},
       </if>
-      <if test="tradeDate != null" >
+      <if test="tradeDate != null">
         trade_date = #{tradeDate,jdbcType=VARCHAR},
       </if>
-      <if test="price != null" >
+      <if test="price != null">
         price = #{price,jdbcType=DOUBLE},
       </if>
-      <if test="chg != null" >
+      <if test="chg != null">
         chg = #{chg,jdbcType=DOUBLE},
       </if>
-      <if test="chgPercent != null" >
+      <if test="chgPercent != null">
         chg_percent = #{chgPercent,jdbcType=DOUBLE},
       </if>
-      <if test="turnover != null" >
+      <if test="turnover != null">
         turnover = #{turnover,jdbcType=DOUBLE},
       </if>
-      <if test="amplitude != null" >
+      <if test="amplitude != null">
         amplitude = #{amplitude,jdbcType=DOUBLE},
       </if>
-      <if test="totMktVal != null" >
+      <if test="totMktVal != null">
         tot_mkt_val = #{totMktVal,jdbcType=DOUBLE},
       </if>
-      <if test="negMktVal != null" >
+      <if test="negMktVal != null">
         neg_mkt_val = #{negMktVal,jdbcType=DOUBLE},
       </if>
-      <if test="secDeptRelation != null" >
+      <if test="secDeptRelation != null">
         sec_dept_relation = #{secDeptRelation,jdbcType=INTEGER},
       </if>
-      <if test="operateClique != null" >
+      <if test="operateClique != null">
         operate_clique = #{operateClique,jdbcType=BIGINT},
       </if>
-      <if test="yrType != null" >
+      <if test="yrType != null">
         yr_type = #{yrType,jdbcType=VARCHAR},
       </if>
-      <if test="yrAmt != null" >
+      <if test="yrAmt != null">
         yr_amt = #{yrAmt,jdbcType=VARCHAR},
       </if>
-      <if test="erType != null" >
+      <if test="erType != null">
         er_type = #{erType,jdbcType=VARCHAR},
       </if>
-      <if test="erAmt != null" >
+      <if test="erAmt != null">
         er_amt = #{erAmt,jdbcType=VARCHAR},
       </if>
-      <if test="srType != null" >
+      <if test="srType != null">
         sr_type = #{srType,jdbcType=VARCHAR},
       </if>
-      <if test="srAmt != null" >
+      <if test="srAmt != null">
         sr_amt = #{srAmt,jdbcType=VARCHAR},
       </if>
-      <if test="gmtCreate != null" >
+      <if test="mainForce != null">
+        main_force = #{mainForce,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
         gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtUpdate != null" >
+      <if test="gmtUpdate != null">
         gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.gesangwu.spider.biz.dao.model.LongHu" >
+  <update id="updateByPrimaryKey" parameterType="com.gesangwu.spider.biz.dao.model.LongHu">
     update long_hu
     set symbol = #{symbol,jdbcType=VARCHAR},
       stock_name = #{stockName,jdbcType=VARCHAR},
@@ -459,11 +475,12 @@
       er_amt = #{erAmt,jdbcType=VARCHAR},
       sr_type = #{srType,jdbcType=VARCHAR},
       sr_amt = #{srAmt,jdbcType=VARCHAR},
+      main_force = #{mainForce,jdbcType=VARCHAR},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select id="selectByTradeDate" resultMap="BaseResultMap" parameterType="java.lang.String">
+  <select id="selectByTradeDate" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from long_hu
@@ -478,7 +495,7 @@
     </choose>
     order by sec_dept_relation DESC
   </select>
-  <select id="selectTradeDate" resultType="java.lang.String" parameterType="java.lang.String">
+  <select id="selectTradeDate" parameterType="java.lang.String" resultType="java.lang.String">
   	select trade_date from long_hu where symbol = #{symbol,jdbcType=VARCHAR} order by trade_date DESC
   </select>
   <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true">
@@ -487,7 +504,7 @@
       turnover, amplitude, tot_mkt_val, 
       neg_mkt_val, sec_dept_relation, operate_clique, 
       yr_type, yr_amt, er_type, 
-      er_amt, sr_type, sr_amt, 
+      er_amt, sr_type, sr_amt, main_force,
       gmt_create, gmt_update)
     values 
     <foreach collection="list" index="index" item="longHu" separator=",">
@@ -496,7 +513,7 @@
       #{longHu.turnover,jdbcType=DOUBLE}, #{longHu.amplitude,jdbcType=DOUBLE}, #{longHu.totMktVal,jdbcType=DOUBLE}, 
       #{longHu.negMktVal,jdbcType=DOUBLE}, #{longHu.secDeptRelation,jdbcType=INTEGER}, #{longHu.operateClique,jdbcType=BIGINT}, 
       #{longHu.yrType,jdbcType=VARCHAR}, #{longHu.yrAmt,jdbcType=VARCHAR}, #{longHu.erType,jdbcType=VARCHAR}, 
-      #{longHu.erAmt,jdbcType=VARCHAR}, #{longHu.srType,jdbcType=VARCHAR}, #{longHu.srAmt,jdbcType=VARCHAR}, 
+      #{longHu.erAmt,jdbcType=VARCHAR}, #{longHu.srType,jdbcType=VARCHAR}, #{longHu.srAmt,jdbcType=VARCHAR}, #{longHu.mainForce,jdbcType=VARCHAR}, 
       #{longHu.gmtCreate,jdbcType=TIMESTAMP}, #{longHu.gmtUpdate,jdbcType=TIMESTAMP})
     </foreach>
   </insert>

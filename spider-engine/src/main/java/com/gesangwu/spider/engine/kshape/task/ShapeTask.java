@@ -15,11 +15,11 @@ import com.gesangwu.spider.biz.dao.model.KLineExample;
 import com.gesangwu.spider.biz.service.KLineService;
 
 /**
- * K线形态，包括多头、空头、阳包阴等等
+ * 形态之父
  * @author zhuxb
  *
  */
-public class ShapeTask {
+public abstract class ShapeTask {
 		
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
@@ -41,6 +41,9 @@ public class ShapeTask {
 	 */
 	public boolean isUpTrend(KLine kline, int days){
 		List<KLine> klList = listByCloseDesc(kline.getSymbol(), kline.getTradeDate(), days);
+		if(klList.size() == 0){
+			return false;
+		}
 		KLine high = klList.get(0);
 		KLine low = klList.get(klList.size() - 1);
 		if(high.getTradeDate().compareTo(low.getTradeDate()) < 0){//最高在最低左侧
