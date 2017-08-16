@@ -22,7 +22,6 @@ import com.gesangwu.spider.biz.common.ShapeEnum;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
 import com.gesangwu.spider.biz.service.KLineService;
-import com.gesangwu.spider.engine.task.init.CompanyInit;
 import com.gesangwu.spider.engine.util.AmbushBottomHolder;
 import com.gesangwu.spider.engine.util.SpiderMailSender;
 
