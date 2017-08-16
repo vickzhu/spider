@@ -16,7 +16,7 @@ public class SpiderMailSender {
     	SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setFrom("zhuxiaobing@rojintee.com");
 		mail.setTo("zhuxiaobing@rojintee.com");
-		mail.setSubject("恭喜发财！！！");
+		mail.setSubject("发送测试");
 		mail.setText(text);
     	mailSender.send(mail);
     }
