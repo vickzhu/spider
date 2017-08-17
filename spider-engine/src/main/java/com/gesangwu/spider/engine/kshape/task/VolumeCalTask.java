@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.util.CalculateUtil;
+import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.common.ShapeEnum;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
@@ -57,34 +58,32 @@ public class VolumeCalTask extends ShapeTask {
 		}
 		logger.info("begin calc volume...");
 		long start = System.currentTimeMillis();
-		String latestDate = klService.selectLatestDate();
-		KLineExample example = new KLineExample();
-		KLineExample.Criteria criteria = example.createCriteria();
-		criteria.andTradeDateEqualTo(latestDate);
-		criteria.andShapeEqualTo(ShapeEnum.DI_BU.getCode());
-		List<KLine> klList = klService.selectByExample(example);
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < klList.size(); i++) {
-			KLine kl = klList.get(i);
-			sb.append(kl.getSymbol());
-			sb.append(SymbolConstant.COMMA);
-			if(i % 300 == 0 || i == klList.size() -1){
-				String result = calc(sb.toString());
-				System.out.println(result);
-				sb = new StringBuilder();
-			}
-		}
+		String preDate = klService.selectLatestDate();
+		String result = execute(preDate);
 		long end = System.currentTimeMillis();
 		logger.info("Calc volume used:"+(end - start)/1000);
-//		if(sb.length() > 0){
-//			sender.send(sb.toString());
-//		}
-		
+		if(StringUtil.isNotBlank(result)){
+			sender.send(result);
+		}
+	}
+	
+	public String execute(String preDate){
+		KLineExample example = new KLineExample();
+		KLineExample.Criteria criteria = example.createCriteria();
+		criteria.andTradeDateEqualTo(preDate);
+		criteria.andShapeEqualTo(ShapeEnum.DI_BU.getCode());
+		List<KLine> klList = klService.selectByExample(example);
+		AmbushBottomHolder.set(klList);
+		StringBuilder sb = new StringBuilder();
+		for (KLine kl : klList) {
+			sb.append(kl.getSymbol());
+			sb.append(SymbolConstant.COMMA);			
+		}
+		return calc(sb.toString());
 	}
 	
 	private static final String regex = "var hq_str_([\\w]{8})=\"(.*)\";";
 	private static final Pattern r = Pattern.compile(regex);
-	
 	
 	private static String calc(String symbolArr){
 		StringBuilder sb = new StringBuilder();
@@ -108,7 +107,10 @@ public class VolumeCalTask extends ShapeTask {
 			if(kl == null){
 				continue;
 			}
-			if(cp < open){
+			if(cp < open){//阴实体
+				continue;
+			}
+			if(cp < yc){//绿盘
 				continue;
 			}
 			double op = CalculateUtil.div((open - yc), yc, 3);
@@ -126,7 +128,6 @@ public class VolumeCalTask extends ShapeTask {
 				sb.append(SymbolConstant.COMMA);
 			}
 		}
-		
 		return sb.toString();
 	}
 	

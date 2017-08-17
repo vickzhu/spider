@@ -107,7 +107,7 @@ public class AmbushBottomTask extends ShapeTask {
 				continue;
 			}
 			//TODO 里程碑最大跌幅是否可控制在4%内？
-			if(kl.getPercent() < -5 && kl.getMa5() < kl.getMa10() && kl.getMa5()< kl.getMa20()){//里程碑
+			if(kl.getPercent() < -5 && kl.getMa5() < kl.getMa10() && kl.getMa10()< kl.getMa20()){//里程碑
 				isMs = true;
 				//TODO 这是最大值是否升为15？
 				top = CalculateUtil.mul(kl.getClose(), 1.11, 2);;
@@ -117,6 +117,11 @@ public class AmbushBottomTask extends ShapeTask {
 				continue;
 			}
 			if(!isMs){//有里程碑才往下继续走
+				continue;
+			}
+			if(kl.getAmount() != null && kl.getAmount() > 250000000){
+				isMs = false;
+				isBreak = false;
 				continue;
 			}
 			if(kl.getClose() >= top || kl.getClose() <= floor){
