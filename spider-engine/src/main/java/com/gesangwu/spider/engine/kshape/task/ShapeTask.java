@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import com.gandalf.framework.util.CalculateUtil;
 import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.dao.model.KLine;
@@ -93,6 +95,39 @@ public abstract class ShapeTask {
 		criteria.andSymbolEqualTo(symbol);
 		criteria.andTradeDateLessThan(tradeDate);
 		return klService.selectByExample(example);
+	}
+	
+	public boolean isOnTop(KLine kl){
+		String symbol = kl.getSymbol();
+		String tradeDate = kl.getTradeDate();
+		KLine klMax = getMaxCLose(symbol, tradeDate, 365);
+		if(klMax == null){
+			return false;
+		}
+		if(kl.getClose() >= klMax.getClose()){
+			return true;
+		}
+		double scale = CalculateUtil.div(kl.getClose(), klMax.getClose(), 3);
+		double percent  = CalculateUtil.sub(1, scale, 3);
+		return percent < 0.05;
+	}
+	
+	public KLine getMaxCLose(String symbol, String tradeDate, int days){
+		String startDate = subDate(tradeDate, days);
+		KLineExample example = new KLineExample();
+		example.setOrderByClause("close desc");
+		example.setOffset(0);
+		example.setRows(1);
+		KLineExample.Criteria criteria = example.createCriteria();
+		criteria.andSymbolEqualTo(symbol);
+		criteria.andTradeDateLessThan(tradeDate);
+		criteria.andTradeDateGreaterThanOrEqualTo(startDate);
+		List<KLine> klList = klService.selectByExample(example);
+		if(CollectionUtils.isNotEmpty(klList)){
+			return klList.get(0);
+		} else {
+			return null;
+		}
 	}
 	
 	private static String subDate(String tradeDate, int days) {

@@ -31,6 +31,9 @@ public class DoubleBreakTask extends ShapeTask {
 			if(!isBreak(kl)){
 				continue;
 			}
+			if(!isOnTop(kl)){
+				continue;
+			}
 			List<KLine> list = getLatestKL(kl.getSymbol(), tradeDate);
 			for(int i=0; i < list.size(); i++){
 				KLine k = list.get(i);
@@ -58,7 +61,7 @@ public class DoubleBreakTask extends ShapeTask {
 	}
 	
 	/**
-	 * 当日涨幅3%~7%之间，十日上，五日下，突破十日
+	 * 当日涨幅1%~7%之间，十日上，五日下，突破十日
 	 * @param kl
 	 */
 	private boolean isBreak(KLine kl){

@@ -48,6 +48,9 @@ public class MaAdhesiveTask extends ShapeTask {
 	}
 	
 	public boolean isValid(KLine kl){
+		if(!isOnTop(kl)){
+			return false;
+		}
 		List<KLine> list = getKLList(kl.getSymbol(), kl.getTradeDate());
 		if(!isUpTrend(kl, 30)){
 			return false;
