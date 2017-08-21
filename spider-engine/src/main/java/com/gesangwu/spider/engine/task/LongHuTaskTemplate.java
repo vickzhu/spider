@@ -130,6 +130,9 @@ public abstract class LongHuTaskTemplate {
 			return;
 		}
 		String mainForce = judgeMainForce(lhdList);
+		if(isOrg(lhdList)){//机构
+			longHu.setOperateClique(1000l);
+		}
 		if(StringUtil.isNotBlank(mainForce)){
 			longHu.setMainForce(mainForce);
 		}
