@@ -19,7 +19,7 @@ import com.gesangwu.spider.biz.dao.model.KLine;
 public class FirstNegativeTask extends ShapeTask {
 	
 	private int incDays = 3;
-	private double minInc = incDays * 0.03;//最小涨幅
+	private double minInc = incDays * 0.05;//最小涨幅
 	
 	@Scheduled(cron="0 20 15 * * MON-FRI")
 	public void execute(){
