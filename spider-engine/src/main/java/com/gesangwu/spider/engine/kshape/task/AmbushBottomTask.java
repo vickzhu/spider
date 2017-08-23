@@ -100,9 +100,6 @@ public class AmbushBottomTask extends ShapeTask {
 		long volume = 0;//里程碑日成交量
 		for (int i = klList.size()-1; i >=0; i--) {
 			KLine kl = klList.get(i);
-			if("sz300465".equals(kl.getSymbol())&&"2017-08-10".equals(kl.getTradeDate())){
-				System.out.println("进入...");
-			}
 			if(kl.getMa5() == null || kl.getMa10() == null || kl.getMa20() == null){
 				continue;
 			}
