@@ -3,8 +3,10 @@ package com.gesangwu.spider.engine.kshape.task;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gesangwu.spider.biz.common.ShapeEnum;
@@ -20,6 +22,7 @@ public class ShrinkFallTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ShrinkFallTask.class);
 
+	@Scheduled(cron="0 12 15 * * MON-FRI")
 	public void execute(){
 		logger.info("Shrink fall task begin...");
 		long start = System.currentTimeMillis();
@@ -47,6 +50,9 @@ public class ShrinkFallTask extends ShapeTask {
 		String symbol = kLine.getSymbol();
 		String tradeDate = kLine.getTradeDate();
 		List<KLine> tmpList = listByCloseDesc(symbol, tradeDate, 10);
+		if(CollectionUtils.isEmpty(tmpList)){
+			return false;
+		}
 		String maxDate = tmpList.get(0).getTradeDate();
 		List<KLine> klList = listByTradeDateDesc(symbol, tradeDate, 10);
 		double maxHigh = 0;
