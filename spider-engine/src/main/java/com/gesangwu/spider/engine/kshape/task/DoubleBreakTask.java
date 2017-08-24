@@ -39,7 +39,7 @@ public class DoubleBreakTask extends ShapeTask {
 			if(!isBreak(kl)){
 				continue;
 			}
-			if(!isOnTop(kl)){
+			if(!isAroundTop(kl, 365)){
 				continue;
 			}
 			List<KLine> list = getLatestKL(kl.getSymbol(), tradeDate);

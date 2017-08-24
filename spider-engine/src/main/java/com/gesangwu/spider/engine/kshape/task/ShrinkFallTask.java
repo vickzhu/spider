@@ -53,7 +53,7 @@ public class ShrinkFallTask extends ShapeTask {
 		if(CollectionUtils.isEmpty(tmpList)){
 			return false;
 		}
-		String maxDate = tmpList.get(0).getTradeDate();
+//		String maxDate = tmpList.get(0).getTradeDate();
 		List<KLine> klList = listByTradeDateDesc(symbol, tradeDate, 10);
 		double maxHigh = 0;
 		double curLow = kLine.getLow();
@@ -67,12 +67,18 @@ public class ShrinkFallTask extends ShapeTask {
 			}
 			
 			if(i == 0){
+//				if("sz002320".equals(kl.getSymbol())){
+//					System.out.println(".....");
+//				}
 				if(kl.getPercent() < 2){//昨天涨幅必须大于2%
 					return false;
 				}
-				if(!kl.getTradeDate().equals(maxDate)){//昨日非本轮最高
+				if(!isOnTop(kl, 60)){
 					return false;
 				}
+//				if(!kl.getTradeDate().equals(maxDate)){//昨日非本轮最高
+//					return false;
+//				}
 				long yv = kl.getVolume();
 				if(yv * 75 < kLine.getVolume() * 100){//今天比昨天缩量1/4以上
 					return false;

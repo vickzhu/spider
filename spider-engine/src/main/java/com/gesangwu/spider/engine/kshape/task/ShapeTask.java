@@ -97,10 +97,32 @@ public abstract class ShapeTask {
 		return klService.selectByExample(example);
 	}
 	
-	public boolean isOnTop(KLine kl){
+	/**
+	 * 在指定天数之内，是否为最高价
+	 * @param kl
+	 * @param days	指定天数
+	 * @return
+	 */
+	public boolean isOnTop(KLine kl, int days){
 		String symbol = kl.getSymbol();
 		String tradeDate = kl.getTradeDate();
-		KLine klMax = getMaxCLose(symbol, tradeDate, 365);
+		KLine klMax = getMaxCLose(symbol, tradeDate, days);
+		if(klMax == null){
+			return false;
+		}
+		return kl.getClose() > klMax.getClose();
+	}
+	
+	/**
+	 * 是否在最高点附近,5个百分点以内
+	 * @param kl
+	 * @param days
+	 * @return
+	 */
+	public boolean isAroundTop(KLine kl, int days){
+		String symbol = kl.getSymbol();
+		String tradeDate = kl.getTradeDate();
+		KLine klMax = getMaxCLose(symbol, tradeDate, days);
 		if(klMax == null){
 			return false;
 		}
@@ -112,6 +134,13 @@ public abstract class ShapeTask {
 		return percent < 0.05;
 	}
 	
+	/**
+	 * 获得指定时间段内最大价格
+	 * @param symbol	
+	 * @param tradeDate	截止时间
+	 * @param days		往前计算的天数
+	 * @return
+	 */
 	public KLine getMaxCLose(String symbol, String tradeDate, int days){
 		String startDate = subDate(tradeDate, days);
 		KLineExample example = new KLineExample();

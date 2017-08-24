@@ -14,6 +14,25 @@ public class ShrinkFallTaskTest extends BaseTest {
 
 	@Test
 	public void execute(){
-		task.execute("2017-08-23");
+//		task.execute();
+		task.execute("2017-08-15");
+	}
+	
+//	@Test
+	public void init(){
+		for(int i = 1; i<=24; i++){
+			String tradeDate = buildDate(i);
+			task.execute(tradeDate);
+		}
+	}
+	
+	private String buildDate(int day){
+		StringBuilder sb = new StringBuilder();
+		sb.append("2017-08-");
+		if(day < 10){
+			sb.append("0");
+		}
+		sb.append(day);
+		return sb.toString();
 	}
 }
