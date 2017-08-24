@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.gandalf.framework.util.CalculateUtil;
 import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.Page;
@@ -20,11 +23,17 @@ import com.gesangwu.spider.biz.dao.model.KLineExample;
 //@Component
 public class AmbushBottomTask extends ShapeTask {
 	
+	private static final Logger logger = LoggerFactory.getLogger(AmbushBottomTask.class);
+	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 //	@Scheduled(cron="0 25 15 * * MON-FRI")
 	public void execute(){
+		logger.info("Ambush Bottom task begin...");
+		long start = System.currentTimeMillis();
 		execute(null);
+		long end = System.currentTimeMillis();
+		logger.info("Ambush Bottom task end, used:" + (end-start) + "ms");
 	}
 	
 	public void execute(String tradeDate){

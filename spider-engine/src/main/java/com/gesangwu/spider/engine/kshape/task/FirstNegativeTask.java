@@ -3,6 +3,8 @@ package com.gesangwu.spider.engine.kshape.task;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -18,12 +20,18 @@ import com.gesangwu.spider.biz.dao.model.KLine;
 @Component
 public class FirstNegativeTask extends ShapeTask {
 	
+	private static final Logger logger = LoggerFactory.getLogger(FirstNegativeTask.class);
+	
 	private int incDays = 3;
 	private double minInc = incDays * 0.05;//最小涨幅
 	
 	@Scheduled(cron="0 20 15 * * MON-FRI")
 	public void execute(){
+		logger.info("First Negative task begin...");
+		long start = System.currentTimeMillis();
 		execute(null);
+		long end = System.currentTimeMillis();
+		logger.info("First Negative task end, used:" + (end-start) + "ms");
 	}
 	
 	public void execute(String tradeDate){

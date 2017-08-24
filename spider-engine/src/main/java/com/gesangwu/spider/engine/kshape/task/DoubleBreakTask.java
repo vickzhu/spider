@@ -3,6 +3,8 @@ package com.gesangwu.spider.engine.kshape.task;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -18,9 +20,15 @@ import com.gesangwu.spider.biz.dao.model.KLineExample;
 @Component
 public class DoubleBreakTask extends ShapeTask {
 	
+	private static final Logger logger = LoggerFactory.getLogger(DoubleBreakTask.class);
+	
 	@Scheduled(cron="0 10 15 * * MON-FRI")
 	public void execute(){
+		logger.info("Double Break task begin...");
+		long start = System.currentTimeMillis();
 		execute(null);
+		long end = System.currentTimeMillis();
+		logger.info("Double Break task end, used:" + (end-start) + "ms");
 	}
 	
 	public void execute(String tradeDate){

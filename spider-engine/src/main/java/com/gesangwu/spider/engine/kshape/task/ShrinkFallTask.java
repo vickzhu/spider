@@ -26,13 +26,13 @@ public class ShrinkFallTask extends ShapeTask {
 	public void execute(){
 		logger.info("Shrink fall task begin...");
 		long start = System.currentTimeMillis();
-		String tradeDate = getTradeDate(null);
-		execute(tradeDate);
+		execute(null);
 		long end = System.currentTimeMillis();
-		logger.info("Shrink fall task end, used" + (end-start)/1000);
+		logger.info("Shrink fall task end, used:" + (end-start) + "ms");
 	}
 	
 	public void execute(String tradeDate){
+		tradeDate = getTradeDate(tradeDate);
 		List<KLine> klList = klService.selectByPositive(tradeDate);
 		List<Long> idList = new ArrayList<Long>();
 		for (KLine kl : klList) {
