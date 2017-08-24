@@ -29,7 +29,7 @@ public class MaCalcTest extends BaseTest {
 	@Test
 	public void execute(){
 		long start = System.currentTimeMillis();
-		String tradeDate = "2017-07-26";
+		String tradeDate = "2017-07-24";
 		int curPage = 1;
 		query(curPage, tradeDate);
 		long end = System.currentTimeMillis();

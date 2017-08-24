@@ -14,8 +14,8 @@ public class MaAdhesiveTaskTest extends BaseTest {
 	
 	@Test
 	public void execute(){
-//		task.execute();
-		task.execute("2017-08-09");
+		task.execute();
+//		task.execute("2017-08-09");
 	}
 	
 }

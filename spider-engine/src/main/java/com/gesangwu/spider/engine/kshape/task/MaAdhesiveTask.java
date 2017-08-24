@@ -43,7 +43,7 @@ public class MaAdhesiveTask extends ShapeTask {
 			}
 		}
 		if(idList.size() > 0){
-			klService.updateShape(ShapeEnum.MA_ADH.getCode(), idList);
+			klService.updateShape(ShapeEnum.MA_ADH, idList);
 		}
 	}
 	

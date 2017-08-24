@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-
 import com.gandalf.framework.util.CalculateUtil;
 import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.Page;
@@ -20,12 +17,12 @@ import com.gesangwu.spider.biz.dao.model.KLineExample;
  * @author zhuxb
  *
  */
-@Component
+//@Component
 public class AmbushBottomTask extends ShapeTask {
 	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
-	@Scheduled(cron="0 25 15 * * MON-FRI")
+//	@Scheduled(cron="0 25 15 * * MON-FRI")
 	public void execute(){
 		execute(null);
 	}
@@ -62,7 +59,7 @@ public class AmbushBottomTask extends ShapeTask {
 			}
 		}
 		if(idList.size() > 0){			
-			klService.updateShape(ShapeEnum.DI_BU.getCode(), idList);
+			klService.updateShape(ShapeEnum.DI_BU, idList);
 		}
 	}
 	

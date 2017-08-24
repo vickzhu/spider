@@ -71,7 +71,7 @@ public class FirstNegativeTask extends ShapeTask {
 			idList.add(kl.getId());
 		}
 		if(idList.size() > 0){
-			klService.updateShape(ShapeEnum.FIRST_NEG.getCode(), idList);
+			klService.updateShape(ShapeEnum.FIRST_NEG, idList);
 		}
 	}
 	

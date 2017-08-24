@@ -5,6 +5,7 @@ import java.util.List;
 import com.gandalf.framework.mybatis.BaseService;
 import com.gandalf.framework.mybatis.KeyValue;
 import com.gandalf.framework.web.tool.Page;
+import com.gesangwu.spider.biz.common.ShapeEnum;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
 
@@ -35,7 +36,7 @@ public interface KLineService extends BaseService<KLine, KLineExample> {
 	 * @param shape
 	 * @param idList
 	 */
-	public void updateShape(int shape, List<Long> idList);
+	public void updateShape(ShapeEnum shape, List<Long> idList);
 	
 	/**
 	 * 获取截止时间前的指定条数记录

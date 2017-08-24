@@ -45,7 +45,7 @@ public class DoubleBreakTask extends ShapeTask {
 			}
 		}
 		if(klList.size() > 0){
-			klService.updateShape(ShapeEnum.DOUBLE_BREAK.getCode(), idList);
+			klService.updateShape(ShapeEnum.DOUBLE_BREAK, idList);
 		}
 	}
 	

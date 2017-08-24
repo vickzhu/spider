@@ -60,7 +60,7 @@ public abstract class ShapeTask {
 	
 	
 	/**
-	 * 查找截止时间指定天数的记录，并根据close倒序
+	 * 查找截止时间指定天数的记录，并根据close倒序，不包含当天
 	 * @param symbol
 	 * @param tradeDate
 	 * @param days
