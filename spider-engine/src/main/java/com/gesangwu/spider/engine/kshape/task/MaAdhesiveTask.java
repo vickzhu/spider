@@ -14,7 +14,12 @@ import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
 
 /**
- * 五日、十日均线粘合，集体并向上发散 TODO 是否改为最高点接近近一年的历史高点(1-2个点)，参考安洁科技和中炬高新2017-08-11
+ * 五日、十日均线粘合，集体并向上发散
+ * 安洁科技和中炬高新2017-08-11，牧原股份2017-08-23
+ * 1、粘合：五日和十日线相差0.005%
+ * 2、一年内的最高点5%以内
+ * 3、30天内上涨趋势
+ * 4、前两日，均线向上
  * @author bran
  *
  */

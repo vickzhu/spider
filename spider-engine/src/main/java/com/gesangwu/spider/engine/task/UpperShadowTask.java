@@ -9,7 +9,6 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.common.DecimalUtil;
