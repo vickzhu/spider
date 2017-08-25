@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.util.CalculateUtil;
 import com.gandalf.framework.util.StringUtil;
@@ -20,14 +22,14 @@ import com.gesangwu.spider.biz.dao.model.KLineExample;
  * @author zhuxb
  *
  */
-//@Component
+@Component
 public class AmbushBottomTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(AmbushBottomTask.class);
 	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
-//	@Scheduled(cron="0 25 15 * * MON-FRI")
+	@Scheduled(cron="0 25 15 * * MON-FRI")
 	public void execute(){
 		logger.info("Ambush Bottom task begin...");
 		long start = System.currentTimeMillis();

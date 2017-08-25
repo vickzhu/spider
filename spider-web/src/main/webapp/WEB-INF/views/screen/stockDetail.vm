@@ -162,7 +162,7 @@
                   <thead>
                     <tr>
     				  <th>股东</th>
-					  <th>持股比例</th>
+					  <th>持股</th>
 					  <th>变化</th>
     				  <th>持股时间</th>			  
                     </tr>
@@ -176,7 +176,7 @@
 						</a>
 						<span class="label label-important">$!{longHuTool.getClique($!{sshExt.cliqueId})}</span>
 					  </td>
-					  <td>$!{sshExt.holdFloatRate}%</td>
+					  <td>$number.format("###,##0.00",$!{sshExt.holdCount})($!{sshExt.holdFloatRate}%)</td>
 					  <td>
     					#if($!{sshExt.chgCount})
     						#if($!{sshExt.chgCount}==0)

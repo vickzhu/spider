@@ -12,8 +12,6 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
@@ -32,7 +30,7 @@ import com.gesangwu.spider.engine.util.SpiderMailSender;
  * url:http://vip.stock.finance.sina.com.cn/quotes_service/view/vML_DataList.php?desc=j&symbol=sh600706&num=31
  *
  */
-@Component
+//@Component
 public class VolumeCalTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(VolumeCalTask.class);
@@ -44,7 +42,7 @@ public class VolumeCalTask extends ShapeTask {
 	
 	private static Set<String> symbolSet = new HashSet<String>();
 
-	@Scheduled(cron="0 0/5 9,10 * * MON-FRI")
+//	@Scheduled(cron="0 0/5 9,10 * * MON-FRI")
 	public void execute(){
 		Calendar c = Calendar.getInstance();
 		int hod = c.get(Calendar.HOUR_OF_DAY);
