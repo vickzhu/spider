@@ -51,6 +51,7 @@ public class ShrinkFallTask extends ShapeTask {
 		List<KLine> klList = listByTradeDateDesc(symbol, tradeDate, 5);
 		double maxHigh = 0;
 		double curLow = kLine.getLow();
+		double curHigh = kLine.getHigh();
 		for (int i = 0; i < klList.size(); i++) {
 			KLine kl = klList.get(i);
 			if(kl.getMa10() == null || kl.getMa5() == null){
@@ -77,7 +78,7 @@ public class ShrinkFallTask extends ShapeTask {
 				if(yv * 75 < kLine.getVolume() * 100){//今天比昨天缩量1/4以上
 					return false;
 				}
-				if(kl.getLow() > curLow){//今天最低点不能低于昨日
+				if(kl.getHigh() > curHigh || kl.getLow() > curLow){//今天最低点不能低于昨日
 					return false;
 				}
 				maxHigh = kl.getHigh();
