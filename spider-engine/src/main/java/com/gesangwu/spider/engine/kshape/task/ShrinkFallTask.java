@@ -3,7 +3,6 @@ package com.gesangwu.spider.engine.kshape.task;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,7 +12,7 @@ import com.gesangwu.spider.biz.common.ShapeEnum;
 import com.gesangwu.spider.biz.dao.model.KLine;
 
 /**
- * 缩跌
+ * 缩跌：缩跌前一日跳空高开的不要搞
  * @author zhuxb
  *
  */
@@ -49,12 +48,7 @@ public class ShrinkFallTask extends ShapeTask {
 		}
 		String symbol = kLine.getSymbol();
 		String tradeDate = kLine.getTradeDate();
-		List<KLine> tmpList = listByCloseDesc(symbol, tradeDate, 10);
-		if(CollectionUtils.isEmpty(tmpList)){
-			return false;
-		}
-//		String maxDate = tmpList.get(0).getTradeDate();
-		List<KLine> klList = listByTradeDateDesc(symbol, tradeDate, 10);
+		List<KLine> klList = listByTradeDateDesc(symbol, tradeDate, 5);
 		double maxHigh = 0;
 		double curLow = kLine.getLow();
 		for (int i = 0; i < klList.size(); i++) {
@@ -67,13 +61,13 @@ public class ShrinkFallTask extends ShapeTask {
 			}
 			
 			if(i == 0){
-//				if("sz002320".equals(kl.getSymbol())){
+//				if("sh603515".equals(kl.getSymbol())){
 //					System.out.println(".....");
 //				}
 				if(kl.getPercent() < 2){//昨天涨幅必须大于2%
 					return false;
 				}
-				if(!isOnTop(kl, 60)){
+				if(!isOnTop(kl, 180)){
 					return false;
 				}
 //				if(!kl.getTradeDate().equals(maxDate)){//昨日非本轮最高
