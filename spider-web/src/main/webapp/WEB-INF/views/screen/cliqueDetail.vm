@@ -18,17 +18,32 @@
             <div class="widget-title"> <span class="icon"> <i class="icon-play-circle"></i> </span>
               <h5>历史操作股票</h5>
             </div>
-            <div class="widget-content">
-              <div class="row-fluid">
-                <div class="span12 clique-stock-pg">
-                  <ul>
-					#foreach($cliqueStock in ${csPage.getRecords()})
-                    <li><a href="#">${!cliqueStock.stockName}</a></li>
-					#end
-                  </ul>
-                </div>
+            <div class="widget-content nopadding">
+                <table class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>股票</th>
+    				  <th>时间</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+    				#foreach($lh in ${lhPage.getRecords()})
+                    <tr>
+                      <td>${velocityCount}</td>
+                      <td>
+    					<a href="#springUrl('/longhu/detail')?symbol=${lh.symbol}&tradeDate=${lh.tradeDate}" target="_blank">
+    						${lh.stockName}
+    					</a>
+    				  </td>
+                      <td>${lh.tradeDate}</td>
+                    </tr>
+    				#end
+                  </tbody>
+                </table>
               </div>
             </div>
+    		<div id="page_nav"></div>
           </div>
 		  <div class="widget-box">
           <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
@@ -84,5 +99,5 @@
 	function gotoPage(pageNo){
 		window.location.href="#springUrl('/clique/detail')?cliqueId=$!{clique.id}&curPage="+pageNo;
 	}
-	$('#page_nav').html(new Pagination($!{cdPage.curPage},$!{cdPage.totalPages}, gotoPage).getHtml());
+	$('#page_nav').html(new Pagination($!{lhPage.curPage},$!{lhPage.totalPages}, gotoPage).getHtml());
 </script>

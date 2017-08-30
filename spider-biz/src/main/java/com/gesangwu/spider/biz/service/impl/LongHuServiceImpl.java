@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 
 import com.gandalf.framework.mybatis.BaseMapper;
 import com.gandalf.framework.mybatis.BaseServiceImpl;
+import com.gandalf.framework.util.CalculateUtil;
 import com.gandalf.framework.util.StringUtil;
+import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.common.DeptCliqueType;
 import com.gesangwu.spider.biz.dao.mapper.LongHuMapper;
 import com.gesangwu.spider.biz.dao.model.CliqueDept;
@@ -100,6 +102,9 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 		for (Map.Entry<Integer,List<LongHuDetail>> detailEntry : resultMap.entrySet()) {//不同日期类型的龙虎榜详情(一日，二日，三日)
 			int dateType = detailEntry.getKey();
 			List<LongHuDetail> detailList = detailEntry.getValue();
+			if(isOrg(detailList)){//机构
+				longhu.setOperateClique(1000l);
+			}
 			Map<Long,List<LongHuDetail>> detailMap = listToCliqueMap(detailList);
 			
 			long cliqueId = 0;
@@ -154,6 +159,28 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 			}
 			
 		}
+	}
+	
+	/**
+	 * 判断是否为机构
+	 * @param lhdList
+	 * @return
+	 */
+	public boolean isOrg(List<LongHuDetail> lhdList){
+		double total = 0;
+		double orgTotal = 0;
+		for (LongHuDetail lhd : lhdList) {
+			total = CalculateUtil.add(total, lhd.getBuyAmt().doubleValue());
+			long secDeptCode = Long.valueOf(lhd.getSecDeptCode());
+			if(secDeptCode > 20000000 || secDeptCode < 19000000){
+				continue;
+			}
+			if(lhd.getBuyAmt().doubleValue() < 100){//小于100万的不予考虑
+				continue;
+			}
+			orgTotal = CalculateUtil.add(orgTotal, lhd.getBuyAmt().doubleValue());
+		}
+		return CalculateUtil.mul(orgTotal, 5) > CalculateUtil.mul(total, 2);
 	}
 	
 	/**
@@ -314,6 +341,16 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 		criteria.andTradeDateGreaterThan(startDate);
 		criteria.andTradeDateLessThan(tradeDate);
 		return detailService.countByExample(example);
+	}
+
+	@Override
+	public void selectByPagination(LongHuExample example, Page<LongHu> page) {
+		example.setOffset(page.getOffset());
+        example.setRows(page.getPageSize());
+        int totalCounts = mapper.countByExample(example);
+        page.setTotalCounts(totalCounts);
+        List<LongHu> companyList = mapper.selectByExample(example);
+        page.setRecords(companyList);
 	}
 
 }

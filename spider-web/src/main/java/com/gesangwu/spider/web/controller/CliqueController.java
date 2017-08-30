@@ -14,13 +14,15 @@ import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.common.HolderType;
 import com.gesangwu.spider.biz.dao.model.Clique;
-import com.gesangwu.spider.biz.dao.model.CliqueStock;
+import com.gesangwu.spider.biz.dao.model.LongHu;
+import com.gesangwu.spider.biz.dao.model.LongHuExample;
 import com.gesangwu.spider.biz.dao.model.ShareHolder;
 import com.gesangwu.spider.biz.dao.model.ShareHolderExample;
 import com.gesangwu.spider.biz.dao.model.ext.CliqueDeptExt;
 import com.gesangwu.spider.biz.service.CliqueDeptService;
 import com.gesangwu.spider.biz.service.CliqueService;
 import com.gesangwu.spider.biz.service.CliqueStockService;
+import com.gesangwu.spider.biz.service.LongHuService;
 import com.gesangwu.spider.biz.service.ShareHolderService;
 
 @Controller
@@ -35,6 +37,8 @@ public class CliqueController {
 	private CliqueStockService csService;
 	@Resource
 	private ShareHolderService holderService;
+	@Resource
+	private LongHuService lhService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest request){
@@ -52,16 +56,38 @@ public class CliqueController {
 			curPage = Integer.valueOf(pageStr);
 		}
 		Clique clique = cliqueService.selectByPrimaryKey(cliqueId);
-		Page<CliqueDeptExt> cdPage = new Page<CliqueDeptExt>(curPage, 20);
-		cdService.selectExtByCliqueId(cliqueId, cdPage);
-		Page<CliqueStock> csPage = new Page<CliqueStock>(1, 20);
-		csService.selectByCliqueId(cliqueId, csPage);
+		
+		Page<LongHu> lhPage = new Page<LongHu>(curPage, 15);
+		LongHuExample lhExample = new LongHuExample();
+		lhExample.setOrderByClause("trade_date desc");
+		LongHuExample.Criteria criteria = lhExample.createCriteria();
+		criteria.andOperateCliqueEqualTo(cliqueId);
+		lhService.selectByPagination(lhExample, lhPage);
+		
 		ModelAndView mav = new ModelAndView("cliqueDetail");
 		mav.addObject("clique", clique);
-		mav.addObject("cdPage", cdPage);
-		mav.addObject("csPage", csPage);
+		mav.addObject("lhPage", lhPage);
 		return mav;
 	}
+	
+	
+	@RequestMapping(value = "/member", method = RequestMethod.GET)
+	public ModelAndView member(HttpServletRequest request, long cliqueId){
+		String pageStr = request.getParameter("curPage");
+		int curPage = 1;
+		if(StringUtil.isNotBlank(pageStr)){
+			curPage = Integer.valueOf(pageStr);
+		}
+		Clique clique = cliqueService.selectByPrimaryKey(cliqueId);
+		Page<CliqueDeptExt> cdPage = new Page<CliqueDeptExt>(curPage, 20);
+		cdService.selectExtByCliqueId(cliqueId, cdPage);
+
+		ModelAndView mav = new ModelAndView("cliqueMember");
+		mav.addObject("clique", clique);
+		mav.addObject("cdPage", cdPage);
+		return mav;
+	}
+	
 	
 	/**
 	 * 帮派股东
