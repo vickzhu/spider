@@ -78,7 +78,7 @@ public class ShrinkFallTask extends ShapeTask {
 				if(yv * 75 < kLine.getVolume() * 100){//今天比昨天缩量1/4以上
 					return false;
 				}
-				if(kl.getHigh() > curHigh || kl.getLow() > curLow){//今天最低点不能低于昨日
+				if(kl.getHigh() < curHigh || kl.getLow() > curLow){//今天最低点不能低于昨日
 					return false;
 				}
 				maxHigh = kl.getHigh();
