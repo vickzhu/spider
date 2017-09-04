@@ -73,7 +73,7 @@ public class DoubleBreakTask extends ShapeTask {
 	 * @param kl
 	 */
 	private boolean isBreak(KLine kl){
-		if(kl.getPercent() < 1 || kl.getPercent() > 7){
+		if(kl.getPercent() < 1 || kl.getPercent() > 8){
 			return false;
 		}
 		if(kl.getMa5() > kl.getMa10()){
