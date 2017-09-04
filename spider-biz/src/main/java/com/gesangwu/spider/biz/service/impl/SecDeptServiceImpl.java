@@ -1,5 +1,8 @@
 package com.gesangwu.spider.biz.service.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -9,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.gandalf.framework.mybatis.BaseMapper;
 import com.gandalf.framework.mybatis.BaseServiceImpl;
+import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.dao.mapper.SecDeptMapper;
 import com.gesangwu.spider.biz.dao.model.SecDept;
 import com.gesangwu.spider.biz.dao.model.SecDeptExample;
@@ -41,8 +45,36 @@ public class SecDeptServiceImpl extends BaseServiceImpl<SecDept, SecDeptExample>
 	}
 
 	@Override
+	public void clearActiveDept() {
+		mapper.clearActiveDept();		
+	}
+
+	@Override
 	public void updateActiveDept(String tradeDate) {
-		mapper.updateActiveDept(tradeDate);		
+		String startDate = getStartDate(tradeDate);
+		if(StringUtil.isBlank(startDate)){
+			return;
+		}
+		mapper.updateActiveDept(startDate);
+	}
+	
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	
+	/**
+	 * 往前推3个月
+	 * @param tradeDate
+	 * @return
+	 */
+	private static String getStartDate(String tradeDate){
+		try {
+			Date date = sdf.parse(tradeDate);
+			Calendar c = Calendar.getInstance();
+			c.setTime(date);
+			c.add(Calendar.MONTH, -3);
+			return sdf.format(c.getTime());
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 }

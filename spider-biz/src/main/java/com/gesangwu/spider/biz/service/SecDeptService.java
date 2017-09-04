@@ -12,6 +12,8 @@ public interface SecDeptService extends BaseService<SecDept, SecDeptExample> {
 	
 	public SecDept selectByCode(String code);
 	
+	public void clearActiveDept();
+	
 	public void updateActiveDept(String tradeDate);
 	
 }

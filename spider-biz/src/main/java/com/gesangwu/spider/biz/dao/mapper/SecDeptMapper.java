@@ -12,6 +12,8 @@ public interface SecDeptMapper extends BaseMapper<SecDept, SecDeptExample> {
 	
 	void insertBatch(List<SecDept> secDeptList);
 	
-	void updateActiveDept(@Param("tradeDate")String tradeDate);
+	void clearActiveDept();
+	
+	void updateActiveDept(@Param("startDate")String startDate);
 	
 }

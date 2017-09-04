@@ -289,12 +289,15 @@
       )
     </foreach>
   </insert>
+  <update id="clearActiveDept">
+	UPDATE sec_dept SET active_dept=NULL WHERE active_dept IS NOT NULL;
+  </update>
   <update id="updateActiveDept" parameterType="java.lang.String">
-    update sec_dept
-    set 
+  	UPDATE sec_dept sd
+    SET 
       active_dept = 1
-    where code in(
-    	SELECT sec_dept_code FROM long_hu_detail WHERE trade_date>#{tradeDate,jdbcType=VARCHAR} AND sec_dept_code>'80000000' GROUP BY sec_dept_code HAVING COUNT(*)>60
-    )
+    WHERE EXISTS (SELECT * FROM(
+    	SELECT * FROM long_hu_detail WHERE trade_date>#{startDate,jdbcType=VARCHAR} AND sec_dept_code>'80000000' GROUP BY sec_dept_code HAVING COUNT(*)>60
+    ) t WHERE t.sec_dept_code = sd.`code`);
   </update>
 </mapper>

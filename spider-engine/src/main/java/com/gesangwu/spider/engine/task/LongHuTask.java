@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.util.StringUtil;
+import com.gesangwu.spider.biz.service.SecDeptService;
 import com.gesangwu.spider.engine.common.LongHuTaskChannelEnum;
 import com.gesangwu.spider.engine.util.TradeTimeUtil;
 
@@ -36,6 +37,8 @@ public class LongHuTask {
 	private LongHuSinaTask lhSinaTask;
 	@Resource
 	private LongHu163Task lh163Task;
+	@Resource
+	private SecDeptService sdService;
 	
 	@Scheduled(cron = "0 0/3 16-18 * * MON-FRI")
 	public void execute(){
@@ -56,6 +59,16 @@ public class LongHuTask {
 		}
 		LongHuTaskTemplate executor = getExecutor(channel);
 		executor.execute(tradeDate);
+		updateActiveDept(tradeDate);
+	}
+	
+	/**
+	 * 更新活跃营业部
+	 * @param tradeDate
+	 */
+	private void updateActiveDept(String tradeDate){
+		sdService.clearActiveDept();
+		sdService.updateActiveDept(tradeDate);
 	}
 	
 	private LongHuTaskTemplate getExecutor(LongHuTaskChannelEnum channel){
