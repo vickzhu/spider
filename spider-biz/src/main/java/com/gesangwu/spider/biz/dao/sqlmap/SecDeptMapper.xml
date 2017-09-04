@@ -289,4 +289,12 @@
       )
     </foreach>
   </insert>
+  <update id="updateActiveDept" parameterType="java.lang.String">
+    update sec_dept
+    set 
+      active_dept = 1
+    where code in(
+    	SELECT sec_dept_code FROM long_hu_detail WHERE trade_date>#{tradeDate,jdbcType=VARCHAR} AND sec_dept_code>'80000000' GROUP BY sec_dept_code HAVING COUNT(*)>60
+    )
+  </update>
 </mapper>

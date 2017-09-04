@@ -40,4 +40,9 @@ public class SecDeptServiceImpl extends BaseServiceImpl<SecDept, SecDeptExample>
 		return CollectionUtils.isEmpty(deptList) ? null : deptList.get(0);
 	}
 
+	@Override
+	public void updateActiveDept(String tradeDate) {
+		mapper.updateActiveDept(tradeDate);		
+	}
+
 }
