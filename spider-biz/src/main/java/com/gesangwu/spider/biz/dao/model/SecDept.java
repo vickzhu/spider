@@ -15,7 +15,7 @@ public class SecDept {
 
     private Integer deptType;
 
-    private String secCompany;
+    private Integer activeDept;
 
     private Date gmtCreate;
 
@@ -69,12 +69,12 @@ public class SecDept {
         this.deptType = deptType;
     }
 
-    public String getSecCompany() {
-        return secCompany;
+    public Integer getActiveDept() {
+        return activeDept;
     }
 
-    public void setSecCompany(String secCompany) {
-        this.secCompany = secCompany == null ? null : secCompany.trim();
+    public void setActiveDept(Integer activeDept) {
+        this.activeDept = activeDept;
     }
 
     public Date getGmtCreate() {

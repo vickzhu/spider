@@ -525,73 +525,63 @@ public class SecDeptExample {
             return (Criteria) this;
         }
 
-        public Criteria andSecCompanyIsNull() {
-            addCriterion("sec_company is null");
+        public Criteria andActiveDeptIsNull() {
+            addCriterion("active_dept is null");
             return (Criteria) this;
         }
 
-        public Criteria andSecCompanyIsNotNull() {
-            addCriterion("sec_company is not null");
+        public Criteria andActiveDeptIsNotNull() {
+            addCriterion("active_dept is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSecCompanyEqualTo(String value) {
-            addCriterion("sec_company =", value, "secCompany");
+        public Criteria andActiveDeptEqualTo(Integer value) {
+            addCriterion("active_dept =", value, "activeDept");
             return (Criteria) this;
         }
 
-        public Criteria andSecCompanyNotEqualTo(String value) {
-            addCriterion("sec_company <>", value, "secCompany");
+        public Criteria andActiveDeptNotEqualTo(Integer value) {
+            addCriterion("active_dept <>", value, "activeDept");
             return (Criteria) this;
         }
 
-        public Criteria andSecCompanyGreaterThan(String value) {
-            addCriterion("sec_company >", value, "secCompany");
+        public Criteria andActiveDeptGreaterThan(Integer value) {
+            addCriterion("active_dept >", value, "activeDept");
             return (Criteria) this;
         }
 
-        public Criteria andSecCompanyGreaterThanOrEqualTo(String value) {
-            addCriterion("sec_company >=", value, "secCompany");
+        public Criteria andActiveDeptGreaterThanOrEqualTo(Integer value) {
+            addCriterion("active_dept >=", value, "activeDept");
             return (Criteria) this;
         }
 
-        public Criteria andSecCompanyLessThan(String value) {
-            addCriterion("sec_company <", value, "secCompany");
+        public Criteria andActiveDeptLessThan(Integer value) {
+            addCriterion("active_dept <", value, "activeDept");
             return (Criteria) this;
         }
 
-        public Criteria andSecCompanyLessThanOrEqualTo(String value) {
-            addCriterion("sec_company <=", value, "secCompany");
+        public Criteria andActiveDeptLessThanOrEqualTo(Integer value) {
+            addCriterion("active_dept <=", value, "activeDept");
             return (Criteria) this;
         }
 
-        public Criteria andSecCompanyLike(String value) {
-            addCriterion("sec_company like", value, "secCompany");
+        public Criteria andActiveDeptIn(List<Integer> values) {
+            addCriterion("active_dept in", values, "activeDept");
             return (Criteria) this;
         }
 
-        public Criteria andSecCompanyNotLike(String value) {
-            addCriterion("sec_company not like", value, "secCompany");
+        public Criteria andActiveDeptNotIn(List<Integer> values) {
+            addCriterion("active_dept not in", values, "activeDept");
             return (Criteria) this;
         }
 
-        public Criteria andSecCompanyIn(List<String> values) {
-            addCriterion("sec_company in", values, "secCompany");
+        public Criteria andActiveDeptBetween(Integer value1, Integer value2) {
+            addCriterion("active_dept between", value1, value2, "activeDept");
             return (Criteria) this;
         }
 
-        public Criteria andSecCompanyNotIn(List<String> values) {
-            addCriterion("sec_company not in", values, "secCompany");
-            return (Criteria) this;
-        }
-
-        public Criteria andSecCompanyBetween(String value1, String value2) {
-            addCriterion("sec_company between", value1, value2, "secCompany");
-            return (Criteria) this;
-        }
-
-        public Criteria andSecCompanyNotBetween(String value1, String value2) {
-            addCriterion("sec_company not between", value1, value2, "secCompany");
+        public Criteria andActiveDeptNotBetween(Integer value1, Integer value2) {
+            addCriterion("active_dept not between", value1, value2, "activeDept");
             return (Criteria) this;
         }
 
