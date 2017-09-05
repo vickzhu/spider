@@ -486,7 +486,7 @@
     FROM 
     	k_line
     WHERE
-    	trade_date=#{tradeDate,jdbcType=VARCHAR} AND ma5>ma10 AND ma10>ma20 AND ma20>ma30
+    	trade_date=#{tradeDate,jdbcType=VARCHAR} AND ma5>ma10 AND ma10>ma20
   </select>
   <update id="updateShape" parameterType="java.util.List">
   	update k_line set shape = #{shape, jdbcType=INTEGER} WHERE id IN

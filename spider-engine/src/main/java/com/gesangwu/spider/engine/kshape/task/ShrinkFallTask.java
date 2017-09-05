@@ -71,9 +71,6 @@ public class ShrinkFallTask extends ShapeTask {
 				if(!isOnTop(kl, 180)){
 					return false;
 				}
-//				if(!kl.getTradeDate().equals(maxDate)){//昨日非本轮最高
-//					return false;
-//				}
 				long yv = kl.getVolume();
 				if(yv * 75 < kLine.getVolume() * 100){//今天比昨天缩量1/4以上
 					return false;
