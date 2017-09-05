@@ -159,7 +159,7 @@ public abstract class ShapeTask {
 		}
 	}
 	
-	private static String subDate(String tradeDate, int days) {
+	public static String subDate(String tradeDate, int days) {
 		try {
 			Date date = sdf.parse(tradeDate);
 			Calendar c = Calendar.getInstance();

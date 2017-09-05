@@ -20,6 +20,7 @@ import com.gesangwu.spider.biz.dao.cache.CliqueCache;
 import com.gesangwu.spider.biz.dao.model.Clique;
 import com.gesangwu.spider.biz.dao.model.CliqueDept;
 import com.gesangwu.spider.biz.dao.model.SecDept;
+import com.gesangwu.spider.biz.dao.model.SecDeptExample;
 import com.gesangwu.spider.biz.service.CliqueDeptService;
 import com.gesangwu.spider.biz.service.CliqueService;
 import com.gesangwu.spider.biz.service.SecDeptService;
@@ -98,5 +99,21 @@ public class SecDeptController {
 			return new AjaxResult(false, e.getMessage());
 		}
 		return new AjaxResult(true, null);
+	}
+	
+	/**
+	 * 活跃营业部
+	 * @return
+	 */
+	@RequestMapping(value = "/active", method = RequestMethod.GET)
+	public ModelAndView activeDept(HttpServletRequest request){
+		SecDeptExample example = new SecDeptExample();
+		SecDeptExample.Criteria criteria = example.createCriteria();
+		criteria.andActiveDeptEqualTo(1);
+		List<SecDept> deptList = deptService.selectByExample(example);
+		ModelAndView mav = new ModelAndView("activeDept");
+		mav.addObject("deptList", deptList);
+		mav.addObject("deptTypeArr", SecDeptType.values());
+		return mav;
 	}
 }

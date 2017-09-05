@@ -48,7 +48,7 @@ public class ShrinkFallTask extends ShapeTask {
 		}
 		String symbol = kLine.getSymbol();
 		String tradeDate = kLine.getTradeDate();
-		List<KLine> klList = listByTradeDateDesc(symbol, tradeDate, 5);
+		List<KLine> klList = listByTradeDateDesc(symbol, tradeDate, 3);
 		double maxHigh = 0;
 		double curLow = kLine.getLow();
 		double curHigh = kLine.getHigh();
@@ -62,7 +62,7 @@ public class ShrinkFallTask extends ShapeTask {
 			}
 			
 			if(i == 0){
-//				if("sh603515".equals(kl.getSymbol())){
+//				if("sz300409".equals(kl.getSymbol())){
 //					System.out.println(".....");
 //				}
 				if(kl.getPercent() < 2){//昨天涨幅必须大于2%

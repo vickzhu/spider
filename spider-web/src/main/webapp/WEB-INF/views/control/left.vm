@@ -13,6 +13,7 @@
 		<li><a href="#springUrl('/largeVol/r')">大单成交</a></li>
 		<li><a href="#springUrl('/jd/r')">夹单</a></li>
 		<li><a href="#springUrl('/shape')">形态</a></li>
+		<li><a href="#springUrl('/sec-dept/active')">活跃营业部</a></li>
 		<li><a href="#springUrl('/shareholder/clique')">股东持股</a></li>
 		<li><a href="#springUrl('/holder-num/list')">股东人数</a></li>
 		<li><a href="#springUrl('/shareholder/relation/')">股东关联</a></li>
