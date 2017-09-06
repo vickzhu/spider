@@ -14,8 +14,8 @@ public class ShrinkFallTaskTest extends BaseTest {
 
 	@Test
 	public void execute(){
-//		task.execute();
-		task.execute("2017-09-04");
+		task.execute();
+//		task.execute("2017-09-04");
 	}
 	
 //	@Test

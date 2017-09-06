@@ -46,6 +46,12 @@ public class CoverNegTask extends ShapeTask {
 			if(kl.getClose() > kLine.getMa5() || kl.getHigh() < kLine.getMa5()){
 				continue;
 			}
+			if(kl.getClose() < kl.getMa5() || kl.getClose() < kl.getMa10()){
+				continue;
+			}
+			if(!isMaxMa5(kLine, 180)){
+				continue;
+			}
 			boolean valid = isValid(kl);
 			if(valid){
 				System.out.println(kl.getSymbol());
@@ -55,6 +61,26 @@ public class CoverNegTask extends ShapeTask {
 		if(idList.size() > 0){
 //			klService.updateShape(ShapeEnum.MA_ADH, idList);
 		}
+	}
+	
+	private boolean isMaxMa5(KLine kl, int days){
+		String symbol = kl.getSymbol();
+		String tradeDate = kl.getTradeDate();
+		String startDate = subDate(tradeDate, days);
+		KLineExample example = new KLineExample();
+		example.setOrderByClause("ma5 desc");
+		example.setOffset(0);
+		example.setRows(1);
+		KLineExample.Criteria criteria = example.createCriteria();
+		criteria.andSymbolEqualTo(symbol);
+		criteria.andTradeDateLessThan(tradeDate);
+		criteria.andTradeDateGreaterThanOrEqualTo(startDate);
+		List<KLine> klList = klService.selectByExample(example);
+		if(CollectionUtils.isEmpty(klList)){
+			return false;
+		}
+		KLine kLine = klList.get(0);
+		return kLine.getMa5() < kl.getMa5();
 	}
 	
 	private KLine getMaxMa5(KLine kl, int days){
@@ -72,13 +98,7 @@ public class CoverNegTask extends ShapeTask {
 	}
 
 	public boolean isValid(KLine kl){
-		if(!isAroundTop(kl, 180)){
-			return false;
-		}
 		List<KLine> list = getKLList(kl.getSymbol(), kl.getTradeDate());
-		if(!isUpTrend(kl, 30)){
-			return false;
-		}
 		for(int i = 0; i < list.size(); i++){
 			KLine curK = list.get(i);
 			if(i == 0){

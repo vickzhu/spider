@@ -14,7 +14,7 @@ public class AmbushBottomTaskTest extends BaseTest {
 	
 	@Test
 	public void execute(){
-//		task.execute();
-		task.execute("2017-08-16");
+		task.execute();
+//		task.execute("2017-08-16");
 	}
 }

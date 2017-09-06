@@ -14,6 +14,6 @@ public class CoverNegTaskTest extends BaseTest {
 	
 	@Test
 	public void execute(){
-		task.execute("2017-09-01");
+		task.execute("2017-08-29");
 	}
 }
