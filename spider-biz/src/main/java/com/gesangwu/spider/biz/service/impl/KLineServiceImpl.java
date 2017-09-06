@@ -72,4 +72,9 @@ public class KLineServiceImpl extends BaseServiceImpl<KLine, KLineExample> imple
 		return mapper.selectByPositive(tradeDate);
 	}
 
+	@Override
+	public List<KLine> selectAboveMa(String tradeDate) {
+		return mapper.selectAboveMa(tradeDate);
+	}
+
 }

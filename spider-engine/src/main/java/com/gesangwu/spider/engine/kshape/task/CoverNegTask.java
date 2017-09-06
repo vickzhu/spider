@@ -27,9 +27,12 @@ public class CoverNegTask extends ShapeTask {
 	
 	public void execute(String tradeDate){
 		tradeDate = getTradeDate(tradeDate);
-		List<KLine> klList = klService.selectForShape(tradeDate);
+		List<KLine> klList = klService.selectAboveMa(tradeDate);
 		List<Long> idList = new ArrayList<Long>();
 		for (KLine kl : klList) {
+//			if("sh600782".equals(kl.getSymbol())){
+//				System.out.println(".............");
+//			}
 			if(kl.getClose() < kl.getMa5() || kl.getClose() < kl.getMa10()){
 				continue;
 			}
@@ -69,18 +72,22 @@ public class CoverNegTask extends ShapeTask {
 		String startDate = subDate(tradeDate, days);
 		KLineExample example = new KLineExample();
 		example.setOrderByClause("ma5 desc");
-		example.setOffset(0);
-		example.setRows(1);
 		KLineExample.Criteria criteria = example.createCriteria();
 		criteria.andSymbolEqualTo(symbol);
 		criteria.andTradeDateLessThan(tradeDate);
 		criteria.andTradeDateGreaterThanOrEqualTo(startDate);
 		List<KLine> klList = klService.selectByExample(example);
-		if(CollectionUtils.isEmpty(klList)){
+		if(CollectionUtils.isEmpty(klList) || klList.size()*2 < days){
 			return false;
 		}
-		KLine kLine = klList.get(0);
-		return kLine.getMa5() < kl.getMa5();
+		KLine maxKLine = klList.get(0);
+		KLine minKLine = klList.get(klList.size()-1);
+		if(maxKLine.getTradeDate().compareTo(minKLine.getTradeDate())<0){
+			return false;
+		}
+		double scale = CalculateUtil.div(kl.getClose(), minKLine.getClose(), 3);
+		double diff = CalculateUtil.sub(scale, 1, 3);
+		return diff > 0.2;
 	}
 	
 	private KLine getMaxMa5(KLine kl, int days){
@@ -98,10 +105,13 @@ public class CoverNegTask extends ShapeTask {
 	}
 
 	public boolean isValid(KLine kl){
-		List<KLine> list = getKLList(kl.getSymbol(), kl.getTradeDate());
+		List<KLine> list = getKLList(kl.getSymbol(), kl.getTradeDate(), 1);
 		for(int i = 0; i < list.size(); i++){
 			KLine curK = list.get(i);
 			if(i == 0){
+				if(curK.getClose() < 0){
+					return false;
+				}
 				if(kl.getMa5() < curK.getMa5() || kl.getMa10() < curK.getMa10()){
 					return false;
 				}
@@ -115,11 +125,11 @@ public class CoverNegTask extends ShapeTask {
 		return true;
 	}
 	
-	private List<KLine> getKLList(String symbol, String tradeDate){
+	private List<KLine> getKLList(String symbol, String tradeDate, int days){
 		KLineExample example = new KLineExample();
 		example.setOrderByClause("trade_date desc");
 		example.setOffset(0);
-		example.setRows(2);
+		example.setRows(days);
 		KLineExample.Criteria criteria = example.createCriteria();
 		criteria.andSymbolEqualTo(symbol);
 		criteria.andTradeDateLessThan(tradeDate);

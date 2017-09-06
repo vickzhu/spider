@@ -33,6 +33,13 @@ public interface KLineMapper extends BaseMapper<KLine, KLineExample> {
 	 */
 	public List<KLine> selectByPositive(@Param("tradeDate")String tradeDate);
 	
+	/**
+	 * 收盘在所有均线之上 
+	 * @param tradeDate
+	 * @return
+	 */
+	public List<KLine> selectAboveMa(@Param("tradeDate")String tradeDate);
+	
 	public void updateShape(@Param("shape")int shape, @Param("idList")List<Long> idList);
 
 }
