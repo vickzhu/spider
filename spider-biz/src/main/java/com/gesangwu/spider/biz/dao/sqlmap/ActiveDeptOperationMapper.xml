@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gesangwu.spider.biz.dao.mapper.ActiveDeptOperationMapper" >
+  <resultMap id="BaseResultMap" type="com.gesangwu.spider.biz.dao.model.ActiveDeptOperation" >
+    <id column="operation_id" property="operationId" jdbcType="BIGINT" />
+    <result column="trade_date" property="tradeDate" jdbcType="VARCHAR" />
+    <result column="total_dept" property="totalDept" jdbcType="INTEGER" />
+    <result column="operate_dept" property="operateDept" jdbcType="INTEGER" />
+    <result column="total_buy_amount" property="totalBuyAmount" jdbcType="DOUBLE" />
+    <result column="total_buy_stock" property="totalBuyStock" jdbcType="INTEGER" />
+    <result column="total_sell_amount" property="totalSellAmount" jdbcType="DOUBLE" />
+    <result column="total_sell_stock" property="totalSellStock" jdbcType="INTEGER" />
+    <result column="net" property="net" jdbcType="DOUBLE" />
+    <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    operation_id, trade_date, total_dept, operate_dept, total_buy_amount, total_buy_stock, 
+    total_sell_amount, total_sell_stock, net, gmt_create
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.ActiveDeptOperationExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from active_dept_operation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="offset != null and offset > -1" >
+      limit ${offset},${rows}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from active_dept_operation
+    where operation_id = #{operationId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from active_dept_operation
+    where operation_id = #{operationId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gesangwu.spider.biz.dao.model.ActiveDeptOperationExample" >
+    delete from active_dept_operation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.gesangwu.spider.biz.dao.model.ActiveDeptOperation" >
+    insert into active_dept_operation (operation_id, trade_date, total_dept, 
+      operate_dept, total_buy_amount, total_buy_stock, 
+      total_sell_amount, total_sell_stock, net, 
+      gmt_create)
+    values (#{operationId,jdbcType=BIGINT}, #{tradeDate,jdbcType=VARCHAR}, #{totalDept,jdbcType=INTEGER}, 
+      #{operateDept,jdbcType=INTEGER}, #{totalBuyAmount,jdbcType=DOUBLE}, #{totalBuyStock,jdbcType=INTEGER}, 
+      #{totalSellAmount,jdbcType=DOUBLE}, #{totalSellStock,jdbcType=INTEGER}, #{net,jdbcType=DOUBLE}, 
+      #{gmtCreate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.ActiveDeptOperation" >
+    insert into active_dept_operation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="operationId != null" >
+        operation_id,
+      </if>
+      <if test="tradeDate != null" >
+        trade_date,
+      </if>
+      <if test="totalDept != null" >
+        total_dept,
+      </if>
+      <if test="operateDept != null" >
+        operate_dept,
+      </if>
+      <if test="totalBuyAmount != null" >
+        total_buy_amount,
+      </if>
+      <if test="totalBuyStock != null" >
+        total_buy_stock,
+      </if>
+      <if test="totalSellAmount != null" >
+        total_sell_amount,
+      </if>
+      <if test="totalSellStock != null" >
+        total_sell_stock,
+      </if>
+      <if test="net != null" >
+        net,
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="operationId != null" >
+        #{operationId,jdbcType=BIGINT},
+      </if>
+      <if test="tradeDate != null" >
+        #{tradeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="totalDept != null" >
+        #{totalDept,jdbcType=INTEGER},
+      </if>
+      <if test="operateDept != null" >
+        #{operateDept,jdbcType=INTEGER},
+      </if>
+      <if test="totalBuyAmount != null" >
+        #{totalBuyAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="totalBuyStock != null" >
+        #{totalBuyStock,jdbcType=INTEGER},
+      </if>
+      <if test="totalSellAmount != null" >
+        #{totalSellAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="totalSellStock != null" >
+        #{totalSellStock,jdbcType=INTEGER},
+      </if>
+      <if test="net != null" >
+        #{net,jdbcType=DOUBLE},
+      </if>
+      <if test="gmtCreate != null" >
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gesangwu.spider.biz.dao.model.ActiveDeptOperationExample" resultType="java.lang.Integer" >
+    select count(*) from active_dept_operation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update active_dept_operation
+    <set >
+      <if test="record.operationId != null" >
+        operation_id = #{record.operationId,jdbcType=BIGINT},
+      </if>
+      <if test="record.tradeDate != null" >
+        trade_date = #{record.tradeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalDept != null" >
+        total_dept = #{record.totalDept,jdbcType=INTEGER},
+      </if>
+      <if test="record.operateDept != null" >
+        operate_dept = #{record.operateDept,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalBuyAmount != null" >
+        total_buy_amount = #{record.totalBuyAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.totalBuyStock != null" >
+        total_buy_stock = #{record.totalBuyStock,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalSellAmount != null" >
+        total_sell_amount = #{record.totalSellAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.totalSellStock != null" >
+        total_sell_stock = #{record.totalSellStock,jdbcType=INTEGER},
+      </if>
+      <if test="record.net != null" >
+        net = #{record.net,jdbcType=DOUBLE},
+      </if>
+      <if test="record.gmtCreate != null" >
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update active_dept_operation
+    set operation_id = #{record.operationId,jdbcType=BIGINT},
+      trade_date = #{record.tradeDate,jdbcType=VARCHAR},
+      total_dept = #{record.totalDept,jdbcType=INTEGER},
+      operate_dept = #{record.operateDept,jdbcType=INTEGER},
+      total_buy_amount = #{record.totalBuyAmount,jdbcType=DOUBLE},
+      total_buy_stock = #{record.totalBuyStock,jdbcType=INTEGER},
+      total_sell_amount = #{record.totalSellAmount,jdbcType=DOUBLE},
+      total_sell_stock = #{record.totalSellStock,jdbcType=INTEGER},
+      net = #{record.net,jdbcType=DOUBLE},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gesangwu.spider.biz.dao.model.ActiveDeptOperation" >
+    update active_dept_operation
+    <set >
+      <if test="tradeDate != null" >
+        trade_date = #{tradeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="totalDept != null" >
+        total_dept = #{totalDept,jdbcType=INTEGER},
+      </if>
+      <if test="operateDept != null" >
+        operate_dept = #{operateDept,jdbcType=INTEGER},
+      </if>
+      <if test="totalBuyAmount != null" >
+        total_buy_amount = #{totalBuyAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="totalBuyStock != null" >
+        total_buy_stock = #{totalBuyStock,jdbcType=INTEGER},
+      </if>
+      <if test="totalSellAmount != null" >
+        total_sell_amount = #{totalSellAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="totalSellStock != null" >
+        total_sell_stock = #{totalSellStock,jdbcType=INTEGER},
+      </if>
+      <if test="net != null" >
+        net = #{net,jdbcType=DOUBLE},
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where operation_id = #{operationId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gesangwu.spider.biz.dao.model.ActiveDeptOperation" >
+    update active_dept_operation
+    set trade_date = #{tradeDate,jdbcType=VARCHAR},
+      total_dept = #{totalDept,jdbcType=INTEGER},
+      operate_dept = #{operateDept,jdbcType=INTEGER},
+      total_buy_amount = #{totalBuyAmount,jdbcType=DOUBLE},
+      total_buy_stock = #{totalBuyStock,jdbcType=INTEGER},
+      total_sell_amount = #{totalSellAmount,jdbcType=DOUBLE},
+      total_sell_stock = #{totalSellStock,jdbcType=INTEGER},
+      net = #{net,jdbcType=DOUBLE},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+    where operation_id = #{operationId,jdbcType=BIGINT}
+  </update>
+</mapper>
