@@ -13,6 +13,10 @@ import com.gesangwu.spider.biz.dao.model.KLine;
 
 /**
  * 缩跌：缩跌前一日跳空高开的不要搞
+ * TODO SELECT COUNT(*) FROM k_line WHERE ma5>ma10 AND ma10>ma20 AND trade_date='2017-09-07' AND percent<=0 AND CLOSE>ma5;
+ * 1、多头刚发散，并且刚刚创历史新高
+ * 2、持续多日放量创新高
+ * 缩量1/3以上，跌幅两个点以内。对于宇宙级龙头，缩量1/4以上也行，不过这种票一般复盘能发现
  * @author zhuxb
  *
  */
