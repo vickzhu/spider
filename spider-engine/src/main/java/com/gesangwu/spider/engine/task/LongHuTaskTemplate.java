@@ -70,15 +70,11 @@ public abstract class LongHuTaskTemplate {
 			fetchDetail(longHu);
 		}
 		long end = System.currentTimeMillis();
+		staticAdo(tradeDate);
 		logger.info("Fetch LongHu used:" + (end-start) + "ms!");
 	}
 	
 	private void staticAdo(String tradeDate){
-		ActiveDeptOperation ado = adoService.selectByTradeDate(tradeDate);
-		if(ado == null){
-			ado = new ActiveDeptOperation();
-			ado.setGmtCreate(new Date());
-		}
 		List<LongHuDetail> lhdList = lhdService.selectByActiveDept(tradeDate);
 		BigDecimal totalBuyAmount = new BigDecimal(0);
 		BigDecimal totalSellAmount = new BigDecimal(0);
@@ -105,6 +101,24 @@ public abstract class LongHuTaskTemplate {
 		int totalSellStock = sellSymbolSet.size();
 		int buyDept = buyCodeSet.size();
 		int sellDept = sellCodeSet.size();
+		ActiveDeptOperation ado = adoService.selectByTradeDate(tradeDate);
+		if(ado == null){
+			ado = new ActiveDeptOperation();
+			ado.setGmtCreate(new Date());
+		}
+		ado.setTradeDate(tradeDate);
+		ado.setBuyDept(buyDept);
+		ado.setSellDept(sellDept);
+		ado.setTotalBuyAmount(tba);
+		ado.setTotalSellAmount(tsa);
+		ado.setTotalBuyStock(totalBuyStock);
+		ado.setTotalSellStock(totalSellStock);
+		ado.setNet(net);
+		if(ado.getOperationId() == null){
+			adoService.insert(ado);
+		} else {
+			adoService.updateByPrimaryKey(ado);
+		}
 	}
 
 	/**

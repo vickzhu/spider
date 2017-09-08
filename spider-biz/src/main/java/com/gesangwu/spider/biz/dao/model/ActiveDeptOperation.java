@@ -7,9 +7,9 @@ public class ActiveDeptOperation {
 
     private String tradeDate;
 
-    private Integer totalDept;
+    private Integer buyDept;
 
-    private Integer operateDept;
+    private Integer sellDept;
 
     private Double totalBuyAmount;
 
@@ -39,20 +39,20 @@ public class ActiveDeptOperation {
         this.tradeDate = tradeDate == null ? null : tradeDate.trim();
     }
 
-    public Integer getTotalDept() {
-        return totalDept;
+    public Integer getBuyDept() {
+        return buyDept;
     }
 
-    public void setTotalDept(Integer totalDept) {
-        this.totalDept = totalDept;
+    public void setBuyDept(Integer buyDept) {
+        this.buyDept = buyDept;
     }
 
-    public Integer getOperateDept() {
-        return operateDept;
+    public Integer getSellDept() {
+        return sellDept;
     }
 
-    public void setOperateDept(Integer operateDept) {
-        this.operateDept = operateDept;
+    public void setSellDept(Integer sellDept) {
+        this.sellDept = sellDept;
     }
 
     public Double getTotalBuyAmount() {

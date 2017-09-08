@@ -255,123 +255,123 @@ public class ActiveDeptOperationExample {
             return (Criteria) this;
         }
 
-        public Criteria andTotalDeptIsNull() {
-            addCriterion("total_dept is null");
+        public Criteria andBuyDeptIsNull() {
+            addCriterion("buy_dept is null");
             return (Criteria) this;
         }
 
-        public Criteria andTotalDeptIsNotNull() {
-            addCriterion("total_dept is not null");
+        public Criteria andBuyDeptIsNotNull() {
+            addCriterion("buy_dept is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTotalDeptEqualTo(Integer value) {
-            addCriterion("total_dept =", value, "totalDept");
+        public Criteria andBuyDeptEqualTo(Integer value) {
+            addCriterion("buy_dept =", value, "buyDept");
             return (Criteria) this;
         }
 
-        public Criteria andTotalDeptNotEqualTo(Integer value) {
-            addCriterion("total_dept <>", value, "totalDept");
+        public Criteria andBuyDeptNotEqualTo(Integer value) {
+            addCriterion("buy_dept <>", value, "buyDept");
             return (Criteria) this;
         }
 
-        public Criteria andTotalDeptGreaterThan(Integer value) {
-            addCriterion("total_dept >", value, "totalDept");
+        public Criteria andBuyDeptGreaterThan(Integer value) {
+            addCriterion("buy_dept >", value, "buyDept");
             return (Criteria) this;
         }
 
-        public Criteria andTotalDeptGreaterThanOrEqualTo(Integer value) {
-            addCriterion("total_dept >=", value, "totalDept");
+        public Criteria andBuyDeptGreaterThanOrEqualTo(Integer value) {
+            addCriterion("buy_dept >=", value, "buyDept");
             return (Criteria) this;
         }
 
-        public Criteria andTotalDeptLessThan(Integer value) {
-            addCriterion("total_dept <", value, "totalDept");
+        public Criteria andBuyDeptLessThan(Integer value) {
+            addCriterion("buy_dept <", value, "buyDept");
             return (Criteria) this;
         }
 
-        public Criteria andTotalDeptLessThanOrEqualTo(Integer value) {
-            addCriterion("total_dept <=", value, "totalDept");
+        public Criteria andBuyDeptLessThanOrEqualTo(Integer value) {
+            addCriterion("buy_dept <=", value, "buyDept");
             return (Criteria) this;
         }
 
-        public Criteria andTotalDeptIn(List<Integer> values) {
-            addCriterion("total_dept in", values, "totalDept");
+        public Criteria andBuyDeptIn(List<Integer> values) {
+            addCriterion("buy_dept in", values, "buyDept");
             return (Criteria) this;
         }
 
-        public Criteria andTotalDeptNotIn(List<Integer> values) {
-            addCriterion("total_dept not in", values, "totalDept");
+        public Criteria andBuyDeptNotIn(List<Integer> values) {
+            addCriterion("buy_dept not in", values, "buyDept");
             return (Criteria) this;
         }
 
-        public Criteria andTotalDeptBetween(Integer value1, Integer value2) {
-            addCriterion("total_dept between", value1, value2, "totalDept");
+        public Criteria andBuyDeptBetween(Integer value1, Integer value2) {
+            addCriterion("buy_dept between", value1, value2, "buyDept");
             return (Criteria) this;
         }
 
-        public Criteria andTotalDeptNotBetween(Integer value1, Integer value2) {
-            addCriterion("total_dept not between", value1, value2, "totalDept");
+        public Criteria andBuyDeptNotBetween(Integer value1, Integer value2) {
+            addCriterion("buy_dept not between", value1, value2, "buyDept");
             return (Criteria) this;
         }
 
-        public Criteria andOperateDeptIsNull() {
-            addCriterion("operate_dept is null");
+        public Criteria andSellDeptIsNull() {
+            addCriterion("sell_dept is null");
             return (Criteria) this;
         }
 
-        public Criteria andOperateDeptIsNotNull() {
-            addCriterion("operate_dept is not null");
+        public Criteria andSellDeptIsNotNull() {
+            addCriterion("sell_dept is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOperateDeptEqualTo(Integer value) {
-            addCriterion("operate_dept =", value, "operateDept");
+        public Criteria andSellDeptEqualTo(Integer value) {
+            addCriterion("sell_dept =", value, "sellDept");
             return (Criteria) this;
         }
 
-        public Criteria andOperateDeptNotEqualTo(Integer value) {
-            addCriterion("operate_dept <>", value, "operateDept");
+        public Criteria andSellDeptNotEqualTo(Integer value) {
+            addCriterion("sell_dept <>", value, "sellDept");
             return (Criteria) this;
         }
 
-        public Criteria andOperateDeptGreaterThan(Integer value) {
-            addCriterion("operate_dept >", value, "operateDept");
+        public Criteria andSellDeptGreaterThan(Integer value) {
+            addCriterion("sell_dept >", value, "sellDept");
             return (Criteria) this;
         }
 
-        public Criteria andOperateDeptGreaterThanOrEqualTo(Integer value) {
-            addCriterion("operate_dept >=", value, "operateDept");
+        public Criteria andSellDeptGreaterThanOrEqualTo(Integer value) {
+            addCriterion("sell_dept >=", value, "sellDept");
             return (Criteria) this;
         }
 
-        public Criteria andOperateDeptLessThan(Integer value) {
-            addCriterion("operate_dept <", value, "operateDept");
+        public Criteria andSellDeptLessThan(Integer value) {
+            addCriterion("sell_dept <", value, "sellDept");
             return (Criteria) this;
         }
 
-        public Criteria andOperateDeptLessThanOrEqualTo(Integer value) {
-            addCriterion("operate_dept <=", value, "operateDept");
+        public Criteria andSellDeptLessThanOrEqualTo(Integer value) {
+            addCriterion("sell_dept <=", value, "sellDept");
             return (Criteria) this;
         }
 
-        public Criteria andOperateDeptIn(List<Integer> values) {
-            addCriterion("operate_dept in", values, "operateDept");
+        public Criteria andSellDeptIn(List<Integer> values) {
+            addCriterion("sell_dept in", values, "sellDept");
             return (Criteria) this;
         }
 
-        public Criteria andOperateDeptNotIn(List<Integer> values) {
-            addCriterion("operate_dept not in", values, "operateDept");
+        public Criteria andSellDeptNotIn(List<Integer> values) {
+            addCriterion("sell_dept not in", values, "sellDept");
             return (Criteria) this;
         }
 
-        public Criteria andOperateDeptBetween(Integer value1, Integer value2) {
-            addCriterion("operate_dept between", value1, value2, "operateDept");
+        public Criteria andSellDeptBetween(Integer value1, Integer value2) {
+            addCriterion("sell_dept between", value1, value2, "sellDept");
             return (Criteria) this;
         }
 
-        public Criteria andOperateDeptNotBetween(Integer value1, Integer value2) {
-            addCriterion("operate_dept not between", value1, value2, "operateDept");
+        public Criteria andSellDeptNotBetween(Integer value1, Integer value2) {
+            addCriterion("sell_dept not between", value1, value2, "sellDept");
             return (Criteria) this;
         }
 
