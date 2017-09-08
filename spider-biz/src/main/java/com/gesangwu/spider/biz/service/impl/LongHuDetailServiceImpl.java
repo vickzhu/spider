@@ -117,4 +117,9 @@ public class LongHuDetailServiceImpl extends BaseServiceImpl<LongHuDetail, LongH
 		return mapper.selectRelationStock(startDate, endDate, synergyGroup);
 	}
 
+	@Override
+	public List<LongHuDetail> selectByActiveDept(String tradeDate) {
+		return mapper.selectByActiveDept(tradeDate);
+	}
+
 }

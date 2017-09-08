@@ -19,11 +19,14 @@ import org.slf4j.LoggerFactory;
 
 import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.mybatis.KeyValue;
+import com.gandalf.framework.util.CalculateUtil;
 import com.gandalf.framework.util.StringUtil;
+import com.gesangwu.spider.biz.dao.model.ActiveDeptOperation;
 import com.gesangwu.spider.biz.dao.model.LongHu;
 import com.gesangwu.spider.biz.dao.model.LongHuDetail;
 import com.gesangwu.spider.biz.dao.model.SecDept;
 import com.gesangwu.spider.biz.dao.model.SecDeptExample;
+import com.gesangwu.spider.biz.service.ActiveDeptOperationService;
 import com.gesangwu.spider.biz.service.LongHuDetailService;
 import com.gesangwu.spider.biz.service.LongHuService;
 import com.gesangwu.spider.biz.service.LongHuTypeService;
@@ -46,6 +49,8 @@ public abstract class LongHuTaskTemplate {
 	private SecDeptService deptService;
 	@Resource
 	private SynergyDetailService sdService;
+	@Resource
+	private ActiveDeptOperationService adoService;
 	
 	private Map<String, String> seatMap = null;
 
@@ -66,6 +71,40 @@ public abstract class LongHuTaskTemplate {
 		}
 		long end = System.currentTimeMillis();
 		logger.info("Fetch LongHu used:" + (end-start) + "ms!");
+	}
+	
+	private void staticAdo(String tradeDate){
+		ActiveDeptOperation ado = adoService.selectByTradeDate(tradeDate);
+		if(ado == null){
+			ado = new ActiveDeptOperation();
+			ado.setGmtCreate(new Date());
+		}
+		List<LongHuDetail> lhdList = lhdService.selectByActiveDept(tradeDate);
+		BigDecimal totalBuyAmount = new BigDecimal(0);
+		BigDecimal totalSellAmount = new BigDecimal(0);
+		HashSet<String> buySymbolSet = new HashSet<String>();
+		HashSet<String> sellSymbolSet = new HashSet<String>();
+		HashSet<String> buyCodeSet = new HashSet<String>();
+		HashSet<String> sellCodeSet = new HashSet<String>();
+		for (LongHuDetail lhd : lhdList) {
+			if(lhd.getBuyAmt().doubleValue() > 100){
+				totalBuyAmount = totalBuyAmount.add(lhd.getBuyAmt());
+				buySymbolSet.add(lhd.getSymbol());
+				buyCodeSet.add(lhd.getSecDeptCode());
+			}
+			if(lhd.getSellAmt().doubleValue() > 100){
+				totalSellAmount = totalSellAmount.add(lhd.getSellAmt());
+				sellSymbolSet.add(lhd.getSymbol());
+				sellCodeSet.add(lhd.getSecDeptCode());
+			}
+		}
+		double tba = totalBuyAmount.setScale(2).doubleValue();
+		double tsa = totalSellAmount.setScale(2).doubleValue();
+		double net = CalculateUtil.sub(tba, tsa, 2);
+		int totalBuyStock = buySymbolSet.size();
+		int totalSellStock = sellSymbolSet.size();
+		int buyDept = buyCodeSet.size();
+		int sellDept = sellCodeSet.size();
 	}
 
 	/**

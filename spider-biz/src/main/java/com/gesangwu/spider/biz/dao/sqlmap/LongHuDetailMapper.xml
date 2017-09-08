@@ -501,4 +501,12 @@
   	ORDER BY 
   		trade_date DESC;
   </select>
+  <select id="selectByActiveDept" resultMap="BaseResultMap">
+  	SELECT 
+  		lhd.* 
+  	FROM 
+  		long_hu_detail lhd,sec_dept sd 
+  	WHERE 
+  		trade_date=#{tradeDate,jdbcType=VARCHAR} AND lhd.`sec_dept_code` = sd.`code` AND sd.`active_dept`=1 AND lhd.`date_type`=1;
+  </select>
 </mapper>

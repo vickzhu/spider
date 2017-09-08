@@ -71,7 +71,7 @@ public class FirstNegativeTask extends ShapeTask {
 				continue;
 			}
 			double max = yesterday.getClose();
-			double min = list.get(list.size()-1).getClose();
+			double min = list.get(list.size()-1).getYesterdayClose();
 			double raise = CalculateUtil.div((max - min), min, 2);
 			if(raise < minInc){
 				continue;

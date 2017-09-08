@@ -36,4 +36,11 @@ public interface LongHuDetailMapper extends BaseMapper<LongHuDetail, LongHuDetai
 	 */
 	List<KeyValue<String, String>> selectRelationStock(@Param("startDate")String startDate, @Param("endDate")String endDate,  @Param("synergyGroup")int synergyGroup);
 	
+	/**
+	 * 根据活跃营业部查询
+	 * @param tradeDate
+	 * @return
+	 */
+	List<LongHuDetail> selectByActiveDept(@Param("tradeDate")String tradeDate);
+	
 }

@@ -56,4 +56,11 @@ public interface LongHuDetailService extends BaseService<LongHuDetail, LongHuDet
 	 * @return
 	 */
 	public List<KeyValue<String, String>> selectRelationStock(String startDate, String endDate, int synergyGroup);
+	
+	/**
+	 * 根据活跃营业部查找
+	 * @param tradeDate
+	 * @return
+	 */
+	List<LongHuDetail> selectByActiveDept(String tradeDate);
 }

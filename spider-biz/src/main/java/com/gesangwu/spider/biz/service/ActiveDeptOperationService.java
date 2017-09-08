@@ -6,5 +6,7 @@ import com.gesangwu.spider.biz.dao.model.ActiveDeptOperationExample;
 
 public interface ActiveDeptOperationService extends
 		BaseService<ActiveDeptOperation, ActiveDeptOperationExample> {
+	
+	public ActiveDeptOperation selectByTradeDate(String tradeDate);
 
 }

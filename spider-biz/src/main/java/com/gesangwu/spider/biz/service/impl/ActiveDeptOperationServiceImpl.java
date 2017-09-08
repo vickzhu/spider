@@ -1,7 +1,10 @@
 package com.gesangwu.spider.biz.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import com.gandalf.framework.mybatis.BaseMapper;
@@ -22,6 +25,15 @@ public class ActiveDeptOperationServiceImpl extends
 	@Override
 	protected BaseMapper<ActiveDeptOperation, ActiveDeptOperationExample> getMapper() {
 		return mapper;
+	}
+
+	@Override
+	public ActiveDeptOperation selectByTradeDate(String tradeDate) {
+		ActiveDeptOperationExample example = new ActiveDeptOperationExample();
+		ActiveDeptOperationExample.Criteria criteria = example.createCriteria();
+		criteria.andTradeDateEqualTo(tradeDate);
+		List<ActiveDeptOperation> adoList = mapper.selectByExample(example);
+		return CollectionUtils.isEmpty(adoList) ? null : adoList.get(0);
 	}
 
 }
