@@ -38,6 +38,43 @@
 		<div class="span6">
 			<div class="widget-box">
 				<div class="widget-title"> <span class="icon"> <i class="icon-list"></i> </span>
+					<h5>市场热度</h5>
+				</div>
+				<div class="widget-content"> 
+                    <table class="table table-bordered table-striped">
+                      <thead>
+                        <tr>
+        				  <th>日期</th>
+        				  <th>买入营业部</th>
+                          <th>卖出营业部</th>
+                          <th>买入金额</th>
+        				  <th>卖出金额</th>
+						  <th>净额</th>
+						  <th>买入票</th>
+						  <th>卖出票</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+        				#foreach($ado in ${adoList})
+                        <tr>
+        				  <td>$!{ado.tradeDate}</td>
+        				  <td>$!{ado.buyDept}</td>
+        				  <td>$!{ado.sellDept}</td>
+        				  <td>$!{ado.totalBuyAmount}</td>
+						  <td>$!{ado.totalSellAmount}</td>
+        				  <td>$!{ado.net}</td>
+						  <td>$!{ado.totalBuyStock}</td>
+						  <td>$!{ado.totalSellStock}</td>
+                        </tr>
+        				#end
+                      </tbody>
+                     </table>
+				</div>
+			</div>
+      </div>
+		<div class="span6">
+			<div class="widget-box">
+				<div class="widget-title"> <span class="icon"> <i class="icon-list"></i> </span>
 					<h5>规则</h5>
 				</div>
 				<div class="widget-content"> 

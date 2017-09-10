@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gandalf.framework.web.tool.Page;
+import com.gesangwu.spider.biz.dao.model.ActiveDeptOperation;
+import com.gesangwu.spider.biz.dao.model.ActiveDeptOperationExample;
 import com.gesangwu.spider.biz.dao.model.HolderNum;
 import com.gesangwu.spider.biz.dao.model.HolderNumExample;
 import com.gesangwu.spider.biz.dao.model.StockShareHolderExample;
 import com.gesangwu.spider.biz.dao.model.ext.StockShareHolderExt;
+import com.gesangwu.spider.biz.service.ActiveDeptOperationService;
 import com.gesangwu.spider.biz.service.HolderNumService;
 import com.gesangwu.spider.biz.service.StockShareHolderService;
 
@@ -25,6 +28,8 @@ public class MainController {
 	private StockShareHolderService sshService;
 	@Resource
 	private HolderNumService hnService;
+	@Resource
+	private ActiveDeptOperationService adoService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView main(HttpServletRequest request){
@@ -35,7 +40,16 @@ public class MainController {
 		ModelAndView mav = new ModelAndView("dashboard");
 		mav.addObject("sshList", sshPage.getRecords());
 		mav.addObject("hnList", hnList);
+		mav.addObject("adoList", getAdoList(1));
 		return mav;
+	}
+	
+	private List<ActiveDeptOperation> getAdoList(int curPage){
+		ActiveDeptOperationExample example = new ActiveDeptOperationExample();
+		example.setOrderByClause("trade_date desc");
+		Page<ActiveDeptOperation> page = new Page<ActiveDeptOperation>(curPage,20);
+		adoService.selectByPagination(example, page);
+		return page.getRecords();
 	}
 	
 	private List<HolderNum> getHnList(){
