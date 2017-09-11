@@ -28,7 +28,7 @@ public class MaAdhesiveTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MaAdhesiveTask.class);
 
-	@Scheduled(cron="0 15 15 * * MON-FRI")
+	@Scheduled(cron="0 18 15 * * MON-FRI")
 	public void execute(){
 		logger.info("Ma Adhesive task begin...");
 		long start = System.currentTimeMillis();

@@ -6,9 +6,11 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.util.CalculateUtil;
+import com.gesangwu.spider.biz.common.ShapeEnum;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
 
@@ -17,6 +19,7 @@ public class CoverNegTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CoverNegTask.class);
 	
+	@Scheduled(cron="0 10 15 * * MON-FRI")
 	public void execute(){
 		logger.info("CoverNeg task begin...");
 		long start = System.currentTimeMillis();
@@ -27,83 +30,53 @@ public class CoverNegTask extends ShapeTask {
 	
 	public void execute(String tradeDate){
 		tradeDate = getTradeDate(tradeDate);
-		List<KLine> klList = klService.selectAboveMa(tradeDate);
+		List<KLine> klList = klService.selectCoverNeg(tradeDate);
 		List<Long> idList = new ArrayList<Long>();
 		for (KLine kl : klList) {
-//			if("sh600782".equals(kl.getSymbol())){
+//			if("sh600322".equals(kl.getSymbol())){
 //				System.out.println(".............");
 //			}
-			if(kl.getClose() < kl.getMa5() || kl.getClose() < kl.getMa10()){
-				continue;
-			}
 			double secondHigh = kl.getOpen() > kl.getClose()?kl.getOpen():kl.getClose();
 			double scale = CalculateUtil.div(kl.getHigh(), secondHigh, 3);
 			double diff = CalculateUtil.sub(scale, 1, 3);
 			if(diff < 0.02){
 				continue;
 			}
-			KLine kLine = getMaxMa5(kl, 30);
-			if(kLine == null){
+			KLine k1 = selectHigh(kl, 30);
+			if(kl.getHigh() > k1.getHigh()){
 				continue;
 			}
-			if(kl.getClose() > kLine.getMa5() || kl.getHigh() < kLine.getMa5()){
+			KLine k2 = selectHigh(kl, 180);
+			if(!k1.getTradeDate().equals(k2.getTradeDate())){
 				continue;
 			}
-			if(kl.getClose() < kl.getMa5() || kl.getClose() < kl.getMa10()){
-				continue;
-			}
-			if(!isMaxMa5(kLine, 180)){
-				continue;
-			}
-			boolean valid = isValid(kl);
-			if(valid){
-				System.out.println(kl.getSymbol());
-				idList.add(kl.getId());
-			}
+			idList.add(kl.getId());
+//			boolean valid = isValid(kl);
+//			if(valid){
+//				System.out.println(kl.getSymbol());
+//			}
 		}
 		if(idList.size() > 0){
-//			klService.updateShape(ShapeEnum.MA_ADH, idList);
+			klService.updateShape(ShapeEnum.COVER_NEG, idList);
 		}
 	}
 	
-	private boolean isMaxMa5(KLine kl, int days){
+	private KLine selectHigh(KLine kl, int days){
 		String symbol = kl.getSymbol();
 		String tradeDate = kl.getTradeDate();
 		String startDate = subDate(tradeDate, days);
 		KLineExample example = new KLineExample();
-		example.setOrderByClause("ma5 desc");
+		example.setOrderByClause("high desc");
+		example.setOffset(0);
+		example.setRows(1);
 		KLineExample.Criteria criteria = example.createCriteria();
 		criteria.andSymbolEqualTo(symbol);
 		criteria.andTradeDateLessThan(tradeDate);
 		criteria.andTradeDateGreaterThanOrEqualTo(startDate);
 		List<KLine> klList = klService.selectByExample(example);
-		if(CollectionUtils.isEmpty(klList) || klList.size()*2 < days){
-			return false;
-		}
-		KLine maxKLine = klList.get(0);
-		KLine minKLine = klList.get(klList.size()-1);
-		if(maxKLine.getTradeDate().compareTo(minKLine.getTradeDate())<0){
-			return false;
-		}
-		double scale = CalculateUtil.div(kl.getClose(), minKLine.getClose(), 3);
-		double diff = CalculateUtil.sub(scale, 1, 3);
-		return diff > 0.2;
-	}
-	
-	private KLine getMaxMa5(KLine kl, int days){
-		String startDate = subDate(kl.getTradeDate(), days);
-		KLineExample example = new KLineExample();
-		example.setOrderByClause("ma5 desc");
-		example.setOffset(0);
-		example.setRows(1);
-		KLineExample.Criteria criteria = example.createCriteria();
-		criteria.andSymbolEqualTo(kl.getSymbol());
-		criteria.andTradeDateGreaterThanOrEqualTo(startDate);
-		criteria.andTradeDateLessThan(kl.getTradeDate());
-		List<KLine> klList = klService.selectByExample(example);
 		return CollectionUtils.isEmpty(klList) ? null : klList.get(0);
 	}
-
+	
 	public boolean isValid(KLine kl){
 		List<KLine> list = getKLList(kl.getSymbol(), kl.getTradeDate(), 1);
 		for(int i = 0; i < list.size(); i++){

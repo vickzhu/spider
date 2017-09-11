@@ -38,7 +38,7 @@ public interface KLineMapper extends BaseMapper<KLine, KLineExample> {
 	 * @param tradeDate
 	 * @return
 	 */
-	public List<KLine> selectAboveMa(@Param("tradeDate")String tradeDate);
+	public List<KLine> selectCoverNeg(@Param("tradeDate")String tradeDate);
 	
 	public void updateShape(@Param("shape")int shape, @Param("idList")List<Long> idList);
 

@@ -22,7 +22,7 @@ public class DoubleBreakTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(DoubleBreakTask.class);
 	
-	@Scheduled(cron="0 10 15 * * MON-FRI")
+	@Scheduled(cron="0 13 15 * * MON-FRI")
 	public void execute(){
 		logger.info("Double Break task begin...");
 		long start = System.currentTimeMillis();

@@ -31,7 +31,7 @@ public class UpperShadowTask extends ShapeTask {
 	@Resource
 	private CompanyService companyService;
 
-	@Scheduled(cron = "0 15 16 * * MON-FRI")
+	@Scheduled(cron = "0 23 15 * * MON-FRI")
 	public void execute(){
 		long start = System.currentTimeMillis();
 		execute(null);
@@ -41,7 +41,7 @@ public class UpperShadowTask extends ShapeTask {
 	
 	public void execute(String tradeDate){
 		tradeDate = getTradeDate(tradeDate);
-		List<KLine> klList = klService.selectForShape(tradeDate);
+		List<KLine> klList = klService.selectByPositive(tradeDate);
 		List<Long> idList = new ArrayList<Long>();
 		for (KLine kl : klList) {
 			if(kl.getPercent() < 0){//真阴
@@ -53,9 +53,6 @@ public class UpperShadowTask extends ShapeTask {
 			if(kl.getPercent() > 7){
 				continue;
 			}
-			if(kl.getClose() < kl.getMa5() || kl.getClose() < kl.getMa10()){
-				continue;
-			}
 			double high = kl.getHigh();
 			double second = kl.getOpen() > kl.getClose()? kl.getOpen():kl.getClose();
 			double scale = CalculateUtil.div(high, second, 3);
@@ -63,24 +60,39 @@ public class UpperShadowTask extends ShapeTask {
 			if(diff < 0.02){
 				continue;
 			}
-			List<KLine> kLineList = getKLList(kl.getSymbol(), tradeDate, 30);
-			boolean v1 = false;//收盘价不能高于之前的最高价
-			boolean v2 = true;//最高价比之前的最高价都高
-			for(int i = 0; i < kLineList.size(); i++){
-				KLine ykl = kLineList.get(i);
-				if(kl.getClose() < ykl.getHigh()){
-					v1 = true;
-				}
-				if(kl.getHigh() < ykl.getHigh()){
-					v2 = false;
-					break;
-				}
+			KLine k1 = selectHigh(kl, 90);
+			if(k1.getHigh() > kl.getHigh()){
+				continue;
 			}
-			if(v1 && v2){
-				idList.add(kl.getId());
+			List<KLine> kLineList = getKLList(kl.getSymbol(), tradeDate, 2);
+			KLine kk = kLineList.get(0);
+			if(kk.getPercent() < 2 || kk.getPercent() > 7){
+				continue;
 			}
+			KLine k2 = kLineList.get(1);
+			KLine k3 = selectHigh(k2, 90);
+			if(k2.getHigh() > k3.getHigh()){
+				continue;
+			}
+			idList.add(kl.getId());
 		}
 		klService.updateShape(ShapeEnum.UPPER_SHADOW, idList);
+	}
+	
+	private KLine selectHigh(KLine kl, int days){
+		String symbol = kl.getSymbol();
+		String tradeDate = kl.getTradeDate();
+		String startDate = subDate(tradeDate, days);
+		KLineExample example = new KLineExample();
+		example.setOrderByClause("high desc");
+		example.setOffset(0);
+		example.setRows(1);
+		KLineExample.Criteria criteria = example.createCriteria();
+		criteria.andSymbolEqualTo(symbol);
+		criteria.andTradeDateLessThan(tradeDate);
+		criteria.andTradeDateGreaterThanOrEqualTo(startDate);
+		List<KLine> klList = klService.selectByExample(example);
+		return CollectionUtils.isEmpty(klList) ? null : klList.get(0);
 	}
 	
 	private List<KLine> getKLList(String symbol, String tradeDate, int days){

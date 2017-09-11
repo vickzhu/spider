@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.util.CalculateUtil;
@@ -22,12 +23,13 @@ public class BigDivergenceTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(BigDivergenceTask.class);
 
+	@Scheduled(cron="0 08 15 * * MON-FRI")
 	public void execute(){
-		logger.info("First Negative task begin...");
+		logger.info("Big Divergence task begin...");
 		long start = System.currentTimeMillis();
 		execute(null);
 		long end = System.currentTimeMillis();
-		logger.info("First Negative task end, used:" + (end-start) + "ms");
+		logger.info("Big Divergence task end, used:" + (end-start) + "ms");
 	}
 	
 	public void execute(String tradeDate){

@@ -25,7 +25,7 @@ public class ShrinkFallTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ShrinkFallTask.class);
 
-	@Scheduled(cron="0 12 15 * * MON-FRI")
+	@Scheduled(cron="0 20 15 * * MON-FRI")
 	public void execute(){
 		logger.info("Shrink fall task begin...");
 		long start = System.currentTimeMillis();

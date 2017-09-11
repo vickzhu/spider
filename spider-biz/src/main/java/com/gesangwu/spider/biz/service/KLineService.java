@@ -48,10 +48,10 @@ public interface KLineService extends BaseService<KLine, KLineExample> {
 	public List<KeyValue<String, Double>> selectLastestClose(KLineExample example);
 	
 	/**
-	 * 收盘价在所有均线之上
+	 * 解放套牢盘
 	 * @param tradeDate
 	 * @return
 	 */
-	public List<KLine> selectAboveMa(String tradeDate);
+	public List<KLine> selectCoverNeg(String tradeDate);
 	
 }

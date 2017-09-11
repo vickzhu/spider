@@ -25,7 +25,7 @@ public class FirstNegativeTask extends ShapeTask {
 	private int incDays = 3;
 	private double minInc = incDays * 0.05;//最小涨幅
 	
-	@Scheduled(cron="0 20 15 * * MON-FRI")
+	@Scheduled(cron="0 15 15 * * MON-FRI")
 	public void execute(){
 		logger.info("First Negative task begin...");
 		long start = System.currentTimeMillis();

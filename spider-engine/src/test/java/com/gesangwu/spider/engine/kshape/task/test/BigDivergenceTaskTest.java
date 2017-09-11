@@ -12,11 +12,13 @@ public class BigDivergenceTaskTest extends BaseTest {
 	@Resource
 	private BigDivergenceTask task;
 
+	@Test
 	public void execute(){
-		
+//		task.execute();
+		task.execute("2017-08-28");
 	}
 	
-	@Test
+//	@Test
 	public void init(){
 		for(int i = 1; i <= 25; i++){
 			String tradeDate = buildDate(i);

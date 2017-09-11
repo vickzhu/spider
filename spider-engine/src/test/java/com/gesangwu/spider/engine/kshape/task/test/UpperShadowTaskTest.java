@@ -14,8 +14,8 @@ public class UpperShadowTaskTest extends BaseTest {
 
 	@Test
 	public void execute(){
-//		task.execute();
-		task.execute("2017-09-07");
+		task.execute();
+//		task.execute("2017-09-07");
 	}
 	
 }
