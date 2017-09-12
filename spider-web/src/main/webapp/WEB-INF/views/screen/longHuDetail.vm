@@ -111,6 +111,9 @@
 			<span class="label label-info">${longHuTool.getDeptType(${buyDetail.deptType})}</span>
 			#end
 			<span class="badge badge-success">$!{secDeptTool.getSeat(${buyDetail.secDeptCode})}</span>
+			#if(${buyDetail.activeDept} ==1)
+			<span class="badge badge-success">活跃</span>
+			#end
 		  </td>
 		  <td style="color:red">$!{buyDetail.buyAmt}</td>
 		  <td style="color:green">$!{buyDetail.sellAmt}</td>

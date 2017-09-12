@@ -31,6 +31,7 @@
     <result column="dept_addr" jdbcType="VARCHAR" property="deptAddr" />
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="dept_type" jdbcType="INTEGER" property="deptType" />
+    <result column="active_dept" jdbcType="INTEGER" property="activeDept" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -415,7 +416,7 @@
     <if test="distinct">
       distinct
     </if>
-    lhd.*, sd.dept_addr, sd.code, sd.dept_type
+    lhd.*, sd.dept_addr, sd.code, sd.dept_type, sd.active_dept
     from long_hu_detail lhd, sec_dept sd where lhd.sec_dept_code=sd.code 
     <if test="_parameter != null">
       <foreach collection="oredCriteria" item="criteria" separator="or">

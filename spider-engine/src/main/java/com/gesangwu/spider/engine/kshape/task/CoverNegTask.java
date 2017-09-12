@@ -33,7 +33,7 @@ public class CoverNegTask extends ShapeTask {
 		List<KLine> klList = klService.selectCoverNeg(tradeDate);
 		List<Long> idList = new ArrayList<Long>();
 		for (KLine kl : klList) {
-//			if("sh600322".equals(kl.getSymbol())){
+//			if("sz300224".equals(kl.getSymbol())){
 //				System.out.println(".............");
 //			}
 			double secondHigh = kl.getOpen() > kl.getClose()?kl.getOpen():kl.getClose();
@@ -46,7 +46,7 @@ public class CoverNegTask extends ShapeTask {
 			if(kl.getHigh() > k1.getHigh()){
 				continue;
 			}
-			KLine k2 = selectHigh(kl, 180);
+			KLine k2 = selectHigh(kl, 90);
 			if(!k1.getTradeDate().equals(k2.getTradeDate())){
 				continue;
 			}

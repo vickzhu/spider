@@ -14,6 +14,8 @@ public class LongHuDetailDept extends LongHuDetail {
     private String code;
 
     private Integer deptType;
+    
+    private Integer activeDept;
 
 	public String getDeptAddr() {
 		return deptAddr;
@@ -38,5 +40,12 @@ public class LongHuDetailDept extends LongHuDetail {
 	public void setDeptType(Integer deptType) {
 		this.deptType = deptType;
 	}
-	
+
+	public Integer getActiveDept() {
+		return activeDept;
+	}
+
+	public void setActiveDept(Integer activeDept) {
+		this.activeDept = activeDept;
+	}
 }
