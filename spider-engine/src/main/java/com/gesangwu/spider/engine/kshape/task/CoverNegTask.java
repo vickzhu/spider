@@ -43,11 +43,17 @@ public class CoverNegTask extends ShapeTask {
 				continue;
 			}
 			KLine k1 = selectHigh(kl, 30);
+			if(k1 == null){
+				continue;
+			}
 			if(kl.getHigh() > k1.getHigh()){
 				continue;
 			}
+			if(!isSecondHigh(kl, k1.getTradeDate())){//今天收最高点以来的次高点
+				continue;
+			}
 			KLine k2 = selectHigh(kl, 90);
-			if(!k1.getTradeDate().equals(k2.getTradeDate())){
+			if(!k1.getTradeDate().equals(k2.getTradeDate())){//最高点必须出现在30天内，时间太长不行
 				continue;
 			}
 			idList.add(kl.getId());
@@ -59,6 +65,18 @@ public class CoverNegTask extends ShapeTask {
 		if(idList.size() > 0){
 			klService.updateShape(ShapeEnum.COVER_NEG, idList);
 		}
+	}
+	
+	private boolean isSecondHigh(KLine kl, String startDate){
+		KLineExample example = new KLineExample();
+		example.setOrderByClause("high desc");
+		example.setOffset(0);
+		example.setRows(1);
+		KLineExample.Criteria criteria = example.createCriteria();
+		criteria.andTradeDateGreaterThan(startDate);
+		criteria.andTradeDateLessThanOrEqualTo(kl.getTradeDate());
+		List<KLine> klList = klService.selectByExample(example);
+		return kl.getTradeDate().equals(klList.get(0).getTradeDate());
 	}
 	
 	private KLine selectHigh(KLine kl, int days){

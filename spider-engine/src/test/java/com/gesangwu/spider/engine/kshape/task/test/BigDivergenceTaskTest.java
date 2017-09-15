@@ -14,8 +14,8 @@ public class BigDivergenceTaskTest extends BaseTest {
 
 	@Test
 	public void execute(){
-//		task.execute();
-		task.execute("2017-08-28");
+		task.execute();
+//		task.execute("2017-08-28");
 	}
 	
 //	@Test

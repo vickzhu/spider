@@ -60,6 +60,9 @@ public class BigDivergenceTask extends ShapeTask {
 		List<KLine> klList = listByTradeDateDesc(kLine.getSymbol(), kLine.getTradeDate(), 2);
 		for (int i = 0; i < klList.size(); i++) {
 			KLine kl = klList.get(i);
+			if(kl.getMa5() == null || kl.getMa10() == null){
+				return false;
+			}
 			if(i == 0){
 				if(kl.getPercent()<0){
 					return false;

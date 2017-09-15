@@ -19,6 +19,11 @@ import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.KLineService;
 import com.gesangwu.spider.biz.service.UpperShadowService;
 
+/**
+ * 实体比上影线长的可以滚蛋了，量不能大于前一天太多，量不能大于前天一天太多，说明尼玛是冲高被套了
+ * @author zhuxb
+ *
+ */
 @Component
 public class UpperShadowTask extends ShapeTask {
 	
@@ -44,13 +49,16 @@ public class UpperShadowTask extends ShapeTask {
 		List<KLine> klList = klService.selectByPositive(tradeDate);
 		List<Long> idList = new ArrayList<Long>();
 		for (KLine kl : klList) {
+//			if("sh601155".equals(kl.getSymbol())){
+//				System.out.println("...........");
+//			}
 			if(kl.getPercent() < 0){//真阴
 				continue;
 			}
 			if(kl.getClose() < kl.getOpen()){//假阴
 				continue;
 			}
-			if(kl.getPercent() > 7){
+			if(kl.getPercent() > 5){
 				continue;
 			}
 			double high = kl.getHigh();
@@ -60,15 +68,27 @@ public class UpperShadowTask extends ShapeTask {
 			if(diff < 0.02){
 				continue;
 			}
+			if(high-second < Math.abs(kl.getOpen() - kl.getClose())){
+				continue;
+			}
 			KLine k1 = selectHigh(kl, 90);
+			if(k1 == null){
+				continue;
+			}
 			if(k1.getHigh() > kl.getHigh()){
 				continue;
 			}
 			List<KLine> kLineList = getKLList(kl.getSymbol(), tradeDate, 2);
 			KLine kk = kLineList.get(0);
-			if(kk.getPercent() < 2 || kk.getPercent() > 7){
+			if(kk.getPercent() < 2){
 				continue;
 			}
+			if(kl.getLow() < kk.getLow()){
+				continue;
+			}
+//			if(2*kl.getVolume() > 3*kk.getVolume()){
+//				continue;
+//			}
 			KLine k2 = kLineList.get(1);
 			KLine k3 = selectHigh(k2, 90);
 			if(k2.getHigh() > k3.getHigh()){
