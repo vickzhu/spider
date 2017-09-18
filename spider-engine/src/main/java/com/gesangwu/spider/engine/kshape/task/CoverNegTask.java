@@ -14,6 +14,7 @@ import com.gesangwu.spider.biz.common.ShapeEnum;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
 
+//TODO 前一日不能是最高点
 @Component
 public class CoverNegTask extends ShapeTask {
 	
