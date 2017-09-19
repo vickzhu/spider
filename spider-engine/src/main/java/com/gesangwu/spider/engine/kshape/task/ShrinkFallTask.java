@@ -69,17 +69,17 @@ public class ShrinkFallTask extends ShapeTask {
 //				if("sz300409".equals(kl.getSymbol())){
 //					System.out.println(".....");
 //				}
-				if(kl.getPercent() < 2){//昨天涨幅必须大于2%
+				if(kl.getPercent() < 1){//昨天涨幅必须大于1%
 					return false;
 				}
 				if(!isOnTop(kl, 180)){
 					return false;
 				}
 				long yv = kl.getVolume();
-				if(yv * 75 < kLine.getVolume() * 100){//今天比昨天缩量1/4以上
+				if(yv * 2 < kLine.getVolume() * 3){//今天比昨天缩量1/3以上
 					return false;
 				}
-				if(kl.getHigh() < curHigh || kl.getLow() > curLow){//今天最低点不能低于昨日
+				if(kl.getHigh() < curHigh || kl.getLow() > curLow){
 					return false;
 				}
 				maxHigh = kl.getHigh();
