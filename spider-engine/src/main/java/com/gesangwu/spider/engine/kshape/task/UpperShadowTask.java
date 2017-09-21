@@ -86,9 +86,9 @@ public class UpperShadowTask extends ShapeTask {
 			if(kl.getLow() < kk.getLow()){
 				continue;
 			}
-//			if(2*kl.getVolume() > 3*kk.getVolume()){
-//				continue;
-//			}
+			if(2 * kl.getVolume() > 3 * kk.getVolume()){
+				continue;
+			}
 			KLine k2 = kLineList.get(1);
 			KLine k3 = selectHigh(k2, 90);
 			if(k2.getHigh() > k3.getHigh()){
