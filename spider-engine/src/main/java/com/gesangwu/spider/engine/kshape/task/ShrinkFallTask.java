@@ -74,7 +74,7 @@ public class ShrinkFallTask extends ShapeTask {
 				if(kl.getPercent() < 1){//昨天涨幅必须大于1%
 					return false;
 				}
-				if(!isOnTop(kl, 90)){
+				if(!isOnTop(kl, 60)){
 					return false;
 				}
 				long yv = kl.getVolume();
