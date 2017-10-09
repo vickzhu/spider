@@ -14,7 +14,6 @@ import com.gesangwu.spider.biz.common.ShapeEnum;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
 
-//TODO 前一日不能是最高点
 @Component
 public class CoverNegTask extends ShapeTask {
 	
@@ -40,17 +39,23 @@ public class CoverNegTask extends ShapeTask {
 			double secondHigh = kl.getOpen() > kl.getClose()?kl.getOpen():kl.getClose();
 			double scale = CalculateUtil.div(kl.getHigh(), secondHigh, 3);
 			double diff = CalculateUtil.sub(scale, 1, 3);
-			if(diff < 0.02){
+			if(diff < 0.02 && kl.getPercent() < 2.00){
 				continue;
-			}
+			} 
 			KLine k1 = selectHigh(kl, 30);
 			if(k1 == null){
 				continue;
 			}
-			if(!chechHigh(kl, k1)){
+			List<KLine> preList = listByTradeDateDesc(kl.getSymbol(), tradeDate, 2);
+			if(diff < 0.02){
+				if(preList.get(0).getVolume() > kl.getVolume()){
+					continue;
+				}
+			}
+			if(!chechHigh(preList, k1)){
 				continue;
 			}
-			if(kl.getHigh() > k1.getHigh()){
+			if(kl.getHigh() >= k1.getHigh()){
 				continue;
 			}
 			if(!isSecondHigh(kl, k1.getTradeDate())){//今天收最高点以来的次高点
@@ -72,14 +77,19 @@ public class CoverNegTask extends ShapeTask {
 	}
 	
 	/**
-	 * 检查最高K线是否在两个交易日之前
-	 * @param curK
+	 * 检查最高K线是否符合期望
+	 * @param preList	前几天的k线
 	 * @param maxK
 	 * @return
 	 */
-	private boolean chechHigh(KLine curK, KLine maxK){
-		List<KLine> kList = listByTradeDateDesc(curK.getSymbol(), curK.getTradeDate(), 2);
-		for (KLine kl : kList) {
+	private boolean chechHigh(List<KLine> preList, KLine maxK){
+		if(maxK.getPercent() < 0 && maxK.getClose() < maxK.getOpen()){
+			return false;
+		}
+		for (KLine kl : preList) {
+			if(kl.getClose() > maxK.getClose()){
+				return false;
+			}
 			if(kl.getTradeDate().equals(maxK.getTradeDate())){//不得在近两日内
 				return false;
 			}
