@@ -47,6 +47,9 @@ public class CoverNegTask extends ShapeTask {
 			if(k1 == null){
 				continue;
 			}
+			if(!chechHigh(kl, k1)){
+				continue;
+			}
 			if(kl.getHigh() > k1.getHigh()){
 				continue;
 			}
@@ -68,12 +71,35 @@ public class CoverNegTask extends ShapeTask {
 		}
 	}
 	
+	/**
+	 * 检查最高K线是否在两个交易日之前
+	 * @param curK
+	 * @param maxK
+	 * @return
+	 */
+	private boolean chechHigh(KLine curK, KLine maxK){
+		List<KLine> kList = listByTradeDateDesc(curK.getSymbol(), curK.getTradeDate(), 2);
+		for (KLine kl : kList) {
+			if(kl.getTradeDate().equals(maxK.getTradeDate())){//不得在近两日内
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * 查询是否为最高点以来的第二高点
+	 * @param kl
+	 * @param startDate	最高点的时间
+	 * @return
+	 */
 	private boolean isSecondHigh(KLine kl, String startDate){
 		KLineExample example = new KLineExample();
 		example.setOrderByClause("high desc");
 		example.setOffset(0);
 		example.setRows(1);
 		KLineExample.Criteria criteria = example.createCriteria();
+		criteria.andSymbolEqualTo(kl.getSymbol());
 		criteria.andTradeDateGreaterThan(startDate);
 		criteria.andTradeDateLessThanOrEqualTo(kl.getTradeDate());
 		List<KLine> klList = klService.selectByExample(example);

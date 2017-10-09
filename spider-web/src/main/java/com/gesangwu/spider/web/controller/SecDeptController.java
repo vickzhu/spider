@@ -57,9 +57,11 @@ public class SecDeptController {
 			String deptType = request.getParameter("deptType");
 			if(StringUtil.isNotBlank(deptType)){
 				dept.setDeptType(Integer.valueOf(deptType));
-				dept.setGmtUpdate(new Date());
-				deptService.updateByPrimaryKey(dept);
+			} else {
+				dept.setDeptType(null);
 			}
+			dept.setGmtUpdate(new Date());
+			deptService.updateByPrimaryKey(dept);
 			String cliqueId = request.getParameter("cliqueId");
 			if(StringUtil.isNotBlank(cliqueId)){
 				String cliqueType = request.getParameter("cliqueType");
