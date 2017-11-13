@@ -150,12 +150,29 @@ public class CommonController {
 		return mav;
 	}
 	
+	/**
+	 * 暂时不用
+	 * @param request
+	 * @param symbol
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "/kline2", method = RequestMethod.GET)
 	public ModelAndView showKLine2(HttpServletRequest request,String symbol){
 		String klJson = getKLineList(symbol);
 		ModelAndView mav = new ModelAndView("kline2");
 		mav.addObject("klData", klJson);
+		return mav;
+	}
+	
+	/**
+	 * 计算涨幅
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/calc_inc", method = RequestMethod.GET)
+	public ModelAndView calc(HttpServletRequest request){
+		ModelAndView mav = new ModelAndView("calcInc");
 		return mav;
 	}
 	
