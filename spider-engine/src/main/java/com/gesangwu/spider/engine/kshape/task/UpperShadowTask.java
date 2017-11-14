@@ -44,12 +44,12 @@ public class UpperShadowTask extends ShapeTask {
 	
 	public void execute(String tradeDate){
 		tradeDate = getTradeDate(tradeDate);
-		List<KLine> klList = klService.selectByPositive(tradeDate);
+		List<KLine> klList = klService.selectForShape(tradeDate);
 		List<Long> idList = new ArrayList<Long>();
 		for (KLine kl : klList) {
-//			if("sh601155".equals(kl.getSymbol())){
-//				System.out.println("...........");
-//			}
+			if("sh600822".equals(kl.getSymbol())){
+				System.out.println("...........");
+			}
 			if(kl.getClose() < kl.getMa5()){
 				continue;
 			}
