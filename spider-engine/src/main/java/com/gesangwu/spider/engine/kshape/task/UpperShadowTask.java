@@ -5,14 +5,17 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.util.CalculateUtil;
+import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.common.ShapeEnum;
 import com.gesangwu.spider.biz.dao.model.KLine;
+import com.gesangwu.spider.biz.dao.model.KLineExample;
 import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.KLineService;
 import com.gesangwu.spider.biz.service.UpperShadowService;
@@ -44,16 +47,32 @@ public class UpperShadowTask extends ShapeTask {
 	
 	public void execute(String tradeDate){
 		tradeDate = getTradeDate(tradeDate);
-		List<KLine> klList = klService.selectForShape(tradeDate);
+		execute(1, tradeDate);
+	}
+	
+	private void execute(int curPage, String tradeDate){
+		Page<KLine> page = new Page<KLine>(curPage, 500);
+		KLineExample example = new KLineExample();
+		KLineExample.Criteria criteria = example.createCriteria();
+		criteria.andPercentGreaterThan(-3d);
+		criteria.andPercentLessThan(3d);
+		criteria.andTradeDateEqualTo(tradeDate);
+		klService.selectByPagination(example, page);
+		List<KLine> klList = page.getRecords();
+		judge(klList);
+		int totalPage = page.getTotalPages();
+		if(totalPage == curPage){
+			return;
+		} else {
+			curPage++;
+			execute(curPage, tradeDate);
+		}
+	}
+	
+	private void judge(List<KLine> klList){
 		List<Long> idList = new ArrayList<Long>();
 		for (KLine kl : klList) {
-			if("sh600822".equals(kl.getSymbol())){
-				System.out.println("...........");
-			}
 			if(kl.getClose() < kl.getMa5()){
-				continue;
-			}
-			if(kl.getPercent() > 5){
 				continue;
 			}
 			double high = kl.getHigh();
@@ -68,6 +87,37 @@ public class UpperShadowTask extends ShapeTask {
 			}
 			idList.add(kl.getId());
 		}
-		klService.updateShape(ShapeEnum.UPPER_SHADOW, idList);
-	}	
+		if(CollectionUtils.isNotEmpty(idList)){
+			klService.updateShape(ShapeEnum.UPPER_SHADOW, idList);
+		}
+	}
+	
+//	public void execute(String tradeDate){
+//		tradeDate = getTradeDate(tradeDate);
+//		List<KLine> klList = klService.selectForShape(tradeDate);
+//		List<Long> idList = new ArrayList<Long>();
+//		for (KLine kl : klList) {
+////			if("sh600822".equals(kl.getSymbol())){
+////				System.out.println("...........");
+////			}
+//			if(kl.getClose() < kl.getMa5()){
+//				continue;
+//			}
+//			if(kl.getPercent() > 3 || kl.getPercent() < -3){
+//				continue;
+//			}
+//			double high = kl.getHigh();
+//			double second = kl.getOpen() > kl.getClose()? kl.getOpen():kl.getClose();
+//			double scale = CalculateUtil.div(high, second, 3);
+//			double diff = CalculateUtil.sub(scale, 1, 3);
+//			if(diff < 0.05){
+//				continue;
+//			}
+//			if(high-second < Math.abs(kl.getOpen() - kl.getClose())){//上影小于实体
+//				continue;
+//			}
+//			idList.add(kl.getId());
+//		}
+//		klService.updateShape(ShapeEnum.UPPER_SHADOW, idList);
+//	}	
 }
