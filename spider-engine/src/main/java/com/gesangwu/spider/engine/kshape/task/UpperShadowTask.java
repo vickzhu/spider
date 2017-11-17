@@ -47,10 +47,14 @@ public class UpperShadowTask extends ShapeTask {
 	
 	public void execute(String tradeDate){
 		tradeDate = getTradeDate(tradeDate);
-		execute(1, tradeDate);
+		List<Long> idList = new ArrayList<Long>();
+		execute(1, tradeDate, idList);
+		if(CollectionUtils.isNotEmpty(idList)){
+			klService.updateShape(ShapeEnum.UPPER_SHADOW, idList);
+		}
 	}
 	
-	private void execute(int curPage, String tradeDate){
+	private void execute(int curPage, String tradeDate, List<Long> idList){
 		Page<KLine> page = new Page<KLine>(curPage, 500);
 		KLineExample example = new KLineExample();
 		KLineExample.Criteria criteria = example.createCriteria();
@@ -59,18 +63,17 @@ public class UpperShadowTask extends ShapeTask {
 		criteria.andTradeDateEqualTo(tradeDate);
 		klService.selectByPagination(example, page);
 		List<KLine> klList = page.getRecords();
-		judge(klList);
+		judge(klList, idList);
 		int totalPage = page.getTotalPages();
 		if(totalPage == curPage){
 			return;
 		} else {
 			curPage++;
-			execute(curPage, tradeDate);
+			execute(curPage, tradeDate, idList);
 		}
 	}
 	
-	private void judge(List<KLine> klList){
-		List<Long> idList = new ArrayList<Long>();
+	private void judge(List<KLine> klList, List<Long> idList){
 		for (KLine kl : klList) {
 			if(kl.getClose() < kl.getMa5()){
 				continue;
@@ -86,9 +89,6 @@ public class UpperShadowTask extends ShapeTask {
 				continue;
 			}
 			idList.add(kl.getId());
-		}
-		if(CollectionUtils.isNotEmpty(idList)){
-			klService.updateShape(ShapeEnum.UPPER_SHADOW, idList);
 		}
 	}
 	
