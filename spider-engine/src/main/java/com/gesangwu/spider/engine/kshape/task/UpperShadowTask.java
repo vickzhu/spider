@@ -75,6 +75,9 @@ public class UpperShadowTask extends ShapeTask {
 	
 	private void judge(List<KLine> klList, List<Long> idList){
 		for (KLine kl : klList) {
+//			if("sz002049".equals(kl.getSymbol())){
+//				System.out.println(".................");
+//			}
 			if(kl.getClose() < kl.getMa5()){
 				continue;
 			}
@@ -85,39 +88,11 @@ public class UpperShadowTask extends ShapeTask {
 			if(diff < 0.05){
 				continue;
 			}
-			if(high-second < Math.abs(kl.getOpen() - kl.getClose())){//上影小于实体
+			if(high - second < Math.abs(kl.getOpen() - kl.getClose())){//上影小于实体
 				continue;
 			}
 			idList.add(kl.getId());
 		}
 	}
 	
-//	public void execute(String tradeDate){
-//		tradeDate = getTradeDate(tradeDate);
-//		List<KLine> klList = klService.selectForShape(tradeDate);
-//		List<Long> idList = new ArrayList<Long>();
-//		for (KLine kl : klList) {
-////			if("sh600822".equals(kl.getSymbol())){
-////				System.out.println("...........");
-////			}
-//			if(kl.getClose() < kl.getMa5()){
-//				continue;
-//			}
-//			if(kl.getPercent() > 3 || kl.getPercent() < -3){
-//				continue;
-//			}
-//			double high = kl.getHigh();
-//			double second = kl.getOpen() > kl.getClose()? kl.getOpen():kl.getClose();
-//			double scale = CalculateUtil.div(high, second, 3);
-//			double diff = CalculateUtil.sub(scale, 1, 3);
-//			if(diff < 0.05){
-//				continue;
-//			}
-//			if(high-second < Math.abs(kl.getOpen() - kl.getClose())){//上影小于实体
-//				continue;
-//			}
-//			idList.add(kl.getId());
-//		}
-//		klService.updateShape(ShapeEnum.UPPER_SHADOW, idList);
-//	}	
 }
