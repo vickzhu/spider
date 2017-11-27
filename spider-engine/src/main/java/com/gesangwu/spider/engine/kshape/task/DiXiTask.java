@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.util.CalculateUtil;
@@ -22,6 +23,7 @@ import com.gesangwu.spider.biz.dao.model.KLine;
 @Component
 public class DiXiTask extends ShapeTask {
 
+	@Scheduled(cron="0 08 15 * * MON-FRI")
 	public void execute(){
 		execute(null);
 	}
