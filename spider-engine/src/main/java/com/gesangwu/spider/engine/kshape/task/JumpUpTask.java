@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -15,10 +17,16 @@ import com.gesangwu.spider.biz.dao.model.KLineExample;
 
 @Component
 public class JumpUpTask extends ShapeTask {
+	
+	private static final Logger logger = LoggerFactory.getLogger(JumpUpTask.class);
 
 	@Scheduled(cron="0 13 15 * * MON-FRI")
 	public void execute(){
+		logger.info("JumpUp task begin...");
+		long start = System.currentTimeMillis();
 		execute(null);
+		long end = System.currentTimeMillis();
+		logger.info("JumpUp task end, used:" + (end-start) + "ms");
 	}
 	
 	public void execute(String tradeDate){

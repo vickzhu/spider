@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -22,10 +24,16 @@ import com.gesangwu.spider.biz.dao.model.KLine;
  */
 @Component
 public class DiXiTask extends ShapeTask {
+	
+	private static final Logger logger = LoggerFactory.getLogger(DiXiTask.class);
 
 	@Scheduled(cron="0 08 15 * * MON-FRI")
 	public void execute(){
+		logger.info("DiXi task begin...");
+		long start = System.currentTimeMillis();
 		execute(null);
+		long end = System.currentTimeMillis();
+		logger.info("DiXi task end, used:" + (end-start) + "ms");
 	}
 	
 	public void execute(String tradeDate){

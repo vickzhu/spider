@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -18,10 +20,16 @@ import com.gesangwu.spider.biz.dao.model.KLineExample;
  */
 @Component
 public class JiHuaTask extends ShapeTask {
+	
+	private static final Logger logger = LoggerFactory.getLogger(JiHuaTask.class);
 
 	@Scheduled(cron="0 17 15 * * MON-FRI")
 	public void execute(){
+		logger.info("JiHua task begin...");
+		long start = System.currentTimeMillis();
 		execute(null);
+		long end = System.currentTimeMillis();
+		logger.info("JiHua task end, used:" + (end-start) + "ms");
 	}
 	
 	public void execute(String tradeDate){
@@ -48,7 +56,7 @@ public class JiHuaTask extends ShapeTask {
 	public boolean checkPre(KLine kl){
 		List<KLine> klList = listByTradeDateDesc(kl.getSymbol(), kl.getTradeDate(), 3);
 		KLine pre1 = klList.get(0);
-		if(pre1.getPercent() > 3d){//涨太多也是不行的
+		if(pre1.getPercent() > 3d || pre1.getPercent() < -5d){//涨太多跌太多都不行
 			return false;
 		}
 		if(pre1.getOpen() < pre1.getClose()){//泛红肯定不行滴
