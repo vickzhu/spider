@@ -58,7 +58,7 @@ public class UpperShadowTask extends ShapeTask {
 		Page<KLine> page = new Page<KLine>(curPage, 500);
 		KLineExample example = new KLineExample();
 		KLineExample.Criteria criteria = example.createCriteria();
-		criteria.andPercentGreaterThan(-3d);
+		criteria.andPercentGreaterThan(-5d);
 		criteria.andPercentLessThan(3d);
 		criteria.andTradeDateEqualTo(tradeDate);
 		klService.selectByPagination(example, page);
@@ -75,7 +75,7 @@ public class UpperShadowTask extends ShapeTask {
 	
 	private void judge(List<KLine> klList, List<Long> idList){
 		for (KLine kl : klList) {
-//			if("sz002049".equals(kl.getSymbol())){
+//			if("sz000789".equals(kl.getSymbol())){
 //				System.out.println(".................");
 //			}
 			if(kl.getClose() < kl.getMa5()){
