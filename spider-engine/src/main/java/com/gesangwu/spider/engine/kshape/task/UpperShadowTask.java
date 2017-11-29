@@ -82,15 +82,21 @@ public class UpperShadowTask extends ShapeTask {
 				continue;
 			}
 			double high = kl.getHigh();
-			double second = kl.getOpen() > kl.getClose()? kl.getOpen():kl.getClose();
-			double scale = CalculateUtil.div(high, second, 3);
-			double diff = CalculateUtil.sub(scale, 1, 3);
-			if(diff < 0.05){
-				continue;
-			}
+			double second = kl.getOpen() > kl.getClose() ? kl.getOpen() : kl.getClose();
 			if(high - second < Math.abs(kl.getOpen() - kl.getClose())){//上影小于实体
 				continue;
 			}
+			double upScale = CalculateUtil.div(high, kl.getClose(), 3);
+			double third = kl.getOpen() > kl.getClose() ? kl.getClose() : kl.getOpen();
+			double downScale = CalculateUtil.div(third, kl.getLow(), 3);
+			double upDiff = CalculateUtil.sub(upScale, 1, 3);
+			double downDiff = CalculateUtil.sub(downScale, 1, 3);
+			if(upDiff < 0.05){
+				continue;
+			}
+			if(downDiff > 0.03){
+				continue;
+			}			
 			idList.add(kl.getId());
 		}
 	}
