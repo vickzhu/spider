@@ -73,7 +73,7 @@ public class RouCuoTask extends ShapeTask {
 	
 	public void judge(List<KLine> klList, List<Long> idList){
 		for (KLine kl : klList) {
-			if(kl.getMa5() < kl.getMa10()){
+			if(kl.getMa5() < kl.getMa10()){//FIXME:这里不满足也是可以的
 				continue;
 			}
 			if(kl.getOpen() < kl.getClose()){
