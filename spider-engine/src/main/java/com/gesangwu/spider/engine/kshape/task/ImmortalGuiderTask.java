@@ -42,7 +42,7 @@ public class ImmortalGuiderTask extends ShapeTask {
 		long start = System.currentTimeMillis();
 		execute(null);
 		long end = System.currentTimeMillis();
-		logger.info("Calc upper shadow used:" + (end-start) + "ms!");
+		logger.info("Calc Immortal Guider used:" + (end-start) + "ms!");
 	}
 	
 	public void execute(String tradeDate){
