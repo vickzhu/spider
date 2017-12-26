@@ -78,9 +78,7 @@ public class UpperShadowTask extends ShapeTask {
 //			if("sz000789".equals(kl.getSymbol())){
 //				System.out.println(".................");
 //			}
-			if(kl.getClose() < kl.getMa5()){
-				continue;
-			}
+			
 			double high = kl.getHigh();
 			double second = kl.getOpen() > kl.getClose() ? kl.getOpen() : kl.getClose();
 			if(high - second < Math.abs(kl.getOpen() - kl.getClose())){//上影小于实体
@@ -91,7 +89,7 @@ public class UpperShadowTask extends ShapeTask {
 			double downScale = CalculateUtil.div(third, kl.getLow(), 3);
 			double upDiff = CalculateUtil.sub(upScale, 1, 3);
 			double downDiff = CalculateUtil.sub(downScale, 1, 3);
-			if(upDiff < 0.05){
+			if(upDiff < 0.04){
 				continue;
 			}
 			if(downDiff > 0.03){
