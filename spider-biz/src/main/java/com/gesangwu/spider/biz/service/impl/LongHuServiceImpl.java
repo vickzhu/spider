@@ -178,7 +178,7 @@ public class LongHuServiceImpl extends BaseServiceImpl<LongHu, LongHuExample>
 			if(lhd.getBuyAmt().doubleValue() < 100){//小于100万的不予考虑
 				continue;
 			}
-			if("80603180".equals(secDeptCode) || "80508836".equals(secDeptCode)){
+			if("80603180".equals(secDeptCode) || "80508836".equals(secDeptCode)){//沪、深股通专用
 				continue;
 			}
 			orgTotal = CalculateUtil.add(orgTotal, lhd.getBuyAmt().doubleValue());
