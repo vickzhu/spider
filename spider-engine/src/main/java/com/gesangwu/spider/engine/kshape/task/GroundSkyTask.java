@@ -1,11 +1,15 @@
 package com.gesangwu.spider.engine.kshape.task;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.util.CalculateUtil;
 import com.gandalf.framework.web.tool.Page;
+import com.gesangwu.spider.biz.common.ShapeEnum;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
 
@@ -17,6 +21,7 @@ import com.gesangwu.spider.biz.dao.model.KLineExample;
 @Component
 public class GroundSkyTask extends ShapeTask {
 	
+	@Scheduled(cron="0 14 15 * * MON-FRI")
 	public void execute(){
 		execute(null);
 	}
@@ -31,17 +36,21 @@ public class GroundSkyTask extends ShapeTask {
 		klService.selectByPagination(example, page);
 		int totalPages = page.getTotalPages();
 		List<KLine> klList = page.getRecords();
-		execute(tradeDate, klList);
+		List<Long> idList = new ArrayList<Long>();
+		execute(tradeDate, klList, idList);
 		
 		for(int i = 2; i <= totalPages; i++){
 			page = new Page<KLine>(i, cpp);
 			klService.selectByPagination(example, page);
 			klList = page.getRecords();
-			execute(tradeDate, klList);
+			execute(tradeDate, klList, idList);
+		}
+		if(CollectionUtils.isNotEmpty(idList)){
+			klService.updateShape(ShapeEnum.GROUND_SKY, idList);
 		}
 	}
-	public void execute(String tradeDate, List<KLine> klList){
-//		List<Long> idList = new ArrayList<Long>();
+	
+	public List<Long> execute(String tradeDate, List<KLine> klList, List<Long> idList){
 		for (KLine kl : klList) {
 			double high = kl.getHigh();
 			double low = kl.getLow();
@@ -64,8 +73,9 @@ public class GroundSkyTask extends ShapeTask {
 			if(downDiff < 0.03){//跌幅小于3个点
 				continue;
 			}
-			System.out.println(kl.getSymbol() + ":" + kl.getTradeDate());
+			idList.add(kl.getId());
 		}
+		return idList;
 		
 	}
 }

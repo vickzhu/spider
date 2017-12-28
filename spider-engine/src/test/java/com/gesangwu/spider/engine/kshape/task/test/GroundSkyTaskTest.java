@@ -14,6 +14,7 @@ public class GroundSkyTaskTest extends BaseTest {
 	
 	@Test
 	public void execute(){
-		task.execute("2017-11-29");
+		task.execute();
+//		task.execute("2017-11-29");
 	}
 }
