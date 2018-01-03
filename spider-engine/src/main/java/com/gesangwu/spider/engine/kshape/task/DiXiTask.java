@@ -41,6 +41,12 @@ public class DiXiTask extends ShapeTask {
 		List<Long> idList = new ArrayList<Long>();
 		List<KLine> klList = klService.selectByPositive(tradeDate);
 		for (KLine kl : klList) {
+//			if("sh601882".equals(kl.getSymbol())){
+//				System.out.println("...........");
+//			}
+			if(kl.getMa30() == null){
+				continue;
+			}
 			double open = kl.getOpen();
 			double yest = kl.getYesterdayClose();
 			if(open < yest){//开绿
@@ -70,15 +76,15 @@ public class DiXiTask extends ShapeTask {
 	}
 	
 	public boolean checkPre(String symbol, String tradeDate){
-		List<KLine> tmpList = listByTradeDateDesc(symbol, tradeDate, 3);
-		for (KLine kLine : tmpList) {
-			if(kLine.getMa30() == null){//排除次新
-				return false;
-			}
-			if(kLine.getMa5() < kLine.getMa10() || kLine.getMa10() < kLine.getMa20()){
-				return false;
-			}
-		}
+		List<KLine> tmpList = listByTradeDateDesc(symbol, tradeDate, 1);
+//		for (KLine kLine : tmpList) {
+//			if(kLine.getMa30() == null){//排除次新
+//				return false;
+//			}
+//			if(kLine.getMa5() < kLine.getMa10() || kLine.getMa10() < kLine.getMa20()){
+//				return false;
+//			}
+//		}
 		KLine kl = tmpList.get(0);
 		if(kl.getClose() < kl.getMa5()){
 			return false;
