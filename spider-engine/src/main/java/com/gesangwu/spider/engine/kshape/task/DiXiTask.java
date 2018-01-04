@@ -86,6 +86,9 @@ public class DiXiTask extends ShapeTask {
 //			}
 //		}
 		KLine kl = tmpList.get(0);
+		if(kl.getMa30() == null){
+			return false;
+		}
 		if(kl.getClose() < kl.getMa5()){
 			return false;
 		}

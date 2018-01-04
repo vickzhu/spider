@@ -12,14 +12,15 @@ public class DiXiTaskTest extends BaseTest {
 	@Resource
 	private DiXiTask task;
 	
-//	@Test
+	@Test
 	public void execute(){
 		task.execute();
+//		task.execute("2018-01-03");
 	}
 	
-	@Test
+//	@Test
 	public void init(){
-		for(int i = 1; i <= 24; i++){
+		for(int i = 1; i <= 29; i++){
 			String tradeDate = buildDate(i);
 			System.out.println(tradeDate);
 			task.execute(tradeDate);
@@ -28,7 +29,7 @@ public class DiXiTaskTest extends BaseTest {
 	
 	private String buildDate(int day){
 		StringBuilder sb = new StringBuilder();
-		sb.append("2017-11-");
+		sb.append("2017-12-");
 		if(day < 10){
 			sb.append("0");
 		}

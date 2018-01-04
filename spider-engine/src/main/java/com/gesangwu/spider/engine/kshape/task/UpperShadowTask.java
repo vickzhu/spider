@@ -89,7 +89,7 @@ public class UpperShadowTask extends ShapeTask {
 			double downScale = CalculateUtil.div(third, kl.getLow(), 3);
 			double upDiff = CalculateUtil.sub(upScale, 1, 3);
 			double downDiff = CalculateUtil.sub(downScale, 1, 3);
-			if(upDiff < 0.04){
+			if(upDiff < 0.05){
 				continue;
 			}
 			if(downDiff > 0.03){
