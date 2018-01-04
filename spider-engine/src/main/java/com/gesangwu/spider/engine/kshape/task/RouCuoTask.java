@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.gandalf.framework.util.CalculateUtil;
 import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.common.ShapeEnum;
 import com.gesangwu.spider.biz.dao.model.KLine;
@@ -54,10 +55,9 @@ public class RouCuoTask extends ShapeTask {
 		KLineExample example = new KLineExample();
 		KLineExample.Criteria criteria = example.createCriteria();
 		criteria.andTradeDateEqualTo(tradeDate);
-		criteria.andPercentLessThan(0d);
-		criteria.andPercentGreaterThan(-5d);
-		criteria.andMa5IsNotNull();
-		criteria.andMa10IsNotNull();
+		criteria.andPercentLessThan(-2d);
+		criteria.andPercentGreaterThan(-8d);
+		criteria.andMa20IsNotNull();
 		Page<KLine> page = new Page<KLine>(curPage, 500);
 		klService.selectByPagination(example, page);
 		List<KLine> klList = page.getRecords();
@@ -73,38 +73,66 @@ public class RouCuoTask extends ShapeTask {
 	
 	public void judge(List<KLine> klList, List<Long> idList){
 		for (KLine kl : klList) {
-			if(kl.getMa5() < kl.getMa10()){//FIXME:这里不满足也是可以的
+//			if(kl.getMa5() < kl.getMa10()){//FIXME:这里不满足也是可以的
+//				continue;
+//			}
+			if(kl.getOpen() < kl.getClose()){//阳线
 				continue;
 			}
-			if(kl.getOpen() < kl.getClose()){
+			if(kl.getOpen() >= kl.getYesterdayClose()){//今开大于昨收
 				continue;
 			}
-			if(kl.getOpen() >= kl.getYesterdayClose()){
-				continue;
-			}
-			List<KLine> preKlList = listByTradeDateDesc(kl.getSymbol(), kl.getTradeDate(), 2);
+			List<KLine> preKlList = listByTradeDateDesc(kl.getSymbol(), kl.getTradeDate(), 3);
 			KLine pre1 = preKlList.get(0);
-			if(pre1.getPercent() > 0){
+			if(pre1.getPercent() > 0){//昨涨
 				continue;
 			}
-			if(pre1.getClose() < pre1.getMa5()){
+			if(pre1.getClose() < pre1.getMa5()){//昨收于五日之下
 				continue;
 			}
-			if(pre1.getOpen() < pre1.getClose()){
+			if(pre1.getOpen() < pre1.getClose()){//昨天阳线
+				continue;
+			}
+			double diff = CalculateUtil.div(pre1.getClose(), kl.getOpen(), 3);
+			double scale = CalculateUtil.sub(diff, 1, 3);
+			if(scale < 0.01){//低开太少
 				continue;
 			}
 			KLine pre2 = preKlList.get(1);
-//			if(pre2.getAmount() < 100000000){
-//				continue;
-//			}
-			if(pre2.getClose() < pre2.getMa5()){
+			if(pre2.getPercent() < 0){//不能跌
 				continue;
 			}
-			if(pre2.getOpen() > pre2.getClose()){
+			if(pre2.getClose() < pre2.getMa5()){//收于五日之上
+				continue;
+			}
+			if(pre2.getOpen() > pre2.getClose()){//收阴
 				continue;
 			}
 			if(kl.getVolume() > pre2.getVolume() || pre1.getVolume() > pre2.getVolume()){
 				continue;
+			}
+			KLine pre3 = preKlList.get(2);
+			if(pre2.getPercent() < 5){//涨幅过小，判断两天的涨幅
+				if(pre3.getPercent() < 0){
+					continue;
+				}
+				if(pre3.getPercent() < pre2.getPercent()){//第一天涨幅必须大于第二天涨幅
+					continue;
+				}
+				if(pre3.getOpen() > pre3.getClose()){//收绿
+					continue;
+				}
+				if(pre2.getVolume() < pre3.getVolume()){//上涨第二天的量要大于上涨第一天的量
+					continue;
+				}
+				double tot = CalculateUtil.add(pre2.getPercent(), pre3.getPercent(), 3);
+				if(tot < 5){//两天涨幅也小于5
+					continue;
+				}
+			} else {
+				if(pre3.getPercent() > 3){//连续两天涨幅巨大
+					continue;
+				}
 			}
 			idList.add(kl.getId());
 		}
