@@ -84,9 +84,6 @@ public class RouCuoTask extends ShapeTask {
 	
 	public void judge(List<KLine> klList, List<Long> idList){
 		for (KLine kl : klList) {
-//			if(kl.getMa5() < kl.getMa10()){//FIXME:这里不满足也是可以的
-//				continue;
-//			}
 			if(kl.getOpen() < kl.getClose()){//阳线
 				continue;
 			}
@@ -102,6 +99,10 @@ public class RouCuoTask extends ShapeTask {
 				continue;
 			}
 			if(pre1.getOpen() < pre1.getClose()){//昨天阳线
+				continue;
+			}
+			double totalDown = CalculateUtil.add(kl.getPercent(), pre1.getPercent(), 3);
+			if(totalDown > -5){//两天跌幅太小
 				continue;
 			}
 			double diff = CalculateUtil.div(pre1.getClose(), kl.getOpen(), 3);
