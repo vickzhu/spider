@@ -42,10 +42,22 @@ public class RouCuoTask extends ShapeTask {
 		logger.info("Rou Cuo task end, used:" + (end-start) + "ms");
 	}
 	
+	private static int pageSize = 500;
+	
 	public void execute(String tradeDate){
 		tradeDate = getTradeDate(tradeDate);
 		List<Long> idList = new ArrayList<Long>();
-		execute(1, tradeDate, idList);
+		KLineExample example = new KLineExample();
+		KLineExample.Criteria criteria = example.createCriteria();
+		criteria.andTradeDateEqualTo(tradeDate);
+		criteria.andPercentLessThan(-2d);
+		criteria.andPercentGreaterThan(-8d);
+		criteria.andMa20IsNotNull();
+		int counts = klService.countByExample(example);
+		int pages = (counts + pageSize -1) / pageSize;
+		for (int i = 1; i <= pages; i++) {			
+			execute(i, tradeDate, idList);
+		}
 		if(CollectionUtils.isNotEmpty(idList)){
 			klService.updateShape(ShapeEnum.ROU_CUO, idList);
 		}
@@ -67,7 +79,6 @@ public class RouCuoTask extends ShapeTask {
 			return;
 		} else {
 			curPage++;
-			execute(curPage, tradeDate, idList);
 		}
 	}
 	
@@ -99,6 +110,9 @@ public class RouCuoTask extends ShapeTask {
 				continue;
 			}
 			KLine pre2 = preKlList.get(1);
+			if(pre2.getMa20() == null){
+				continue;
+			}
 			if(pre2.getPercent() < 0){//不能跌
 				continue;
 			}
