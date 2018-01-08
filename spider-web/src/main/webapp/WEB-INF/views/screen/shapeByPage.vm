@@ -52,7 +52,7 @@
 					$!{companyTool.getStockName($!{ssh.symbol})}
                     </a>
 				  </td>
-				  <td>${date.format("yyyy-MM-dd", $!{ssh.tradeDate})}</td>
+				  <td>$!{ssh.tradeDate}</td>
                   <td>
 					<a class="lh_detail" href="#springUrl('/stock')?symbol=$!{ssh.symbol}">查看详情</a>
 				  </td>
