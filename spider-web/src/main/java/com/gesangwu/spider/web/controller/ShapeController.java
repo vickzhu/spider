@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gandalf.framework.util.StringUtil;
+import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.common.ShapeEnum;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
@@ -48,6 +49,29 @@ public class ShapeController {
 		mav.addObject("klList", klList);
 		mav.addObject("shapeEnum", ShapeEnum.values());
 		mav.addObject("curShape", shape);
+		return mav;
+	}
+	
+	@RequestMapping(value = "/byPage", method = RequestMethod.GET)
+	public ModelAndView listByPage(HttpServletRequest request){
+		String pageStr = request.getParameter("curPage");
+		int curPage = 1;
+		if(StringUtil.isNotEmpty(pageStr)){
+			curPage = Integer.valueOf(pageStr);
+		}
+		String shapeStr = request.getParameter("shape");
+		ModelAndView mav = new ModelAndView("shapeByPage");
+		if(StringUtil.isNotEmpty(shapeStr)){
+			int shape = Integer.valueOf(shapeStr);
+			KLineExample example = new KLineExample();
+			example.setOrderByClause("trade_date desc");
+			KLineExample.Criteria criteria = example.createCriteria();
+			criteria.andShapeEqualTo(shape);
+			Page<KLine> page = new Page<KLine>(curPage, 30);
+			klService.selectByPagination(example, page);
+			mav.addObject("page", page);
+		}
+		mav.addObject("shapeEnum", ShapeEnum.values());
 		return mav;
 	}
 }

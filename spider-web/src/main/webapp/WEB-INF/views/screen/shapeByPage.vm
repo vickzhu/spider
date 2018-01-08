@@ -1,0 +1,76 @@
+##########
+##帮派持股##
+##########
+<link rel="stylesheet" href="#resources('css/datepicker.css')" />
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">股票</a> <a href="#" class="current">个人持股</a> </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+            <h5>形态</h5>
+          </div>
+		  <div class="widget-content nopadding">
+			<form id="searchForm" action="#springUrl('/byPage')" method="get" class="form-horizontal">
+                <div class="search_option">
+					<div>
+                        <label>形态：</label>
+						<div data-date="${tradeDate}" class="input-append date datepicker">
+							<select name="shape">
+									<option>----请选择----</option>
+								#foreach($s in $shapeEnum)
+									<option value="${s.code}">${s.desc}</option>
+								#end
+                            </select>							 
+						</div>
+					</div>
+                    <div>
+                        <button type="submit"  class="btn btn-success">搜索</button>
+                    </div>
+                </div>
+			</form>
+          </div>
+          <div class="widget-content">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+				  <th style="width:5%;">序号</th>
+                  <th>股票</th>
+				  <th>交易时间</th>
+				  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+				#foreach($ssh in ${page.records})
+                <tr>
+				  <td>$!{velocityCount}</td>
+				  <td>
+					<a href="#springUrl('/stock')?symbol=$!{ssh.symbol}" target="_blank">
+					$!{companyTool.getStockName($!{ssh.symbol})}
+                    </a>
+				  </td>
+				  <td>${date.format("yyyy-MM-dd", $!{ssh.tradeDate})}</td>
+                  <td>
+					<a class="lh_detail" href="#springUrl('/stock')?symbol=$!{ssh.symbol}">查看详情</a>
+				  </td>
+                </tr>
+				#end
+              </tbody>
+             </table>
+			 <div id="page_nav"></div>
+			</div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+<script src="#resources('js/pagination.js')"></script>
+<script type="text/javascript">
+	function gotoPage(pageNo){
+		window.location.href="#springUrl('/byPage')?curPage="+pageNo;
+	}
+	$('#page_nav').html(new Pagination($!{page.curPage},$!{page.totalPages}, gotoPage).getHtml());
+</script>
