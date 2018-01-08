@@ -502,4 +502,12 @@
         #{item}
     </foreach>
   </update>
+  <select id="selectForYiZi" resultMap="BaseResultMap">
+  	SELECT
+    <include refid="Base_Column_List" />
+    FROM 
+    	k_line
+    WHERE
+    	trade_date=#{tradeDate,jdbcType=VARCHAR} AND OPEN=high AND OPEN &gt; yesterday_close and low &lt; open;
+  </select>
 </mapper>

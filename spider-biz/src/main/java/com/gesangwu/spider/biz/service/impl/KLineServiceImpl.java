@@ -77,4 +77,9 @@ public class KLineServiceImpl extends BaseServiceImpl<KLine, KLineExample> imple
 		return mapper.selectCoverNeg(tradeDate);
 	}
 
+	@Override
+	public List<KLine> selectForYiZi(String tradeDate) {
+		return mapper.selectForYiZi(tradeDate);
+	}
+
 }

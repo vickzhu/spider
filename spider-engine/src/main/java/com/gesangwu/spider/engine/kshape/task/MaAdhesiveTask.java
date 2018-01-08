@@ -23,12 +23,12 @@ import com.gesangwu.spider.biz.dao.model.KLineExample;
  * @author bran
  *
  */
-@Component
+//@Component
 public class MaAdhesiveTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MaAdhesiveTask.class);
 
-	@Scheduled(cron="0 18 15 * * MON-FRI")
+//	@Scheduled(cron="0 18 15 * * MON-FRI")
 	public void execute(){
 		logger.info("Ma Adhesive task begin...");
 		long start = System.currentTimeMillis();
@@ -56,7 +56,7 @@ public class MaAdhesiveTask extends ShapeTask {
 			}
 		}
 		if(idList.size() > 0){
-			klService.updateShape(ShapeEnum.MA_ADH, idList);
+//			klService.updateShape(ShapeEnum.MA_ADH, idList);
 		}
 	}
 	

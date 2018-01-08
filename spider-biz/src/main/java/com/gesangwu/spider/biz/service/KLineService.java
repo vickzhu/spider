@@ -54,4 +54,11 @@ public interface KLineService extends BaseService<KLine, KLineExample> {
 	 */
 	public List<KLine> selectCoverNeg(String tradeDate);
 	
+	/**
+	 * 一字查询
+	 * @param tradeDate
+	 * @return
+	 */
+	public List<KLine> selectForYiZi(String tradeDate);
+	
 }

@@ -41,5 +41,12 @@ public interface KLineMapper extends BaseMapper<KLine, KLineExample> {
 	public List<KLine> selectCoverNeg(@Param("tradeDate")String tradeDate);
 	
 	public void updateShape(@Param("shape")int shape, @Param("idList")List<Long> idList);
+	
+	/**
+	 * 一字板查询
+	 * @param tradeDate
+	 * @return
+	 */
+	public List<KLine> selectForYiZi(@Param("tradeDate")String tradeDate);
 
 }
