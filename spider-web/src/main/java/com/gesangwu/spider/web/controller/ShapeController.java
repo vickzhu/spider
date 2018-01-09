@@ -67,9 +67,10 @@ public class ShapeController {
 			example.setOrderByClause("trade_date desc");
 			KLineExample.Criteria criteria = example.createCriteria();
 			criteria.andShapeEqualTo(shape);
-			Page<KLine> page = new Page<KLine>(curPage, 30);
+			Page<KLine> page = new Page<KLine>(curPage, 10);
 			klService.selectByPagination(example, page);
 			mav.addObject("page", page);
+			mav.addObject("shape", shape);
 		}
 		mav.addObject("shapeEnum", ShapeEnum.values());
 		return mav;

@@ -15,14 +15,15 @@
           </div>
 		  <div class="widget-content nopadding">
 			<form id="searchForm" action="#springUrl('/byPage')" method="get" class="form-horizontal">
+				<input type="hidden" id="curPage" name="curPage" />
                 <div class="search_option">
 					<div>
                         <label>形态：</label>
 						<div data-date="${tradeDate}" class="input-append date datepicker">
-							<select name="shape">
-									<option>----请选择----</option>
+							<select id="shape" name="shape">
+								<option value="">----请选择----</option>
 								#foreach($s in $shapeEnum)
-									<option value="${s.code}">${s.desc}</option>
+								<option value="${s.code}" #if($shape==${s.code})selected#end>${s.desc}</option>
 								#end
                             </select>							 
 						</div>
@@ -70,7 +71,16 @@
 <script src="#resources('js/pagination.js')"></script>
 <script type="text/javascript">
 	function gotoPage(pageNo){
-		window.location.href="#springUrl('/byPage')?curPage="+pageNo;
+		go(pageNo);
 	}
+	$("#shape").change(function(){
+		go(1);
+	});
+	
+	function go(pageNo){
+		$("#curPage").val(pageNo);
+		$("#searchForm").submit();
+	}
+	
 	$('#page_nav').html(new Pagination($!{page.curPage},$!{page.totalPages}, gotoPage).getHtml());
 </script>
