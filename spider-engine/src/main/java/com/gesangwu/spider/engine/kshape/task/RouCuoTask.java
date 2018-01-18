@@ -126,9 +126,10 @@ public class RouCuoTask extends ShapeTask {
 			if(kl.getVolume() > pre2.getVolume() || pre1.getVolume() > pre2.getVolume()){
 				continue;
 			}
+			double low = pre2.getOpen();
 			KLine pre3 = preKlList.get(2);
 			if(pre2.getPercent() < 5){//涨幅过小，判断两天的涨幅
-				if(pre3.getPercent() < 0){
+				if(pre3.getPercent() < 5){
 					continue;
 				}
 				if(pre3.getPercent() < pre2.getPercent()){//第一天涨幅必须大于第二天涨幅
@@ -140,14 +141,14 @@ public class RouCuoTask extends ShapeTask {
 				if(pre2.getVolume() < pre3.getVolume()){//上涨第二天的量要大于上涨第一天的量
 					continue;
 				}
-				double tot = CalculateUtil.add(pre2.getPercent(), pre3.getPercent(), 3);
-				if(tot < 5){//两天涨幅也小于5
+				low = pre3.getOpen();
+			} else {//大于5%的情况
+				if(pre3.getPercent() > 3){//这样两天的涨幅有点大
 					continue;
 				}
-			} else {
-				if(pre3.getPercent() > 3){//连续两天涨幅巨大
-					continue;
-				}
+			}
+			if(kl.getClose() < low){//收盘价比前面大阳线的开盘价要低，说明是下行趋势
+				continue;
 			}
 			idList.add(kl.getId());
 		}
