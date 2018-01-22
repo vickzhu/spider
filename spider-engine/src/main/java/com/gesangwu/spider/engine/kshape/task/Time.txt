@@ -1,0 +1,14 @@
+ambushbottom 底部	25
+big	大分歧	18
+cover	解放	10
+dixi	低吸	7
+fallrise	抑扬	9
+first	首阴	15
+ground	地天	14
+immortal	仙人	17
+jihua	季华	16
+jump	跳空	13
+ruocuo	揉搓	12
+shrink	所跌	20
+upper	上影	11
+yizi	一字	8

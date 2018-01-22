@@ -37,7 +37,7 @@ public class ImmortalGuiderTask extends ShapeTask {
 	@Resource
 	private CompanyService companyService;
 
-	@Scheduled(cron = "0 23 15 * * MON-FRI")
+	@Scheduled(cron = "0 17 15 * * MON-FRI")
 	public void execute(){
 		long start = System.currentTimeMillis();
 		execute(null);

@@ -17,7 +17,7 @@ public class YiZiTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(YiZiTask.class);
 
-	@Scheduled(cron="0 18 15 * * MON-FRI")
+	@Scheduled(cron="0 08 15 * * MON-FRI")
 	public void execute(){
 		logger.info("Yi Zi task begin...");
 		long start = System.currentTimeMillis();

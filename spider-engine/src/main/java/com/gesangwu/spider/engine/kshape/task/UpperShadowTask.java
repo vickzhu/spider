@@ -37,7 +37,7 @@ public class UpperShadowTask extends ShapeTask {
 	@Resource
 	private CompanyService companyService;
 
-	@Scheduled(cron = "0 24 15 * * MON-FRI")
+	@Scheduled(cron = "0 11 15 * * MON-FRI")
 	public void execute(){
 		long start = System.currentTimeMillis();
 		execute(null);

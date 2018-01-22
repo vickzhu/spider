@@ -23,7 +23,7 @@ public class BigDivergenceTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(BigDivergenceTask.class);
 
-	@Scheduled(cron="0 08 15 * * MON-FRI")
+	@Scheduled(cron="0 18 15 * * MON-FRI")
 	public void execute(){
 		logger.info("Big Divergence task begin...");
 		long start = System.currentTimeMillis();

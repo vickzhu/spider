@@ -27,7 +27,7 @@ public class DiXiTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(DiXiTask.class);
 
-	@Scheduled(cron="0 08 15 * * MON-FRI")
+	@Scheduled(cron="0 07 15 * * MON-FRI")
 	public void execute(){
 		logger.info("DiXi task begin...");
 		long start = System.currentTimeMillis();

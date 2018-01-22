@@ -23,7 +23,7 @@ public class JiHuaTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(JiHuaTask.class);
 
-	@Scheduled(cron="0 17 15 * * MON-FRI")
+	@Scheduled(cron="0 16 15 * * MON-FRI")
 	public void execute(){
 		logger.info("JiHua task begin...");
 		long start = System.currentTimeMillis();
