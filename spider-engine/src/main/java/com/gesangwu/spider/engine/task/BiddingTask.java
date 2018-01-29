@@ -95,6 +95,10 @@ private static final Logger logger = LoggerFactory.getLogger(BiddingTask.class);
 			
 			String[] sellPriceArr = {details[21],details[23],details[25],details[27],details[29]};
 			String[] sellVolArr = {details[20],details[22],details[24],details[26],details[28]};
+			
+//			String tradeDate = details[30];
+			String tradeTime = details[31];
+			
 			Bidding bd = new Bidding();
 			bd.setBuyPrice(Double.valueOf(buyPriceArr[0]));
 			bd.setBuyVol(Integer.valueOf(buyVolArr[0]));
@@ -104,6 +108,8 @@ private static final Logger logger = LoggerFactory.getLogger(BiddingTask.class);
 			bd.setSellVol(Integer.valueOf(sellVolArr[0]));
 			bd.setSellSurplus(Integer.valueOf(sellVolArr[1]));
 			bd.setSymbol(symbol);
+			bd.setTradeTime(tradeTime);
+			
 			bdList.add(bd);
 		}
 		if(CollectionUtils.isNotEmpty(bdList)){
