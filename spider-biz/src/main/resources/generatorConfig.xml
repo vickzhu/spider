@@ -27,12 +27,12 @@
 			<property name="enableSubPackages" value="true"/> 
 		</sqlMapGenerator> 
 		
-		<!-- SQLMapper.java --> 
+		<!-- SQLMapper.java -->
 		<javaClientGenerator type="XMLMAPPER" targetPackage="com.gesangwu.spider.biz.dao.mapper" targetProject="src\main\java"> 
 			<property name="enableSubPackages" value="true"/> 
 			<property name="rootInterface" value="com.gandalf.framework.mybatis.BaseMapper"/>
 		</javaClientGenerator> 
-		
+		 
 		<!-- 
 		<table tableName="company" domainObjectName="Company"> 
 			<property name="suppressAllComments" value="true"/> 
@@ -47,6 +47,12 @@
 		</table>
 		
 		<table tableName="banker_trace" domainObjectName="BankerTrace"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
+		
+		<table tableName="long_hu" domainObjectName="LongHu"> 
 			<property name="suppressAllComments" value="true"/> 
 		    <property name="suppressDate" value="true"/>
 		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
@@ -76,12 +82,6 @@
 		</table>
 		
 		<table tableName="sec_dept" domainObjectName="SecDept"> 
-			<property name="suppressAllComments" value="true"/> 
-		    <property name="suppressDate" value="true"/>
-		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
-		</table>
-		
-		<table tableName="long_hu" domainObjectName="LongHu"> 
 			<property name="suppressAllComments" value="true"/> 
 		    <property name="suppressDate" value="true"/>
 		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
@@ -146,12 +146,6 @@
 		    <property name="suppressDate" value="true"/>
 		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
 		</table>
-			
-		<table tableName="k_line" domainObjectName="KLine"> 
-			<property name="suppressAllComments" value="true"/> 
-		    <property name="suppressDate" value="true"/>
-		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
-		</table>
 		
 		<table tableName="jd_statis" domainObjectName="JdStatis"> 
 			<property name="suppressAllComments" value="true"/> 
@@ -176,7 +170,6 @@
 		    <property name="suppressDate" value="true"/>
 		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
 		</table>
-		-->
 		
 		<table tableName="synergy" domainObjectName="Synergy"> 
 			<property name="suppressAllComments" value="true"/> 
@@ -189,6 +182,26 @@
 		    <property name="suppressDate" value="true"/>
 		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
 		</table>
+
+		<table tableName="k_line" domainObjectName="KLine"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>		
+		
+		<table tableName="active_dept_operation" domainObjectName="ActiveDeptOperation"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
+		-->
+		
+		<table tableName="bidding" domainObjectName="Bidding"> 
+			<property name="suppressAllComments" value="true"/> 
+		    <property name="suppressDate" value="true"/>
+		    <generatedKey column="id"  sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
+		</table>
+		
 	</context>
 	
 </generatorConfiguration> 
