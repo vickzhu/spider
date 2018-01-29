@@ -40,6 +40,7 @@
                 <tr>
 				  <th style="width:5%;">序号</th>
                   <th>股票</th>
+				  <th>涨跌幅</th>
 				  <th>交易时间</th>
 				  <th>操作</th>
                 </tr>
@@ -53,6 +54,7 @@
 					$!{companyTool.getStockName($!{ssh.symbol})}
                     </a>
 				  </td>
+				  <td style="color:#if($!{ssh.percent}>0)red#elseif($!{ssh.percent}<0)green#end">$!{ssh.percent}%</td>
 				  <td>$!{ssh.tradeDate}</td>
                   <td>
 					<a class="lh_detail" href="#springUrl('/stock')?symbol=$!{ssh.symbol}">查看详情</a>
