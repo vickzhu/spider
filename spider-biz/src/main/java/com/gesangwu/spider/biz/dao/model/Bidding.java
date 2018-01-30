@@ -7,15 +7,11 @@ public class Bidding {
 
     private String symbol;
 
-    private Double sellPrice;
+    private Double price;
 
-    private Integer sellVol;
+    private Integer vol;
 
     private Integer sellSurplus;
-
-    private Double buyPrice;
-
-    private Integer buyVol;
 
     private Integer buySurplus;
 
@@ -39,20 +35,20 @@ public class Bidding {
         this.symbol = symbol == null ? null : symbol.trim();
     }
 
-    public Double getSellPrice() {
-        return sellPrice;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setSellPrice(Double sellPrice) {
-        this.sellPrice = sellPrice;
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
-    public Integer getSellVol() {
-        return sellVol;
+    public Integer getVol() {
+        return vol;
     }
 
-    public void setSellVol(Integer sellVol) {
-        this.sellVol = sellVol;
+    public void setVol(Integer vol) {
+        this.vol = vol;
     }
 
     public Integer getSellSurplus() {
@@ -61,22 +57,6 @@ public class Bidding {
 
     public void setSellSurplus(Integer sellSurplus) {
         this.sellSurplus = sellSurplus;
-    }
-
-    public Double getBuyPrice() {
-        return buyPrice;
-    }
-
-    public void setBuyPrice(Double buyPrice) {
-        this.buyPrice = buyPrice;
-    }
-
-    public Integer getBuyVol() {
-        return buyVol;
-    }
-
-    public void setBuyVol(Integer buyVol) {
-        this.buyVol = buyVol;
     }
 
     public Integer getBuySurplus() {

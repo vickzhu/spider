@@ -37,7 +37,7 @@ private static final Logger logger = LoggerFactory.getLogger(BiddingTask.class);
 	@Resource
 	private BiddingService bdService;
 	
-	@Scheduled(cron = "0/3 20-25 9 * * MON-FRI")
+	@Scheduled(cron = "0/3 20-24 9 * * MON-FRI")
 	public void execute(){
 		calc();
 	}
@@ -93,22 +93,20 @@ private static final Logger logger = LoggerFactory.getLogger(BiddingTask.class);
 			String[] buyPriceArr = {details[11],details[13],details[15],details[17],details[19]};
 			String[] buyVolArr = {details[10],details[12],details[14],details[16],details[18]};
 			
-			String[] sellPriceArr = {details[21],details[23],details[25],details[27],details[29]};
+//			String[] sellPriceArr = {details[21],details[23],details[25],details[27],details[29]};
 			String[] sellVolArr = {details[20],details[22],details[24],details[26],details[28]};
 			
 //			String tradeDate = details[30];
 			String tradeTime = details[31];
 			
 			Bidding bd = new Bidding();
-			bd.setBuyPrice(Double.valueOf(buyPriceArr[0]));
-			bd.setBuyVol(Integer.valueOf(buyVolArr[0]));
+			bd.setPrice(Double.valueOf(buyPriceArr[0]));
+			bd.setVol(Integer.valueOf(buyVolArr[0]));
 			bd.setBuySurplus(Integer.valueOf(buyVolArr[1]));
-			bd.setGmtCreate(now);
-			bd.setSellPrice(Double.valueOf(sellPriceArr[0]));
-			bd.setSellVol(Integer.valueOf(sellVolArr[0]));
 			bd.setSellSurplus(Integer.valueOf(sellVolArr[1]));
 			bd.setSymbol(symbol);
 			bd.setTradeTime(tradeTime);
+			bd.setGmtCreate(now);
 			
 			bdList.add(bd);
 		}

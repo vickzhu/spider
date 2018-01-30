@@ -255,123 +255,123 @@ public class BiddingExample {
             return (Criteria) this;
         }
 
-        public Criteria andSellPriceIsNull() {
-            addCriterion("sell_price is null");
+        public Criteria andPriceIsNull() {
+            addCriterion("price is null");
             return (Criteria) this;
         }
 
-        public Criteria andSellPriceIsNotNull() {
-            addCriterion("sell_price is not null");
+        public Criteria andPriceIsNotNull() {
+            addCriterion("price is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSellPriceEqualTo(Double value) {
-            addCriterion("sell_price =", value, "sellPrice");
+        public Criteria andPriceEqualTo(Double value) {
+            addCriterion("price =", value, "price");
             return (Criteria) this;
         }
 
-        public Criteria andSellPriceNotEqualTo(Double value) {
-            addCriterion("sell_price <>", value, "sellPrice");
+        public Criteria andPriceNotEqualTo(Double value) {
+            addCriterion("price <>", value, "price");
             return (Criteria) this;
         }
 
-        public Criteria andSellPriceGreaterThan(Double value) {
-            addCriterion("sell_price >", value, "sellPrice");
+        public Criteria andPriceGreaterThan(Double value) {
+            addCriterion("price >", value, "price");
             return (Criteria) this;
         }
 
-        public Criteria andSellPriceGreaterThanOrEqualTo(Double value) {
-            addCriterion("sell_price >=", value, "sellPrice");
+        public Criteria andPriceGreaterThanOrEqualTo(Double value) {
+            addCriterion("price >=", value, "price");
             return (Criteria) this;
         }
 
-        public Criteria andSellPriceLessThan(Double value) {
-            addCriterion("sell_price <", value, "sellPrice");
+        public Criteria andPriceLessThan(Double value) {
+            addCriterion("price <", value, "price");
             return (Criteria) this;
         }
 
-        public Criteria andSellPriceLessThanOrEqualTo(Double value) {
-            addCriterion("sell_price <=", value, "sellPrice");
+        public Criteria andPriceLessThanOrEqualTo(Double value) {
+            addCriterion("price <=", value, "price");
             return (Criteria) this;
         }
 
-        public Criteria andSellPriceIn(List<Double> values) {
-            addCriterion("sell_price in", values, "sellPrice");
+        public Criteria andPriceIn(List<Double> values) {
+            addCriterion("price in", values, "price");
             return (Criteria) this;
         }
 
-        public Criteria andSellPriceNotIn(List<Double> values) {
-            addCriterion("sell_price not in", values, "sellPrice");
+        public Criteria andPriceNotIn(List<Double> values) {
+            addCriterion("price not in", values, "price");
             return (Criteria) this;
         }
 
-        public Criteria andSellPriceBetween(Double value1, Double value2) {
-            addCriterion("sell_price between", value1, value2, "sellPrice");
+        public Criteria andPriceBetween(Double value1, Double value2) {
+            addCriterion("price between", value1, value2, "price");
             return (Criteria) this;
         }
 
-        public Criteria andSellPriceNotBetween(Double value1, Double value2) {
-            addCriterion("sell_price not between", value1, value2, "sellPrice");
+        public Criteria andPriceNotBetween(Double value1, Double value2) {
+            addCriterion("price not between", value1, value2, "price");
             return (Criteria) this;
         }
 
-        public Criteria andSellVolIsNull() {
-            addCriterion("sell_vol is null");
+        public Criteria andVolIsNull() {
+            addCriterion("vol is null");
             return (Criteria) this;
         }
 
-        public Criteria andSellVolIsNotNull() {
-            addCriterion("sell_vol is not null");
+        public Criteria andVolIsNotNull() {
+            addCriterion("vol is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSellVolEqualTo(Integer value) {
-            addCriterion("sell_vol =", value, "sellVol");
+        public Criteria andVolEqualTo(Integer value) {
+            addCriterion("vol =", value, "vol");
             return (Criteria) this;
         }
 
-        public Criteria andSellVolNotEqualTo(Integer value) {
-            addCriterion("sell_vol <>", value, "sellVol");
+        public Criteria andVolNotEqualTo(Integer value) {
+            addCriterion("vol <>", value, "vol");
             return (Criteria) this;
         }
 
-        public Criteria andSellVolGreaterThan(Integer value) {
-            addCriterion("sell_vol >", value, "sellVol");
+        public Criteria andVolGreaterThan(Integer value) {
+            addCriterion("vol >", value, "vol");
             return (Criteria) this;
         }
 
-        public Criteria andSellVolGreaterThanOrEqualTo(Integer value) {
-            addCriterion("sell_vol >=", value, "sellVol");
+        public Criteria andVolGreaterThanOrEqualTo(Integer value) {
+            addCriterion("vol >=", value, "vol");
             return (Criteria) this;
         }
 
-        public Criteria andSellVolLessThan(Integer value) {
-            addCriterion("sell_vol <", value, "sellVol");
+        public Criteria andVolLessThan(Integer value) {
+            addCriterion("vol <", value, "vol");
             return (Criteria) this;
         }
 
-        public Criteria andSellVolLessThanOrEqualTo(Integer value) {
-            addCriterion("sell_vol <=", value, "sellVol");
+        public Criteria andVolLessThanOrEqualTo(Integer value) {
+            addCriterion("vol <=", value, "vol");
             return (Criteria) this;
         }
 
-        public Criteria andSellVolIn(List<Integer> values) {
-            addCriterion("sell_vol in", values, "sellVol");
+        public Criteria andVolIn(List<Integer> values) {
+            addCriterion("vol in", values, "vol");
             return (Criteria) this;
         }
 
-        public Criteria andSellVolNotIn(List<Integer> values) {
-            addCriterion("sell_vol not in", values, "sellVol");
+        public Criteria andVolNotIn(List<Integer> values) {
+            addCriterion("vol not in", values, "vol");
             return (Criteria) this;
         }
 
-        public Criteria andSellVolBetween(Integer value1, Integer value2) {
-            addCriterion("sell_vol between", value1, value2, "sellVol");
+        public Criteria andVolBetween(Integer value1, Integer value2) {
+            addCriterion("vol between", value1, value2, "vol");
             return (Criteria) this;
         }
 
-        public Criteria andSellVolNotBetween(Integer value1, Integer value2) {
-            addCriterion("sell_vol not between", value1, value2, "sellVol");
+        public Criteria andVolNotBetween(Integer value1, Integer value2) {
+            addCriterion("vol not between", value1, value2, "vol");
             return (Criteria) this;
         }
 
@@ -432,126 +432,6 @@ public class BiddingExample {
 
         public Criteria andSellSurplusNotBetween(Integer value1, Integer value2) {
             addCriterion("sell_surplus not between", value1, value2, "sellSurplus");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyPriceIsNull() {
-            addCriterion("buy_price is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyPriceIsNotNull() {
-            addCriterion("buy_price is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyPriceEqualTo(Double value) {
-            addCriterion("buy_price =", value, "buyPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyPriceNotEqualTo(Double value) {
-            addCriterion("buy_price <>", value, "buyPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyPriceGreaterThan(Double value) {
-            addCriterion("buy_price >", value, "buyPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyPriceGreaterThanOrEqualTo(Double value) {
-            addCriterion("buy_price >=", value, "buyPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyPriceLessThan(Double value) {
-            addCriterion("buy_price <", value, "buyPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyPriceLessThanOrEqualTo(Double value) {
-            addCriterion("buy_price <=", value, "buyPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyPriceIn(List<Double> values) {
-            addCriterion("buy_price in", values, "buyPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyPriceNotIn(List<Double> values) {
-            addCriterion("buy_price not in", values, "buyPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyPriceBetween(Double value1, Double value2) {
-            addCriterion("buy_price between", value1, value2, "buyPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyPriceNotBetween(Double value1, Double value2) {
-            addCriterion("buy_price not between", value1, value2, "buyPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyVolIsNull() {
-            addCriterion("buy_vol is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyVolIsNotNull() {
-            addCriterion("buy_vol is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyVolEqualTo(Integer value) {
-            addCriterion("buy_vol =", value, "buyVol");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyVolNotEqualTo(Integer value) {
-            addCriterion("buy_vol <>", value, "buyVol");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyVolGreaterThan(Integer value) {
-            addCriterion("buy_vol >", value, "buyVol");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyVolGreaterThanOrEqualTo(Integer value) {
-            addCriterion("buy_vol >=", value, "buyVol");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyVolLessThan(Integer value) {
-            addCriterion("buy_vol <", value, "buyVol");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyVolLessThanOrEqualTo(Integer value) {
-            addCriterion("buy_vol <=", value, "buyVol");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyVolIn(List<Integer> values) {
-            addCriterion("buy_vol in", values, "buyVol");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyVolNotIn(List<Integer> values) {
-            addCriterion("buy_vol not in", values, "buyVol");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyVolBetween(Integer value1, Integer value2) {
-            addCriterion("buy_vol between", value1, value2, "buyVol");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyVolNotBetween(Integer value1, Integer value2) {
-            addCriterion("buy_vol not between", value1, value2, "buyVol");
             return (Criteria) this;
         }
 
