@@ -4,6 +4,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,6 +23,7 @@ import com.gesangwu.spider.biz.dao.model.Bidding;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.service.BiddingService;
 import com.gesangwu.spider.biz.service.CompanyService;
+import com.gesangwu.spider.engine.common.BiddingHolder;
 import com.gesangwu.spider.engine.util.LittleCompanyHolder;
 
 
@@ -86,10 +89,8 @@ private static final Logger logger = LoggerFactory.getLogger(BiddingTask.class);
 			}
 			String zs = details[2];//昨收
 			String xj = details[3];//现价
-			double chgPercent = calcChgPercent(zs, xj);
-			if(chgPercent >= 0.07){//涨跌幅过大，不予计算
-				continue;
-			}
+//			double chgPercent = calcChgPercent(zs, xj);//涨幅
+			
 			String[] buyPriceArr = {details[11],details[13],details[15],details[17],details[19]};
 			String[] buyVolArr = {details[10],details[12],details[14],details[16],details[18]};
 			
@@ -98,7 +99,9 @@ private static final Logger logger = LoggerFactory.getLogger(BiddingTask.class);
 			
 //			String tradeDate = details[30];
 			String tradeTime = details[31];
-			
+			if("09:25:00".compareTo(tradeTime) < 0){
+				continue;
+			}
 			Bidding bd = new Bidding();
 			bd.setPrice(Double.valueOf(buyPriceArr[0]));
 			bd.setVol(Integer.valueOf(buyVolArr[0]));
@@ -109,6 +112,12 @@ private static final Logger logger = LoggerFactory.getLogger(BiddingTask.class);
 			bd.setGmtCreate(now);
 			
 			bdList.add(bd);
+			Map<String, Bidding> biddingMap = BiddingHolder.getBidMap().get(symbol);
+			if(biddingMap == null){
+				biddingMap = new TreeMap<String, Bidding>();
+				BiddingHolder.getBidMap().put(symbol, biddingMap);
+			}
+			biddingMap.put(tradeTime, bd);
 		}
 		if(CollectionUtils.isNotEmpty(bdList)){
 			bdService.batchInsert(bdList);
