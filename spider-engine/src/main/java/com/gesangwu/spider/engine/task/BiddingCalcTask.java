@@ -36,15 +36,24 @@ public class BiddingCalcTask {
 					continue;
 				}
 				int diff = bd.getVol() - pre.getVol();
-				if(diff > 100000){
+				if(diff > 100000 ){//差1000手
 					double amount = CalculateUtil.mul(bd.getPrice(), diff, 2);
-					if(amount > 3000000){
-						System.out.println(bd.getSymbol() + ":" + bd.getTradeTime() + ":" + amount);
+					if(amount > 3000000){//超过300万
+						if(pre.getPrice() > bd.getPrice()){//跌
+							System.out.println(bd.getSymbol() + ":" + bd.getTradeTime() + ":" + amount +",卖");
+						} else if(pre.getPrice() < bd.getPrice()){//涨
+							System.out.println(bd.getSymbol() + ":" + bd.getTradeTime() + ":" + amount +",买");
+						} else {
+							if(pre.getSellSurplus() > 0){//买
+								System.out.println(bd.getSymbol() + ":" + bd.getTradeTime() + ":" + amount +",买");
+							} else {//卖
+								System.out.println(bd.getSymbol() + ":" + bd.getTradeTime() + ":" + amount +",卖");
+							}
+							
+						}
 					}
 				}
-				
 				pre = bd;
-				
 				bdList.add(bd);
 				if(bdList.size() == 300){
 					saveBidding(bdList);
@@ -62,8 +71,8 @@ public class BiddingCalcTask {
 	 * @param bdList
 	 */
 	private void saveBidding(List<Bidding> bdList){
-//		bdService.batchInsert(bdList);
-//		bdList.clear();
+		bdService.batchInsert(bdList);
+		bdList.clear();
 	}
 	
 }

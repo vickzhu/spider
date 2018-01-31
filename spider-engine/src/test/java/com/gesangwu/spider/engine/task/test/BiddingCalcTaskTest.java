@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.junit.Test;
 
 import com.gesangwu.spider.biz.dao.model.Bidding;
+import com.gesangwu.spider.biz.dao.model.BiddingExample;
 import com.gesangwu.spider.biz.service.BiddingService;
 import com.gesangwu.spider.engine.common.BiddingHolder;
 import com.gesangwu.spider.engine.task.BiddingCalcTask;
@@ -33,7 +34,11 @@ public class BiddingCalcTaskTest extends BaseTest {
 				BiddingHolder.getBidMap().put(bd.getSymbol(), bdMap);
 			}
 			bdMap.put(bd.getTradeTime(), bd);
-		}		
+		}
+//		BiddingExample example = new BiddingExample();
+//		BiddingExample.Criteria criteria = example.createCriteria();
+//		criteria.andIdGreaterThan(0l);
+//		bdService.deleteByExample(example);
 		task.execute();
 		long end = System.currentTimeMillis();
 		System.out.println("Used:"+(end - start));

@@ -79,7 +79,6 @@ private static final Logger logger = LoggerFactory.getLogger(BiddingTask.class);
 		String result = HttpTool.get("http://hq.sinajs.cn/etag.php?list=" + symbolArr,Charset.forName("GBK"));
 		Matcher matcher = r.matcher(result);
 		Date now = new Date();
-		List<Bidding> bdList = new ArrayList<Bidding>();
 		while(matcher.find()){
 			String symbol = matcher.group(1);
 			String detail = matcher.group(2);
@@ -111,16 +110,12 @@ private static final Logger logger = LoggerFactory.getLogger(BiddingTask.class);
 			bd.setTradeTime(tradeTime);
 			bd.setGmtCreate(now);
 			
-			bdList.add(bd);
 			Map<String, Bidding> biddingMap = BiddingHolder.getBidMap().get(symbol);
 			if(biddingMap == null){
 				biddingMap = new TreeMap<String, Bidding>();
 				BiddingHolder.getBidMap().put(symbol, biddingMap);
 			}
 			biddingMap.put(tradeTime, bd);
-		}
-		if(CollectionUtils.isNotEmpty(bdList)){
-			bdService.batchInsert(bdList);
 		}
 	}
 	
