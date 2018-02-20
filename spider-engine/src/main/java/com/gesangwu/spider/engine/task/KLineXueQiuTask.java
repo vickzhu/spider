@@ -112,6 +112,12 @@ public class KLineXueQiuTask {
 				kLine.setOpen(Double.valueOf(open));
 				try {
 					Date tradeDate = sdf1.parse(date);
+					if(tradeDate.getTime() < start){
+						continue;
+					}
+					if(tradeDate.getTime() > end){
+						break;
+					}
 					kLine.setTradeDate(sdf2.format(tradeDate));
 				} catch (ParseException e) {
 					e.printStackTrace();
