@@ -10,7 +10,7 @@
         <li><a href="#springUrl('/longhu/')">龙虎榜</a></li>
 		<li><a href="#springUrl('/clique/')">帮派管理</a></li>
 		<li><a href="#springUrl('/fiverange/r')">压托大单</a></li>
-		<li><a href="#springUrl('/largeVol/r')">大单成交</a></li>
+		<!--<li><a href="#springUrl('/largeVol/r')">大单成交</a></li>-->
 		<li><a href="#springUrl('/jd/r')">夹单</a></li>
 		<li><a href="#springUrl('/shape')">形态</a></li>
 		<li><a href="#springUrl('/byPage')">分页形态</a></li>

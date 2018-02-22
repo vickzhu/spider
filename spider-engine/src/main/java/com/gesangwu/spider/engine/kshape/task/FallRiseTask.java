@@ -13,6 +13,11 @@ import com.gandalf.framework.util.CalculateUtil;
 import com.gesangwu.spider.biz.common.ShapeEnum;
 import com.gesangwu.spider.biz.dao.model.KLine;
 
+/**
+ * 最大涨幅大于7%，最大跌幅超过-2%，头一天涨停
+ * @author zhuxb
+ *
+ */
 @Component
 public class FallRiseTask extends ShapeTask {
 
@@ -31,6 +36,9 @@ public class FallRiseTask extends ShapeTask {
 		List<KLine> klList = klService.selectByPositive(tradeDate);
 		List<Long> idList = new ArrayList<Long>();
 		for (KLine kl : klList) {
+//			if("sh603895".equals(kl.getSymbol())){
+//				System.out.println(".......");
+//			}
 			if(kl.getPercent() < 2){//收盘涨幅过小
 				continue;
 			}

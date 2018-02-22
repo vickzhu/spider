@@ -27,7 +27,7 @@ import com.gesangwu.spider.engine.util.LittleCompanyHolder;
 import com.gesangwu.spider.engine.util.TradeTimeUtil;
 
 /**
- * 五档
+ * 五档，压托单
  * <pre>
  * 这里的定时时间最长一分钟，涨跌幅7个点以上，不予计算
  * </pre>

@@ -1,7 +1,6 @@
 package com.gesangwu.spider.engine.task;
 
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,6 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -86,8 +84,8 @@ private static final Logger logger = LoggerFactory.getLogger(BiddingTask.class);
 			if(details.length < 30){
 				continue;
 			}
-			String zs = details[2];//昨收
-			String xj = details[3];//现价
+//			String zs = details[2];//昨收
+//			String xj = details[3];//现价
 //			double chgPercent = calcChgPercent(zs, xj);//涨幅
 			
 			String[] buyPriceArr = {details[11],details[13],details[15],details[17],details[19]};
@@ -125,11 +123,11 @@ private static final Logger logger = LoggerFactory.getLogger(BiddingTask.class);
 	 * @param xj	现价
 	 * @return
 	 */
-	private double calcChgPercent(String zs, String xj){
-		double zuoshou = Double.valueOf(zs);
-		double xianjia = Double.valueOf(xj);
-		double change = Math.abs(xianjia - zuoshou);
-		return change/zuoshou;
-	}
+//	private double calcChgPercent(String zs, String xj){
+//		double zuoshou = Double.valueOf(zs);
+//		double xianjia = Double.valueOf(xj);
+//		double change = Math.abs(xianjia - zuoshou);
+//		return change/zuoshou;
+//	}
 
 }
