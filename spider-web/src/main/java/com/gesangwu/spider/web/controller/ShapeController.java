@@ -30,7 +30,7 @@ public class ShapeController {
 	
 	@RequestMapping(value = "/shape", method = RequestMethod.GET)
 	public ModelAndView shape(HttpServletRequest request){
-		int shape = ShapeEnum.DI_BU.getCode();
+		int shape = ShapeEnum.FIRST_NEG.getCode();
 		String shapeStr = request.getParameter("shape");
 		if(StringUtil.isNotBlank(shapeStr)){
 			shape = Integer.valueOf(shapeStr);
