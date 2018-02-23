@@ -40,24 +40,27 @@ public class BiddingCalcTask {
 					double amount = CalculateUtil.mul(bd.getPrice(), diff, 2);
 					if(amount > 3000000){//超过300万
 						if(pre.getPrice() > bd.getPrice()){//跌
-							System.out.println(bd.getSymbol() + ":" + bd.getTradeTime() + ":" + amount +",卖");
+//							System.out.println(bd.getSymbol() + ":" + bd.getTradeTime() + ":" + amount +",卖");
 						} else if(pre.getPrice() < bd.getPrice()){//涨
 							System.out.println(bd.getSymbol() + ":" + bd.getTradeTime() + ":" + amount +",买");
+							bdList.add(bd);
+							break;
 						} else {
 							if(pre.getSellSurplus() > 0){//买
 								System.out.println(bd.getSymbol() + ":" + bd.getTradeTime() + ":" + amount +",买");
+								bdList.add(bd);
+								break;
 							} else {//卖
-								System.out.println(bd.getSymbol() + ":" + bd.getTradeTime() + ":" + amount +",卖");
+//								System.out.println(bd.getSymbol() + ":" + bd.getTradeTime() + ":" + amount +",卖");
 							}
 							
 						}
 					}
 				}
 				pre = bd;
-				bdList.add(bd);
-				if(bdList.size() == 300){
-					saveBidding(bdList);
-				}
+			}
+			if(bdList.size() > 300){
+				saveBidding(bdList);
 			}
 		}
 		if(CollectionUtils.isNotEmpty(bdList)){
