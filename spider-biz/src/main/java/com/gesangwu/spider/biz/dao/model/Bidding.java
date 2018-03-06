@@ -17,6 +17,8 @@ public class Bidding {
 
     private String tradeTime;
 
+    private Double dealAmount;
+
     private Date gmtCreate;
 
     public Long getId() {
@@ -73,6 +75,14 @@ public class Bidding {
 
     public void setTradeTime(String tradeTime) {
         this.tradeTime = tradeTime == null ? null : tradeTime.trim();
+    }
+
+    public Double getDealAmount() {
+        return dealAmount;
+    }
+
+    public void setDealAmount(Double dealAmount) {
+        this.dealAmount = dealAmount;
     }
 
     public Date getGmtCreate() {

@@ -39,6 +39,7 @@ public class BiddingCalcTask {
 				if(diff > 100000 ){//差1000手
 					double amount = CalculateUtil.mul(bd.getPrice(), diff, 2);
 					if(amount > 3000000){//超过300万
+						bd.setDealAmount(amount);
 						if(pre.getPrice() > bd.getPrice()){//跌
 //							System.out.println(bd.getSymbol() + ":" + bd.getTradeTime() + ":" + amount +",卖");
 						} else if(pre.getPrice() < bd.getPrice()){//涨

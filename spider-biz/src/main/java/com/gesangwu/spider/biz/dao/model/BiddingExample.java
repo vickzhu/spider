@@ -565,6 +565,66 @@ public class BiddingExample {
             return (Criteria) this;
         }
 
+        public Criteria andDealAmountIsNull() {
+            addCriterion("deal_amount is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDealAmountIsNotNull() {
+            addCriterion("deal_amount is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDealAmountEqualTo(Double value) {
+            addCriterion("deal_amount =", value, "dealAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDealAmountNotEqualTo(Double value) {
+            addCriterion("deal_amount <>", value, "dealAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDealAmountGreaterThan(Double value) {
+            addCriterion("deal_amount >", value, "dealAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDealAmountGreaterThanOrEqualTo(Double value) {
+            addCriterion("deal_amount >=", value, "dealAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDealAmountLessThan(Double value) {
+            addCriterion("deal_amount <", value, "dealAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDealAmountLessThanOrEqualTo(Double value) {
+            addCriterion("deal_amount <=", value, "dealAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDealAmountIn(List<Double> values) {
+            addCriterion("deal_amount in", values, "dealAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDealAmountNotIn(List<Double> values) {
+            addCriterion("deal_amount not in", values, "dealAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDealAmountBetween(Double value1, Double value2) {
+            addCriterion("deal_amount between", value1, value2, "dealAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDealAmountNotBetween(Double value1, Double value2) {
+            addCriterion("deal_amount not between", value1, value2, "dealAmount");
+            return (Criteria) this;
+        }
+
         public Criteria andGmtCreateIsNull() {
             addCriterion("gmt_create is null");
             return (Criteria) this;

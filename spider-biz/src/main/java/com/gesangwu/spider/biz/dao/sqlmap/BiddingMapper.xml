@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gesangwu.spider.biz.dao.mapper.BiddingMapper" >
+<mapper namespace="com.gesangwu.spider.biz.dao.sqlmap.BiddingMapper" >
   <resultMap id="BaseResultMap" type="com.gesangwu.spider.biz.dao.model.Bidding" >
     <result column="id" property="id" jdbcType="BIGINT" />
     <result column="symbol" property="symbol" jdbcType="VARCHAR" />
@@ -9,6 +9,7 @@
     <result column="sell_surplus" property="sellSurplus" jdbcType="INTEGER" />
     <result column="buy_surplus" property="buySurplus" jdbcType="INTEGER" />
     <result column="trade_time" property="tradeTime" jdbcType="VARCHAR" />
+    <result column="deal_amount" property="dealAmount" jdbcType="DOUBLE" />
     <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -70,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, symbol, price, vol, sell_surplus, buy_surplus, trade_time, gmt_create
+    id, symbol, price, vol, sell_surplus, buy_surplus, trade_time, deal_amount, gmt_create
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.BiddingExample" >
     select
@@ -101,10 +102,10 @@
     </selectKey>
     insert into bidding (symbol, price, vol, 
       sell_surplus, buy_surplus, trade_time, 
-      gmt_create)
+      deal_amount, gmt_create)
     values (#{symbol,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, #{vol,jdbcType=INTEGER}, 
       #{sellSurplus,jdbcType=INTEGER}, #{buySurplus,jdbcType=INTEGER}, #{tradeTime,jdbcType=VARCHAR}, 
-      #{gmtCreate,jdbcType=TIMESTAMP})
+      #{dealAmount,jdbcType=DOUBLE}, #{gmtCreate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.Bidding" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -130,6 +131,9 @@
       <if test="tradeTime != null" >
         trade_time,
       </if>
+      <if test="dealAmount != null" >
+        deal_amount,
+      </if>
       <if test="gmtCreate != null" >
         gmt_create,
       </if>
@@ -152,6 +156,9 @@
       </if>
       <if test="tradeTime != null" >
         #{tradeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="dealAmount != null" >
+        #{dealAmount,jdbcType=DOUBLE},
       </if>
       <if test="gmtCreate != null" >
         #{gmtCreate,jdbcType=TIMESTAMP},
@@ -188,6 +195,9 @@
       <if test="record.tradeTime != null" >
         trade_time = #{record.tradeTime,jdbcType=VARCHAR},
       </if>
+      <if test="record.dealAmount != null" >
+        deal_amount = #{record.dealAmount,jdbcType=DOUBLE},
+      </if>
       <if test="record.gmtCreate != null" >
         gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
       </if>
@@ -205,20 +215,22 @@
       sell_surplus = #{record.sellSurplus,jdbcType=INTEGER},
       buy_surplus = #{record.buySurplus,jdbcType=INTEGER},
       trade_time = #{record.tradeTime,jdbcType=VARCHAR},
+      deal_amount = #{record.dealAmount,jdbcType=DOUBLE},
       gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true">
-    insert into bidding (symbol, price, vol, 
-      sell_surplus, buy_surplus, trade_time, gmt_create
+  <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true">
+    insert into bidding (symbol, price, vol, sell_surplus, buy_surplus, 
+    	trade_time, deal_amount, gmt_create
       )
     values 
     <foreach collection="list" index="index" item="bd" separator=",">
     (#{bd.symbol,jdbcType=VARCHAR}, #{bd.price,jdbcType=DOUBLE}, #{bd.vol,jdbcType=INTEGER}, 
       #{bd.sellSurplus,jdbcType=INTEGER}, #{bd.buySurplus,jdbcType=INTEGER}, 
-      #{bd.tradeTime,jdbcType=VARCHAR}, #{bd.gmtCreate,jdbcType=TIMESTAMP}
+      #{bd.tradeTime,jdbcType=VARCHAR}, #{dealAmount,jdbcType=DOUBLE}, 
+      #{bd.gmtCreate,jdbcType=TIMESTAMP}
       )
     </foreach>
   </insert>
