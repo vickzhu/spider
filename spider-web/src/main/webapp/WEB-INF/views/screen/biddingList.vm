@@ -1,0 +1,72 @@
+##########
+##帮派持股##
+##########
+<link rel="stylesheet" href="#resources('css/datepicker.css')" />
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">股票</a> <a href="#" class="current">个人持股</a> </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+            <h5>竞价</h5>
+          </div>
+          <div class="widget-content">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+				  <th style="width:5%;">序号</th>
+                  <th>股票</th>
+				  <th>当前价</th>
+				  <th>当前量</th>
+				  <th>当前总额</th>
+				  <th>成交额</th>
+				  <th>交易时间</th>
+				  <th>创建时间</th>
+                </tr>
+              </thead>
+              <tbody>
+				#foreach($ssh in ${page.records})
+                <tr>
+				  <td>$!{velocityCount}</td>
+				  <td>
+					<a href="#springUrl('/stock')?symbol=$!{ssh.symbol}" target="_blank">
+					$!{companyTool.getStockName($!{ssh.symbol})}
+                    </a>
+				  </td>
+				  <td>$!{ssh.price}</td>
+				  <td>$!{ssh.vol}</td>
+				  #set($totalAmt = $!{ssh.vol} * $!{ssh.price})
+				  <td>$number.format("###.000", $!{totalAmt})</td>
+				  <td>$number.format("###.000", $!{ssh.dealAmount})</td>
+				  <td>$!{ssh.tradeTime}</td>
+                  <td>$date.format("yyyy-MM-dd hh:mm:ss", $!{ssh.gmtCreate})</td>
+                </tr>
+				#end
+              </tbody>
+             </table>
+			 <div id="page_nav"></div>
+			</div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+<script src="#resources('js/pagination.js')"></script>
+<script type="text/javascript">
+	function gotoPage(pageNo){
+		go(pageNo);
+	}
+	$("#shape").change(function(){
+		go(1);
+	});
+	
+	function go(pageNo){
+		$("#curPage").val(pageNo);
+		$("#searchForm").submit();
+	}
+	
+	$('#page_nav').html(new Pagination($!{page.curPage},$!{page.totalPages}, gotoPage).getHtml());
+</script>
