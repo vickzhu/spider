@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.gandalf.framework.mybatis.BaseMapper;
 import com.gandalf.framework.mybatis.BaseServiceImpl;
+import com.gandalf.framework.web.tool.Page;
 import com.gesangwu.spider.biz.dao.mapper.BiddingMapper;
 import com.gesangwu.spider.biz.dao.model.Bidding;
 import com.gesangwu.spider.biz.dao.model.BiddingExample;
@@ -28,6 +29,16 @@ public class BiddingServicesImpl extends BaseServiceImpl<Bidding, BiddingExample
 	@Override
 	public void batchInsert(List<Bidding> bdList) {
 		mapper.batchInsert(bdList);		
+	}
+
+	@Override
+	public void selectByPagination(BiddingExample example, Page<Bidding> page) {
+		example.setOffset(page.getOffset());
+        example.setRows(page.getPageSize());
+        int totalCounts = mapper.countByExample(example);
+        page.setTotalCounts(totalCounts);
+        List<Bidding> biddingList = mapper.selectByExample(example);
+        page.setRecords(biddingList);
 	}
 
 }
