@@ -229,7 +229,7 @@
     <foreach collection="list" index="index" item="bd" separator=",">
     (#{bd.symbol,jdbcType=VARCHAR}, #{bd.price,jdbcType=DOUBLE}, #{bd.vol,jdbcType=INTEGER}, 
       #{bd.sellSurplus,jdbcType=INTEGER}, #{bd.buySurplus,jdbcType=INTEGER}, 
-      #{bd.tradeTime,jdbcType=VARCHAR}, #{dealAmount,jdbcType=DOUBLE}, 
+      #{bd.tradeTime,jdbcType=VARCHAR}, #{bd.dealAmount,jdbcType=DOUBLE}, 
       #{bd.gmtCreate,jdbcType=TIMESTAMP}
       )
     </foreach>
