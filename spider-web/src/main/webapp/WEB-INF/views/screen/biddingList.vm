@@ -38,9 +38,10 @@
 				  </td>
 				  <td>$!{ssh.price}</td>
 				  <td>$!{ssh.vol}</td>
-				  #set($totalAmt = $!{ssh.vol} * $!{ssh.price})
-				  <td>$number.format("###.000", $!{totalAmt})</td>
-				  <td>$number.format("###.000", $!{ssh.dealAmount})</td>
+				  #set($totalAmt = $math.mul($!{ssh.vol}, $!{ssh.price}))
+				  #set($totalAmt = $math.round($totalAmt))
+				  <td>$number.format("###.00", $!{totalAmt})</td>
+				  <td>$number.format("###.00", $!{ssh.dealAmount})</td>
 				  <td>$!{ssh.tradeTime}</td>
                   <td>$date.format("yyyy-MM-dd hh:mm:ss", $!{ssh.gmtCreate})</td>
                 </tr>
