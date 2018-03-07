@@ -37,7 +37,7 @@
                     </a>
 				  </td>
 				  <td>$!{ssh.price}</td>
-				  <td>$!{ssh.vol}</td>
+				  <td>$number.format("###.00", $!{ssh.vol})</td>
 				  #set($totalAmt = $math.mul($!{ssh.vol}, $!{ssh.price}))
 				  #set($totalAmt = $math.round($totalAmt))
 				  <td>$number.format("###.00", $!{totalAmt})</td>
