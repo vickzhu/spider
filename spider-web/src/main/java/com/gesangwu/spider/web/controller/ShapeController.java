@@ -64,7 +64,7 @@ public class ShapeController {
 		if(StringUtil.isNotEmpty(shapeStr)){
 			int shape = Integer.valueOf(shapeStr);
 			KLineExample example = new KLineExample();
-			example.setOrderByClause("trade_date desc");
+			example.setOrderByClause("trade_date desc, id desc");
 			KLineExample.Criteria criteria = example.createCriteria();
 			criteria.andShapeEqualTo(shape);
 			Page<KLine> page = new Page<KLine>(curPage, 10);
