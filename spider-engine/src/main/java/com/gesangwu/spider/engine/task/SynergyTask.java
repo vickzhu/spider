@@ -29,7 +29,7 @@ import com.gesangwu.spider.biz.service.SynergyService;
 import com.gesangwu.spider.engine.task.test.FPGrowthUtil;
 import com.gesangwu.spider.engine.task.test.FPTreeNode;
 
-@Component
+//@Component
 public class SynergyTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SynergyTask.class);
