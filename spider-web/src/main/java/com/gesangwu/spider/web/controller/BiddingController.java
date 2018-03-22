@@ -17,6 +17,7 @@ import com.gesangwu.spider.biz.service.BiddingService;
 @RequestMapping("/bidding")
 public class BiddingController {
 	
+	private static final int CPP = 20;
 	@Resource
 	private BiddingService bidService;
 
@@ -28,7 +29,7 @@ public class BiddingController {
 		if(StringUtil.isNotBlank(pageStr)){
 			curPage = Integer.valueOf(pageStr);
 		}
-		Page<Bidding> page = new Page<Bidding>(curPage);
+		Page<Bidding> page = new Page<Bidding>(curPage, CPP);
 		BiddingExample example = new BiddingExample();
 		example.setOrderByClause("gmt_create desc");
 		bidService.selectByPagination(example, page);
