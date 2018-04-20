@@ -31,7 +31,7 @@ public class BiddingController {
 		}
 		Page<Bidding> page = new Page<Bidding>(curPage, CPP);
 		BiddingExample example = new BiddingExample();
-		example.setOrderByClause("gmt_create desc");
+		example.setOrderByClause("gmt_create desc, id desc");
 		bidService.selectByPagination(example, page);
 		mav.addObject("page", page);
 		mav.addObject("curPage", curPage);
