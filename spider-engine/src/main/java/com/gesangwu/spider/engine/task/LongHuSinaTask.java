@@ -45,7 +45,7 @@ public class LongHuSinaTask extends LongHuTaskTemplate {
 	@Override
 	protected List<LongHu> getLongHuList(String tradeDate) {
 		String url = buildUrl(tradeDate, 0);
-		String content = HttpTool.get(url, Charset.forName("GB2312"));
+		String content = HttpTool.get(url, Charset.forName("GBK"));
 		Matcher m =  p1.matcher(content);
 		Date now = new Date();
 		List<LongHu> longHuList = new ArrayList<LongHu>();
