@@ -4,31 +4,35 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
-import com.gesangwu.spider.engine.kshape.task.ShrinkFallTask;
+import com.gesangwu.spider.engine.kshape.task.ImmortalGuiderTask;
 import com.gesangwu.spider.engine.test.BaseTest;
+/**
+ * 仙人指路
+ * @author bran
+ *
+ */
+public class ImmortalGuiderTaskTest extends BaseTest {
 
-public class ShrinkFallTaskTest extends BaseTest {
-	
 	@Resource
-	private ShrinkFallTask task;
-
+	private ImmortalGuiderTask task;
+	
 	@Test
 	public void execute(){
 		task.execute();
-//		task.execute("2017-09-04");
 	}
 	
 //	@Test
 	public void init(){
 		for(int i = 1; i <= 30; i++){
 			String tradeDate = buildDate(i);
+			System.out.println(tradeDate);
 			task.execute(tradeDate);
 		}
 	}
 	
 	private String buildDate(int day){
 		StringBuilder sb = new StringBuilder();
-		sb.append("2017-08-");
+		sb.append("2017-09-");
 		if(day < 10){
 			sb.append("0");
 		}

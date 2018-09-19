@@ -9,6 +9,6 @@ immortal	仙人	17
 jihua	季华	16
 jump	跳空	13
 ruocuo	揉搓	12
-shrink	所跌	20
+shrink	缩跌	20
 upper	上影	11
 yizi	一字	8

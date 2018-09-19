@@ -54,6 +54,9 @@ public class GroundSkyTask extends ShapeTask {
 		for (KLine kl : klList) {
 			double high = kl.getHigh();
 			double low = kl.getLow();
+			if(kl.getYesterdayClose() == null){
+				continue;
+			}
 			double yest = kl.getYesterdayClose();
 			if(high < yest || low > yest){
 				continue;

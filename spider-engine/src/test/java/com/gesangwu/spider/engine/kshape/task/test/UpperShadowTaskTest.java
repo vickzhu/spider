@@ -19,13 +19,13 @@ public class UpperShadowTaskTest extends BaseTest {
 
 	@Test
 	public void execute(){
-//		task.execute();
-		task.execute("2017-11-13");
+		task.execute();
+//		task.execute("2018-07-04");
 	}
 	
 //	@Test
 	public void init(){
-		for(int i = 1; i <= 31; i++){
+		for(int i = 1; i <= 4; i++){
 			String tradeDate = buildDate(i);
 			task.execute(tradeDate);
 		}
@@ -33,7 +33,7 @@ public class UpperShadowTaskTest extends BaseTest {
 	
 	private String buildDate(int day){
 		StringBuilder sb = new StringBuilder();
-		sb.append("2017-10-");
+		sb.append("2018-05-");
 		if(day < 10){
 			sb.append("0");
 		}

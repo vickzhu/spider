@@ -18,12 +18,12 @@ import com.gesangwu.spider.biz.dao.model.KLineExample;
  * @author zhuxb
  *
  */
-@Component
+//@Component
 public class JiHuaTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(JiHuaTask.class);
 
-	@Scheduled(cron="0 16 15 * * MON-FRI")
+//	@Scheduled(cron="0 16 15 * * MON-FRI")
 	public void execute(){
 		logger.info("JiHua task begin...");
 		long start = System.currentTimeMillis();
@@ -49,7 +49,7 @@ public class JiHuaTask extends ShapeTask {
 			}
 		}
 		if(CollectionUtils.isNotEmpty(idList)){
-			klService.updateShape(ShapeEnum.JI_HUA, idList);
+//			klService.updateShape(ShapeEnum.JI_HUA, idList);
 		}
 	}
 	

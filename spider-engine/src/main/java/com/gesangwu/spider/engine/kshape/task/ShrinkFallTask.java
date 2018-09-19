@@ -25,7 +25,7 @@ public class ShrinkFallTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ShrinkFallTask.class);
 
-	@Scheduled(cron="0 20 15 * * MON-FRI")
+//	@Scheduled(cron="0 20 15 * * MON-FRI")
 	public void execute(){
 		logger.info("Shrink fall task begin...");
 		long start = System.currentTimeMillis();
@@ -43,7 +43,7 @@ public class ShrinkFallTask extends ShapeTask {
 				idList.add(kl.getId());
 			}
 		}
-		klService.updateShape(ShapeEnum.SHR_FALL, idList);
+//		klService.updateShape(ShapeEnum.SHR_FALL, idList);
 	}
 	
 	public boolean isValid(KLine kLine){

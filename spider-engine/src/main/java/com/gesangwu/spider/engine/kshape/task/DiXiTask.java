@@ -22,12 +22,12 @@ import com.gesangwu.spider.biz.dao.model.KLine;
  * @author bran
  *
  */
-@Component
+//@Component
 public class DiXiTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(DiXiTask.class);
 
-	@Scheduled(cron="0 07 15 * * MON-FRI")
+//	@Scheduled(cron="0 07 15 * * MON-FRI")
 	public void execute(){
 		logger.info("DiXi task begin...");
 		long start = System.currentTimeMillis();
@@ -48,6 +48,9 @@ public class DiXiTask extends ShapeTask {
 				continue;
 			}
 			double open = kl.getOpen();
+			if(kl.getYesterdayClose() == null){
+				continue;
+			}
 			double yest = kl.getYesterdayClose();
 			if(open < yest){//开绿
 				double diff = CalculateUtil.sub(yest, open, 3);
@@ -71,7 +74,7 @@ public class DiXiTask extends ShapeTask {
 			idList.add(kl.getId());
 		}
 		if(CollectionUtils.isNotEmpty(idList)){
-			klService.updateShape(ShapeEnum.DI_XI, idList);
+//			klService.updateShape(ShapeEnum.DI_XI, idList);
 		}
 	}
 	

@@ -69,7 +69,7 @@ public class KLineSinaTask {
 	@Resource
 	private KLineService kLineService;
 
-	@Scheduled(cron="0 05 15 * * MON-FRI")
+	@Scheduled(cron="0 02 15 * * MON-FRI")
 	public void execute(){
 		long start = System.currentTimeMillis();
 		

@@ -493,7 +493,7 @@
     		(SELECT trade_date FROM long_hu ORDER BY trade_date DESC LIMIT 1)
     	</otherwise>
     </choose>
-    order by sec_dept_relation DESC
+    order by chg_percent DESC
   </select>
   <select id="selectTradeDate" parameterType="java.lang.String" resultType="java.lang.String">
   	select trade_date from long_hu where symbol = #{symbol,jdbcType=VARCHAR} order by trade_date DESC

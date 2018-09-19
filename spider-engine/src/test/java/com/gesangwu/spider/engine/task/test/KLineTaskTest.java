@@ -24,12 +24,12 @@ public class KLineTaskTest extends BaseTest {
 	public void executTest(){
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.MILLISECOND, 0);
-		c.set(2017, 6, 20, 0, 0, 0);
+		c.set(2018, 3, 24, 0, 0, 0);
 		
 //		c.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH)-1);
 		long start = c.getTimeInMillis();
 		System.out.println(c.getTimeInMillis());
-		c.set(2017, 6, 20, 23, 59, 59);
+		c.set(2018, 4, 4, 23, 59, 59);
 //		c.set(Calendar.HOUR, 23);
 //		c.set(Calendar.MINUTE, 59);
 //		c.set(Calendar.SECOND, 59);
@@ -52,9 +52,9 @@ public class KLineTaskTest extends BaseTest {
 	public static void main(String[] args){
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.MILLISECOND, 0);
-		c.set(2017, 1, 3, 0, 0, 0);
+		c.set(2018, 1, 8, 0, 0, 0);
 		System.out.println(c.getTimeInMillis());
-		c.set(2017, 1, 3, 23, 59, 59);
+		c.set(2018, 1, 14, 23, 59, 59);
 		System.out.println(c.getTimeInMillis());
 	}
 }

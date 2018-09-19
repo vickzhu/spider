@@ -28,12 +28,12 @@ import com.gesangwu.spider.biz.dao.model.KLineExample;
  * @author zhuxb
  *
  */
-@Component
+//@Component
 public class RouCuoTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(RouCuoTask.class);
 
-	@Scheduled(cron="0 12 15 * * MON-FRI")
+//	@Scheduled(cron="0 12 15 * * MON-FRI")
 	public void execute(){
 		logger.info("Rou Cuo task begin...");
 		long start = System.currentTimeMillis();
@@ -59,7 +59,7 @@ public class RouCuoTask extends ShapeTask {
 			execute(i, tradeDate, idList);
 		}
 		if(CollectionUtils.isNotEmpty(idList)){
-			klService.updateShape(ShapeEnum.ROU_CUO, idList);
+//			klService.updateShape(ShapeEnum.ROU_CUO, idList);
 		}
 	}
 	

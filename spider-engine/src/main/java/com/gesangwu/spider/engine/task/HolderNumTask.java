@@ -81,7 +81,7 @@ public class HolderNumTask {
 				}
 				list.add(holderNum);
 			}
-			if(i == size-1 || list.size() >= 50){
+			if((i == size-1 && list.size() > 0) || list.size() >= 50){
 				hnService.insertBatch(list);
 				list.clear();
 			}

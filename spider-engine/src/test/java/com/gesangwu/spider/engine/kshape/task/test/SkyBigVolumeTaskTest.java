@@ -7,6 +7,11 @@ import org.junit.Test;
 import com.gesangwu.spider.engine.kshape.task.SkyBigVolumeTask;
 import com.gesangwu.spider.engine.test.BaseTest;
 
+/**
+ * 飞天巨量
+ * @author bran
+ *
+ */
 public class SkyBigVolumeTaskTest extends BaseTest {
 
 	@Resource
