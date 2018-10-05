@@ -10,11 +10,11 @@
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
             <h5>龙虎榜</h5>
 			<a id="fetchSina" class="label label-important" style="line-height:20px;">
-			获取新浪龙虎
+			添加数据
 			</a>
           </div>
 		  <div class="widget-content nopadding">
-			<form id="searchForm" action="#springUrl('/longhu/')" method="get" class="form-horizontal">
+			<form id="searchForm" action="#springUrl('/zt/')" method="get" class="form-horizontal">
                 <div class="search_option">
 					<div>
                         <label>日期：</label>
@@ -36,22 +36,27 @@
 				  <th style="width:5%;">序号</th>
                   <th>代码</th>
 				  <th>股票</th>
-				  <th>连板天数</th>
+				  <th>连板天数</th>				  
 				  <th>涨停原因</th>
 				  <th>操作</th>
                 </tr>
               </thead>
               <tbody>
 				#foreach($lb in ${lbList})
-                <tr symbol="$!{lb.symbol}">
+                <tr lbId="$!{lb.id}">
 				  <td>$!{velocityCount}</td>
                   <td>$!{lb.symbol}</td>
                   <td>$!{lb.stockName}</td>			  
-				  <td>$!{lb.days}</td>
+				  <td>
+					$!{lb.days}板
+					#if("$!{lb.shape}" != "")
+						($!{lb.shape})
+					#end
+				  </td>
 				  <td>$!{lb.reason}</td>
 				  <td>
-					<a href="javascript:;">修改</a>&nbsp;
-					<a href="javascript:;">删除</a>
+					<a class="zt-edit" href="javascript:;">修改</a>&nbsp;
+					<a class="zt-del" href="javascript:;" stockName="$!{lb.stockName}">删除</a>
 				  </td>
                 </tr>
 				#end
@@ -66,9 +71,23 @@
 <script src="#resources('js/bootstrap-datepicker.js')"></script> 
 <script type="text/javascript">
 	$(function(){
-		$(".lh_detail").click(function(){
-			var symbol = $(this).parent().parent().attr("symbol");
-			window.open("#springUrl('/longhu/detail')?symbol="+symbol+"&tradeDate=${tradeDate}");
+		$(".zt-edit").click(function(){
+			var id = $(this).parent().parent().attr("lbId");
+			window.open("#springUrl('/zt/edit')?id="+id+"&tradeDate=${tradeDate}");
+		});
+		$(".zt-del").click(function(){
+			var id = $(this).parent().parent().attr("lbId");
+			var r = confirm("确定删除"+$(this).attr("stockName"));
+			if(r==true){
+				jQuery.post("#springUrl('/zt/del')?id="+id,{},function(result){
+					if(result.success){
+    					alert("删除成功");
+						location.reload();
+    				}else {
+    					alert("删除失败");
+    				}
+				});
+			}
 		});
 		$('.datepicker').datepicker({format: 'yyyy-mm-dd',
             weekStart: 1,

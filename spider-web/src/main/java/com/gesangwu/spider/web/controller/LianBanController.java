@@ -10,9 +10,11 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gandalf.framework.util.StringUtil;
+import com.gandalf.framework.web.tool.AjaxResult;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
@@ -35,7 +37,7 @@ public class LianBanController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView zt(HttpServletRequest request){
-		String tradeDate = request.getParameter("date");
+		String tradeDate = request.getParameter("tradeDate");
 		if(StringUtil.isBlank(tradeDate)){			
 			tradeDate = klService.selectLatestDate();
 		}
@@ -45,7 +47,7 @@ public class LianBanController {
 		List<LianBan> lbList = lbService.selectByExample(example);
 		ModelAndView mav = new ModelAndView("zhangtingban");
 		mav.addObject("lbList", lbList);
-		mav.addObject("date", tradeDate);
+		mav.addObject("tradeDate", tradeDate);
 		return mav;
 	}
 	
@@ -77,14 +79,42 @@ public class LianBanController {
 		}
 	}
 	
-	@RequestMapping(value = "/del")
-	public void del(HttpServletRequest request){
+	@ResponseBody
+	@RequestMapping(value = "/del", method = RequestMethod.POST)
+	public AjaxResult del(HttpServletRequest request){
 		Long id = Long.valueOf(request.getParameter("id"));
-		lbService.deleteByPrimaryKey(id);
+		int count = lbService.deleteByPrimaryKey(id);
+		return new AjaxResult(count == 1, null);
 	}
 	
-	@RequestMapping(value = "/update")
-	public void update(HttpServletRequest request){
-		
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView update(HttpServletRequest request){
+		long id = Long.valueOf(request.getParameter("id"));
+		LianBan lb = lbService.selectByPrimaryKey(id);
+		ModelAndView mav = new ModelAndView("zhangtingEdit");
+		mav.addObject("lb", lb);
+		return mav;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/edit", method = RequestMethod.POST)
+	public AjaxResult doUpdate(HttpServletRequest request){
+		long id = Long.valueOf(request.getParameter("id"));
+		int days = Integer.valueOf(request.getParameter("days"));
+		String plateStr = request.getParameter("plate");
+		Long plate = null;
+		if(StringUtil.isNotBlank(plateStr)){
+			plate = Long.valueOf(request.getParameter("plate"));
+		}
+		String shape = request.getParameter("shape");
+		String reason = request.getParameter("reason");
+		LianBan lb = lbService.selectByPrimaryKey(id);
+		lb.setDays(days);
+		lb.setPlate(plate);
+		lb.setReason(reason);
+		lb.setGmtUpdate(new Date());
+		lb.setShape(shape);
+		lbService.updateByPrimaryKey(lb);
+		return new AjaxResult(true, null);
 	}
 }

@@ -13,6 +13,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.util.StringUtil;
+import com.gesangwu.spider.biz.common.LianBanStatus;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
@@ -54,7 +55,7 @@ public class LianBanTask {
 			lb.setGmtCreate(date);
 			lb.setPercent(kl.getPercent());
 			lb.setShape(null);
-			lb.setStatus(1);
+			lb.setStatus(LianBanStatus.ZT.getCode());
 			lb.setSymbol(kl.getSymbol());
 			Company company = compnayService.selectBySymbol(kl.getSymbol());
 			if(company == null){

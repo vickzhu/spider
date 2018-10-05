@@ -1,0 +1,83 @@
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">营业部</a> <a href="#" class="current">编辑</a> </div>
+    <h1>${lb.stockName}</h1>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span8">
+        <div class="widget-box">
+            <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+              <h5>涨停时间：${lb.tradeDate}</h5>
+            </div>
+            <div class="widget-content nopadding">
+				$!{tokenTool.enableAjaxToken()}
+              <form id="dept-form" class="form-horizontal">
+				<input type="hidden" id="id" name="id" value="$!{lb.id}"/>
+				<div class="control-group">
+                  <label class="control-label">连板天数:</label>
+                  <div class="controls">
+					<input type="text" name="days" value="${lb.days}"/>
+                  </div>
+                </div>
+				<div class="control-group">
+                  <label class="control-label">板块:</label>
+                  <div class="controls">
+					<input type="text" name="plate" value="$!{lb.plate}"/>
+                  </div>
+                </div>
+				<div class="control-group">
+                  <label class="control-label">原因:</label>
+                  <div class="controls">
+					<input type="text" name="reason" value="$!{lb.reason}"/>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">形态:</label>
+                  <div class="controls">
+					<input type="text" name="shape" value="$!{lb.shape}"/>
+                  </div>
+                </div>                
+                <div class="form-actions">
+                  <button type="button" class="btn btn-success">保存</button>
+				  <button type="button" class="btn btn-danger">删除</button>
+                </div>
+              </form>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$(".btn-success").click(function(){
+			jQuery.post("#springUrl('/zt/edit')",$("#dept-form").serialize(),function(result){
+				if(result.success){
+					alert("保存成功");
+				}else {
+					alert("保存失败");
+				}
+			});			
+		});
+		$(".exit-clique").click(function(){
+			$("#delete-content").text("确定退出["+$(this).attr("cliqueName")+"]?");
+			$("#delete-submit").attr("cliqueId",$(this).attr("cliqueId"));
+		})
+		$("#delete-submit").click(function(){
+			var param={deptCode:$("#deptCode").val(),cliqueId:$(this).attr("cliqueId")};
+			jQuery.post("#springUrl('/sec-dept/exit-clique')",param,function(result){
+				
+			});
+		});
+		$(".update-clique").click(function(){
+			var parentTr = $(this).parent().parent();
+			var cdId = parentTr.attr("cdId");
+			var deptType = parentTr.find("select").val();
+			var param={cdId:cdId,deptType:deptType};
+			jQuery.post("#springUrl('/sec-dept/edit-clique')",param,function(result){
+				
+			});
+		});
+	});
+</script>
