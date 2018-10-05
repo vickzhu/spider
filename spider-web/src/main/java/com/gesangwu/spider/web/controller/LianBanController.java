@@ -65,13 +65,14 @@ public class LianBanController {
 			LianBan lb = new LianBan();
 			lb.setDays(1);
 			lb.setGmtCreate(new Date());
-			lb.setMemo(null);
 			lb.setPercent(kl.getPercent());
 			lb.setShape(null);
 			lb.setStatus(1);
-			lb.setStockCode(kl.getSymbol());
+			lb.setSymbol(kl.getSymbol());
 			lb.setStockName(stockName);
 			lb.setTradeDate(tradeDate);
+			lb.setPlate(null);
+			lb.setReason(null);
 			lbService.insert(lb);
 		}
 	}

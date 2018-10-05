@@ -52,17 +52,18 @@ public class LianBanTask {
 			LianBan lb = new LianBan();
 			lb.setDays(1);
 			lb.setGmtCreate(date);
-			lb.setMemo(null);
 			lb.setPercent(kl.getPercent());
 			lb.setShape(null);
 			lb.setStatus(1);
-			lb.setStockCode(kl.getSymbol());
+			lb.setSymbol(kl.getSymbol());
 			Company company = compnayService.selectBySymbol(kl.getSymbol());
 			if(company == null){
 				continue;
 			}
 			lb.setStockName(company.getStockName());
 			lb.setTradeDate(tradeDate);
+			lb.setPlate(null);
+			lb.setReason(null);
 			lbList.add(lb);
 		}
 		if(CollectionUtils.isNotEmpty(lbList)){

@@ -3,14 +3,15 @@
 <mapper namespace="com.gesangwu.spider.biz.dao.mapper.LianBanMapper" >
   <resultMap id="BaseResultMap" type="com.gesangwu.spider.biz.dao.model.LianBan" >
     <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="stock_code" property="stockCode" jdbcType="VARCHAR" />
+    <result column="symbol" property="symbol" jdbcType="VARCHAR" />
     <result column="stock_name" property="stockName" jdbcType="VARCHAR" />
     <result column="days" property="days" jdbcType="INTEGER" />
     <result column="percent" property="percent" jdbcType="DOUBLE" />
     <result column="trade_date" property="tradeDate" jdbcType="VARCHAR" />
     <result column="shape" property="shape" jdbcType="VARCHAR" />
+    <result column="plate" property="plate" jdbcType="BIGINT" />
+    <result column="reason" property="reason" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="memo" property="memo" jdbcType="VARCHAR" />
     <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
     <result column="gmt_update" property="gmtUpdate" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -73,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, stock_code, stock_name, days, percent, trade_date, shape, status, memo, gmt_create, 
-    gmt_update
+    id, symbol, stock_name, days, percent, trade_date, shape, plate, reason, status, 
+    gmt_create, gmt_update
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.LianBanExample" >
     select
@@ -113,14 +114,14 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into lian_ban (stock_code, stock_name, days, 
+    insert into lian_ban (symbol, stock_name, days, 
       percent, trade_date, shape, 
-      status, memo, gmt_create, 
-      gmt_update)
-    values (#{stockCode,jdbcType=VARCHAR}, #{stockName,jdbcType=VARCHAR}, #{days,jdbcType=INTEGER}, 
+      plate, reason, status, 
+      gmt_create, gmt_update)
+    values (#{symbol,jdbcType=VARCHAR}, #{stockName,jdbcType=VARCHAR}, #{days,jdbcType=INTEGER}, 
       #{percent,jdbcType=DOUBLE}, #{tradeDate,jdbcType=VARCHAR}, #{shape,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER}, #{memo,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
-      #{gmtUpdate,jdbcType=TIMESTAMP})
+      #{plate,jdbcType=BIGINT}, #{reason,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.LianBan" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -128,8 +129,8 @@
     </selectKey>
     insert into lian_ban
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="stockCode != null" >
-        stock_code,
+      <if test="symbol != null" >
+        symbol,
       </if>
       <if test="stockName != null" >
         stock_name,
@@ -146,11 +147,14 @@
       <if test="shape != null" >
         shape,
       </if>
+      <if test="plate != null" >
+        plate,
+      </if>
+      <if test="reason != null" >
+        reason,
+      </if>
       <if test="status != null" >
         status,
-      </if>
-      <if test="memo != null" >
-        memo,
       </if>
       <if test="gmtCreate != null" >
         gmt_create,
@@ -160,8 +164,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="stockCode != null" >
-        #{stockCode,jdbcType=VARCHAR},
+      <if test="symbol != null" >
+        #{symbol,jdbcType=VARCHAR},
       </if>
       <if test="stockName != null" >
         #{stockName,jdbcType=VARCHAR},
@@ -178,11 +182,14 @@
       <if test="shape != null" >
         #{shape,jdbcType=VARCHAR},
       </if>
+      <if test="plate != null" >
+        #{plate,jdbcType=BIGINT},
+      </if>
+      <if test="reason != null" >
+        #{reason,jdbcType=VARCHAR},
+      </if>
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
-      </if>
-      <if test="memo != null" >
-        #{memo,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreate != null" >
         #{gmtCreate,jdbcType=TIMESTAMP},
@@ -204,8 +211,8 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.stockCode != null" >
-        stock_code = #{record.stockCode,jdbcType=VARCHAR},
+      <if test="record.symbol != null" >
+        symbol = #{record.symbol,jdbcType=VARCHAR},
       </if>
       <if test="record.stockName != null" >
         stock_name = #{record.stockName,jdbcType=VARCHAR},
@@ -222,11 +229,14 @@
       <if test="record.shape != null" >
         shape = #{record.shape,jdbcType=VARCHAR},
       </if>
+      <if test="record.plate != null" >
+        plate = #{record.plate,jdbcType=BIGINT},
+      </if>
+      <if test="record.reason != null" >
+        reason = #{record.reason,jdbcType=VARCHAR},
+      </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=INTEGER},
-      </if>
-      <if test="record.memo != null" >
-        memo = #{record.memo,jdbcType=VARCHAR},
       </if>
       <if test="record.gmtCreate != null" >
         gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
@@ -242,14 +252,15 @@
   <update id="updateByExample" parameterType="map" >
     update lian_ban
     set id = #{record.id,jdbcType=BIGINT},
-      stock_code = #{record.stockCode,jdbcType=VARCHAR},
+      symbol = #{record.symbol,jdbcType=VARCHAR},
       stock_name = #{record.stockName,jdbcType=VARCHAR},
       days = #{record.days,jdbcType=INTEGER},
       percent = #{record.percent,jdbcType=DOUBLE},
       trade_date = #{record.tradeDate,jdbcType=VARCHAR},
       shape = #{record.shape,jdbcType=VARCHAR},
+      plate = #{record.plate,jdbcType=BIGINT},
+      reason = #{record.reason,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=INTEGER},
-      memo = #{record.memo,jdbcType=VARCHAR},
       gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
       gmt_update = #{record.gmtUpdate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -259,8 +270,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.gesangwu.spider.biz.dao.model.LianBan" >
     update lian_ban
     <set >
-      <if test="stockCode != null" >
-        stock_code = #{stockCode,jdbcType=VARCHAR},
+      <if test="symbol != null" >
+        symbol = #{symbol,jdbcType=VARCHAR},
       </if>
       <if test="stockName != null" >
         stock_name = #{stockName,jdbcType=VARCHAR},
@@ -277,11 +288,14 @@
       <if test="shape != null" >
         shape = #{shape,jdbcType=VARCHAR},
       </if>
+      <if test="plate != null" >
+        plate = #{plate,jdbcType=BIGINT},
+      </if>
+      <if test="reason != null" >
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="memo != null" >
-        memo = #{memo,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreate != null" >
         gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
@@ -294,30 +308,30 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.gesangwu.spider.biz.dao.model.LianBan" >
     update lian_ban
-    set stock_code = #{stockCode,jdbcType=VARCHAR},
+    set symbol = #{symbol,jdbcType=VARCHAR},
       stock_name = #{stockName,jdbcType=VARCHAR},
       days = #{days,jdbcType=INTEGER},
       percent = #{percent,jdbcType=DOUBLE},
       trade_date = #{tradeDate,jdbcType=VARCHAR},
       shape = #{shape,jdbcType=VARCHAR},
+      plate = #{plate,jdbcType=BIGINT},
+      reason = #{reason,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
-      memo = #{memo,jdbcType=VARCHAR},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  
   <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true">
-    insert into lian_ban (stock_code, stock_name, days, 
+    insert into lian_ban (symbol, stock_name, days, 
       percent, trade_date, shape, 
-      status, memo, gmt_create, 
-      gmt_update)
+      plate, reason, status, 
+      gmt_create, gmt_update)
     values 
     <foreach collection="list" index="index" item="lb" separator=",">
-    (#{lb.stockCode,jdbcType=VARCHAR}, #{lb.stockName,jdbcType=VARCHAR}, #{lb.days,jdbcType=INTEGER}, 
+    (#{lb.symbol,jdbcType=VARCHAR}, #{lb.stockName,jdbcType=VARCHAR}, #{lb.days,jdbcType=INTEGER}, 
       #{lb.percent,jdbcType=DOUBLE}, #{lb.tradeDate,jdbcType=VARCHAR}, #{lb.shape,jdbcType=VARCHAR}, 
-      #{lb.status,jdbcType=INTEGER}, #{lb.memo,jdbcType=VARCHAR}, #{lb.gmtCreate,jdbcType=TIMESTAMP}, 
-      #{lb.gmtUpdate,jdbcType=TIMESTAMP})
+      #{lb.plate,jdbcType=BIGINT}, #{lb.reason,jdbcType=VARCHAR}, #{lb.status,jdbcType=INTEGER}, 
+      #{lb.gmtCreate,jdbcType=TIMESTAMP}, #{lb.gmtUpdate,jdbcType=TIMESTAMP})
     </foreach>
   </insert>
 </mapper>

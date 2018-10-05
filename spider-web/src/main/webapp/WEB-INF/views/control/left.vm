@@ -8,6 +8,7 @@
 	<li class="submenu open"> <a href="#"><i class="icon icon-signal"></i> <span>股票</span> <span class="label label-important">6</span></a>
       <ul>
         <li><a href="#springUrl('/longhu/')">龙虎榜</a></li>
+		<li><a href="#springUrl('/zt/')">涨停板</a></li>
 		<li><a href="#springUrl('/clique/')">帮派管理</a></li>
 		<li><a href="#springUrl('/fiverange/r')">压托大单</a></li>
 		<!--<li><a href="#springUrl('/largeVol/r')">大单成交</a></li>-->

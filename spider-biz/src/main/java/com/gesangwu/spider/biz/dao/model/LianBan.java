@@ -5,7 +5,7 @@ import java.util.Date;
 public class LianBan {
     private Long id;
 
-    private String stockCode;
+    private String symbol;
 
     private String stockName;
 
@@ -17,9 +17,11 @@ public class LianBan {
 
     private String shape;
 
-    private Integer status;
+    private Long plate;
 
-    private String memo;
+    private String reason;
+
+    private Integer status;
 
     private Date gmtCreate;
 
@@ -33,12 +35,12 @@ public class LianBan {
         this.id = id;
     }
 
-    public String getStockCode() {
-        return stockCode;
+    public String getSymbol() {
+        return symbol;
     }
 
-    public void setStockCode(String stockCode) {
-        this.stockCode = stockCode == null ? null : stockCode.trim();
+    public void setSymbol(String symbol) {
+        this.symbol = symbol == null ? null : symbol.trim();
     }
 
     public String getStockName() {
@@ -81,20 +83,28 @@ public class LianBan {
         this.shape = shape == null ? null : shape.trim();
     }
 
+    public Long getPlate() {
+        return plate;
+    }
+
+    public void setPlate(Long plate) {
+        this.plate = plate;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason == null ? null : reason.trim();
+    }
+
     public Integer getStatus() {
         return status;
     }
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo == null ? null : memo.trim();
     }
 
     public Date getGmtCreate() {

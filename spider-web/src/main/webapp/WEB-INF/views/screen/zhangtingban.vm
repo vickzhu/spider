@@ -36,43 +36,22 @@
 				  <th style="width:5%;">序号</th>
                   <th>代码</th>
 				  <th>股票</th>
-				  <th>涨跌幅</th>
 				  <th>连板天数</th>
 				  <th>涨停原因</th>
+				  <th>操作</th>
                 </tr>
               </thead>
               <tbody>
-				#foreach($lh in ${lbList})
-                <tr symbol="$!{lh.symbol}">
+				#foreach($lb in ${lbList})
+                <tr symbol="$!{lb.symbol}">
 				  <td>$!{velocityCount}</td>
-                  <td><a class="lh_detail" onclick="javascript:;">$!{lh.symbol}</a></td>
-                  <td>
-					<a class="lh_detail" onclick="javascript:;">$!{lh.stockName}</a>
-					#if(${lh.erAmt})
-					<span class="label label-info">2日</span>
-					#elseif(${lh.srAmt})
-					<span class="label label-info">3日</span>
-					#end
-				  </td>
-				  <td>$!{lh.price}</td>
-				  <td style="color:#if($!{lh.chgPercent}>0)red#elseif($!{lh.chgPercent}<0)green#end">
-					$!{number.format("0.00",${lh.chgPercent})}%
-				  </td>
+                  <td>$!{lb.symbol}</td>
+                  <td>$!{lb.stockName}</td>			  
+				  <td>$!{lb.days}</td>
+				  <td>$!{lb.reason}</td>
 				  <td>
-					$!{number.format("0.00",$!{lh.turnover})}%
-				  </td>
-				  #if(${lh.yrAmt})
-					#showAmt(${lh.yrAmt})
-				  #elseif(${lh.erAmt})
-					#showAmt(${lh.erAmt})
-				  #elseif(${lh.srAmt})
-					#showAmt(${lh.srAmt})
-				  #end				  
-				  <td>
-					$!{longHuTool.getClique($!{lh.operateClique})}
-					#if(${lh.mainForce})
-					${lh.mainForce}
-					#end
+					<a href="javascript:;">修改</a>&nbsp;
+					<a href="javascript:;">删除</a>
 				  </td>
                 </tr>
 				#end
@@ -84,12 +63,6 @@
     </div>
   </div>
 </div>
-#macro(showAmt $amt)
-	#set($amtArr = ${amt.split(",")})
-	<td style="color:red">$!amtArr[0]</td>
-	<td style="color:green">$!amtArr[1]</td>
-	<td>$!amtArr[2]</td>
-#end
 <script src="#resources('js/bootstrap-datepicker.js')"></script> 
 <script type="text/javascript">
 	$(function(){
@@ -104,9 +77,5 @@
             language: 'zh-CN'}).on('changeDate',function(){
 				$("#searchForm").submit();
 			});
-			
-		$("#fetchSina").click(function(){
-			jQuery.get("#springUrl('/longhu/fetch/sina')");
-		});
 	});
 </script>
