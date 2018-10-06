@@ -1,8 +1,13 @@
 package com.gesangwu.spider.web.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +36,8 @@ import com.gesangwu.spider.biz.service.LianBanService;
 @Controller
 @RequestMapping("/zt")
 public class LianBanController {
+	
+	protected static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 	@Resource
 	private LianBanService lbService;
@@ -163,6 +170,68 @@ public class LianBanController {
 		lb.setShape(shape);
 		lbService.updateByPrimaryKey(lb);
 		return new AjaxResult(true, null);
+	}
+	
+	@RequestMapping(value = "/statis", method = RequestMethod.GET)
+	public ModelAndView statis(HttpServletRequest request, String startDate, String endDate){
+		Calendar c = Calendar.getInstance();
+		if(StringUtil.isBlank(startDate) || StringUtil.isBlank(endDate)){
+			Date now = new Date();
+			c.setTime(now);
+			c.set(Calendar.DATE, c.get(Calendar.DATE) - 30);
+			startDate = sdf.format(c.getTime());
+			endDate = sdf.format(now);
+		}
+		LianBanExample example = new LianBanExample();
+		example.setOrderByClause("trade_date");
+		LianBanExample.Criteria criteria = example.createCriteria();
+		criteria.andTradeDateGreaterThanOrEqualTo(startDate);
+		criteria.andTradeDateLessThanOrEqualTo(endDate);
+		List<LianBan> lbList = lbService.selectByExample(example);
+		List<String> dateList = new ArrayList<String>();
+		TreeMap<String, List<LianBan>> lbMap = new TreeMap<String, List<LianBan>>();
+		for (LianBan lb : lbList) {
+			String tradeDate = lb.getTradeDate();
+			List<LianBan> lblt = lbMap.get(tradeDate);
+			if(lblt == null){
+				dateList.add(tradeDate);
+				lblt = new ArrayList<LianBan>();
+				lbMap.put(tradeDate, lblt);
+			}
+		}
+		ModelAndView mav = new ModelAndView("zhangtingStatis");
+		mav.addObject("startDate", startDate);
+		mav.addObject("endDate", endDate);
+		mav.addObject("lbMap", lbMap);
+		mav.addObject("dateList", dateList);
+		return mav;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/statis", method = RequestMethod.POST)
+	public AjaxResult doStatis(HttpServletRequest request, String startDate, String endDate){
+		LianBanExample example = new LianBanExample();
+		example.setOrderByClause("trade_date");
+		LianBanExample.Criteria criteria = example.createCriteria();
+		criteria.andTradeDateGreaterThanOrEqualTo(startDate);
+		criteria.andTradeDateLessThanOrEqualTo(endDate);
+		List<LianBan> lbList = lbService.selectByExample(example);
+		List<String> dateList = new ArrayList<String>();
+		TreeMap<String, List<LianBan>> lbMap = new TreeMap<String, List<LianBan>>();
+		for (LianBan lb : lbList) {
+			String tradeDate = lb.getTradeDate();
+			List<LianBan> lblt = lbMap.get(tradeDate);
+			if(lblt == null){
+				lblt = new ArrayList<LianBan>();
+				lbMap.put(tradeDate, lblt);
+				dateList.add(tradeDate);
+			}
+			lblt.add(lb);
+		}
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("lbMap", lbMap);
+		resultMap.put("dateList", dateList);
+		return new AjaxResult(true, null, resultMap);
 	}
 	
 	private Long getPlateId(String tradeDate, String plateStr, String plateCustom){

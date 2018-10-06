@@ -9,8 +9,8 @@
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
             <h5>涨停板</h5>
-			<a id="ztAdd" class="label label-important" style="line-height:20px;">
-			添加数据
+			<a id="showStatis" class="label label-important" style="line-height:20px;" href="#springUrl('/zt/statis')">
+			查看统计
 			</a>
           </div>
 		  <div class="widget-content nopadding">
@@ -24,7 +24,8 @@
 						</div>
 					</div>
                     <div>
-                        <button type="submit"  class="btn btn-success">搜索</button>
+                        <button type="submit" class="btn btn-success">搜索</button>
+						<button id="ztAdd" type="button" class="btn btn-warning">添加数据</button>
                     </div>
                 </div>
 			</form>
@@ -43,10 +44,10 @@
               </thead>
               <tbody>
 				#foreach($lb in ${lbList})
-                <tr lbId="$!{lb.id}">
+                <tr lbId="$!{lb.id}" symbol="$!{lb.symbol}">
 				  <td>$!{velocityCount}</td>
-                  <td>$!{lb.symbol}</td>
-                  <td>$!{lb.stockName}</td>			  
+                  <td><a class="lh_detail" onclick="javascript:;">$!{lb.symbol}</a></td>
+                  <td><a class="lh_detail" onclick="javascript:;">$!{lb.stockName}</a></td>			  
 				  <td style="text-align:center;#if($!{lb.days}>2)color:red;#end">
 					
 					$!{lb.days}
@@ -92,6 +93,10 @@
 		});
 		$("#ztAdd").click(function(){
 			window.open("#springUrl('/zt/add')?tradeDate=${tradeDate}");
+		});
+		$(".lh_detail").click(function(){
+			var symbol = $(this).parent().parent().attr("symbol");
+			window.open("#springUrl('/longhu/detail')?symbol="+symbol);
 		});
 		$('.datepicker').datepicker({format: 'yyyy-mm-dd',
             weekStart: 1,
