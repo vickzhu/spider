@@ -49,7 +49,14 @@
 				<div class="control-group">
                   <label class="control-label">板块:</label>
                   <div class="controls">
-					<input type="text" name="plate" value="$!{lb.plate}"/>
+					<select name="plate">
+						<option value="">--请选择--</option>
+						#foreach($lbp in $lbpList)
+						<option value="$!{lbp.id}" #if(${lb.plate}==$!{lbp.id})selected #end>$!{lbp.plate}</option>	
+						#end
+                    </select>
+					ELSE
+					<input name="plateCustom" type="text"/>
                   </div>
                 </div>
 				<div class="control-group">

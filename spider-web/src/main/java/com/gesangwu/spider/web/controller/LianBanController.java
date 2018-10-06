@@ -2,6 +2,7 @@ package com.gesangwu.spider.web.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -21,8 +22,10 @@ import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
 import com.gesangwu.spider.biz.dao.model.LianBan;
 import com.gesangwu.spider.biz.dao.model.LianBanExample;
+import com.gesangwu.spider.biz.dao.model.LianBanPlate;
 import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.KLineService;
+import com.gesangwu.spider.biz.service.LianBanPlateService;
 import com.gesangwu.spider.biz.service.LianBanService;
 
 @Controller
@@ -35,6 +38,8 @@ public class LianBanController {
 	private KLineService klService;
 	@Resource
 	private CompanyService companyService;
+	@Resource
+	private LianBanPlateService lbpService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView zt(HttpServletRequest request){
@@ -47,18 +52,22 @@ public class LianBanController {
 		criteria.andTradeDateEqualTo(tradeDate);
 		criteria.andStatusEqualTo(LianBanStatus.ZT.getCode());
 		List<LianBan> lbList = lbService.selectByExample(example);
+		Map<Long, String> lbpMap = lbpService.selectByTradeDateForMap(tradeDate);
 		ModelAndView mav = new ModelAndView("zhangtingban");
 		mav.addObject("lbList", lbList);
 		mav.addObject("tradeDate", tradeDate);
+		mav.addObject("lbpMap", lbpMap);
 		return mav;
 	}
 	
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public ModelAndView add(HttpServletRequest request){
 		String tradeDate = request.getParameter("tradeDate");
+		List<LianBanPlate> lbpList = lbpService.selectByTradeDate(tradeDate);
 		ModelAndView mav = new ModelAndView("zhangtingAdd");
 		mav.addObject("tradeDate", tradeDate);
 		mav.addObject("statusArray", LianBanStatus.values());
+		mav.addObject("lbpList", lbpList);
 		return mav;
 	}
 	
@@ -87,6 +96,10 @@ public class LianBanController {
 			}
 			String shape = request.getParameter("shape");
 			String reason = request.getParameter("reason");
+			String plateStr = request.getParameter("plate");
+			String plateCustom = request.getParameter("plateCustom");
+			Long plate = getPlateId(lb.getTradeDate(), plateStr, plateCustom);
+			
 			KLineExample klExample = new KLineExample();
 			KLineExample.Criteria criteria = klExample.createCriteria();
 			criteria.andSymbolEqualTo(symbol);
@@ -102,7 +115,7 @@ public class LianBanController {
 				lb.setSymbol(symbol);
 				lb.setStockName(stockName);
 				lb.setTradeDate(tradeDate);
-				lb.setPlate(null);
+				lb.setPlate(plate);
 				lb.setReason(reason);
 			} else {
 				return new AjaxResult(false, "没有对应日期的K线！");
@@ -124,7 +137,10 @@ public class LianBanController {
 	public ModelAndView update(HttpServletRequest request){
 		long id = Long.valueOf(request.getParameter("id"));
 		LianBan lb = lbService.selectByPrimaryKey(id);
+		String tradeDate = request.getParameter("tradeDate");
+		List<LianBanPlate> lbpList = lbpService.selectByTradeDate(tradeDate);
 		ModelAndView mav = new ModelAndView("zhangtingEdit");
+		mav.addObject("lbpList", lbpList);
 		mav.addObject("lb", lb);
 		return mav;
 	}
@@ -134,14 +150,12 @@ public class LianBanController {
 	public AjaxResult doUpdate(HttpServletRequest request){
 		long id = Long.valueOf(request.getParameter("id"));
 		int days = Integer.valueOf(request.getParameter("days"));
+		LianBan lb = lbService.selectByPrimaryKey(id);
 		String plateStr = request.getParameter("plate");
-		Long plate = null;
-		if(StringUtil.isNotBlank(plateStr)){
-			plate = Long.valueOf(request.getParameter("plate"));
-		}
+		String plateCustom = request.getParameter("plateCustom");
+		Long plate = getPlateId(lb.getTradeDate(), plateStr, plateCustom);
 		String shape = request.getParameter("shape");
 		String reason = request.getParameter("reason");
-		LianBan lb = lbService.selectByPrimaryKey(id);
 		lb.setDays(days);
 		lb.setPlate(plate);
 		lb.setReason(reason);
@@ -150,4 +164,26 @@ public class LianBanController {
 		lbService.updateByPrimaryKey(lb);
 		return new AjaxResult(true, null);
 	}
+	
+	private Long getPlateId(String tradeDate, String plateStr, String plateCustom){
+		Long plate = null;
+		if(StringUtil.isNotBlank(plateCustom)){
+			plate = savePlate(tradeDate, plateCustom);
+		} else {			
+			if(StringUtil.isNotBlank(plateStr)){
+				plate = Long.valueOf(plateStr);
+			}
+		}
+		return plate;
+	}
+	
+	private Long savePlate(String tradeDate, String plateCustom){
+		LianBanPlate lbp = new LianBanPlate();
+		lbp.setTradeDate(tradeDate);
+		lbp.setPlate(plateCustom);
+		lbp.setGmtCreate(new Date());
+		lbpService.insert(lbp);
+		return lbp.getId();
+	}
+	
 }

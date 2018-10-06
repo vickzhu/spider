@@ -1,6 +1,8 @@
 package com.gesangwu.spider.biz.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -34,6 +36,16 @@ public class LianBanPlateServiceImpl extends BaseServiceImpl<LianBanPlate, LianB
 		criteria2.andTradeDateIsNull();
 		example.or(criteria2);
 		return mapper.selectByExample(example);
+	}
+
+	@Override
+	public Map<Long, String> selectByTradeDateForMap(String tradeDate) {
+		Map<Long, String> lbpMap = new HashMap<Long, String>();
+		List<LianBanPlate> lbpList = selectByTradeDate(tradeDate);
+		for (LianBanPlate lbp : lbpList) {
+			lbpMap.put(lbp.getId(), lbp.getPlate());
+		}
+		return lbpMap;
 	}
 	
 }
