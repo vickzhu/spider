@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.AjaxResult;
+import com.gesangwu.spider.biz.common.LianBanStatus;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
@@ -44,6 +45,7 @@ public class LianBanController {
 		LianBanExample example = new LianBanExample();
 		LianBanExample.Criteria criteria = example.createCriteria();
 		criteria.andTradeDateEqualTo(tradeDate);
+		criteria.andStatusEqualTo(LianBanStatus.ZT.getCode());
 		List<LianBan> lbList = lbService.selectByExample(example);
 		ModelAndView mav = new ModelAndView("zhangtingban");
 		mav.addObject("lbList", lbList);
@@ -51,8 +53,17 @@ public class LianBanController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/add")
-	public void add(HttpServletRequest request){
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	public ModelAndView add(HttpServletRequest request){
+		String tradeDate = request.getParameter("tradeDate");
+		ModelAndView mav = new ModelAndView("zhangtingAdd");
+		mav.addObject("tradeDate", tradeDate);
+		mav.addObject("statusArray", LianBanStatus.values());
+		return mav;
+	}
+	
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	public void doAdd(HttpServletRequest request){
 		String stockName = request.getParameter("stockName");
 		String tradeDate = request.getParameter("tradeDate");
 		Company company = companyService.selectByName(stockName);

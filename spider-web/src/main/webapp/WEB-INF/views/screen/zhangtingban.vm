@@ -9,7 +9,7 @@
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
             <h5>龙虎榜</h5>
-			<a id="fetchSina" class="label label-important" style="line-height:20px;">
+			<a id="ztAdd" class="label label-important" style="line-height:20px;">
 			添加数据
 			</a>
           </div>
@@ -88,6 +88,9 @@
     				}
 				});
 			}
+		});
+		$("#ztAdd").click(function(){
+			window.open("#springUrl('/zt/add')?tradeDate=${tradeDate}");
 		});
 		$('.datepicker').datepicker({format: 'yyyy-mm-dd',
             weekStart: 1,
