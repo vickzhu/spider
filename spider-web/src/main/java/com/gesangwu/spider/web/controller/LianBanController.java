@@ -62,32 +62,54 @@ public class LianBanController {
 		return mav;
 	}
 	
+	@ResponseBody
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public void doAdd(HttpServletRequest request){
+	public AjaxResult doAdd(HttpServletRequest request){
 		String stockName = request.getParameter("stockName");
 		String tradeDate = request.getParameter("tradeDate");
 		Company company = companyService.selectByName(stockName);
 		String symbol = company.getSymbol();
-		KLineExample klExample = new KLineExample();
-		KLineExample.Criteria criteria = klExample.createCriteria();
-		criteria.andSymbolEqualTo(symbol);
-		criteria.andTradeDateEqualTo(tradeDate);
-		List<KLine> klList = klService.selectByExample(klExample);
-		if(CollectionUtils.isEmpty(klList)){
-			KLine kl = klList.get(0);
-			LianBan lb = new LianBan();
-			lb.setDays(1);
-			lb.setGmtCreate(new Date());
-			lb.setPercent(kl.getPercent());
-			lb.setShape(null);
-			lb.setStatus(1);
-			lb.setSymbol(kl.getSymbol());
-			lb.setStockName(stockName);
+		String statusStr = request.getParameter("status");
+		int status = Integer.valueOf(statusStr);
+		Date now = new Date();
+		LianBan lb = new LianBan();
+		if(status == LianBanStatus.TP.getCode()){
+			lb.setGmtCreate(now);
 			lb.setTradeDate(tradeDate);
-			lb.setPlate(null);
-			lb.setReason(null);
-			lbService.insert(lb);
+			lb.setStockName(stockName);
+			lb.setSymbol(symbol);
+			lb.setStatus(LianBanStatus.TP.getCode());
+		} else {
+			int days = 1;
+			String daysStr = request.getParameter("days");
+			if(StringUtil.isNotBlank(daysStr)){
+				days = Integer.valueOf(daysStr);
+			}
+			String shape = request.getParameter("shape");
+			String reason = request.getParameter("reason");
+			KLineExample klExample = new KLineExample();
+			KLineExample.Criteria criteria = klExample.createCriteria();
+			criteria.andSymbolEqualTo(symbol);
+			criteria.andTradeDateEqualTo(tradeDate);
+			List<KLine> klList = klService.selectByExample(klExample);
+			if(CollectionUtils.isNotEmpty(klList)){
+				KLine kl = klList.get(0);
+				lb.setDays(days);
+				lb.setGmtCreate(now);
+				lb.setPercent(kl.getPercent());
+				lb.setShape(shape);
+				lb.setStatus(status);
+				lb.setSymbol(symbol);
+				lb.setStockName(stockName);
+				lb.setTradeDate(tradeDate);
+				lb.setPlate(null);
+				lb.setReason(reason);
+			} else {
+				return new AjaxResult(false, "没有对应日期的K线！");
+			}
 		}
+		int count = lbService.insert(lb);
+		return new AjaxResult(count == 1, null);
 	}
 	
 	@ResponseBody

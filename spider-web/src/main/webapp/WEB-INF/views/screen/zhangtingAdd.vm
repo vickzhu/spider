@@ -32,7 +32,7 @@
 				<div class="control-group">
                   <label class="control-label">状态:</label>
                   <div class="controls">
-					<select name="category">
+					<select name="status">
 						<option value="">--请选择--</option>
 						#foreach($status in $statusArray)
 						<option value="$!{status.code}">$!{status.desc}</option>	
@@ -79,11 +79,11 @@
 <script type="text/javascript">
 	$(function(){
 		$(".btn-success").click(function(){
-			jQuery.post("#springUrl('/zt/edit')",$("#dept-form").serialize(),function(result){
+			jQuery.post("#springUrl('/zt/add')",$("#dept-form").serialize(),function(result){
 				if(result.success){
 					alert("保存成功");
-				}else {
-					alert("保存失败");
+				} else {
+					alert("保存失败:"+result.message);
 				}
 			});			
 		});
