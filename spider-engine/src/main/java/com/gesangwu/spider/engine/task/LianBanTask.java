@@ -1,7 +1,6 @@
 package com.gesangwu.spider.engine.task;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,6 +9,9 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.util.StringUtil;
@@ -19,7 +21,6 @@ import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
 import com.gesangwu.spider.biz.dao.model.LianBan;
 import com.gesangwu.spider.biz.service.CompanyService;
-import com.gesangwu.spider.biz.service.HolidayService;
 import com.gesangwu.spider.biz.service.KLineService;
 import com.gesangwu.spider.biz.service.LianBanService;
 
@@ -29,7 +30,9 @@ import com.gesangwu.spider.biz.service.LianBanService;
  *
  */
 @Component
-public class LianBanTask {
+public class LianBanTask extends BaseTask {
+	
+	private static final Logger logger = LoggerFactory.getLogger(LianBanTask.class);
 	
 	@Resource
 	private LianBanService lbService;
@@ -37,39 +40,83 @@ public class LianBanTask {
 	private CompanyService compnayService;
 	@Resource
 	private KLineService klService;
-	@Resource
-	private HolidayService holidayService;	
 	
+	@Scheduled(cron="0 30 15 * * MON-FRI")
 	public void execute(){
 		execute(null);
 	}
 	
 	public void execute(String tradeDate){
-		tradeDate = getTradeDate(tradeDate);
+		try {			
+			tradeDate = getTradeDate(tradeDate);
+		} catch (Exception e) {
+			logger.info("交易日异常：" + tradeDate, e.getMessage());
+			return;
+		}
 		List<KLine> klList = getKLineList(tradeDate);
 		Date date = new Date();
 		List<LianBan> lbList = new ArrayList<LianBan>();
 		for (KLine kl : klList) {
+			Company company = compnayService.selectBySymbol(kl.getSymbol());
+			if(company == null){
+				continue;
+			}
+			LianBan preLianBan = getPreLianBan(company, tradeDate);
+			int days = 1;
+			Long plate = null;
+			String reason = null;
+			if(preLianBan != null){
+				days = preLianBan.getDays() + 1;
+				plate = preLianBan.getPlate();
+				reason = preLianBan.getReason();
+			}
 			LianBan lb = new LianBan();
-			lb.setDays(1);
+			lb.setDays(days);
 			lb.setGmtCreate(date);
 			lb.setPercent(kl.getPercent());
 			lb.setShape(null);
 			lb.setStatus(LianBanStatus.ZT.getCode());
 			lb.setSymbol(kl.getSymbol());
-			Company company = compnayService.selectBySymbol(kl.getSymbol());
-			if(company == null){
-				continue;
-			}
 			lb.setStockName(company.getStockName());
 			lb.setTradeDate(tradeDate);
-			lb.setPlate(null);
-			lb.setReason(null);
+			lb.setPlate(plate);
+			lb.setReason(reason);
 			lbList.add(lb);
 		}
 		if(CollectionUtils.isNotEmpty(lbList)){
 			lbService.batchInsert(lbList);
 		}
+	}
+	
+	private LianBan getPreLianBan(Company company, String tradeDate){
+		String symbol = company.getSymbol();
+		String stockName = company.getStockName();
+		String preDate1 = getPreTradeDate(tradeDate);
+		LianBan preLianBan1 = lbService.selectByTradeDate(symbol, preDate1);
+		if(preLianBan1 == null || preLianBan1.getStatus() != LianBanStatus.ZT.getCode()){//前一日非涨停，则计算前第二日
+			String preDate2 = getPreTradeDate(preDate1);
+			LianBan preLianBan2 = lbService.selectByTradeDate(symbol, preDate2);
+			if(preLianBan2 != null && preLianBan2.getStatus() == LianBanStatus.ZT.getCode()){//前第二个交易日为涨停
+				
+				KLine kl = klService.selectByDate(symbol, preDate1);
+				
+				LianBan lb = new LianBan();
+				lb.setGmtCreate(new Date());
+				if(kl != null){
+					lb.setPercent(kl.getPercent());
+				}
+				lb.setSymbol(symbol);
+				lb.setStockName(stockName);
+				lb.setStatus(LianBanStatus.FZT.getCode());
+				lb.setTradeDate(preDate1);
+				lbService.insert(lb);
+
+				return preLianBan2;
+			}
+		} else {
+			return preLianBan1;
+		}
+		return null;
 	}
 	
 	private List<KLine> getKLineList(String tradeDate){
@@ -79,35 +126,33 @@ public class LianBanTask {
 		criteria.andPercentGreaterThanOrEqualTo(9.9d);
 		return klService.selectByExample(example);
 	}
-	
-	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-	public String getTradeDate(String tradeDate){
+	private String getTradeDate(String tradeDate){
 		String date = tradeDate;
 		if(StringUtil.isBlank(date)){
 			Date now = new Date();
 			date = sdf.format(now);
 		}
-		Calendar c = Calendar.getInstance();
-		try {
-			c.setTime(sdf.parse(date));
-		} catch (ParseException e) {
-			throw new RuntimeException("日期转换错误！！！");
-		}
-		if(c.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
-			throw new RuntimeException("周末无相关数据！！！");
-		}
-		List<String> dateList = holidayService.selectByYear(String.valueOf(c.get(Calendar.YEAR)));
-		for (String hd : dateList) {
-			if(tradeDate.equals(hd)){
-				throw new RuntimeException("法定假日无相关数据！！！");
-			}
+		if(!isTradeDate(date)){
+			throw new RuntimeException("法定节假日无相关数据！！！");
 		}
 		return date;
 	}
 	
-	public static void main(String[] args){
+	private String getPreTradeDate(String tradeDate){
 		Calendar c = Calendar.getInstance();
-		System.out.println(c.get(Calendar.YEAR));
+		try {
+			c.setTime(sdf.parse(tradeDate));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		int day = c.get(Calendar.DATE); 
+		c.set(Calendar.DATE, day-1);
+		String preDate = sdf.format(c.getTime());
+		if(!isTradeDate(preDate)){//非交易日
+			return getPreTradeDate(preDate);
+		}
+		return preDate;
 	}
+	
 }

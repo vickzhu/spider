@@ -17,6 +17,8 @@ public interface KLineService extends BaseService<KLine, KLineExample> {
 	
 	public String selectLatestDate();
 	
+	public KLine selectByDate(String symbol, String tradeDate);
+	
 	/**
 	 * 适合判断形态的K线，包括多头和五日线低于十日线的多头
 	 * @param tradeDate

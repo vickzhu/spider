@@ -10,4 +10,6 @@ public interface LianBanService extends BaseService<LianBan, LianBanExample> {
 
 	public void batchInsert(List<LianBan> lbList);
 	
+	public LianBan selectByTradeDate(String symbol, String tradeDate);
+	
 }

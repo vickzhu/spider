@@ -1,14 +1,14 @@
 <link rel="stylesheet" href="#resources('css/datepicker.css')" />
 <div id="content">
   <div id="content-header">
-    <div id="breadcrumb"> <a href="#springUrl('/')" title="回到首页" class="tip-bottom"><i class="icon-home"></i> 首页</a><a href="javascript:;" class="current">龙虎榜</a> </div>
+    <div id="breadcrumb"> <a href="#springUrl('/')" title="回到首页" class="tip-bottom"><i class="icon-home"></i> 首页</a><a href="javascript:;" class="current">涨停板</a> </div>
   </div>
   <div class="container-fluid">
     <div class="row-fluid">
       <div class="span12">
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-            <h5>龙虎榜</h5>
+            <h5>涨停板</h5>
 			<a id="ztAdd" class="label label-important" style="line-height:20px;">
 			添加数据
 			</a>
@@ -47,8 +47,9 @@
 				  <td>$!{velocityCount}</td>
                   <td>$!{lb.symbol}</td>
                   <td>$!{lb.stockName}</td>			  
-				  <td>
-					$!{lb.days}板
+				  <td style="text-align:center;#if($!{lb.days}>2)color:red;#end">
+					
+					$!{lb.days}
 					#if("$!{lb.shape}" != "")
 						($!{lb.shape})
 					#end

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import com.gandalf.framework.mybatis.BaseMapper;
@@ -28,6 +29,16 @@ public class LianBanServiceImpl extends BaseServiceImpl<LianBan, LianBanExample>
 	@Override
 	public void batchInsert(List<LianBan> lbList) {
 		mapper.batchInsert(lbList);
+	}
+
+	@Override
+	public LianBan selectByTradeDate(String symbol, String tradeDate) {
+		LianBanExample example = new LianBanExample();
+		LianBanExample.Criteria criteria = example.createCriteria();
+		criteria.andSymbolEqualTo(symbol);
+		criteria.andTradeDateEqualTo(tradeDate);
+		List<LianBan> lbList = mapper.selectByExample(example);
+		return CollectionUtils.isNotEmpty(lbList) ? lbList.get(0) : null;
 	}	
 
 }

@@ -54,7 +54,7 @@ import com.gesangwu.spider.biz.service.KLineService;
  *
  */
 @Component
-public class KLineSinaTask {
+public class KLineSinaTask extends BaseTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(KLineSinaTask.class);
 	
@@ -71,6 +71,11 @@ public class KLineSinaTask {
 
 	@Scheduled(cron="0 02 15 * * MON-FRI")
 	public void execute(){
+		Date now = new Date();
+		if(!isTradeDate(sdf.format(now))){
+			logger.error("非交易日！！！");
+			return;
+		}
 		long start = System.currentTimeMillis();
 		
 		String result = HttpTool.get(buildUrl(1));

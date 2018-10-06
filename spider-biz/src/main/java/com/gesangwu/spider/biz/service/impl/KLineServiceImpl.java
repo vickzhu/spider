@@ -82,4 +82,14 @@ public class KLineServiceImpl extends BaseServiceImpl<KLine, KLineExample> imple
 		return mapper.selectForYiZi(tradeDate);
 	}
 
+	@Override
+	public KLine selectByDate(String symbol, String tradeDate) {
+		KLineExample example = new KLineExample();
+		KLineExample.Criteria criteria = example.createCriteria();
+		criteria.andSymbolEqualTo(symbol);
+		criteria.andTradeDateEqualTo(tradeDate);
+		List<KLine> klList = mapper.selectByExample(example);
+		return CollectionUtils.isNotEmpty(klList) ? klList.get(0) : null;
+	}
+
 }
