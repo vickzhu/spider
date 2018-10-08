@@ -16,12 +16,13 @@ public class LianBanTaskTest extends BaseTest {
 	@Resource
 	private LianBanTask task;
 	
-//	@Test
+	@Test
 	public void execute(){
-		task.execute("2018-10-01");
+		task.execute();
+//		task.execute("2018-10-01");
 	}
 	
-	@Test
+//	@Test
 	public void init(){
 		init("2018-08-01","2018-10-01");
 	}
