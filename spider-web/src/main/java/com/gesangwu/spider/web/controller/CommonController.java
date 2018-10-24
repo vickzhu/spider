@@ -222,14 +222,17 @@ public class CommonController {
 	
 	private String getKLineList(String symbol){
 		KLineExample example = new KLineExample();
-		example.setOrderByClause("trade_date");
+		example.setOrderByClause("trade_date desc");
+		example.setOffset(0);
+		example.setRows(250);
 		KLineExample.Criteria criteria = example.createCriteria();
-		
 		criteria.andSymbolEqualTo(symbol);
 		List<KLine> klList = kLineService.selectByExample(example);
 		List<Object[]> objList = new ArrayList<Object[]>();
+		int size = klList.size();
 		//日期,昨收,开盘价,高,低，收,量，额
-		for (KLine kLine : klList) {
+		for(int i = size - 1; i >= 0 ; i--){
+			KLine kLine = klList.get(i);
 			Object[] objArr = new Object[11];
 			objArr[0] = kLine.getTradeDate();
 			objArr[1] = kLine.getOpen();

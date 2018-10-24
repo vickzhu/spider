@@ -178,7 +178,7 @@ public class LianBanController {
 		if(StringUtil.isBlank(startDate) || StringUtil.isBlank(endDate)){
 			Date now = new Date();
 			c.setTime(now);
-			c.set(Calendar.DATE, c.get(Calendar.DATE) - 30);
+			c.set(Calendar.DATE, c.get(Calendar.DATE) - 15);
 			startDate = sdf.format(c.getTime());
 			endDate = sdf.format(now);
 		}
