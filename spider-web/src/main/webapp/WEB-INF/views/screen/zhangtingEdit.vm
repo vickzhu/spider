@@ -34,17 +34,17 @@
                   </div>
                 </div>
 				<div class="control-group">
+                  <label class="control-label">原因:</label>
+                  <div class="controls">
+					<input type="text" name="reason" value="$!{lb.reason}"/> 不填则和板块一样
+                  </div>
+                </div>  
+				<div class="control-group">
                   <label class="control-label">形态:</label>
                   <div class="controls">
 					<input type="text" name="shape" value="$!{lb.shape}"/>
                   </div>
                 </div> 
-				<div class="control-group">
-                  <label class="control-label">原因:</label>
-                  <div class="controls">
-					<input type="text" name="reason" value="$!{lb.reason}"/>
-                  </div>
-                </div>    
                 <div class="form-actions">
                   <button type="button" class="btn btn-success">保存</button>
 				  <button type="button" class="btn btn-danger">删除</button>

@@ -55,6 +55,7 @@ public class LianBanController {
 			tradeDate = klService.selectLatestDate();
 		}
 		LianBanExample example = new LianBanExample();
+		example.setOrderByClause("days desc");
 		LianBanExample.Criteria criteria = example.createCriteria();
 		criteria.andTradeDateEqualTo(tradeDate);
 		criteria.andStatusEqualTo(LianBanStatus.ZT.getCode());
@@ -163,6 +164,9 @@ public class LianBanController {
 		Long plate = getPlateId(lb.getTradeDate(), plateStr, plateCustom);
 		String shape = request.getParameter("shape");
 		String reason = request.getParameter("reason");
+		if(plate != null && StringUtil.isBlank(reason)){
+			reason = lbpService.selectByPrimaryKey(plate).getPlate();
+		}
 		lb.setDays(days);
 		lb.setPlate(plate);
 		lb.setReason(reason);
