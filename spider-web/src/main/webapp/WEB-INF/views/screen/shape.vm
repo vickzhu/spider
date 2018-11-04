@@ -50,7 +50,11 @@
 				#foreach($kl in ${klList})
                 <tr>
 				  <td>$!{velocityCount}</td>
-				  <td><a href="#springUrl('/stock?symbol=')$!{kl.symbol}" target="_blank">$!{companyTool.getStockName($!{kl.symbol})}</a></td>
+				  <td>
+					<a href="#springUrl('/stock?symbol=')$!{kl.symbol}" target="_blank">
+						$!{companyTool.getStockName($!{kl.symbol})}
+					</a>
+				  </td>
 				  <td style="color:#if($!{kl.percent}>0)red#elseif($!{kl.percent}<0)green#end">$!{kl.percent}%</td>
 				  <td>$number.format("###.00",$!{kl.volume})</td>
 				  <td>$!{kl.turnrate}</td>

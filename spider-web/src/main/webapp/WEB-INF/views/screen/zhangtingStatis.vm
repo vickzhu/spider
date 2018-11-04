@@ -138,7 +138,7 @@ $!{tokenTool.enableAjaxToken()}
 				} else if(curLb.status == 2){//未涨停
 					content = content + curLb.percent + "%";
 				} else if(curLb.status == 3){//停牌
-					content += "停牌";
+					content = "停牌";
 				}
 				$("td[zb|="+coord+"]").html(content);
 				$("td[zb|="+coord+"]").attr("s", curLb.symbol);
