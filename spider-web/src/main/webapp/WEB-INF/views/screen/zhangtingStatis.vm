@@ -136,7 +136,7 @@ $!{tokenTool.enableAjaxToken()}
 				if(curLb.status == 1){//涨停
 					content += "("+curLb.days+")";
 				} else if(curLb.status == 2){//未涨停
-					content = content + curLb.percent + "%";
+					content = curLb.percent + "%";
 				} else if(curLb.status == 3){//停牌
 					content = "停牌";
 				}
