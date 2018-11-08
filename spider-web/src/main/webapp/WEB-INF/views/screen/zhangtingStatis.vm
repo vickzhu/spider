@@ -115,7 +115,7 @@ $!{tokenTool.enableAjaxToken()}
 				var len = dateList.length;
 				var title = "";
 				for(var i=0; i < len; i++){
-					title = title + "<th>" + dateList[i] + "</th>";
+					title = title + "<th>" + dateList[i].substr(5,5) + "</th>";
 				}
 				$("#statis-col-name").html(title);
 			}
