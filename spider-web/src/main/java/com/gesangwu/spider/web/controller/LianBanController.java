@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import javax.annotation.Resource;
@@ -222,6 +224,7 @@ public class LianBanController {
 		List<LianBan> lbList = lbService.selectByExample(example);
 		List<String> dateList = new ArrayList<String>();
 		TreeMap<String, List<LianBan>> lbMap = new TreeMap<String, List<LianBan>>();
+		Set<Long> plateSet = new HashSet<Long>();
 		for (LianBan lb : lbList) {
 			String tradeDate = lb.getTradeDate();
 			List<LianBan> lblt = lbMap.get(tradeDate);
@@ -231,10 +234,14 @@ public class LianBanController {
 				dateList.add(tradeDate);
 			}
 			lblt.add(lb);
+			if(lb.getPlate() != null){
+				plateSet.add(lb.getPlate());
+			}
 		}
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("lbMap", lbMap);
 		resultMap.put("dateList", dateList);
+		resultMap.put("pSet", plateSet);
 		return new AjaxResult(true, null, resultMap);
 	}
 	
