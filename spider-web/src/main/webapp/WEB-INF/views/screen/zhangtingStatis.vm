@@ -1,4 +1,9 @@
 <link rel="stylesheet" href="#resources('css/datepicker.css')" />
+<style type="text/css">
+	.table th, .table td{
+		line-height: 10px;
+	}
+</style>
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb"> <a href="#springUrl('/')" title="回到首页" class="tip-bottom"><i class="icon-home"></i> 首页</a><a href="javascript:;" class="current">涨停板</a> </div>

@@ -182,7 +182,7 @@ public class LianBanController {
 		if(StringUtil.isBlank(startDate) || StringUtil.isBlank(endDate)){
 			Date now = new Date();
 			c.setTime(now);
-			c.set(Calendar.DATE, c.get(Calendar.DATE) - 20);
+			c.set(Calendar.DATE, c.get(Calendar.DATE) - 15);
 			startDate = sdf.format(c.getTime());
 			endDate = sdf.format(now);
 		}
@@ -252,7 +252,7 @@ public class LianBanController {
 	
 	private Long savePlate(String tradeDate, String plateCustom){
 		LianBanPlate lbp = new LianBanPlate();
-		lbp.setTradeDate(tradeDate);
+		lbp.setTradeDate(null);
 		lbp.setPlate(plateCustom);
 		lbp.setGmtCreate(new Date());
 		lbpService.insert(lbp);
