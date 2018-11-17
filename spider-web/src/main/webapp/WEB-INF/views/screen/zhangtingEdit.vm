@@ -23,7 +23,7 @@
 				<div class="control-group">
                   <label class="control-label">板块:</label>
                   <div class="controls">
-					<select name="plate">
+					<select name="plate" id="plate">
 						<option value="">--请选择--</option>
 						#foreach($lbp in $lbpList)
 						<option value="$!{lbp.id}" #if(${lb.plate}==$!{lbp.id})selected #end>$!{lbp.plate}</option>	
@@ -36,7 +36,7 @@
 				<div class="control-group">
                   <label class="control-label">原因:</label>
                   <div class="controls">
-					<input type="text" name="reason" value="$!{lb.reason}"/> 不填则和板块一样
+					<input id="reason" type="text" name="reason" value="$!{lb.reason}"/> 不填则和板块一样
                   </div>
                 </div>  
 				<div class="control-group">
@@ -47,7 +47,7 @@
                 </div> 
                 <div class="form-actions">
                   <button type="button" class="btn btn-success">保存</button>
-				  <button type="button" class="btn btn-danger">删除</button>
+				  <button type="button" class="btn btn-cancel" onclick="javascript:window.close();">取消</button>
                 </div>
               </form>
             </div>
@@ -66,6 +66,9 @@
 					alert("保存失败");
 				}
 			});			
+		});
+		$("#plate").change(function(){
+			$("#reason").val("");
 		});
 		$(".exit-clique").click(function(){
 			$("#delete-content").text("确定退出["+$(this).attr("cliqueName")+"]?");

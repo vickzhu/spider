@@ -121,15 +121,25 @@ $!{tokenTool.enableAjaxToken()}
 						}
 						pendingLb = tmpLb;//临时待定数据存取到待定数据中
     				}
+					var pSet = result.records.pSet;
+					renderColor(pSet);
 				} else {
 					alert("查询失败!"+result.message);
 				}
 			});
 			
+			function renderColor(pSet){
+				var len = pSet.length;
+				for(var i = 0; i < len; i++){
+					var c = colorArr[i];
+					$(".c_"+pSet[i]).css("color", c);
+				}
+			}
+			
 			function showTitle(dateList){
 				var len = dateList.length;
 				var title = "";
-				for(var i=0; i < len; i++){
+				for(var i = 0; i < len; i++){
 					title = title + "<th>" + dateList[i].substr(5,5) + "</th>";
 				}
 				$("#statis-col-name").html(title);
@@ -157,6 +167,7 @@ $!{tokenTool.enableAjaxToken()}
 				}
 				$("td[zb|="+coord+"]").html(content);
 				$("td[zb|="+coord+"]").attr("s", curLb.symbol);
+				$("td[zb|="+coord+"]").addClass("c_"+curLb.plate);
 			}
 		});
 		

@@ -145,9 +145,9 @@ public class LianBanController {
 	
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView update(HttpServletRequest request){
-		long id = Long.valueOf(request.getParameter("id"));
-		LianBan lb = lbService.selectByPrimaryKey(id);
+		String symbol = request.getParameter("symbol");
 		String tradeDate = request.getParameter("tradeDate");
+		LianBan lb = lbService.selectByTradeDate(symbol, tradeDate);
 		List<LianBanPlate> lbpList = lbpService.selectByTradeDate(tradeDate);
 		ModelAndView mav = new ModelAndView("zhangtingEdit");
 		mav.addObject("lbpList", lbpList);

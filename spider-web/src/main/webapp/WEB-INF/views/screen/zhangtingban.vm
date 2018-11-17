@@ -74,8 +74,8 @@
 <script type="text/javascript">
 	$(function(){
 		$(".zt-edit").click(function(){
-			var id = $(this).parent().parent().attr("lbId");
-			window.open("#springUrl('/zt/edit')?id="+id+"&tradeDate=${tradeDate}");
+			var symbol = $(this).parent().parent().attr("symbol");
+			window.open("#springUrl('/zt/edit')?symbol="+symbol+"&tradeDate=${tradeDate}");
 		});
 		$(".zt-del").click(function(){
 			var id = $(this).parent().parent().attr("lbId");
