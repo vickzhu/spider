@@ -132,6 +132,7 @@ public class LianBanController {
 			}
 		}
 		int count = lbService.insert(lb);
+		updatePreLB(lb);
 		return new AjaxResult(count == 1, null);
 	}
 	
@@ -152,6 +153,8 @@ public class LianBanController {
 		ModelAndView mav = new ModelAndView("zhangtingEdit");
 		mav.addObject("lbpList", lbpList);
 		mav.addObject("lb", lb);
+		mav.addObject("tradeDate", tradeDate);
+		mav.addObject("symbol", symbol);
 		return mav;
 	}
 	
@@ -175,7 +178,31 @@ public class LianBanController {
 		lb.setGmtUpdate(new Date());
 		lb.setShape(shape);
 		lbService.updateByPrimaryKey(lb);
+		updatePreLB(lb);
 		return new AjaxResult(true, null);
+	}
+	
+	/**
+	 * 更新之前的连板数据
+	 * @param lb	当前连板数据
+	 */
+	private void updatePreLB(LianBan lb){
+		LianBanExample example = new LianBanExample();
+		example.setOrderByClause("trade_date desc");
+		example.setOffset(0);
+		example.setRows(lb.getDays() - 1);
+		LianBanExample.Criteria criteria = example.createCriteria();
+		criteria.andSymbolEqualTo(lb.getSymbol());
+		criteria.andTradeDateLessThan(lb.getTradeDate());
+		List<LianBan> lbList = lbService.selectByExample(example);
+		for (LianBan lianBan : lbList) {
+			if(lianBan.getStatus() != LianBanStatus.ZT.getCode()){
+				break;
+			}
+			lianBan.setPlate(lb.getPlate());
+			lianBan.setReason(lb.getReason());
+			lbService.updateByPrimaryKey(lianBan);
+		}
 	}
 	
 	@RequestMapping(value = "/statis", method = RequestMethod.GET)
