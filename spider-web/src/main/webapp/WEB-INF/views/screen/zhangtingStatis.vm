@@ -55,128 +55,133 @@
 $!{tokenTool.enableAjaxToken()}
 <script src="#resources('js/bootstrap-datepicker.js')"></script>
 <script type="text/javascript">
+	var colorArr = new Array();
+	colorArr[0] = "#FF0000";//Red
+	colorArr[1] = "#0000FF";//Blue
+	colorArr[2] = "#FF00FF";//Fuchsia
+	colorArr[3] = "#008000";//Green
+	colorArr[4] = "#00FFFF";//Cyan
+	colorArr[5] = "#FFA500";//Orange 
+	colorArr[6] = "#FFFF00";//Yellow 
+	colorArr[7] = "#800080";//Purple 
+	colorArr[8] = "#FF4500";//OrangeRed
 	$(function(){
-		var colorArr = new Array();
-		colorArr[0] = "#FF0000";//Red
-		colorArr[1] = "#0000FF";//Blue
-		colorArr[2] = "#FF00FF";//Fuchsia
-		colorArr[3] = "#008000";//Green
-		colorArr[4] = "#00FFFF";//Cyan
-		colorArr[5] = "#FFA500";//Orange 
-		colorArr[6] = "#FFFF00";//Yellow 
-		colorArr[7] = "#800080";//Purple 
-		colorArr[8] = "#FF4500";//OrangeRed 
 		$("#ztSearch").click(function(){
-			var len = 0;
-			jQuery.post("#springUrl('/zt/statis')",$("#searchForm").serialize(),function(result){
-				if(result.success){
-					$("#statis-content").html("");
-					var dateList = result.records.dateList;
-					var lbMap = result.records.lbMap;
-					showTitle(dateList);
-					len = dateList.length;
-					var pendingLb = new Array();
-    				for(var i = 0; i < len; i++){
-						var dl = dateList[i];
-    					var lbList = lbMap[dl];
-						var tmpLb = new Array();//临时保存当天待定的数据
-						var confirmLb = new Array();//临时保存当天确定的数据
-						for(var j = 0; j < lbList.length; j++){//遍历每一天的数据
-							var curLb = lbList[j];
-							if(curLb.status == 1 && curLb.days == 1){//首板直接待定
-								tmpLb.push(curLb);
-							} else {//非首板
-								if(i == 0){//第一列直接显示出来
-									addRow(i);
-									addData(i,rows,curLb);
-								} else {//非第一列添加到确定列表中
-									confirmLb.push(curLb);
-								}
+			loadData();			
+		});
+		loadData();
+	});
+	
+	function loadData(){
+		jQuery.post("#springUrl('/zt/statis')",$("#searchForm").serialize(),function(result){
+			if(result.success){
+				$("#statis-content").html("");
+				var dateList = result.records.dateList;
+				var lbMap = result.records.lbMap;
+				showTitle(dateList);
+				len = dateList.length;
+				var pendingLb = new Array();
+				for(var i = 0; i < len; i++){
+					var dl = dateList[i];
+					var lbList = lbMap[dl];
+					var tmpLb = new Array();//临时保存当天待定的数据
+					var confirmLb = new Array();//临时保存当天确定的数据
+					for(var j = 0; j < lbList.length; j++){//遍历每一天的数据
+						var curLb = lbList[j];
+						if(curLb.status == 1 && curLb.days == 1){//首板直接待定
+							tmpLb.push(curLb);
+						} else {//非首板
+							if(i == 0){//第一列直接显示出来
+								addRow(i);
+								addData(i,rows,curLb);
+							} else {//非第一列添加到确定列表中
+								confirmLb.push(curLb);
 							}
 						}
-						if(i > 0){//非第一列
-							//将前一日确定的数据展示出来
-							for(var k = 0; k < confirmLb.length; k++){//今天确定的数据
-								var cLb = confirmLb[k];
-								if(cLb.days == 2){//今天确定的二板
-									for(var j = 0; j < pendingLb.length; j++){//遍历前一日待定的首板数据
-        								var pLb = pendingLb[j];
-        								if(cLb.symbol == pLb.symbol){
-											addRow(i-1);//添加前一日
-											addData(i-1,rows,pLb);
-										}
-        							}
-								}
-							}
-							//将今天确定的数据展示出来
-							for(var k = 0; k < confirmLb.length; k++){
-    							$("td[zb^='"+(i-1)+"']").each(function(){
-									var curLb = confirmLb[k];
-									if($(this).attr("s") == curLb.symbol){
-										var r = $(this).attr("zb").split("_")[1];
-										addData(i,r,curLb);
+					}
+					if(i > 0){//非第一列
+						//将前一日确定的数据展示出来
+						for(var k = 0; k < confirmLb.length; k++){//今天确定的数据
+							var cLb = confirmLb[k];
+							if(cLb.days == 2){//今天确定的二板
+								for(var j = 0; j < pendingLb.length; j++){//遍历前一日待定的首板数据
+    								var pLb = pendingLb[j];
+    								if(cLb.symbol == pLb.symbol){
+										addRow(i-1);//添加前一日
+										addData(i-1,rows,pLb);
 									}
-    							});
+    							}
 							}
 						}
-						pendingLb = tmpLb;//临时待定数据存取到待定数据中
-    				}
-					var pSet = result.records.pSet;
-					renderColor(pSet);
-				} else {
-					alert("查询失败!"+result.message);
+						//将今天确定的数据展示出来
+						for(var k = 0; k < confirmLb.length; k++){
+							$("td[zb^='"+(i-1)+"']").each(function(){
+								var curLb = confirmLb[k];
+								if($(this).attr("s") == curLb.symbol){
+									var r = $(this).attr("zb").split("_")[1];
+									addData(i,r,curLb);
+								}
+							});
+						}
+					}
+					pendingLb = tmpLb;//临时待定数据存取到待定数据中
 				}
-			});
-			
-			function renderColor(pSet){
-				var len = pSet.length;
-				for(var i = 0; i < len; i++){
-					var c = colorArr[i];
-					$(".c_"+pSet[i]).css("color", c);
-				}
-			}
-			
-			function showTitle(dateList){
-				var len = dateList.length;
-				var title = "";
-				for(var i = 0; i < len; i++){
-					title = title + "<th>" + dateList[i].substr(5,5) + "</th>";
-				}
-				$("#statis-col-name").html(title);
-			}
-			var rows=0;
-			function addRow(colIndex){
-				rows++;
-				var content = "<tr>";
-				for(var i=0; i < len; i++){
-					content = content + "<td zb='"+i+"_"+rows+"' s=''></td>";
-				}
-				content += "</tr>";
-				$("#statis-content").append(content);
-			}
-			
-			function addData(col,row,curLb){
-				var coord = col+"_"+row;
-				var content = curLb.stockName;
-				if(curLb.status == 1){//涨停
-					content += "("+curLb.days+")";
-				} else if(curLb.status == 2){//未涨停
-					content = curLb.percent + "%";
-				} else if(curLb.status == 3){//停牌
-					content = "停牌";
-				}
-				$("td[zb|="+coord+"]").html(content);
-				$("td[zb|="+coord+"]").attr("s", curLb.symbol);
-				$("td[zb|="+coord+"]").addClass("c_"+curLb.plate);
+				var pSet = result.records.pSet;
+				renderColor(pSet);
+			} else {
+				alert("查询失败!"+result.message);
 			}
 		});
-		
-		$('.datepicker').datepicker({format: 'yyyy-mm-dd',
-            weekStart: 1,
-            autoclose: true,
-            todayBtn: 'linked',
-            language: 'zh-CN'}).on('changeDate',function(){
-				
-			});
-	});
+	}
+	
+	var len = 0;
+	function renderColor(pSet){
+		var len = pSet.length;
+		for(var i = 0; i < len; i++){
+			var c = colorArr[i];
+			$(".c_"+pSet[i]).css("color", c);
+		}
+	}
+	
+	function showTitle(dateList){
+		var len = dateList.length;
+		var title = "";
+		for(var i = 0; i < len; i++){
+			title = title + "<th>" + dateList[i].substr(5,5) + "</th>";
+		}
+		$("#statis-col-name").html(title);
+	}
+	var rows=0;
+	function addRow(colIndex){
+		rows++;
+		var content = "<tr>";
+		for(var i=0; i < len; i++){
+			content = content + "<td zb='"+i+"_"+rows+"' s=''></td>";
+		}
+		content += "</tr>";
+		$("#statis-content").append(content);
+	}
+	
+	function addData(col,row,curLb){
+		var coord = col+"_"+row;
+		var content = curLb.stockName;
+		if(curLb.status == 1){//涨停
+			content += "("+curLb.days+")";
+		} else if(curLb.status == 2){//未涨停
+			content = curLb.percent + "%";
+		} else if(curLb.status == 3){//停牌
+			content = "停牌";
+		}
+		$("td[zb|="+coord+"]").html(content);
+		$("td[zb|="+coord+"]").attr("s", curLb.symbol);
+		$("td[zb|="+coord+"]").addClass("c_"+curLb.plate);
+	}
+	$('.datepicker').datepicker({format: 'yyyy-mm-dd',
+        weekStart: 1,
+        autoclose: true,
+        todayBtn: 'linked',
+        language: 'zh-CN'}).on('changeDate',function(){
+			
+		});
+	
 </script>
