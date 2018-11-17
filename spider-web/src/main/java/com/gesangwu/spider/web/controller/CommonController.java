@@ -224,7 +224,7 @@ public class CommonController {
 		KLineExample example = new KLineExample();
 		example.setOrderByClause("trade_date desc");
 		example.setOffset(0);
-		example.setRows(250);
+		example.setRows(180);
 		KLineExample.Criteria criteria = example.createCriteria();
 		criteria.andSymbolEqualTo(symbol);
 		List<KLine> klList = kLineService.selectByExample(example);
