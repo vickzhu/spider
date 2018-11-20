@@ -108,8 +108,10 @@ public class LianBanController {
 			String reason = request.getParameter("reason");
 			String plateStr = request.getParameter("plate");
 			String plateCustom = request.getParameter("plateCustom");
-			Long plate = getPlateId(lb.getTradeDate(), plateStr, plateCustom);
-			
+			LianBanPlate plate = getPlate(lb.getTradeDate(), plateStr, plateCustom);
+			if(plate != null && StringUtil.isBlank(reason)){
+				reason = plate.getPlate();
+			}
 			KLineExample klExample = new KLineExample();
 			KLineExample.Criteria criteria = klExample.createCriteria();
 			criteria.andSymbolEqualTo(symbol);
@@ -125,7 +127,7 @@ public class LianBanController {
 				lb.setSymbol(symbol);
 				lb.setStockName(stockName);
 				lb.setTradeDate(tradeDate);
-				lb.setPlate(plate);
+				lb.setPlate(plate.getId());
 				lb.setReason(reason);
 			} else {
 				return new AjaxResult(false, "没有对应日期的K线！");
@@ -166,14 +168,14 @@ public class LianBanController {
 		LianBan lb = lbService.selectByPrimaryKey(id);
 		String plateStr = request.getParameter("plate");
 		String plateCustom = request.getParameter("plateCustom");
-		Long plate = getPlateId(lb.getTradeDate(), plateStr, plateCustom);
+		LianBanPlate plate = getPlate(lb.getTradeDate(), plateStr, plateCustom);
 		String shape = request.getParameter("shape");
 		String reason = request.getParameter("reason");
 		if(plate != null && StringUtil.isBlank(reason)){
-			reason = lbpService.selectByPrimaryKey(plate).getPlate();
+			reason = plate.getPlate();
 		}
 		lb.setDays(days);
-		lb.setPlate(plate);
+		lb.setPlate(plate.getId());
 		lb.setReason(reason);
 		lb.setGmtUpdate(new Date());
 		lb.setShape(shape);
@@ -272,25 +274,25 @@ public class LianBanController {
 		return new AjaxResult(true, null, resultMap);
 	}
 	
-	private Long getPlateId(String tradeDate, String plateStr, String plateCustom){
-		Long plate = null;
+	private LianBanPlate getPlate(String tradeDate, String plateStr, String plateCustom){
+		LianBanPlate plate = null;
 		if(StringUtil.isNotBlank(plateCustom)){
 			plate = savePlate(tradeDate, plateCustom);
 		} else {			
 			if(StringUtil.isNotBlank(plateStr)){
-				plate = Long.valueOf(plateStr);
+				plate = lbpService.selectByPrimaryKey(Long.valueOf(plateStr));
 			}
 		}
 		return plate;
 	}
 	
-	private Long savePlate(String tradeDate, String plateCustom){
+	private LianBanPlate savePlate(String tradeDate, String plateCustom){
 		LianBanPlate lbp = new LianBanPlate();
 		lbp.setTradeDate(null);
 		lbp.setPlate(plateCustom);
 		lbp.setGmtCreate(new Date());
 		lbpService.insert(lbp);
-		return lbp.getId();
+		return lbp;
 	}
 	
 }

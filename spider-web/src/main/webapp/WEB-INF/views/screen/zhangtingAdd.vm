@@ -122,4 +122,11 @@
 				$("#searchForm").submit();
 			});
 	});
+	$('.datepicker').datepicker({format: 'yyyy-mm-dd',
+        weekStart: 1,
+        autoclose: true,
+        todayBtn: 'linked',
+        language: 'zh-CN'}).on('changeDate',function(){
+			
+		});
 </script>

@@ -75,17 +75,21 @@ public class UpperShadowTask extends ShapeTask {
 	
 	private void judge(List<KLine> klList, List<Long> idList){
 		for (KLine kl : klList) {
-//			if("sz000789".equals(kl.getSymbol())){
-//				System.out.println(".................");
-//			}
 //			if(kl.getMa5() < kl.getMa10() || kl.getMa10() < kl.getMa20()){//非多头
 //				continue;
 //			}
-			double high = kl.getHigh();
-			double second = kl.getOpen() > kl.getClose() ? kl.getOpen() : kl.getClose();
-			if(high - second < Math.abs(kl.getOpen() - kl.getClose())){//上影小于实体
-				continue;
+			List<KLine> tmpList = listByTradeDateDesc(kl.getSymbol(), kl.getTradeDate(), 1);
+			if(CollectionUtils.isNotEmpty(tmpList)){
+				KLine tmp = tmpList.get(0);
+				if(tmp.getPercent() > 5){
+					continue;
+				}
 			}
+			double high = kl.getHigh();
+//			double second = kl.getOpen() > kl.getClose() ? kl.getOpen() : kl.getClose();
+//			if(high - second < Math.abs(kl.getOpen() - kl.getClose())){//上影小于实体
+//				continue;
+//			}
 			double upScale = CalculateUtil.div(high, kl.getClose(), 3);
 			double third = kl.getOpen() > kl.getClose() ? kl.getClose() : kl.getOpen();
 			double downScale = CalculateUtil.div(third, kl.getLow(), 3);
