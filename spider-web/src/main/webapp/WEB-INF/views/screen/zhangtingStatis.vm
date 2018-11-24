@@ -56,15 +56,16 @@ $!{tokenTool.enableAjaxToken()}
 <script src="#resources('js/bootstrap-datepicker.js')"></script>
 <script type="text/javascript">
 	var colorArr = new Array();
-	colorArr[0] = "#FF0000";//Red
-	colorArr[1] = "#0000FF";//Blue
-	colorArr[2] = "#FF00FF";//Fuchsia
-	colorArr[3] = "#008000";//Green
-	colorArr[4] = "#00FFFF";//Cyan
-	colorArr[5] = "#FFA500";//Orange 
-	colorArr[6] = "#FFFF00";//Yellow 
-	colorArr[7] = "#800080";//Purple 
-	colorArr[8] = "#FF4500";//OrangeRed
+	colorArr[0] = "#FF0000";
+	colorArr[1] = "#9ACD32";
+	colorArr[2] = "#D02090";
+	colorArr[3] = "#EE82EE";
+	colorArr[4] = "#40E0D0";
+	colorArr[5] = "#FFA500";
+	colorArr[6] = "#0000FF";
+	colorArr[7] = "#8A2BE2";
+	colorArr[8] = "#A0522D";
+	colorArr[9] = "#800080";
 	$(function(){
 		$("#ztSearch").click(function(){
 			loadData();			
