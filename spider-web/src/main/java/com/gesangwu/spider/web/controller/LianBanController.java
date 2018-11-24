@@ -173,9 +173,9 @@ public class LianBanController {
 		String reason = request.getParameter("reason");
 		if(plate != null && StringUtil.isBlank(reason)){
 			reason = plate.getPlate();
+			lb.setPlate(plate.getId());
 		}
 		lb.setDays(days);
-		lb.setPlate(plate.getId());
 		lb.setReason(reason);
 		lb.setGmtUpdate(new Date());
 		lb.setShape(shape);
