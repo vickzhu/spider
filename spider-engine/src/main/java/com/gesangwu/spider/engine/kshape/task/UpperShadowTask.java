@@ -74,10 +74,26 @@ public class UpperShadowTask extends ShapeTask {
 	}
 	
 	private void judge(List<KLine> klList, List<Long> idList){
-		for (KLine kl : klList) {
-//			if(kl.getMa5() < kl.getMa10() || kl.getMa10() < kl.getMa20()){//非多头
-//				continue;
-//			}
+		for (KLine kl : klList) {			
+			boolean isPositive = false;//是否为多头
+			if(kl.getMa20() != null){				
+				if(kl.getMa5() > kl.getMa10() && kl.getMa10() > kl.getMa20()){//多头
+					isPositive = true;
+				}
+			}
+			if(isPositive){
+				if(kl.getMa20() != null && kl.getClose() < kl.getMa20()){
+					continue;
+				}
+				if(kl.getMa30() != null){
+					if(kl.getClose() < kl.getMa30()){//收盘价小于30日线
+						continue;
+					}
+					if((kl.getClose() - kl.getMa30())/kl.getClose() < 0.05){//收盘价比30日线高度小于5%
+						continue;
+					}
+				}
+			}
 			List<KLine> tmpList = listByTradeDateDesc(kl.getSymbol(), kl.getTradeDate(), 1);
 			if(CollectionUtils.isNotEmpty(tmpList)){
 				KLine tmp = tmpList.get(0);
@@ -95,7 +111,8 @@ public class UpperShadowTask extends ShapeTask {
 			double downScale = CalculateUtil.div(third, kl.getLow(), 3);
 			double upDiff = CalculateUtil.sub(upScale, 1, 3);
 			double downDiff = CalculateUtil.sub(downScale, 1, 3);
-			if(upDiff < 0.07){
+			double upDiffMin = isPositive ? 0.05:0.07;//多头5%以上，否则7%以上
+			if(upDiff < upDiffMin){
 				continue;
 			}
 			if(downDiff > 0.03){

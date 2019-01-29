@@ -57,12 +57,12 @@ $!{tokenTool.enableAjaxToken()}
 <script type="text/javascript">
 	var colorArr = new Array();
 	colorArr[0] = "#FF0000";
-	colorArr[1] = "#9ACD32";
+	colorArr[1] = "#0000FF";
 	colorArr[2] = "#D02090";
 	colorArr[3] = "#EE82EE";
-	colorArr[4] = "#40E0D0";
+	colorArr[4] = "#008080";
 	colorArr[5] = "#FFA500";
-	colorArr[6] = "#0000FF";
+	colorArr[6] = "#9ACD32";
 	colorArr[7] = "#8A2BE2";
 	colorArr[8] = "#A0522D";
 	colorArr[9] = "#800080";

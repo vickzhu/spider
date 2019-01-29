@@ -127,7 +127,9 @@ public class LianBanController {
 				lb.setSymbol(symbol);
 				lb.setStockName(stockName);
 				lb.setTradeDate(tradeDate);
-				lb.setPlate(plate.getId());
+				if(plate != null){
+					lb.setPlate(plate.getId());
+				}
 				lb.setReason(reason);
 			} else {
 				return new AjaxResult(false, "没有对应日期的K线！");

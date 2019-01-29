@@ -1,6 +1,7 @@
 package com.gesangwu.spider.engine.task;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -55,13 +56,15 @@ public class HolderNumTask {
 		long start = System.currentTimeMillis();
 		List<Company> companyList = LittleCompanyHolder.getCompanyList();
 		List<HolderNum> list = new ArrayList<HolderNum>();
+		Map<String,String> headerMap = new HashMap<String, String>();
+		headerMap.put("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.62 Safari/537.36");
 		int size = companyList.size();
 		for (int i = 0; i < size; i++) {
 			Company company = companyList.get(i);
 			String code = company.getStockCode();
 			String symbol = StockUtil.code2Symbol(code);
 			String url = buildUrl(code);
-			String result = HttpTool.get(url);
+			String result = HttpTool.get(url,headerMap,Charset.forName("UTF8"));
 			if(StringUtil.isBlank(result)){//可能已退市
 				continue;
 			}

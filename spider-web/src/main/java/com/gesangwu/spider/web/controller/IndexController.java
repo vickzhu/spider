@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 /**
  * 这controller没什么用
  * @author zhuxb
@@ -16,11 +17,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class IndexController {
 	
 	@RequestMapping(value = "/index",method = RequestMethod.GET)
-	public void index(HttpServletRequest request, HttpServletResponse response){
-		Cookie[] cookies = request.getCookies();
-		for(Cookie cookie : cookies){
-			System.out.println(cookie.getName() + ":" + cookie.getValue());
-		}
+	public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
+		ModelAndView mav = new ModelAndView("index");
+		return mav;
+	}
+	
+	@RequestMapping(value = "/demo",method = RequestMethod.GET)
+	public ModelAndView demo(HttpServletRequest request, HttpServletResponse response){
+		ModelAndView mav = new ModelAndView("demo");
+		return mav;
 	}
 
 }
