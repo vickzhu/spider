@@ -136,7 +136,7 @@
                '收盘价：<font color="' + getPriceColor(ki, ki.close) + '">' + toMoney(ki.close) + '</font><br/>' +
                 '成交量：' + bigNumberToText(ki.volume / 100) + '手<br/>' +
 				'成交额：' + bigNumberToText(ki.amount) + '元<br/>' +
-				'换手率：' + ki.tt.toFixed(2)+"<br/>"+
+				'换手率：' + ki.tt.toFixed(2)+"%<br/>"+
 				'涨跌：' + ki.percent+'%(' + ki.chgAmt+"元)<br/>";
                 return tipHtml;
             }

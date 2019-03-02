@@ -100,22 +100,17 @@ $!{tokenTool.enableAjaxToken()}
 							}
 						}
 					}
-					if(i > 0){//非第一列
-						//将前一日确定的数据展示出来
-						for(var k = 0; k < confirmLb.length; k++){//今天确定的数据
-							var cLb = confirmLb[k];
-							if(cLb.days == 2){//今天确定的二板
-								for(var j = 0; j < pendingLb.length; j++){//遍历前一日待定的首板数据
-    								var pLb = pendingLb[j];
-    								if(cLb.symbol == pLb.symbol){
-										addRow(i-1);//添加前一日
-										addData(i-1,rows,pLb);
-									}
-    							}
-							}
-						}
+					if(i > 0){//非第一列，进行数据展示
 						//将今天确定的数据展示出来
 						for(var k = 0; k < confirmLb.length; k++){
+							var cLb = confirmLb[k];
+							for(var j = 0; j < pendingLb.length; j++){//遍历前一日待定的首板数据
+								var pLb = pendingLb[j];
+								if(cLb.symbol == pLb.symbol){
+									addRow(i-1);//添加前一日
+									addData(i-1,rows,pLb);
+								}
+							}
 							$("td[zb^='"+(i-1)+"']").each(function(){
 								var curLb = confirmLb[k];
 								if($(this).attr("s") == curLb.symbol){
