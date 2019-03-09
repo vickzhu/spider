@@ -194,18 +194,19 @@ public class LianBanController {
 		LianBanExample example = new LianBanExample();
 		example.setOrderByClause("trade_date desc");
 		example.setOffset(0);
-		example.setRows(lb.getDays() - 1);
+		example.setRows(20);//谁能连板20天，绝壁绝了
 		LianBanExample.Criteria criteria = example.createCriteria();
 		criteria.andSymbolEqualTo(lb.getSymbol());
 		criteria.andTradeDateLessThan(lb.getTradeDate());
 		List<LianBan> lbList = lbService.selectByExample(example);
-		for (LianBan lianBan : lbList) {
-			if(lianBan.getStatus() != LianBanStatus.ZT.getCode()){
-				break;
-			}
+		for (int i = 0; i < lbList.size(); i++) {
+			LianBan lianBan = lbList.get(i);
 			lianBan.setPlate(lb.getPlate());
 			lianBan.setReason(lb.getReason());
 			lbService.updateByPrimaryKey(lianBan);
+			if(lianBan.getDays() != null && lianBan.getDays() == 1){
+				break;
+			}
 		}
 	}
 	
@@ -289,11 +290,15 @@ public class LianBanController {
 	}
 	
 	private LianBanPlate savePlate(String tradeDate, String plateCustom){
-		LianBanPlate lbp = new LianBanPlate();
-		lbp.setTradeDate(null);
-		lbp.setPlate(plateCustom);
-		lbp.setGmtCreate(new Date());
-		lbpService.insert(lbp);
+		String plate = StringUtil.trim(plateCustom);
+		LianBanPlate lbp = lbpService.selectByPlate(plateCustom);
+		if(lbp == null){
+			lbp = new LianBanPlate();
+			lbp.setTradeDate(null);
+			lbp.setPlate(plate);
+			lbp.setGmtCreate(new Date());
+			lbpService.insert(lbp);
+		}
 		return lbp;
 	}
 	

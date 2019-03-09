@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import com.gandalf.framework.mybatis.BaseMapper;
@@ -47,5 +48,35 @@ public class LianBanPlateServiceImpl extends BaseServiceImpl<LianBanPlate, LianB
 		}
 		return lbpMap;
 	}
+
+	@Override
+	public int insert(LianBanPlate record) {
+		LianBanPlate plate = selectByPlate(record.getPlate());
+		if(plate != null){
+			return 0;
+		} else {
+			return super.insert(record);
+		}
+	}
+
+	@Override
+	public int insertSelective(LianBanPlate record) {
+		LianBanPlate plate = selectByPlate(record.getPlate());
+		if(plate != null){
+			return 0;
+		} else {
+			return super.insertSelective(record);
+		}
+	}
+
+	@Override
+	public LianBanPlate selectByPlate(String plate) {
+		LianBanPlateExample example = new LianBanPlateExample();
+		LianBanPlateExample.Criteria criteria = example.createCriteria();
+		criteria.andPlateEqualTo(plate);
+		List<LianBanPlate> pList = mapper.selectByExample(example);
+		return CollectionUtils.isNotEmpty(pList) ? pList.get(0) : null;
+	}
+	
 	
 }

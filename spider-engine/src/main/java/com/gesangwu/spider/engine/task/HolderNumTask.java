@@ -58,13 +58,15 @@ public class HolderNumTask {
 		List<HolderNum> list = new ArrayList<HolderNum>();
 		Map<String,String> headerMap = new HashMap<String, String>();
 		headerMap.put("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.62 Safari/537.36");
+		Map<String,String> cookieMap = new HashMap<String, String>();
+		cookieMap.put("ticket", "43fd8e7f7643c7981b53f310ec890819");
 		int size = companyList.size();
 		for (int i = 0; i < size; i++) {
 			Company company = companyList.get(i);
 			String code = company.getStockCode();
 			String symbol = StockUtil.code2Symbol(code);
 			String url = buildUrl(code);
-			String result = HttpTool.get(url,headerMap,Charset.forName("UTF8"));
+			String result = HttpTool.get(url, headerMap, cookieMap, Charset.forName("UTF8"));
 			if(StringUtil.isBlank(result)){//可能已退市
 				continue;
 			}

@@ -1,4 +1,10 @@
 <link rel="stylesheet" href="#resources('css/datepicker.css')" />
+<link rel="stylesheet" href="#resources('css/select2.css')" />
+<style type="text/css">
+	.select2-container{
+		width:220px;
+	}
+</style>
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">营业部</a> <a href="#" class="current">编辑</a> </div>
@@ -66,7 +72,8 @@
     </div>
   </div>
 </div>
-<script src="#resources('js/bootstrap-datepicker.js')"></script> 
+<script src="#resources('js/bootstrap-datepicker.js')"></script>
+<script src="#resources('js/select2.min.js')"></script>
 <script type="text/javascript">
 	$(function(){
 		$(".btn-success").click(function(){
@@ -107,5 +114,6 @@
             language: 'zh-CN'}).on('changeDate',function(){
 			
 		});
+		$('select').select2();
 	});
 </script>

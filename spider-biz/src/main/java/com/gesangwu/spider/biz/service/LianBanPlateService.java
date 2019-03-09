@@ -13,4 +13,6 @@ public interface LianBanPlateService extends BaseService<LianBanPlate, LianBanPl
 	
 	public Map<Long, String> selectByTradeDateForMap(String tradeDate);
 	
+	public LianBanPlate selectByPlate(String plate);
+	
 }

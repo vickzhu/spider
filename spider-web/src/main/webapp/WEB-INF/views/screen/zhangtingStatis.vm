@@ -79,50 +79,8 @@ $!{tokenTool.enableAjaxToken()}
 				$("#statis-content").html("");
 				var dateList = result.records.dateList;
 				var lbMap = result.records.lbMap;
-				showTitle(dateList);
-				len = dateList.length;
-				var pendingLb = new Array();
-				for(var i = 0; i < len; i++){
-					var dl = dateList[i];
-					var lbList = lbMap[dl];
-					var tmpLb = new Array();//临时保存当天待定的数据
-					var confirmLb = new Array();//临时保存当天确定的数据
-					for(var j = 0; j < lbList.length; j++){//遍历每一天的数据
-						var curLb = lbList[j];
-						if(curLb.status == 1 && curLb.days == 1){//首板直接待定
-							tmpLb.push(curLb);
-						} else {//非首板
-							if(i == 0){//第一列直接显示出来
-								addRow(i);
-								addData(i,rows,curLb);
-							} else {//非第一列添加到确定列表中
-								confirmLb.push(curLb);
-							}
-						}
-					}
-					if(i > 0){//非第一列，进行数据展示
-						//将今天确定的数据展示出来
-						for(var k = 0; k < confirmLb.length; k++){
-							var cLb = confirmLb[k];
-							for(var j = 0; j < pendingLb.length; j++){//遍历前一日待定的首板数据
-								var pLb = pendingLb[j];
-								if(cLb.symbol == pLb.symbol){
-									addRow(i-1);//添加前一日
-									addData(i-1,rows,pLb);
-								}
-							}
-							$("td[zb^='"+(i-1)+"']").each(function(){
-								var curLb = confirmLb[k];
-								if($(this).attr("s") == curLb.symbol){
-									var r = $(this).attr("zb").split("_")[1];
-									addData(i,r,curLb);
-								}
-							});
-						}
-					}
-					pendingLb = tmpLb;//临时待定数据存取到待定数据中
-				}
 				var pSet = result.records.pSet;
+				renderData(dateList, lbMap);
 				renderColor(pSet);
 			} else {
 				alert("查询失败!"+result.message);
@@ -130,7 +88,49 @@ $!{tokenTool.enableAjaxToken()}
 		});
 	}
 	
-	var len = 0;
+	function renderData(dateList, lbMap){
+		showTitle(dateList);
+		cols = dateList.length;
+		var pendingLb = new Array();
+		for(var i = 0; i < cols; i++){//遍历每一天的数据
+			var dl = dateList[i];
+			var lbList = lbMap[dl];
+			var tmpLb = new Array();//临时保存当天待定的数据
+			for(var j = 0; j < lbList.length; j++){//遍历当天的所有数据
+				var curLb = lbList[j];
+				if(curLb.status == 1 && curLb.days == 1){//首板直接待定
+					tmpLb.push(curLb);
+				} else {//非首板
+					if(i == 0){//第一列直接显示出来
+						addRow();
+						addData(i,rows,curLb);
+					} else {//非第一列
+						var isSecBan = false;
+						for(var k = 0; k < pendingLb.length; k++){//遍历前一日待定的首板数据，找到就将首板显示出来
+							var pLb = pendingLb[k];
+							if(curLb.symbol == pLb.symbol){
+								addRow();//绘制前一天
+								addData(i-1,rows,pLb);//添加前一天
+								addData(i,rows,curLb);//添加今天
+								isSecBan = true;
+							}
+						}
+						if(!isSecBan){//也不是二板
+							$("td[zb^='"+(i-1)+"']").each(function(){//查找应该显示的位置
+								if($(this).attr("s") == curLb.symbol){
+									var r = $(this).attr("zb").split("_")[1];
+									addData(i,r,curLb);
+								}
+							});
+						}
+					}
+				}
+			}
+			pendingLb = tmpLb;//临时待定数据保存到待定数据中
+		}
+	}
+	
+	var cols = 0;
 	function renderColor(pSet){
 		var len = pSet.length;
 		for(var i = 0; i < len; i++){
@@ -147,11 +147,11 @@ $!{tokenTool.enableAjaxToken()}
 		}
 		$("#statis-col-name").html(title);
 	}
-	var rows=0;
-	function addRow(colIndex){
+	var rows = 0;
+	function addRow(){
 		rows++;
 		var content = "<tr>";
-		for(var i=0; i < len; i++){
+		for(var i=0; i < cols; i++){
 			content = content + "<td zb='"+i+"_"+rows+"' s=''></td>";
 		}
 		content += "</tr>";
