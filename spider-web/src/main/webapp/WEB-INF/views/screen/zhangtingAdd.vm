@@ -1,4 +1,10 @@
 <link rel="stylesheet" href="#resources('css/datepicker.css')" />
+<link rel="stylesheet" href="#resources('css/select2.css')" />
+<style type="text/css">
+	.select2-container{
+		width:220px;
+	}
+</style>
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="#">营业部</a> <a href="#" class="current">编辑</a> </div>
@@ -84,6 +90,7 @@
   </div>
 </div>
 <script src="#resources('js/bootstrap-datepicker.js')"></script> 
+<script src="#resources('js/select2.min.js')"></script>
 <script type="text/javascript">
 	$(function(){
 		$(".btn-success").click(function(){
@@ -95,38 +102,14 @@
 				}
 			});			
 		});
-		$(".exit-clique").click(function(){
-			$("#delete-content").text("确定退出["+$(this).attr("cliqueName")+"]?");
-			$("#delete-submit").attr("cliqueId",$(this).attr("cliqueId"));
-		})
-		$("#delete-submit").click(function(){
-			var param={deptCode:$("#deptCode").val(),cliqueId:$(this).attr("cliqueId")};
-			jQuery.post("#springUrl('/sec-dept/exit-clique')",param,function(result){
-				
-			});
-		});
-		$(".update-clique").click(function(){
-			var parentTr = $(this).parent().parent();
-			var cdId = parentTr.attr("cdId");
-			var deptType = parentTr.find("select").val();
-			var param={cdId:cdId,deptType:deptType};
-			jQuery.post("#springUrl('/sec-dept/edit-clique')",param,function(result){
-				
-			});
-		});
 		$('.datepicker').datepicker({format: 'yyyy-mm-dd',
             weekStart: 1,
             autoclose: true,
             todayBtn: 'linked',
             language: 'zh-CN'}).on('changeDate',function(){
-				$("#searchForm").submit();
-			});
-	});
-	$('.datepicker').datepicker({format: 'yyyy-mm-dd',
-        weekStart: 1,
-        autoclose: true,
-        todayBtn: 'linked',
-        language: 'zh-CN'}).on('changeDate',function(){
-			
+				
 		});
+		
+		$('select').select2();
+	});
 </script>

@@ -134,8 +134,12 @@ $!{tokenTool.enableAjaxToken()}
 	function renderColor(pSet){
 		var len = pSet.length;
 		for(var i = 0; i < len; i++){
+			if(i > 4){//只显示前五
+				break;
+			}
 			var c = colorArr[i];
-			$(".c_"+pSet[i]).css("color", c);
+			var p = pSet[i].substring(pSet[i].indexOf('_')+1);
+			$(".c_"+p).css("color", c);
 		}
 	}
 	

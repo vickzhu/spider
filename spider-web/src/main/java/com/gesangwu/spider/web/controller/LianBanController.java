@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.AjaxResult;
 import com.gesangwu.spider.biz.common.LianBanStatus;
@@ -256,7 +258,8 @@ public class LianBanController {
 		List<LianBan> lbList = lbService.selectByExample(example);
 		List<String> dateList = new ArrayList<String>();
 		TreeMap<String, List<LianBan>> lbMap = new TreeMap<String, List<LianBan>>();
-		Set<Long> plateSet = new HashSet<Long>();
+		
+		Map<Long,Set<String>> pMap = new HashMap<Long,Set<String>>();
 		for (LianBan lb : lbList) {
 			String tradeDate = lb.getTradeDate();
 			List<LianBan> lblt = lbMap.get(tradeDate);
@@ -267,8 +270,19 @@ public class LianBanController {
 			}
 			lblt.add(lb);
 			if(lb.getPlate() != null){
-				plateSet.add(lb.getPlate());
+				Set<String> symbolSet = pMap.get(lb.getPlate());
+				if(symbolSet == null){
+					symbolSet = new HashSet<String>();
+					pMap.put(lb.getPlate(), symbolSet);
+				}
+				symbolSet.add(lb.getSymbol());
 			}
+		}
+		TreeSet<String> plateSet = new TreeSet<String>();
+		for(Map.Entry<Long,Set<String>> entry : pMap.entrySet()){
+			long plate = entry.getKey();
+			int size = entry.getValue().size();
+			plateSet.add(size + SymbolConstant.U_LINE + plate);
 		}
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("lbMap", lbMap);
