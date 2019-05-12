@@ -95,6 +95,11 @@ public class KLineSinaTask extends BaseTask {
 			}
 			detailList = matcher.group(1);
 			save(detailList);
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}	
 		long end = System.currentTimeMillis();
 		logger.info("Fetch KLine from sina used:" + (end-start)+"ms!");

@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +31,9 @@ import com.gesangwu.spider.engine.util.TradeTimeUtil;
  *
  */
 @Component
-public class LongHuTask {
+public class LongHuTask extends BaseTask {
+	
+	private static final Logger logger = LoggerFactory.getLogger(LongHuTask.class);
 
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
@@ -42,6 +46,11 @@ public class LongHuTask {
 	
 	@Scheduled(cron = "0 0/3 16-18 * * MON-FRI")
 	public void execute(){
+		Date now = new Date();
+		if(!isTradeDate(sdf.format(now))){
+			logger.info("非交易日！！！");
+			return;
+		}
 		if(!TradeTimeUtil.checkLongHuTime()){
 			return;
 		}
@@ -59,17 +68,17 @@ public class LongHuTask {
 		}
 		LongHuTaskTemplate executor = getExecutor(channel);
 		executor.execute(tradeDate);
-		updateActiveDept(tradeDate);
+//		updateActiveDept(tradeDate);
 	}
 	
 	/**
 	 * 更新活跃营业部
 	 * @param tradeDate
 	 */
-	private void updateActiveDept(String tradeDate){
-		sdService.clearActiveDept();
-		sdService.updateActiveDept(tradeDate);
-	}
+//	private void updateActiveDept(String tradeDate){
+//		sdService.clearActiveDept();
+//		sdService.updateActiveDept(tradeDate);
+//	}
 	
 	private LongHuTaskTemplate getExecutor(LongHuTaskChannelEnum channel){
 		if(LongHuTaskChannelEnum.WANGYI.equals(channel)){

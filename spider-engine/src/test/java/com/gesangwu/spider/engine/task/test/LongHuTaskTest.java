@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import com.gesangwu.spider.biz.service.LongHuDetailService;
 import com.gesangwu.spider.biz.service.LongHuService;
+import com.gesangwu.spider.engine.common.LongHuTaskChannelEnum;
 import com.gesangwu.spider.engine.task.LongHuSinaTask;
 import com.gesangwu.spider.engine.task.LongHuTask;
 import com.gesangwu.spider.engine.test.BaseTest;
@@ -23,8 +24,8 @@ public class LongHuTaskTest extends BaseTest {
 	
 	@Test
 	public void execute(){
-		task.execute(null);
-//		task.execute("2018-06-22");
+//		task.execute(null);
+		task.execute("2019-05-10",LongHuTaskChannelEnum.SINA);
 //		LongHu longHu = lhService.selectByPrimaryKey(82345l);
 //		task.fetchDetail(1, "04", longHu);
 //		task.fetchDetail(longHu);
