@@ -1,5 +1,6 @@
 package com.gesangwu.spider.web.controller;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -247,6 +248,8 @@ public class LianBanController {
 		return mav;
 	}
 	
+	private static final DecimalFormat df = new DecimalFormat("0000");
+	
 	@ResponseBody
 	@RequestMapping(value = "/statis", method = RequestMethod.POST)
 	public AjaxResult doStatis(HttpServletRequest request, String startDate, String endDate){
@@ -282,12 +285,13 @@ public class LianBanController {
 		for(Map.Entry<Long,Set<String>> entry : pMap.entrySet()){
 			long plate = entry.getKey();
 			int size = entry.getValue().size();
-			plateSet.add(size + SymbolConstant.U_LINE + plate);
+			plateSet.add(df.format(size) + SymbolConstant.U_LINE + plate);
 		}
+		Set<String> ps = plateSet.descendingSet();
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("lbMap", lbMap);
 		resultMap.put("dateList", dateList);
-		resultMap.put("pSet", plateSet);
+		resultMap.put("pSet", ps);
 		return new AjaxResult(true, null, resultMap);
 	}
 	
