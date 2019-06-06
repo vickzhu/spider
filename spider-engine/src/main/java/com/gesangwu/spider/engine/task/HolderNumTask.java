@@ -38,7 +38,7 @@ import com.gesangwu.spider.engine.util.UnicodeUtil;
  * @author zhuxb
  *
  */
-@Component
+//@Component
 public class HolderNumTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HolderNumTask.class);
