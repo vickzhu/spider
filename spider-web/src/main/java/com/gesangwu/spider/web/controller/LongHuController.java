@@ -159,7 +159,11 @@ public class LongHuController {
 		List<String> typeList = new ArrayList<String>();
 		for (String type : typeArr) {
 			LongHuType lhType = lhTypeService.selectByType(type);
-			typeList.add(lhType.getLhDesc());
+			if(lhType != null){
+				typeList.add(lhType.getLhDesc());
+			} else {
+				typeList.add("Unknow");
+			}
 		}
 		return typeList;
 	}

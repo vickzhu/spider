@@ -118,6 +118,11 @@ public class LongHuSinaTask extends LongHuTaskTemplate {
 	private void buildLhType(List<String> yrList, List<String> erList, List<String> srList, List<String> typeList){
 		for (String type : typeList) {
 			LongHuType lhType = typeService.selectByType(type);
+			if(lhType == null){
+				yrList.add(type);
+				logger.error("Can't find long hu type by:" + lhType);
+				return;
+			}
 			if(lhType.getDateType() == 1){//一日
 				yrList.add(type);
 			} else if(lhType.getDateType() == 3){//三日

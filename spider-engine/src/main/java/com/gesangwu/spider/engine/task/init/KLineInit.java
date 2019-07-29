@@ -116,7 +116,7 @@ public class KLineInit {
 		StringBuffer sb = new StringBuffer();
 		sb.append("https://xueqiu.com/stock/forchartk/stocklist.json?symbol=");
 		sb.append(symbol);
-		sb.append("&period=1day&type=before&begin=");
+		sb.append("&period=day&type=before&begin=");
 		sb.append(start);
 		sb.append("&end=");
 		sb.append(end);
