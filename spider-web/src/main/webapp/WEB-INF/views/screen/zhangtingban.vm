@@ -80,7 +80,7 @@ $!{tokenTool.enableAjaxToken()}
 		});
 		$(".zt-del").click(function(){
 			var id = $(this).parent().parent().attr("lbId");
-			var r = confirm("确定删除"+$(this).attr("stockName"));
+			var r = confirm("确定删除["+$(this).attr("stockName")+"]");
 			if(r==true){
 				jQuery.post("#springUrl('/zt/del')?id="+id,{},function(result){
 					if(result.success){

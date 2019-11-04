@@ -1,6 +1,7 @@
 package com.gesangwu.spider.engine.task;
 
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,12 +36,13 @@ import com.gesangwu.spider.engine.util.TradeTimeUtil;
  *
  */
 @Component
-public class FiveRangeTask {
+public class FiveRangeTask extends BaseTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(FiveRangeTask.class);
 	
 	private static final String regex = "var hq_str_([\\w]{8})=\"(.*)\";";
 	private static final Pattern r = Pattern.compile(regex);
+	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 	@Resource
 	private CompanyService companyService;
@@ -51,6 +53,11 @@ public class FiveRangeTask {
 	
 	@Scheduled(cron = "0 0/1 9-14 * * MON-FRI")
 	public void execute(){
+		Date now = new Date();
+		if(!isTradeDate(sdf.format(now))){
+			logger.info("非交易日！！！");
+			return;
+		}
 		if(!TradeTimeUtil.checkTime()){
 			return;
 		}

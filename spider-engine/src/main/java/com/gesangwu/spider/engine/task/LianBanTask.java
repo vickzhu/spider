@@ -57,6 +57,9 @@ public class LianBanTask extends BaseTask {
 		Date date = new Date();
 		List<LianBan> lbList = new ArrayList<LianBan>();
 		for (KLine kl : klList) {
+			if(kl.getSymbol().startsWith("sh688")){
+				continue;
+			}
 			Company company = compnayService.selectBySymbol(kl.getSymbol());
 			if(company == null){
 				continue;
