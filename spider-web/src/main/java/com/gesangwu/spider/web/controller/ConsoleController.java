@@ -70,17 +70,8 @@ public class ConsoleController {
 		long t5 = System.currentTimeMillis();
 		System.out.println("JumpUp task used:" + (t5 - t4));
 		igTask.execute();
-		long t6 = System.currentTimeMillis();
-		System.out.println("ImmortalGuider task used:" + (t6 - t5));
-		gsTask.execute();
 		long t7 = System.currentTimeMillis();
-		System.out.println("GroundSky task used:" + (t7 - t6));
-		frTask.execute();
-		long t8 = System.currentTimeMillis();
-		System.out.println("FallRise task used:" + (t8 - t7));
-		cnTask.execute();
-		long t9 = System.currentTimeMillis();
-		System.out.println("CoverNeg task used:" + (t9 - t8));
+		System.out.println("GroundSky task used:" + (t7 - t5));
 		System.out.println("End task!!!");
 		return new AjaxResult(true, null);
 	}

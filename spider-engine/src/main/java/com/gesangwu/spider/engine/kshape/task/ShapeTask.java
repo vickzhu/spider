@@ -14,6 +14,7 @@ import com.gandalf.framework.util.CalculateUtil;
 import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
+import com.gesangwu.spider.biz.service.HolidayService;
 import com.gesangwu.spider.biz.service.KLineService;
 
 /**
@@ -23,10 +24,36 @@ import com.gesangwu.spider.biz.service.KLineService;
  */
 public abstract class ShapeTask {
 		
-	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 	@Resource
 	protected KLineService klService;
+	
+	@Resource
+	protected HolidayService holidayService;	
+	
+	/**
+	 * 是否为交易日
+	 * @return
+	 */
+	protected boolean isTradeDate(String tradeDate){
+		Calendar c = Calendar.getInstance();
+		try {
+			c.setTime(sdf.parse(tradeDate));
+		} catch (ParseException e) {
+			throw new RuntimeException("日期转换错误！！！");
+		}
+		if(c.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
+			return false;
+		}
+		List<String> dateList = holidayService.selectByYear(String.valueOf(c.get(Calendar.YEAR)));
+		for (String hd : dateList) {
+			if(tradeDate.equals(hd)){
+				return false;
+			}
+		}
+		return true;
+	}
 	
 	public String getTradeDate(String tradeDate){
 		String date = tradeDate;

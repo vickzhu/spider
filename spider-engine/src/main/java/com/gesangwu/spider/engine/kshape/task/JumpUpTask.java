@@ -1,6 +1,7 @@
 package com.gesangwu.spider.engine.kshape.task;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -22,6 +23,11 @@ public class JumpUpTask extends ShapeTask {
 
 	@Scheduled(cron="0 13 15 * * MON-FRI")
 	public void execute(){
+		Date now = new Date();
+		if(!isTradeDate(sdf.format(now))){
+			logger.error("非交易日！！！");
+			return;
+		}
 		logger.info("JumpUp task begin...");
 		long start = System.currentTimeMillis();
 		execute(null);

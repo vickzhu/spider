@@ -43,6 +43,11 @@ public class LianBanTask extends BaseTask {
 	
 	@Scheduled(cron="0 30 15 * * MON-FRI")
 	public void execute(){
+		Date now = new Date();
+		if(!isTradeDate(sdf.format(now))){
+			logger.error("非交易日！！！");
+			return;
+		}
 		execute(null);
 	}
 	

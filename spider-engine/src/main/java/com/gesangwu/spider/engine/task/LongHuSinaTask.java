@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -72,7 +73,9 @@ public class LongHuSinaTask extends LongHuTaskTemplate {
 			longHu.setSymbol(symbol);
 			longHu.setStockName(stockName);
 			longHu.setPrice(Double.valueOf(price));
-			longHu.setChgPercent(DecimalUtil.parse(chg).doubleValue());
+			if(StringUtils.isNotBlank(chg)){
+				longHu.setChgPercent(DecimalUtil.parse(chg).doubleValue());
+			}
 			if(StringUtil.isNotBlank(turnover)){
 				longHu.setTurnover(DecimalUtil.parse(turnover).doubleValue());
 			}

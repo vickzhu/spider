@@ -1,6 +1,7 @@
 package com.gesangwu.spider.engine.kshape.task;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -39,6 +40,11 @@ public class ImmortalGuiderTask extends ShapeTask {
 
 	@Scheduled(cron = "0 17 15 * * MON-FRI")
 	public void execute(){
+		Date now = new Date();
+		if(!isTradeDate(sdf.format(now))){
+			logger.error("非交易日！！！");
+			return;
+		}
 		long start = System.currentTimeMillis();
 		execute(null);
 		long end = System.currentTimeMillis();

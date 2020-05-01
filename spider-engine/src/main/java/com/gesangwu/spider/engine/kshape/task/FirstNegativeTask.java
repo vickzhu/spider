@@ -1,6 +1,7 @@
 package com.gesangwu.spider.engine.kshape.task;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -27,6 +28,11 @@ public class FirstNegativeTask extends ShapeTask {
 	
 	@Scheduled(cron="0 15 15 * * MON-FRI")
 	public void execute(){
+		Date now = new Date();
+		if(!isTradeDate(sdf.format(now))){
+			logger.error("非交易日！！！");
+			return;
+		}
 		logger.info("First Negative task begin...");
 		long start = System.currentTimeMillis();
 		execute(null);
