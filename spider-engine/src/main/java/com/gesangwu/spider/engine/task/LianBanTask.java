@@ -131,7 +131,21 @@ public class LianBanTask extends BaseTask {
 		KLineExample example = new KLineExample();
 		KLineExample.Criteria criteria = example.createCriteria();
 		criteria.andTradeDateEqualTo(tradeDate);
+		criteria.andSymbolLike("sh60%");
 		criteria.andPercentGreaterThanOrEqualTo(9.9d);
+		
+		KLineExample.Criteria criteria1 = example.createCriteria();
+		criteria1.andTradeDateEqualTo(tradeDate);
+		criteria1.andSymbolLike("sz00%");
+		criteria1.andPercentGreaterThanOrEqualTo(9.9d);
+		example.or(criteria1);
+		
+		KLineExample.Criteria criteria2 = example.createCriteria();
+		criteria2.andTradeDateEqualTo(tradeDate);
+		criteria2.andSymbolLike("sz30%");
+		criteria2.andPercentGreaterThanOrEqualTo(19.8d);
+		example.or(criteria2);
+		
 		return klService.selectByExample(example);
 	}
 
