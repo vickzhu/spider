@@ -12,6 +12,9 @@
 			<a id="showStatis" class="label label-important" style="line-height:20px;" href="#springUrl('/zt/statis')">
 			查看统计
 			</a>
+			<a id="showStatis" class="label label-important" style="line-height:20px;" href="#springUrl('/zt/cy/statis')">
+			查看创业板统计
+			</a>
           </div>
 		  <div class="widget-content nopadding">
 			<form id="searchForm" action="#springUrl('/zt/')" method="get" class="form-horizontal">

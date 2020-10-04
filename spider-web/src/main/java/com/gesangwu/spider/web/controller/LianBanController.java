@@ -295,6 +295,94 @@ public class LianBanController {
 		return new AjaxResult(true, null, resultMap);
 	}
 	
+	@RequestMapping(value = "/cy/statis", method = RequestMethod.GET)
+	public ModelAndView cyStatis(HttpServletRequest request, String startDate, String endDate){
+		Calendar c = Calendar.getInstance();
+		if(StringUtil.isBlank(startDate) || StringUtil.isBlank(endDate)){
+			Date now = new Date();
+			c.setTime(now);
+			c.set(Calendar.DATE, c.get(Calendar.DATE) - 15);
+			startDate = sdf.format(c.getTime());
+			endDate = sdf.format(now);
+		}
+		LianBanExample example = new LianBanExample();
+		if("2020-08-24".compareTo(startDate) > 0){
+			startDate = "2020-08-24";
+		}
+		example.setOrderByClause("trade_date");
+		LianBanExample.Criteria criteria = example.createCriteria();
+		criteria.andTradeDateGreaterThanOrEqualTo(startDate);
+		criteria.andTradeDateLessThanOrEqualTo(endDate);
+		criteria.andSymbolLike("sz3%");
+		List<LianBan> lbList = lbService.selectByExample(example);
+		List<String> dateList = new ArrayList<String>();
+		TreeMap<String, List<LianBan>> lbMap = new TreeMap<String, List<LianBan>>();
+		for (LianBan lb : lbList) {
+			String tradeDate = lb.getTradeDate();
+			List<LianBan> lblt = lbMap.get(tradeDate);
+			if(lblt == null){
+				dateList.add(tradeDate);
+				lblt = new ArrayList<LianBan>();
+				lbMap.put(tradeDate, lblt);
+			}
+		}
+		ModelAndView mav = new ModelAndView("zhangtingStatisCy");
+		mav.addObject("startDate", startDate);
+		mav.addObject("endDate", endDate);
+		mav.addObject("lbMap", lbMap);
+		mav.addObject("dateList", dateList);
+		return mav;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/cy/statis", method = RequestMethod.POST)
+	public AjaxResult doCyStatis(HttpServletRequest request, String startDate, String endDate){
+		LianBanExample example = new LianBanExample();
+		example.setOrderByClause("trade_date");
+		if("2020-08-24".compareTo(startDate) > 0){
+			startDate = "2020-08-24";
+		}
+		LianBanExample.Criteria criteria = example.createCriteria();
+		criteria.andTradeDateGreaterThanOrEqualTo(startDate);
+		criteria.andTradeDateLessThanOrEqualTo(endDate);
+		criteria.andSymbolLike("sz3%");
+		List<LianBan> lbList = lbService.selectByExample(example);
+		List<String> dateList = new ArrayList<String>();
+		TreeMap<String, List<LianBan>> lbMap = new TreeMap<String, List<LianBan>>();
+		
+		Map<Long,Set<String>> pMap = new HashMap<Long,Set<String>>();
+		for (LianBan lb : lbList) {
+			String tradeDate = lb.getTradeDate();
+			List<LianBan> lblt = lbMap.get(tradeDate);
+			if(lblt == null){
+				lblt = new ArrayList<LianBan>();
+				lbMap.put(tradeDate, lblt);
+				dateList.add(tradeDate);
+			}
+			lblt.add(lb);
+			if(lb.getPlate() != null){
+				Set<String> symbolSet = pMap.get(lb.getPlate());
+				if(symbolSet == null){
+					symbolSet = new HashSet<String>();
+					pMap.put(lb.getPlate(), symbolSet);
+				}
+				symbolSet.add(lb.getSymbol());
+			}
+		}
+		TreeSet<String> plateSet = new TreeSet<String>();
+		for(Map.Entry<Long,Set<String>> entry : pMap.entrySet()){
+			long plate = entry.getKey();
+			int size = entry.getValue().size();
+			plateSet.add(df.format(size) + SymbolConstant.U_LINE + plate);
+		}
+		Set<String> ps = plateSet.descendingSet();
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("lbMap", lbMap);
+		resultMap.put("dateList", dateList);
+		resultMap.put("pSet", ps);
+		return new AjaxResult(true, null, resultMap);
+	}
+	
 	private LianBanPlate getPlate(String tradeDate, String plateStr, String plateCustom){
 		LianBanPlate plate = null;
 		if(StringUtil.isNotBlank(plateCustom)){

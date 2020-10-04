@@ -1,0 +1,174 @@
+<link rel="stylesheet" href="#resources('css/datepicker.css')" />
+<style type="text/css">
+	.table th, .table td{
+		line-height: 10px;
+	}
+</style>
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="#springUrl('/')" title="回到首页" class="tip-bottom"><i class="icon-home"></i> 首页</a><a href="javascript:;" class="current">涨停板</a> </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+            <h5>涨停统计</h5>
+          </div>
+		  <div class="widget-content nopadding">
+			<form id="searchForm" action="#springUrl('/zt/cy/statis')" method="post" class="form-horizontal">
+                <div class="search_option">
+					<div>
+                        <label>开始</label>
+						<div data-date="${startDate}" class="input-append date datepicker">
+							<input type="text" id="startDate" name="startDate" value="$!{startDate}" data-date-format="yyyy-mm-dd" class="span11" />
+							<span class="add-on"><i class="icon-th"></i></span> 
+						</div>
+					</div>
+					<div>
+                        <label>截止</label>
+						<div data-date="${endDate}" class="input-append date datepicker">
+							<input type="text" id="endDate" name="endDate" value="$!{endDate}" data-date-format="yyyy-mm-dd" class="span11" />
+							<span class="add-on"><i class="icon-th"></i></span> 
+						</div>
+					</div>
+                    <div>
+                        <button id="ztSearch" type="button"  class="btn btn-success">搜索</button>
+                    </div>
+                </div>
+			</form>
+          </div>
+          <div class="widget-content">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr id="statis-col-name"></tr>
+              </thead>
+              <tbody id="statis-content">
+              </tbody>
+             </table>
+			</div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+$!{tokenTool.enableAjaxToken()}
+<script src="#resources('js/bootstrap-datepicker.js')"></script>
+<script type="text/javascript">
+	var colorArr = new Array();
+	colorArr[0] = "#FF0000";
+	colorArr[1] = "#0000FF";
+	colorArr[2] = "#D02090";
+	colorArr[3] = "#EE82EE";
+	colorArr[4] = "#008080";
+	colorArr[5] = "#FFA500";
+	colorArr[6] = "#9ACD32";
+	colorArr[7] = "#8A2BE2";
+	colorArr[8] = "#A0522D";
+	colorArr[9] = "#800080";
+	$(function(){
+		$("#ztSearch").click(function(){
+			loadData();			
+		});
+		loadData();
+	});
+	
+	function loadData(){
+		jQuery.post("#springUrl('/zt/cy/statis')",$("#searchForm").serialize(),function(result){
+			if(result.success){
+				$("#statis-content").html("");
+				var dateList = result.records.dateList;
+				var lbMap = result.records.lbMap;
+				var pSet = result.records.pSet;
+				renderData(dateList, lbMap);
+				renderColor(pSet);
+			} else {
+				alert("查询失败!"+result.message);
+			}
+		});
+	}
+	
+	function renderData(dateList, lbMap){
+		showTitle(dateList);
+		cols = dateList.length;
+		for(var i = 0; i < cols; i++){//遍历每一天的数据
+			var dl = dateList[i];
+			var lbList = lbMap[dl];
+			var tmpLb = new Array();//临时保存当天待定的数据
+			for(var j = 0; j < lbList.length; j++){//遍历当天的所有数据
+				var curLb = lbList[j];
+				if(curLb.status == 1 && curLb.days == 1){
+					addRow();
+					addData(i,rows,curLb);//添加今天
+				} else {//非首板
+					if(i == 0){//第一列直接显示出来
+						addRow();
+						addData(i,rows,curLb);
+					} else {//非第一列
+						$("td[zb^='"+(i-1)+"']").each(function(){//查找应该显示的位置
+							if($(this).attr("s") == curLb.symbol){
+								var r = $(this).attr("zb").split("_")[1];
+								addData(i,r,curLb);
+							}
+						});
+					}
+				}
+			}
+		}
+	}
+	
+	var cols = 0;
+	function renderColor(pSet){
+		var len = pSet.length;
+		for(var i = 0; i < len; i++){
+			if(i > 4){//只显示前五
+				break;
+			}
+			var c = colorArr[i];
+			var p = pSet[i].substring(pSet[i].indexOf('_')+1);
+			$(".c_"+p).css("color", c);
+		}
+	}
+	
+	function showTitle(dateList){
+		var len = dateList.length;
+		var title = "";
+		for(var i = 0; i < len; i++){
+			title = title + "<th>" + dateList[i].substr(5,5) + "</th>";
+		}
+		$("#statis-col-name").html(title);
+	}
+	var rows = 0;
+	function addRow(){
+		rows++;
+		var content = "<tr>";
+		for(var i=0; i < cols; i++){
+			content = content + "<td zb='"+i+"_"+rows+"' s=''></td>";
+		}
+		content += "</tr>";
+		$("#statis-content").append(content);
+	}
+	
+	function addData(col,row,curLb){
+		var coord = col+"_"+row;
+		var content = curLb.stockName;
+		if(curLb.status == 1){//涨停
+			content += "("+curLb.days+")";
+		} else if(curLb.status == 2){//未涨停
+			content = curLb.percent + "%";
+		} else if(curLb.status == 3){//停牌
+			content = "停牌";
+		}
+		$("td[zb|="+coord+"]").html(content);
+		$("td[zb|="+coord+"]").attr("s", curLb.symbol);
+		$("td[zb|="+coord+"]").addClass("c_"+curLb.plate);
+	}
+	$('.datepicker').datepicker({format: 'yyyy-mm-dd',
+        weekStart: 1,
+        autoclose: true,
+        todayBtn: 'linked',
+        language: 'zh-CN'}).on('changeDate',function(){
+			
+		});
+	
+</script>
