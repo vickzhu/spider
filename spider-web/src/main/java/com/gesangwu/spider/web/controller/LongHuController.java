@@ -172,7 +172,7 @@ public class LongHuController {
 	@ResponseBody
 	@RequestMapping(value = "/fetch/sina", method = RequestMethod.GET)
 	public void fetchSina(HttpServletRequest request){
-		lhTask.execute(null, LongHuTaskChannelEnum.WANGYI);
+		lhTask.execute(null, LongHuTaskChannelEnum.SINA);
 	}
 	
 	@ResponseBody

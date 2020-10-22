@@ -30,6 +30,7 @@ import com.gesangwu.spider.biz.dao.model.LongHuDetail;
 import com.gesangwu.spider.biz.dao.model.LongHuType;
 import com.gesangwu.spider.biz.service.LongHuTypeService;
 import com.gesangwu.spider.engine.util.StockTool;
+import com.gesangwu.spider.engine.util.UnicodeUtil;
 import com.gesangwu.spider.engine.util.XinLangLongHuTool;
 
 @Component
@@ -136,7 +137,7 @@ public class LongHuSinaTask extends LongHuTaskTemplate {
 		}
 	}
 	
-	private static final String r2 = "SYMBOL\\:\"([0-9]{6})\",type\\:\"([0-9]{2})\",comCode\\:\"([0-9]*)\",comName\\:\"([^\"]*)\",buyAmount\\:\"([0-9\\.]*)\",sellAmount\\:\"([0-9\\.]*)\",netAmount\\:([0-9\\.\\-]*)";
+	private static final String r2 = "\"SYMBOL\"\\:\"([0-9]{6})\",\"type\"\\:\"([0-9]{2})\",\"comCode\"\\:\"([0-9]*)\",\"comName\"\\:\"([^\"]*)\",\"buyAmount\"\\:\"([0-9\\.]*)\",\"sellAmount\"\\:\"([0-9\\.]*)\",\"netAmount\"\\:([0-9\\.\\-]*)";
 	private Pattern p2 = Pattern.compile(r2);
 
 	@Override
@@ -156,7 +157,7 @@ public class LongHuSinaTask extends LongHuTaskTemplate {
 		Map<String,LongHuDetail> detailMap = new HashMap<String,LongHuDetail>();
 		while(m.find()){
 			String deptCode = m.group(3);
-			String deptName = m.group(4);
+			String deptName = UnicodeUtil.decodeUnicode(m.group(4));
 			String buyAmtStr = m.group(5);
 			String sellAmtStr = m.group(6);
 			String netAmtStr = m.group(7);
