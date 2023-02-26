@@ -3,6 +3,16 @@
 	.table th, .table td{
 		line-height: 10px;
 	}
+	.box{
+	  position: relative;
+	  height: 80px;
+	  width: 100%;
+	  z-index: 999;
+	}
+    .box-active{
+      position: fixed;
+      top: 0;
+    }
 </style>
 <div id="content">
   <div id="content-header">
@@ -17,6 +27,7 @@
           </div>
 		  <div class="widget-content nopadding">
 			<form id="searchForm" action="#springUrl('/zt/statis')" method="post" class="form-horizontal">
+				$!{tokenTool.csrfInput}
                 <div class="search_option">
 					<div>
                         <label>开始</label>
@@ -55,6 +66,17 @@
 $!{tokenTool.enableAjaxToken()}
 <script src="#resources('js/bootstrap-datepicker.js')"></script>
 <script type="text/javascript">
+ // 监听事件
+ window.addEventListener('scroll', function(){
+ 	let t = $('body, html').scrollTop();   // 目前监听的是整个body的滚动条距离
+ 	if(t>0){
+		$('#statis-col-name').addClass('box-active')
+	}else{
+		$('#statis-col-name').removeClass('box-active')
+	}
+ })
+</script>
+<script type="text/javascript">
 	var colorArr = new Array();
 	colorArr[0] = "#FF0000";
 	colorArr[1] = "#0000FF";
@@ -74,12 +96,13 @@ $!{tokenTool.enableAjaxToken()}
 	});
 	
 	function loadData(){
-		jQuery.post("#springUrl('/zt/statis')",$("#searchForm").serialize(),function(result){
-			if(result.success){
+		var params = $("#searchForm").serialize();
+		jQuery.post("#springUrl('/zt/statis')", params, function(result){
+			if(result.code == 200){
 				$("#statis-content").html("");
-				var dateList = result.records.dateList;
-				var lbMap = result.records.lbMap;
-				var pSet = result.records.pSet;
+				var dateList = result.data.dateList;
+				var lbMap = result.data.lbMap;
+				var pSet = result.data.pSet;
 				renderData(dateList, lbMap);
 				renderColor(pSet);
 			} else {

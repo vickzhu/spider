@@ -73,9 +73,9 @@ public class SecDeptController {
 				cliqueDeptService.insert(cliqueDept);
 			}
 		} catch (Exception e) {
-			return new AjaxResult(false, e.getMessage());
+			return new AjaxResult(500, e.getMessage());
 		}
-		return new AjaxResult(true, null);
+		return new AjaxResult();
 	}
 	
 	@ResponseBody
@@ -84,9 +84,9 @@ public class SecDeptController {
 		try{			
 			cliqueDeptService.delete(cliqueId, deptCode);
 		}catch(Exception e){
-			return new AjaxResult(false, e.getMessage());
+			return new AjaxResult(500, e.getMessage());
 		}
-		return new AjaxResult(true, null);
+		return new AjaxResult();
 	}
 	
 	@ResponseBody
@@ -98,9 +98,9 @@ public class SecDeptController {
 			cd.setGmtUpdate(new Date());
 			cliqueDeptService.updateByPrimaryKey(cd);
 		}catch(Exception e){
-			return new AjaxResult(false, e.getMessage());
+			return new AjaxResult(500, e.getMessage());
 		}
-		return new AjaxResult(true, null);
+		return new AjaxResult();
 	}
 	
 	/**

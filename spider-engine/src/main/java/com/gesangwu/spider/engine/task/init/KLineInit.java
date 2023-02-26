@@ -62,8 +62,9 @@ public class KLineInit {
 		HttpTool.get(cookieUrl);// 这个链接只是为了获得cookie信息，因为后面的请求需要用到cookie
 		//1423
 		CompanyExample example = new CompanyExample();
-		CompanyExample.Criteria criteria = example.createCriteria();
-		criteria.andIdGreaterThan(1242l);
+//		CompanyExample.Criteria criteria = example.createCriteria();
+//		criteria.andIdGreaterThan(1242l);
+//		criteria.andIdLessThan(1243l);
 		List<Company> companyList = companyService.selectByExample(example);
 		Date now = new Date();
 		for (Company company : companyList) {
@@ -139,7 +140,7 @@ public class KLineInit {
 		sb.append(start);
 		sb.append("&indicator=kline");
 		sb.append("&count=");
-		sb.append(-150);//往前多少天的数据
+		sb.append(100);//XXX 往前多少天的数据，往前为负数，比如-5，为往前天，5为往后5天
 		return sb.toString();
 	}
 }

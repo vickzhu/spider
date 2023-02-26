@@ -17,9 +17,9 @@ public class KLineInitTest extends BaseTest {
 	@Test
 	public void execute(){
 		Calendar c = Calendar.getInstance();
-		c.set(2020, 3, 30, 0, 0, 0);
+		c.set(2022, 10, 15, 0, 0, 0);
 		long start = c.getTimeInMillis();
-		c.set(2020, 3, 30, 0, 0, 0);
+		c.set(2022, 11, 10, 0, 0, 0);
 		long end = c.getTimeInMillis();
 		ki.execute(start, end);
 	}

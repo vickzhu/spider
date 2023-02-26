@@ -13,6 +13,8 @@ public abstract class BaseTask {
 	
 	protected static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
+	protected static final String cybStartDate = "2020-08-24";
+	
 	@Resource
 	protected HolidayService holidayService;	
 	

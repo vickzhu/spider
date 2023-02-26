@@ -1,2 +1,0 @@
---统计3个月内上榜超过60次的营业部
-SELECT sec_dept_code,COUNT(*) AS c FROM long_hu_detail WHERE trade_date>'2016-08-01' AND sec_dept_code>'80000000' GROUP BY sec_dept_code HAVING c>60 ORDER BY c DESC;

@@ -63,16 +63,16 @@ public class ConsoleController {
 		yzTask.execute();
 		long t3 = System.currentTimeMillis();
 		System.out.println("YiZi task used:" + (t3 - t2));
-		usTask.execute();
+//		usTask.execute();
 		long t4 = System.currentTimeMillis();
-		System.out.println("UpShadow task used:" + (t4 - t3));
+//		System.out.println("UpShadow task used:" + (t4 - t3));
 		juTask.execute();
 		long t5 = System.currentTimeMillis();
 		System.out.println("JumpUp task used:" + (t5 - t4));
-		igTask.execute();
-		long t7 = System.currentTimeMillis();
-		System.out.println("GroundSky task used:" + (t7 - t5));
+//		igTask.execute();
+//		long t7 = System.currentTimeMillis();
+//		System.out.println("GroundSky task used:" + (t7 - t5));
 		System.out.println("End task!!!");
-		return new AjaxResult(true, null);
+		return new AjaxResult();
 	}
 }

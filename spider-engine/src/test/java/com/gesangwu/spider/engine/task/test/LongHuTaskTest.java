@@ -25,7 +25,7 @@ public class LongHuTaskTest extends BaseTest {
 	@Test
 	public void execute(){
 //		task.execute(null);
-		task.execute("2020-04-22",LongHuTaskChannelEnum.WANGYI);
+		task.execute("2020-10-20",LongHuTaskChannelEnum.SINA);
 //		LongHu longHu = lhService.selectByPrimaryKey(82345l);
 //		task.fetchDetail(1, "04", longHu);
 //		task.fetchDetail(longHu);

@@ -9,11 +9,11 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.util.DateUtil;

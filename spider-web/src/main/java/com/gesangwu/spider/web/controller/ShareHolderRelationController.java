@@ -61,7 +61,7 @@ public class ShareHolderRelationController {
 		} else {
 			company = companyService.selectByName(keyword);
 		}
-		return new AjaxResult(company == null, null, company);
+		return new AjaxResult(company);
 	}
 	
 	/**

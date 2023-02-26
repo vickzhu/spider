@@ -1,10 +1,12 @@
 package com.gesangwu.spider.engine.task;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -14,7 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gandalf.framework.constant.SymbolConstant;
+import com.gandalf.framework.net.HttpTool;
 import com.gandalf.framework.util.CalculateUtil;
 import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.common.LianBanStatus;
@@ -32,9 +36,9 @@ import com.gesangwu.spider.biz.service.LianBanService;
  *
  */
 @Component
-public class LianBanTask extends BaseTask {
+public class ZhangTingTask extends BaseTask {
 	
-	private static final Logger logger = LoggerFactory.getLogger(LianBanTask.class);
+	private static final Logger logger = LoggerFactory.getLogger(ZhangTingTask.class);
 	
 	@Resource
 	private LianBanService lbService;
@@ -163,6 +167,77 @@ public class LianBanTask extends BaseTask {
 		return null;
 	}
 	
+	private static List<KLine> getZTList(String tradeDate){
+		List<KLine> klList = new ArrayList<KLine>();
+		StringBuilder sb = new StringBuilder();
+		int curPage = 0;
+		int cpp = 200;
+		String searchDate = tradeDate.replaceAll("-", StringUtil.EMPTY);
+		sb.append("https://push2ex.eastmoney.com/getTopicZTPool?cb=&ut=7eea3edcaed734bea9cbfc24409ed989&dpt=wz.ztzt&Pageindex=");
+		sb.append(curPage);
+		sb.append("&pagesize=");
+		sb.append(cpp);
+		sb.append("&sort=fbt%3Aasc&date=");
+		sb.append(searchDate);
+		sb.append("&_=");
+		sb.append(System.currentTimeMillis());
+		String url = sb.toString();
+		String result = HttpTool.get(url);
+		System.out.println(result);
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			Map resultMap = mapper.readValue(result, Map.class);
+			Map dataMap = (Map)resultMap.get("data");
+			int totalCount = (int)dataMap.get("tc");
+			List<Map<String, Object>> poolList = (List<Map<String, Object>>)dataMap.get("pool");
+			for (Map<String, Object> pMap : poolList) {
+				String code = (String)pMap.get("c");
+				String name = (String)pMap.get("n");
+				int price = (int)pMap.get("p");
+				int lbc = (int) pMap.get("lbc");//连板次数
+				System.out.println(name + "(" + code + "):"+lbc);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return klList;
+	}
+	
+	private static List<KLine> getZTList(String tradeDate, int curPage){
+		List<KLine> klList = new ArrayList<KLine>();
+		StringBuilder sb = new StringBuilder();
+		int cpp = 200;
+		String searchDate = tradeDate.replaceAll("-", StringUtil.EMPTY);
+		sb.append("https://push2ex.eastmoney.com/getTopicZTPool?cb=&ut=7eea3edcaed734bea9cbfc24409ed989&dpt=wz.ztzt&Pageindex=");
+		sb.append(curPage);
+		sb.append("&pagesize=");
+		sb.append(cpp);
+		sb.append("&sort=fbt%3Aasc&date=");
+		sb.append(searchDate);
+		sb.append("&_=");
+		sb.append(System.currentTimeMillis());
+		String url = sb.toString();
+		String result = HttpTool.get(url);
+		System.out.println(result);
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			Map resultMap = mapper.readValue(result, Map.class);
+			Map dataMap = (Map)resultMap.get("data");
+			int totalCount = (int)dataMap.get("tc");
+			List<Map<String, Object>> poolList = (List<Map<String, Object>>)dataMap.get("pool");
+			for (Map<String, Object> pMap : poolList) {
+				String code = (String)pMap.get("c");
+				String name = (String)pMap.get("n");
+				int price = (int)pMap.get("p");
+				int lbc = (int) pMap.get("lbc");//连板次数
+				System.out.println(name + "(" + code + "):"+lbc);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return klList;
+	}
+	
 	private List<KLine> getKLineList(String tradeDate){
 		KLineExample example = new KLineExample();
 		KLineExample.Criteria criteria = example.createCriteria();
@@ -225,6 +300,7 @@ public class LianBanTask extends BaseTask {
 //		System.out.println(d1);
 //		System.out.println(d2);
 		System.out.println(CalculateUtil.mul(29.655, 1.1));
+		getZTList("2023-02-10");
 	}
 	
 }

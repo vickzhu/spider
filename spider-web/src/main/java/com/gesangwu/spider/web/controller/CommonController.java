@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gandalf.framework.util.StringUtil;
 import com.gandalf.framework.web.tool.AjaxResult;
 import com.gandalf.framework.web.tool.Page;
@@ -116,7 +116,7 @@ public class CommonController {
 		for (StockNameInitial initial : initialList) {
 			resultMap.put(initial.getSymbol(), initial.getStockName());
 		}
-		return new AjaxResult(Boolean.TRUE, null, resultMap);
+		return new AjaxResult(resultMap);
 	}
 	
 	@RequestMapping(value = "/stock", method = RequestMethod.GET)

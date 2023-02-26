@@ -60,7 +60,7 @@ public class LianBanController {
 			tradeDate = klService.selectLatestDate();
 		}
 		LianBanExample example = new LianBanExample();
-		example.setOrderByClause("days desc");
+		example.setOrderByClause("days desc,percent desc");
 		LianBanExample.Criteria criteria = example.createCriteria();
 		criteria.andTradeDateEqualTo(tradeDate);
 		criteria.andStatusEqualTo(LianBanStatus.ZT.getCode());
@@ -135,12 +135,12 @@ public class LianBanController {
 				}
 				lb.setReason(reason);
 			} else {
-				return new AjaxResult(false, "没有对应日期的K线！");
+				return new AjaxResult(500, "没有对应日期的K线！");
 			}
 		}
 		int count = lbService.insert(lb);
 		updatePreLB(lb);
-		return new AjaxResult(count == 1, null);
+		return new AjaxResult();
 	}
 	
 	@ResponseBody
@@ -148,7 +148,7 @@ public class LianBanController {
 	public AjaxResult del(HttpServletRequest request){
 		Long id = Long.valueOf(request.getParameter("id"));
 		int count = lbService.deleteByPrimaryKey(id);
-		return new AjaxResult(count == 1, null);
+		return new AjaxResult();
 	}
 	
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
@@ -186,7 +186,7 @@ public class LianBanController {
 		lb.setShape(shape);
 		lbService.updateByPrimaryKey(lb);
 		updatePreLB(lb);
-		return new AjaxResult(true, null);
+		return new AjaxResult();
 	}
 	
 	/**
@@ -292,7 +292,7 @@ public class LianBanController {
 		resultMap.put("lbMap", lbMap);
 		resultMap.put("dateList", dateList);
 		resultMap.put("pSet", ps);
-		return new AjaxResult(true, null, resultMap);
+		return new AjaxResult(resultMap);
 	}
 	
 	@RequestMapping(value = "/cy/statis", method = RequestMethod.GET)
@@ -380,7 +380,7 @@ public class LianBanController {
 		resultMap.put("lbMap", lbMap);
 		resultMap.put("dateList", dateList);
 		resultMap.put("pSet", ps);
-		return new AjaxResult(true, null, resultMap);
+		return new AjaxResult(resultMap);
 	}
 	
 	private LianBanPlate getPlate(String tradeDate, String plateStr, String plateCustom){

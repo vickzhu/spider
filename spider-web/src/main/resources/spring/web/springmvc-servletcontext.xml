@@ -16,7 +16,7 @@
 		        </beans:property>
 		    </beans:bean>
 			<beans:bean id="mappingJacksonHttpMessageConverter"
-				class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 				<beans:property name="supportedMediaTypes">
 					<beans:list>
 						<beans:value>application/json;charset=UTF-8</beans:value>
