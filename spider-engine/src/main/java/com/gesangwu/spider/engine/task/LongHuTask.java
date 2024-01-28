@@ -62,6 +62,9 @@ public class LongHuTask extends BaseTask {
 	}
 	
 	public void execute(String tradeDate, LongHuTaskChannelEnum channel){
+		if(!isTradeDate(tradeDate)) {
+			return;
+		}
 		if(StringUtil.isBlank(tradeDate)){
 			Date now = new Date();
 			tradeDate = sdf.format(now);

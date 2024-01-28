@@ -16,7 +16,7 @@ import com.gesangwu.spider.engine.util.LittleCompanyHolder;
  * @author zhuxb
  *
  */
-@Component
+//@Component
 public class LoadLittleCompanyTask {
 	
 	@Resource

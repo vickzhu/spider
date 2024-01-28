@@ -16,7 +16,7 @@ import com.gesangwu.spider.biz.service.BiddingService;
 import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.engine.common.BiddingHolder;
 
-@Component
+//@Component
 public class BiddingCalcTask {
 
 	@Resource

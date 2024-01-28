@@ -65,7 +65,7 @@ public class LianBanTask extends BaseTask {
 		List<LianBan> lbList = new ArrayList<LianBan>();
 //		String preTradeDate = getPreTradeDate(tradeDate);
 		for (KLine kl : klList) {
-			if(kl.getSymbol().startsWith("sh688")||(cybStartDate.compareTo(tradeDate) <= 0 && kl.getSymbol().startsWith("sz30"))){
+			if(kl.getSymbol().startsWith("sh688") || (cybStartDate.compareTo(tradeDate) <= 0 && kl.getSymbol().startsWith("sz30")) || kl.getSymbol().startsWith("bj")){
 				continue;
 			}
 			Company company = compnayService.selectBySymbol(kl.getSymbol());

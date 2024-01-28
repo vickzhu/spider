@@ -25,7 +25,7 @@ import com.gesangwu.spider.engine.common.BiddingHolder;
 import com.gesangwu.spider.engine.util.LittleCompanyHolder;
 
 
-@Component
+//@Component
 public class BiddingTask {
 	
 private static final Logger logger = LoggerFactory.getLogger(BiddingTask.class);

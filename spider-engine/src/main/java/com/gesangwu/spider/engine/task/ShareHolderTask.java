@@ -35,7 +35,7 @@ import com.gesangwu.spider.biz.service.StockShareHolderService;
  * @author zhuxb
  *
  */
-@Component
+//@Component
 public class ShareHolderTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ShareHolderTask.class);

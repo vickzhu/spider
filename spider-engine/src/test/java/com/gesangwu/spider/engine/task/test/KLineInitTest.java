@@ -16,10 +16,11 @@ public class KLineInitTest extends BaseTest {
 	
 	@Test
 	public void execute(){
+		//闭区间
 		Calendar c = Calendar.getInstance();
-		c.set(2022, 10, 15, 0, 0, 0);
+		c.set(2024, 0, 5, 0, 0, 0);
 		long start = c.getTimeInMillis();
-		c.set(2022, 11, 10, 0, 0, 0);
+		c.set(2024, 0, 28, 0, 0, 0);
 		long end = c.getTimeInMillis();
 		ki.execute(start, end);
 	}

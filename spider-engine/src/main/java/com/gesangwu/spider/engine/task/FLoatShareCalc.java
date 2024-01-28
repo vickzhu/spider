@@ -28,7 +28,7 @@ import com.gesangwu.spider.biz.service.StockShareHolderService;
  * @author zhuxb
  *
  */
-@Component
+//@Component
 public class FLoatShareCalc {
 	
 	private static final Logger logger = LoggerFactory.getLogger(FLoatShareCalc.class);

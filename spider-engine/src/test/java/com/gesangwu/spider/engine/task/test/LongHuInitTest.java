@@ -24,6 +24,6 @@ public class LongHuInitTest extends BaseTest {
 	public void test(){
 //		longHuInit.getLongHu("sh601128", "20160930");
 //		longHuInit.getLongHu("sh600397", "20160930");
-//		longHuInit.execute();
+		longHuInit.execute();
 	}
 }

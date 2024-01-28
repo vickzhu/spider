@@ -35,7 +35,7 @@ import com.gesangwu.spider.engine.util.TradeTimeUtil;
  * @author zhuxb
  *
  */
-@Component
+//@Component
 public class FiveRangeTask extends BaseTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(FiveRangeTask.class);

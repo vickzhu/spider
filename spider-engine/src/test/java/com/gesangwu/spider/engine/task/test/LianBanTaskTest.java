@@ -24,7 +24,7 @@ public class LianBanTaskTest extends BaseTest {
 	
 	@Test
 	public void init(){
-		init("2022-11-15","2022-12-10");
+		init("2024-01-01","2024-01-28");
 	}
 	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

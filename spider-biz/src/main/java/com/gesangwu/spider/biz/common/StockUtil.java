@@ -10,6 +10,8 @@ public class StockUtil {
 			prefix = "sh";
 		} else if(code.startsWith("00")||code.startsWith("30")||code.startsWith("20")){
 			prefix = "sz";
+		} else if(code.startsWith("43")) {
+			prefix = "bj";
 		}
 		return prefix + code;
 	}
