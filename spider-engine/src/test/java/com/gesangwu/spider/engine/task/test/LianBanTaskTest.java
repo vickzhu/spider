@@ -16,15 +16,15 @@ public class LianBanTaskTest extends BaseTest {
 	@Resource
 	private LianBanTask task;
 	
-//	@Test
+	@Test
 	public void execute(){
-//		task.execute();
-		task.execute("2022-11-11");
+		task.execute();
+//		task.execute("2022-11-11");
 	}
 	
-	@Test
+//	@Test
 	public void init(){
-		init("2024-01-01","2024-01-28");
+		init("2023-12-01","2024-01-28");
 	}
 	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

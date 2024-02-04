@@ -383,6 +383,39 @@ public class LianBanController {
 		return new AjaxResult(resultMap);
 	}
 	
+	@RequestMapping(value = "/chart", method = RequestMethod.GET)
+	public ModelAndView chart(HttpServletRequest request){
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
+		if(StringUtil.isBlank(startDate)) {
+			Calendar c = Calendar.getInstance();
+			c.set(Calendar.MONTH, c.get(Calendar.MONTH) - 1);
+			startDate = sdf.format(c.getTime());
+		}
+		if(StringUtil.isBlank(endDate)) {
+			Date d = new Date();
+			endDate = sdf.format(d);
+		}
+		List<LianBan>  lbList = lbService.getMaxByDate(startDate, endDate);
+		Map<String, List<LianBan>> lbMap = new TreeMap<String, List<LianBan>>();
+		for (LianBan lianBan : lbList) {
+			String tradeDate = lianBan.getTradeDate();
+			tradeDate = tradeDate.substring(2);
+			List<LianBan> list = lbMap.get(tradeDate);
+			if(list == null) {
+				list = new ArrayList<LianBan>();
+				lbMap.put(tradeDate, list);
+			}
+			list.add(lianBan);
+		}
+		ModelAndView mav = new ModelAndView("lianbanchart");
+		mav.addObject("startDate", startDate);
+		mav.addObject("endDate", endDate);
+		mav.addObject("lbList", lbList);
+		mav.addObject("lbMap", lbMap);
+		return mav;
+	}
+	
 	private LianBanPlate getPlate(String tradeDate, String plateStr, String plateCustom){
 		LianBanPlate plate = null;
 		if(StringUtil.isNotBlank(plateCustom)){

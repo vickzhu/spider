@@ -39,6 +39,11 @@ public class LianBanServiceImpl extends BaseServiceImpl<LianBan, LianBanExample>
 		criteria.andTradeDateEqualTo(tradeDate);
 		List<LianBan> lbList = mapper.selectByExample(example);
 		return CollectionUtils.isNotEmpty(lbList) ? lbList.get(0) : null;
-	}	
+	}
+
+	@Override
+	public List<LianBan> getMaxByDate(String startDate, String endDate) {
+		return mapper.getMaxByDate(startDate, endDate);
+	}
 
 }

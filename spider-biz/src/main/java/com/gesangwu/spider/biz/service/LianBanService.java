@@ -12,4 +12,6 @@ public interface LianBanService extends BaseService<LianBan, LianBanExample> {
 	
 	public LianBan selectByTradeDate(String symbol, String tradeDate);
 	
+	public List<LianBan> getMaxByDate(String startDate, String endDate);
+	
 }

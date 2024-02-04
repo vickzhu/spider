@@ -50,7 +50,7 @@
 			</form>
           </div>
           <div class="widget-content">
-            <table class="table table-bordered table-striped">
+            <table id="zt-table" class="table table-bordered table-striped">
               <thead>
                 <tr id="statis-col-name"></tr>
               </thead>
@@ -69,10 +69,12 @@ $!{tokenTool.enableAjaxToken()}
  // 监听事件
  window.addEventListener('scroll', function(){
  	let t = $('body, html').scrollTop();   // 目前监听的是整个body的滚动条距离
- 	if(t>0){
-		$('#statis-col-name').addClass('box-active')
+ 	if(t > 0){
+		//var cWidth = $("#zt-table").css("width");
+		//$('#statis-col-name').addClass('box-active');
+		//$('#statis-col-name').css("width", cWidth);
 	}else{
-		$('#statis-col-name').removeClass('box-active')
+		$('#statis-col-name').removeClass('box-active');
 	}
  })
 </script>
