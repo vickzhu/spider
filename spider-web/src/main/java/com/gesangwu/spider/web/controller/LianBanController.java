@@ -389,7 +389,7 @@ public class LianBanController {
 		String endDate = request.getParameter("endDate");
 		if(StringUtil.isBlank(startDate)) {
 			Calendar c = Calendar.getInstance();
-			c.set(Calendar.MONTH, c.get(Calendar.MONTH) - 1);
+			c.set(Calendar.MONTH, c.get(Calendar.MONTH) - 2);
 			startDate = sdf.format(c.getTime());
 		}
 		if(StringUtil.isBlank(endDate)) {

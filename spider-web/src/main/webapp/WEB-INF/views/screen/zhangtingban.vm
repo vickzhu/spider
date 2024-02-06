@@ -103,7 +103,7 @@ $!{tokenTool.enableAjaxToken()}
 		});
 		$(".lh_detail").click(function(){
 			var symbol = $(this).parent().parent().attr("symbol");
-			window.open("#springUrl('/longhu/detail')?symbol="+symbol);
+			window.open("#springUrl('/stock')?symbol="+symbol);
 		});
 		$('.datepicker').datepicker({format: 'yyyy-mm-dd',
             weekStart: 1,

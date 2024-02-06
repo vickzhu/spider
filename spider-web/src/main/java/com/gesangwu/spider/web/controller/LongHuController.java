@@ -81,6 +81,7 @@ public class LongHuController {
 	
 	@RequestMapping(value="/detail", method = RequestMethod.GET)
 	public ModelAndView detail(HttpServletRequest request){
+		ModelAndView mav = new ModelAndView("longHuDetail");
 		String symbol = request.getParameter("symbol");
 		String tradeDate = request.getParameter("tradeDate");
 		if(StringUtil.isBlank(symbol)){
@@ -90,13 +91,13 @@ public class LongHuController {
 		LongHu longHu = selectLongHu(symbol, tradeDate);
 		if(longHu == null){
 			logger.error("Can't find LongHu with given symbol ["+symbol+"] and tradeDate ["+tradeDate+"]!");
-			return null;
+			return mav;
 		}
 		List<String> yrTypeList = getTypeDes(longHu.getYrType());
 		List<String> erTypeList = getTypeDes(longHu.getErType());
 		List<String> srTypeList = getTypeDes(longHu.getSrType());
 		List<String> dateList = lhService.selectTradeDate(symbol);
-		ModelAndView mav = new ModelAndView("longHuDetail");
+		
 		if(CollectionUtils.isNotEmpty(yrTypeList)){
 			LongHuDetailPair p = lhDetailService.selectDetailPairs(symbol, longHu.getTradeDate(), LongHuDateType.YIRI.getCode());
 			mav.addObject("yrBuyList", p.getBuyList());
