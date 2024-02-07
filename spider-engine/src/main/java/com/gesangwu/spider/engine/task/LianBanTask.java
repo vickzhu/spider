@@ -63,7 +63,7 @@ public class LianBanTask extends BaseTask {
 		List<KLine> klList = getKLineList(tradeDate);
 		Date date = new Date();
 		List<LianBan> lbList = new ArrayList<LianBan>();
-//		String preTradeDate = getPreTradeDate(tradeDate);
+		String preTradeDate = getPreTradeDate(tradeDate);
 		for (KLine kl : klList) {
 			if(kl.getSymbol().startsWith("sh688") || (cybStartDate.compareTo(tradeDate) <= 0 && kl.getSymbol().startsWith("sz30")) || kl.getSymbol().startsWith("bj")){
 				continue;
@@ -72,14 +72,14 @@ public class LianBanTask extends BaseTask {
 			if(company == null){
 				continue;
 			}
-//			KLine preKl = klService.selectByDate(kl.getSymbol(), preTradeDate);
-//			if(preKl != null) {
-//				double ztPrice = preKl.getClose();
-//				double todayZtPrice = CalculateUtil.mul(ztPrice, 1.1);
-//				if(kl.getClose() != todayZtPrice) {
-//					continue;
-//				}
-//			}
+			KLine preKl = klService.selectByDate(kl.getSymbol(), preTradeDate);
+			if(preKl != null) {
+				double ztPrice = preKl.getClose();
+				double todayZtPrice = CalculateUtil.mul(ztPrice, 1.1);
+				if(kl.getClose() != todayZtPrice) {
+					continue;
+				}
+			}
 			LianBan preLianBan = getPreLianBan(company, tradeDate);
 			int days = 1;
 			Long plate = null;
@@ -168,12 +168,12 @@ public class LianBanTask extends BaseTask {
 		KLineExample.Criteria criteria = example.createCriteria();
 		criteria.andTradeDateEqualTo(tradeDate);
 		criteria.andSymbolLike("sh60%");
-		criteria.andPercentGreaterThanOrEqualTo(9.9d);
+		criteria.andPercentGreaterThanOrEqualTo(9.8d);
 		
 		KLineExample.Criteria criteria1 = example.createCriteria();
 		criteria1.andTradeDateEqualTo(tradeDate);
 		criteria1.andSymbolLike("sz00%");
-		criteria1.andPercentGreaterThanOrEqualTo(9.9d);
+		criteria1.andPercentGreaterThanOrEqualTo(9.8d);
 		example.or(criteria1);
 		
 		KLineExample.Criteria criteria2 = example.createCriteria();

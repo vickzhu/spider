@@ -22,13 +22,13 @@ public class ConsoleTaskTest extends BaseTest {
 	public void execute(){
 //		String tradeDate = "2020-04-30";
 		long t1 = System.currentTimeMillis();
-		klineTask.execute();
+//		klineTask.execute();
 		long t2 = System.currentTimeMillis();
 		System.out.println("KLine task used:" + (t2 - t1));
-		lbTask.execute();
+		lbTask.execute("2024-02-07");
 		long t3 = System.currentTimeMillis();
 		System.out.println("LianBan task used:" + (t3 - t2));
-		lhTask.execute();
+//		lhTask.execute();
 		long t4 = System.currentTimeMillis();
 		System.out.println("LongHu task used:" + (t4 - t3));
 		System.out.println("End task!!!");
