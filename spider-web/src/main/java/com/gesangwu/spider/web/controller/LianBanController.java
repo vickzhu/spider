@@ -406,12 +406,14 @@ public class LianBanController {
 				list = new ArrayList<LianBan>();
 				lbMap.put(tradeDate, list);
 			}
-			list.add(lianBan);
+			if(lianBan.getDays() > 1) {				
+				list.add(lianBan);
+			}
 		}
 		ModelAndView mav = new ModelAndView("lianbanchart");
 		mav.addObject("startDate", startDate);
 		mav.addObject("endDate", endDate);
-		mav.addObject("lbList", lbList);
+//		mav.addObject("lbList", lbList);
 		mav.addObject("lbMap", lbMap);
 		return mav;
 	}

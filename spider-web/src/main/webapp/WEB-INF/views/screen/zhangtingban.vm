@@ -88,8 +88,8 @@ $!{tokenTool.enableAjaxToken()}
 			var id = $(this).parent().parent().attr("lbId");
 			var r = confirm("确定删除["+$(this).attr("stockName")+"]");
 			if(r==true){
-				jQuery.post("#springUrl('/zt/del')?id="+id,{},function(result){
-					if(result.success){
+				jQuery.post("#springUrl('/zt/del')?$!{tokenTool.csrfKey}=$!{tokenTool.csrfValue}&id="+id,{},function(result){
+					if(result.code == 200){
     					alert("删除成功");
 						location.reload();
     				}else {

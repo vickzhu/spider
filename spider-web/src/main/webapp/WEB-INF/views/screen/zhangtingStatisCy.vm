@@ -17,6 +17,7 @@
           </div>
 		  <div class="widget-content nopadding">
 			<form id="searchForm" action="#springUrl('/zt/cy/statis')" method="post" class="form-horizontal">
+				${tokenTool.csrfInput}
                 <div class="search_option">
 					<div>
                         <label>开始</label>
@@ -75,7 +76,7 @@ $!{tokenTool.enableAjaxToken()}
 	
 	function loadData(){
 		jQuery.post("#springUrl('/zt/cy/statis')",$("#searchForm").serialize(),function(result){
-			if(result.success){
+			if(result.code == 200){
 				$("#statis-content").html("");
 				var dateList = result.records.dateList;
 				var lbMap = result.records.lbMap;
@@ -83,7 +84,7 @@ $!{tokenTool.enableAjaxToken()}
 				renderData(dateList, lbMap);
 				renderColor(pSet);
 			} else {
-				alert("查询失败!"+result.message);
+				alert("查询失败!"+result.data.message);
 			}
 		});
 	}

@@ -18,17 +18,21 @@
 			</a>
           </div>
 		  <div class="widget-content nopadding">
-			<form id="searchForm" action="#springUrl('/zt/')" method="get" class="form-horizontal">
+			<form id="searchForm" action="#springUrl('/zt/chart')" method="get" class="form-horizontal">
                 <div class="search_option">
 					<div>
                         <label>日期：</label>
-						<div data-date="${tradeDate}" class="input-append date datepicker">
-							<input type="text" id="tradeDate" name="tradeDate" value="$!{tradeDate}" data-date-format="yyyy-mm-dd" class="span11" />
-							<span class="add-on"><i class="icon-th"></i></span> 
+						<div data-date="${startDate}" class="input-append date datepicker">
+							<input name="startDate" type="text"  data-date-format="yyyy-mm-dd" value="${startDate}" class="datepicker span11">
+						</div>
+						<label>至</label>
+						<div data-date="${endDate}" class="input-append date datepicker">
+							<input name="endDate" type="text"  data-date-format="yyyy-mm-dd" value="${endDate}" class="datepicker span11">
 						</div>
 					</div>
                     <div>
                         <button type="submit" class="btn btn-success">确定</button>
+						<button type="button" class="btn btn-info" onclick="window.location.href='#springUrl("/zt/chart")'">重置</button>
                     </div>
                 </div>
 			</form>

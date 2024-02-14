@@ -44,7 +44,7 @@ public class LongHuTask extends BaseTask {
 	@Resource
 	private SecDeptService sdService;
 	
-	@Scheduled(cron = "0 0/30 18-21 * * MON-FRI")
+	//@Scheduled(cron = "0 0/30 18-21 * * MON-FRI")
 	public void execute(){
 		Date now = new Date();
 		if(!isTradeDate(sdf.format(now))){

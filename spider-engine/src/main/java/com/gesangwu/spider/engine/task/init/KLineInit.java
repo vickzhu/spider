@@ -63,12 +63,16 @@ public class KLineInit {
 		//1423
 		CompanyExample example = new CompanyExample();
 //		CompanyExample.Criteria criteria = example.createCriteria();
-//		criteria.andIdGreaterThan(1242l);
+//		criteria.andIdGreaterThan(4123l);
 //		criteria.andIdLessThan(1243l);
 		List<Company> companyList = companyService.selectByExample(example);
 		Date now = new Date();
 		for (Company company : companyList) {
 			String symbol = company.getSymbol();
+			if(symbol.startsWith("sh68") || symbol.startsWith("bj")) {
+				continue;
+			}
+			
 			System.out.println(symbol);
 			String url = buildUrl(symbol, start, end);
 			String result = HttpTool.get(url);
