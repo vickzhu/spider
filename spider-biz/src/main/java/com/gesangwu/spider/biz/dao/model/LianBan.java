@@ -11,6 +11,8 @@ public class LianBan {
 
     private Integer days;
 
+    private Integer lbDays;
+
     private Double percent;
 
     private String tradeDate;
@@ -57,6 +59,14 @@ public class LianBan {
 
     public void setDays(Integer days) {
         this.days = days;
+    }
+
+    public Integer getLbDays() {
+        return lbDays;
+    }
+
+    public void setLbDays(Integer lbDays) {
+        this.lbDays = lbDays;
     }
 
     public Double getPercent() {

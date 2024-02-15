@@ -385,6 +385,66 @@ public class LianBanExample {
             return (Criteria) this;
         }
 
+        public Criteria andLbDaysIsNull() {
+            addCriterion("lb_days is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLbDaysIsNotNull() {
+            addCriterion("lb_days is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLbDaysEqualTo(Integer value) {
+            addCriterion("lb_days =", value, "lbDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andLbDaysNotEqualTo(Integer value) {
+            addCriterion("lb_days <>", value, "lbDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andLbDaysGreaterThan(Integer value) {
+            addCriterion("lb_days >", value, "lbDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andLbDaysGreaterThanOrEqualTo(Integer value) {
+            addCriterion("lb_days >=", value, "lbDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andLbDaysLessThan(Integer value) {
+            addCriterion("lb_days <", value, "lbDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andLbDaysLessThanOrEqualTo(Integer value) {
+            addCriterion("lb_days <=", value, "lbDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andLbDaysIn(List<Integer> values) {
+            addCriterion("lb_days in", values, "lbDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andLbDaysNotIn(List<Integer> values) {
+            addCriterion("lb_days not in", values, "lbDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andLbDaysBetween(Integer value1, Integer value2) {
+            addCriterion("lb_days between", value1, value2, "lbDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andLbDaysNotBetween(Integer value1, Integer value2) {
+            addCriterion("lb_days not between", value1, value2, "lbDays");
+            return (Criteria) this;
+        }
+
         public Criteria andPercentIsNull() {
             addCriterion("percent is null");
             return (Criteria) this;
