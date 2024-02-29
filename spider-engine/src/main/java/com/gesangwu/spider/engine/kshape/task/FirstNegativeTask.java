@@ -15,7 +15,7 @@ import com.gesangwu.spider.biz.dao.model.KLine;
 
 /**
  * 首阴
- * @author zhuxb
+ * @author
  *
  */
 @Component
@@ -26,7 +26,7 @@ public class FirstNegativeTask extends ShapeTask {
 	private int incDays = 3;
 	private double minInc = incDays * 0.05;//最小涨幅
 	
-	@Scheduled(cron="0 15 15 * * MON-FRI")
+	//@Scheduled(cron="0 15 15 * * MON-FRI")
 	public void execute(){
 		Date now = new Date();
 		if(!isTradeDate(sdf.format(now))){

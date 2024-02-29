@@ -43,7 +43,8 @@
 				  <th style="width:5%;">序号</th>
                   <th>代码</th>
 				  <th>股票</th>
-				  <th>连板天数</th>				  
+				  <th>连板</th>
+				  <th>总高</th>
 				  <th>涨停原因</th>
 				  <th>操作</th>
                 </tr>
@@ -53,9 +54,9 @@
                 <tr lbId="$!{lb.id}" symbol="$!{lb.symbol}">
 				  <td>$!{velocityCount}</td>
                   <td><a class="lh_detail" onclick="javascript:;">$!{lb.symbol}</a></td>
-                  <td><a class="lh_detail" onclick="javascript:;">$!{lb.stockName}</a></td>			  
-				  <td style="text-align:center;#if($!{lb.days}>2)color:red;#end">
-					
+                  <td><a class="lh_detail" onclick="javascript:;">$!{lb.stockName}</a></td>
+				  <td style="text-align:center;#if($!{lb.lbDays}>2)color:red;#end">$!{lb.lbDays}</td>
+				  <td style="text-align:center;">
 					$!{lb.days}
 					#if("$!{lb.shape}" != "")
 						($!{lb.shape})

@@ -69,7 +69,7 @@ public class KLineSinaTask extends BaseTask {
 	@Resource
 	private KLineService kLineService;
 
-	@Scheduled(cron="0 02 15 * * MON-FRI")
+	//@Scheduled(cron="0 02 15 * * MON-FRI")
 	public void execute(){
 		Date now = new Date();
 		if(!isTradeDate(sdf.format(now))){
@@ -100,7 +100,7 @@ public class KLineSinaTask extends BaseTask {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		}	
+		}
 		long end = System.currentTimeMillis();
 		logger.info("Fetch KLine from sina used:" + (end-start)+"ms!");
 	}

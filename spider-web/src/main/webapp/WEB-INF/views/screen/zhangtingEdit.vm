@@ -20,6 +20,7 @@
             <div class="widget-content nopadding">
 				$!{tokenTool.enableAjaxToken()}
               <form id="dept-form" class="form-horizontal">
+				${tokenTool.csrfInput}
 				<input type="hidden" id="id" name="id" value="$!{lb.id}"/>
 				<div class="control-group">
                   <label class="control-label">日期:</label>
@@ -78,7 +79,7 @@
 	$(function(){
 		$(".btn-success").click(function(){
 			jQuery.post("#springUrl('/zt/edit')",$("#dept-form").serialize(),function(result){
-				if(result.success){
+				if(result.code == 200){
 					alert("保存成功");
 				}else {
 					alert("保存失败");

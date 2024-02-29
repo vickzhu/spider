@@ -21,7 +21,7 @@ public class JumpUpTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(JumpUpTask.class);
 
-	@Scheduled(cron="0 13 15 * * MON-FRI")
+	//@Scheduled(cron="0 13 15 * * MON-FRI")
 	public void execute(){
 		Date now = new Date();
 		if(!isTradeDate(sdf.format(now))){

@@ -15,13 +15,13 @@ import com.gesangwu.spider.biz.dao.model.KLineExample;
 
 /**
  * 类地天板
- * @author bran
+ * @author
  *
  */
 @Component
 public class GroundSkyTask extends ShapeTask {
 	
-	@Scheduled(cron="0 14 15 * * MON-FRI")
+	//@Scheduled(cron="0 14 15 * * MON-FRI")
 	public void execute(){
 		execute(null);
 	}

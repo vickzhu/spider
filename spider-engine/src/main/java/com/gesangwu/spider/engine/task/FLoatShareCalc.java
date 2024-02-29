@@ -38,7 +38,7 @@ public class FLoatShareCalc {
 	@Resource
 	private StockShareHolderService sshService;	
 	
-	@Scheduled(cron = "0 30 9 * * MON-FRI")
+	//@Scheduled(cron = "0 30 9 * * MON-FRI")
 	public void execute(){
 		int cpp = 50;
 		int count = companyService.countByExample(null);

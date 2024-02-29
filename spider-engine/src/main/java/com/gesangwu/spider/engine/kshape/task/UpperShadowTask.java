@@ -38,7 +38,7 @@ public class UpperShadowTask extends ShapeTask {
 	@Resource
 	private CompanyService companyService;
 
-	@Scheduled(cron = "0 11 15 * * MON-FRI")
+	//@Scheduled(cron = "0 11 15 * * MON-FRI")
 	public void execute(){
 		Date now = new Date();
 		if(!isTradeDate(sdf.format(now))){

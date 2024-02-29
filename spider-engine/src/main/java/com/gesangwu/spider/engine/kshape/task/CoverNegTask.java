@@ -20,7 +20,7 @@ public class CoverNegTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CoverNegTask.class);
 	
-	@Scheduled(cron="0 10 15 * * MON-FRI")
+	//@Scheduled(cron="0 10 15 * * MON-FRI")
 	public void execute(){
 		Date now = new Date();
 		if(!isTradeDate(sdf.format(now))){

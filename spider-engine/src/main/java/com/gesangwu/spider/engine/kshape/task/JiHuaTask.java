@@ -15,7 +15,7 @@ import com.gesangwu.spider.biz.dao.model.KLineExample;
 
 /**
  * 季华6路，这个还是不是很靠谱
- * @author zhuxb
+ * @author
  *
  */
 //@Component

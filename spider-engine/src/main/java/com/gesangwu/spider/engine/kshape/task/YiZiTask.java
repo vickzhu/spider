@@ -18,7 +18,7 @@ public class YiZiTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(YiZiTask.class);
 
-	@Scheduled(cron="0 08 15 * * MON-FRI")
+	//@Scheduled(cron="0 08 15 * * MON-FRI")
 	public void execute(){
 		Date now = new Date();
 		if(!isTradeDate(sdf.format(now))){

@@ -32,7 +32,7 @@ import com.gesangwu.spider.biz.service.LongHuService;
  * 1、根据帮派成员，查找帮派操作的股票
  * 2、如果查找到帮派操作的股票，判断不属于当前帮派的营业部是否是帮派成员
  * </pre>
- * @author zhuxb
+ * @author
  *
  */
 @Component

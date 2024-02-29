@@ -357,8 +357,8 @@
   	FROM 
   		`lian_ban` l 
   	INNER JOIN 
-  		(SELECT MAX(days) d,trade_date FROM lian_ban WHERE trade_date&gt;=#{startDate} AND trade_date&lt;=#{endDate} GROUP BY trade_date ORDER BY trade_date) md 
+  		(SELECT MAX(lb_days) d,trade_date FROM lian_ban WHERE trade_date&gt;=#{startDate} AND trade_date&lt;=#{endDate} GROUP BY trade_date ORDER BY trade_date) md 
   	ON 
-  		l.`days`=md.d AND l.`trade_date`=md.trade_date;
+  		l.`lb_days`=md.d AND l.`trade_date`=md.trade_date;
   </select>
 </mapper>

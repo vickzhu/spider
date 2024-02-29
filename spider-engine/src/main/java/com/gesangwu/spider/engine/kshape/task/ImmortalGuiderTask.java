@@ -23,7 +23,7 @@ import com.gesangwu.spider.biz.service.UpperShadowService;
 /**
  * 仙人指路
  * 实体比上影线长的可以滚蛋了，量不能大于前一天太多，量不能大于前天一天太多，说明尼玛是冲高被套了
- * @author zhuxb
+ * @author
  *
  */
 @Component

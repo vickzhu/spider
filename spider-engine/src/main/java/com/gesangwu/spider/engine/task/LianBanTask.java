@@ -43,7 +43,7 @@ public class LianBanTask extends BaseTask {
 	@Resource
 	private KLineService klService;
 	
-	@Scheduled(cron="0 30 15 * * MON-FRI")
+//	@Scheduled(cron="0 30 15 * * MON-FRI")
 	public void execute(){
 		Date now = new Date();
 		if(!isTradeDate(sdf.format(now))){
@@ -82,11 +82,13 @@ public class LianBanTask extends BaseTask {
 			}
 			LianBan preLianBan = getPreLianBan(company, tradeDate);
 			int days = 1;
+			int lbDays = 1;
 			Long plate = null;
 			String reason = null;
 			LianBan lb = new LianBan();
 			if(preLianBan != null){
 				days += preLianBan.getDays();
+				lbDays += preLianBan.getLbDays();
 				plate = preLianBan.getPlate();
 				reason = preLianBan.getReason();
 				String preShape = preLianBan.getShape();
@@ -105,6 +107,7 @@ public class LianBanTask extends BaseTask {
 				}
 			}
 			lb.setDays(days);
+			lb.setLbDays(lbDays);
 			lb.setGmtCreate(date);
 			lb.setPercent(kl.getPercent());
 			lb.setStatus(LianBanStatus.ZT.getCode());
@@ -152,6 +155,7 @@ public class LianBanTask extends BaseTask {
 				lb.setShape(sb.toString());
 				
 				lb.setDays(preLianBan2.getDays());
+				lb.setLbDays(0);
 				lb.setPlate(preLianBan2.getPlate());
 				lb.setReason(preLianBan2.getReason());
 				lbService.insert(lb);
@@ -168,12 +172,12 @@ public class LianBanTask extends BaseTask {
 		KLineExample.Criteria criteria = example.createCriteria();
 		criteria.andTradeDateEqualTo(tradeDate);
 		criteria.andSymbolLike("sh60%");
-		criteria.andPercentGreaterThanOrEqualTo(9.8d);
+		criteria.andPercentGreaterThanOrEqualTo(9.7d);
 		
 		KLineExample.Criteria criteria1 = example.createCriteria();
 		criteria1.andTradeDateEqualTo(tradeDate);
 		criteria1.andSymbolLike("sz00%");
-		criteria1.andPercentGreaterThanOrEqualTo(9.8d);
+		criteria1.andPercentGreaterThanOrEqualTo(9.7d);
 		example.or(criteria1);
 		
 		KLineExample.Criteria criteria2 = example.createCriteria();
@@ -182,7 +186,7 @@ public class LianBanTask extends BaseTask {
 		if(cybStartDate.compareTo(tradeDate) <= 0) {//创业板20cm新规
 			criteria2.andPercentGreaterThanOrEqualTo(19.9d);
 		} else {//创业板10cm老规
-			criteria2.andPercentGreaterThanOrEqualTo(9.9d);
+			criteria2.andPercentGreaterThanOrEqualTo(9.7d);
 		}
 		example.or(criteria2);
 		

@@ -35,7 +35,7 @@ import com.gesangwu.spider.biz.service.LianBanService;
  * @author bran
  *
  */
-@Component
+//@Component
 public class ZhangTingTask extends BaseTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ZhangTingTask.class);
@@ -47,7 +47,7 @@ public class ZhangTingTask extends BaseTask {
 	@Resource
 	private KLineService klService;
 	
-	@Scheduled(cron="0 30 15 * * MON-FRI")
+//	@Scheduled(cron="0 30 15 * * MON-FRI")
 	public void execute(){
 		Date now = new Date();
 		if(!isTradeDate(sdf.format(now))){
@@ -284,7 +284,7 @@ public class ZhangTingTask extends BaseTask {
 			e.printStackTrace();
 		}
 		int day = c.get(Calendar.DATE); 
-		c.set(Calendar.DATE, day-1);
+		c.set(Calendar.DATE, day - 1);
 		String preDate = sdf.format(c.getTime());
 		if(!isTradeDate(preDate)){//非交易日
 			return getPreTradeDate(preDate);
@@ -299,8 +299,8 @@ public class ZhangTingTask extends BaseTask {
 //		String d2 = shape2.substring(0,shape2.lastIndexOf(SymbolConstant.COMMA)+1);
 //		System.out.println(d1);
 //		System.out.println(d2);
-		System.out.println(CalculateUtil.mul(29.655, 1.1));
-		getZTList("2023-02-10");
+//		System.out.println(CalculateUtil.mul(29.655, 1.1));
+//		getZTList("2023-02-10");
 	}
 	
 }

@@ -51,7 +51,7 @@ public class HolderNumTask {
 	@Resource
 	private HolderNumService hnService;
 	
-	@Scheduled(cron = "0 30 12 * * *")
+	//@Scheduled(cron = "0 30 12 * * *")
 	public void execute(){
 		long start = System.currentTimeMillis();
 		List<Company> companyList = LittleCompanyHolder.getCompanyList();

@@ -55,7 +55,7 @@ public class LargeVolTask {
 	private CompanyService companyService;
 	private static final int volMin = 1000;
 	
-	@Scheduled(cron = "59 0/1 9-14 * * MON-FRI")
+	//@Scheduled(cron = "59 0/1 9-14 * * MON-FRI")
 	public void execute(){
 		if(!TradeTimeUtil.checkTime()){
 			return;

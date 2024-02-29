@@ -19,7 +19,7 @@ import com.gesangwu.spider.biz.service.KLineService;
 
 /**
  * 形态之父
- * @author zhuxb
+ * @author
  *
  */
 public abstract class ShapeTask {

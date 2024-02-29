@@ -16,7 +16,7 @@ import com.gesangwu.spider.biz.dao.model.KLine;
 
 /**
  * 最大涨幅大于7%，最大跌幅超过-2%，头一天涨停
- * @author zhuxb
+ * @author
  *
  */
 @Component
@@ -24,7 +24,7 @@ public class FallRiseTask extends ShapeTask {
 
 	private static Logger logger = LoggerFactory.getLogger(FallRiseTask.class);
 	
-	@Scheduled(cron="0 09 15 * * MON-FRI")
+	//@Scheduled(cron="0 09 15 * * MON-FRI")
 	public void execute(){
 		Date now = new Date();
 		if(!isTradeDate(sdf.format(now))){

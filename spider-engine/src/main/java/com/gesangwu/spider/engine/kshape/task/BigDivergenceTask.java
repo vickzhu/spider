@@ -16,7 +16,7 @@ import com.gesangwu.spider.biz.dao.model.KLine;
 
 /**
  * 大分歧
- * @author zhuxb
+ * @author
  * FIXME	前一天非一字涨停，今日非一字涨停，量能是昨天的一倍以上
  */
 @Component
@@ -24,7 +24,7 @@ public class BigDivergenceTask extends ShapeTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(BigDivergenceTask.class);
 
-	@Scheduled(cron="0 18 15 * * MON-FRI")
+	//@Scheduled(cron="0 18 15 * * MON-FRI")
 	public void execute(){
 		Date now = new Date();
 		if(!isTradeDate(sdf.format(now))){

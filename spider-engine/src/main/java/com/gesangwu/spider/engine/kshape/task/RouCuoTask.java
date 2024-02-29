@@ -25,7 +25,7 @@ import com.gesangwu.spider.biz.dao.model.KLineExample;
  * <li>第二日跳空低开</li>
  * <li>收盘价低于五日线</li>
  * </ol>
- * @author zhuxb
+ * @author 
  *
  */
 //@Component

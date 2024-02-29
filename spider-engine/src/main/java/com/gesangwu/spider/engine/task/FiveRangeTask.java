@@ -51,7 +51,7 @@ public class FiveRangeTask extends BaseTask {
 	@Resource
 	private JdStatisService jdStatisService;
 	
-	@Scheduled(cron = "0 0/1 9-14 * * MON-FRI")
+	//@Scheduled(cron = "0 0/1 9-14 * * MON-FRI")
 	public void execute(){
 		Date now = new Date();
 		if(!isTradeDate(sdf.format(now))){

@@ -20,7 +20,7 @@ import com.gesangwu.spider.biz.dao.model.KLineExample;
  * 2、一年内的最高点5%以内
  * 3、30天内上涨趋势
  * 4、前两日，均线向上
- * @author bran
+ * @author 
  *
  */
 //@Component

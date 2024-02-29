@@ -19,7 +19,7 @@ import com.gesangwu.spider.biz.dao.model.KLine;
  * 2、前一日收盘价在五日线之上
  * 3、当天开盘价在-2%之上
  * 4、当天最低点在五日线以下3%以上
- * @author bran
+ * @author
  *
  */
 //@Component

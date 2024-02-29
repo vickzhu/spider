@@ -54,7 +54,6 @@
     </div>
   </div>
 </div>
-$!{tokenTool.enableAjaxToken()}
 <script src="#resources('js/bootstrap-datepicker.js')"></script>
 <script src="#resources('js/jquery.flot.min.js')"></script>
 <!--
@@ -84,10 +83,7 @@ $(function(){
 	#foreach($m in $lbMap.entrySet())
 		xTopData.push([$velocityCount, '$m.key']);
 		var lbX = '$m.key';
-    	#foreach($lb in $m.value)
-			maxDays = ${lb.days};
-			lbX += '<br/>${lb.stockName}';
-    	#end
+    	#foreach($lb in $m.value)maxDays = ${lb.lbDays};lbX += '<br/>${lb.stockName}';#end
 		pointData.push([$velocityCount, maxDays]);
 		xdata.push([$velocityCount, lbX]);
 	#end
