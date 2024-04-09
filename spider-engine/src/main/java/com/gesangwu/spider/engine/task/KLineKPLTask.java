@@ -2,7 +2,6 @@ package com.gesangwu.spider.engine.task;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,6 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gandalf.framework.net.HttpTool;
-import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.common.StockUtil;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.service.CompanyService;
@@ -121,15 +119,4 @@ public class KLineKPLTask extends BaseTask{
 		return HttpTool.post(url, headerMap, paramMap, Charset.forName("utf-8"));
 	}
 	
-	private String getTradeDate(String tradeDate){
-		String date = tradeDate;
-		if(StringUtil.isBlank(date)){
-			Date now = new Date();
-			date = sdf.format(now);
-		}
-		if(!isTradeDate(date)){
-			throw new RuntimeException("法定节假日无相关数据！！！");
-		}
-		return date;
-	}
 }

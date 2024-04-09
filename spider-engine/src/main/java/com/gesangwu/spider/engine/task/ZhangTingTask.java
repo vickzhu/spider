@@ -263,34 +263,6 @@ public class ZhangTingTask extends BaseTask {
 		
 		return klService.selectByExample(example);
 	}
-
-	private String getTradeDate(String tradeDate){
-		String date = tradeDate;
-		if(StringUtil.isBlank(date)){
-			Date now = new Date();
-			date = sdf.format(now);
-		}
-		if(!isTradeDate(date)){
-			throw new RuntimeException("法定节假日无相关数据！！！");
-		}
-		return date;
-	}
-	
-	private String getPreTradeDate(String tradeDate){
-		Calendar c = Calendar.getInstance();
-		try {
-			c.setTime(sdf.parse(tradeDate));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		int day = c.get(Calendar.DATE); 
-		c.set(Calendar.DATE, day - 1);
-		String preDate = sdf.format(c.getTime());
-		if(!isTradeDate(preDate)){//非交易日
-			return getPreTradeDate(preDate);
-		}
-		return preDate;
-	}
 	
 	public static void main (String[] args) {
 //		String shape1 = "3,";

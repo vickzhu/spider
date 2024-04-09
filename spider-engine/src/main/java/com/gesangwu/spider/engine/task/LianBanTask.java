@@ -1,8 +1,6 @@
 package com.gesangwu.spider.engine.task;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -11,13 +9,13 @@ import javax.annotation.Resource;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gandalf.framework.constant.SymbolConstant;
 import com.gandalf.framework.util.CalculateUtil;
 import com.gandalf.framework.util.StringUtil;
 import com.gesangwu.spider.biz.common.LianBanStatus;
+import com.gesangwu.spider.biz.common.ShapeEnum;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
@@ -117,6 +115,8 @@ public class LianBanTask extends BaseTask {
 			lb.setPlate(plate);
 			lb.setReason(reason);
 			lbList.add(lb);
+			kl.setShape(ShapeEnum.ZHANG_TING.getCode());
+			klService.updateByPrimaryKeySelective(kl);
 		}
 		if(CollectionUtils.isNotEmpty(lbList)){
 			lbService.batchInsert(lbList);
@@ -191,34 +191,6 @@ public class LianBanTask extends BaseTask {
 		example.or(criteria2);
 		
 		return klService.selectByExample(example);
-	}
-
-	private String getTradeDate(String tradeDate){
-		String date = tradeDate;
-		if(StringUtil.isBlank(date)){
-			Date now = new Date();
-			date = sdf.format(now);
-		}
-		if(!isTradeDate(date)){
-			throw new RuntimeException("法定节假日无相关数据！！！");
-		}
-		return date;
-	}
-	
-	private String getPreTradeDate(String tradeDate){
-		Calendar c = Calendar.getInstance();
-		try {
-			c.setTime(sdf.parse(tradeDate));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		int day = c.get(Calendar.DATE); 
-		c.set(Calendar.DATE, day-1);
-		String preDate = sdf.format(c.getTime());
-		if(!isTradeDate(preDate)){//非交易日
-			return getPreTradeDate(preDate);
-		}
-		return preDate;
 	}
 	
 	public static void main (String[] args) {

@@ -510,4 +510,7 @@
     WHERE
     	trade_date=#{tradeDate,jdbcType=VARCHAR} AND OPEN=high AND OPEN &gt; yesterday_close and low &lt; open;
   </select>
+  <select id="getMaxAmount" resultMap="BaseResultMap">
+  	SELECT c.`stock_name`,k.`symbol`,k.`close`,k.`percent`,k.`turnrate`,ROUND(k.`amount`/100000000,2) AS amount,k.`trade_date` FROM `k_line` k LEFT JOIN `company` c ON k.`symbol`=c.`symbol` WHERE k.`trade_date`=#{tradeDate,jdbcType=VARCHAR} ORDER BY k.`amount` DESC LIMIT 100;
+  </select>
 </mapper>

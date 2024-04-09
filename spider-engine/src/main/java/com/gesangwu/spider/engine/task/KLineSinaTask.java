@@ -58,7 +58,7 @@ public class KLineSinaTask extends BaseTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(KLineSinaTask.class);
 	
-	private static final String r1 = "\"day\"\\:\"([0-9\\-]*)\",\"count\"\\:([0-9]*).*\"items\"\\:\\[\\[(.*)\\]\\]\\}\\]\\)";
+	private static final String r1 = "\"count\"\\:([0-9]*).*\"items\"\\:\\[\\[(.*)\\]\\]\\}\\]\\)";
 	private static final String r2 = "\"items\"\\:\\[\\[(.*)\\]\\]\\}\\]\\)";
 	private static final Pattern p1 = Pattern.compile(r1);
 	private static final Pattern p2 = Pattern.compile(r2);
@@ -83,9 +83,9 @@ public class KLineSinaTask extends BaseTask {
 		if(!matcher.find()){
 			return;
 		}
-		String totalCounts = matcher.group(2);
+		String totalCounts = matcher.group(1);
 		int pages = (Integer.valueOf(totalCounts)+cpp-1)/cpp;
-		String detailList = matcher.group(3);
+		String detailList = matcher.group(2);
 		save(detailList);
 		for(int curPage = 2; curPage <= pages; curPage++){
 			result = HttpTool.get(buildUrl(curPage));

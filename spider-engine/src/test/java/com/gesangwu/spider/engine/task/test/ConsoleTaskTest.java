@@ -4,6 +4,8 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
+import com.gesangwu.spider.engine.task.DieTingTask;
+import com.gesangwu.spider.engine.task.HuiCheTask;
 import com.gesangwu.spider.engine.task.KLineSinaTask;
 import com.gesangwu.spider.engine.task.LianBanTask;
 import com.gesangwu.spider.engine.task.LongHuTask;
@@ -17,8 +19,22 @@ public class ConsoleTaskTest extends BaseTest {
 	private LianBanTask lbTask;
 	@Resource
 	private LongHuTask lhTask;
+	@Resource
+	private DieTingTask dtTask;
+	@Resource
+	private HuiCheTask hcTask;
+	
+//	@Test
+	public void testDieTing() {
+		dtTask.execute();
+	}
 	
 	@Test
+	public void testHuiChe() {
+		hcTask.execute();
+	}
+	
+//	@Test
 	public void execute(){
 //		String tradeDate = "2020-04-30";
 		long t1 = System.currentTimeMillis();
