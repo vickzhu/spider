@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gesangwu.spider.biz.dao.mapper.HuiCheDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.gesangwu.spider.biz.dao.model.HuiCheDetail" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="symbol" property="symbol" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="rate" property="rate" jdbcType="DOUBLE" />
+    <result column="percent" property="percent" jdbcType="DOUBLE" />
+    <result column="trade_date" property="tradeDate" jdbcType="VARCHAR" />
+    <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, symbol, name, rate, percent, trade_date, gmt_create
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.HuiCheDetailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from hui_che_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="offset != null and offset > -1" >
+      limit ${offset},${rows}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from hui_che_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from hui_che_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gesangwu.spider.biz.dao.model.HuiCheDetailExample" >
+    delete from hui_che_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.gesangwu.spider.biz.dao.model.HuiCheDetail" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into hui_che_detail (symbol, name, rate, 
+      percent, trade_date, gmt_create
+      )
+    values (#{symbol,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{rate,jdbcType=DOUBLE}, 
+      #{percent,jdbcType=DOUBLE}, #{tradeDate,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.HuiCheDetail" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into hui_che_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="symbol != null" >
+        symbol,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="rate != null" >
+        rate,
+      </if>
+      <if test="percent != null" >
+        percent,
+      </if>
+      <if test="tradeDate != null" >
+        trade_date,
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="symbol != null" >
+        #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="rate != null" >
+        #{rate,jdbcType=DOUBLE},
+      </if>
+      <if test="percent != null" >
+        #{percent,jdbcType=DOUBLE},
+      </if>
+      <if test="tradeDate != null" >
+        #{tradeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null" >
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gesangwu.spider.biz.dao.model.HuiCheDetailExample" resultType="java.lang.Integer" >
+    select count(*) from hui_che_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update hui_che_detail
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.symbol != null" >
+        symbol = #{record.symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rate != null" >
+        rate = #{record.rate,jdbcType=DOUBLE},
+      </if>
+      <if test="record.percent != null" >
+        percent = #{record.percent,jdbcType=DOUBLE},
+      </if>
+      <if test="record.tradeDate != null" >
+        trade_date = #{record.tradeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreate != null" >
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update hui_che_detail
+    set id = #{record.id,jdbcType=BIGINT},
+      symbol = #{record.symbol,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      rate = #{record.rate,jdbcType=DOUBLE},
+      percent = #{record.percent,jdbcType=DOUBLE},
+      trade_date = #{record.tradeDate,jdbcType=VARCHAR},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gesangwu.spider.biz.dao.model.HuiCheDetail" >
+    update hui_che_detail
+    <set >
+      <if test="symbol != null" >
+        symbol = #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="rate != null" >
+        rate = #{rate,jdbcType=DOUBLE},
+      </if>
+      <if test="percent != null" >
+        percent = #{percent,jdbcType=DOUBLE},
+      </if>
+      <if test="tradeDate != null" >
+        trade_date = #{tradeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gesangwu.spider.biz.dao.model.HuiCheDetail" >
+    update hui_che_detail
+    set symbol = #{symbol,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      rate = #{rate,jdbcType=DOUBLE},
+      percent = #{percent,jdbcType=DOUBLE},
+      trade_date = #{tradeDate,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

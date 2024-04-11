@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.gandalf.framework.mybatis.BaseMapper;
 import com.gandalf.framework.mybatis.BaseServiceImpl;
+import com.gesangwu.spider.biz.common.LianBanStatus;
 import com.gesangwu.spider.biz.dao.mapper.LianBanMapper;
 import com.gesangwu.spider.biz.dao.model.LianBan;
 import com.gesangwu.spider.biz.dao.model.LianBanExample;
@@ -44,6 +45,15 @@ public class LianBanServiceImpl extends BaseServiceImpl<LianBan, LianBanExample>
 	@Override
 	public List<LianBan> getMaxByDate(String startDate, String endDate) {
 		return mapper.getMaxByDate(startDate, endDate);
+	}
+	
+	@Override
+	public int ztCount(String tradeDate) {
+		LianBanExample example = new LianBanExample();
+		LianBanExample.Criteria criteria = example.createCriteria();
+		criteria.andTradeDateEqualTo(tradeDate);
+		criteria.andStatusEqualTo(LianBanStatus.ZT.getCode());
+		return mapper.countByExample(example);
 	}
 
 }

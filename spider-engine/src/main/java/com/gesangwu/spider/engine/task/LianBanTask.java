@@ -19,9 +19,11 @@ import com.gesangwu.spider.biz.common.ShapeEnum;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
+import com.gesangwu.spider.biz.dao.model.KLineStatis;
 import com.gesangwu.spider.biz.dao.model.LianBan;
 import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.KLineService;
+import com.gesangwu.spider.biz.service.KLineStatisService;
 import com.gesangwu.spider.biz.service.LianBanService;
 
 /**
@@ -40,6 +42,8 @@ public class LianBanTask extends BaseTask {
 	private CompanyService compnayService;
 	@Resource
 	private KLineService klService;
+	@Resource
+	private KLineStatisService ksService;
 	
 //	@Scheduled(cron="0 30 15 * * MON-FRI")
 	public void execute(){
@@ -49,6 +53,21 @@ public class LianBanTask extends BaseTask {
 			return;
 		}
 		execute(null);
+	}
+	
+	public void ztCount(String tradeDate) {
+		try {			
+			tradeDate = getTradeDate(tradeDate);
+		} catch (Exception e) {
+			logger.info("交易日异常：" + tradeDate, e.getMessage());
+			return;
+		}
+		
+		
+		int ztCount = lbService.ztCount(tradeDate);
+		KLineStatis ks = ksService.aou(tradeDate);
+		ks.setZt(ztCount);
+		ksService.updateByPrimaryKeySelective(ks);
 	}
 	
 	public void execute(String tradeDate){
@@ -120,6 +139,9 @@ public class LianBanTask extends BaseTask {
 		}
 		if(CollectionUtils.isNotEmpty(lbList)){
 			lbService.batchInsert(lbList);
+			KLineStatis ks = ksService.aou(tradeDate);
+			ks.setZt(lbList.size());
+			ksService.updateByPrimaryKeySelective(ks);
 		}
 	}
 	

@@ -14,4 +14,6 @@ public interface LianBanService extends BaseService<LianBan, LianBanExample> {
 	
 	public List<LianBan> getMaxByDate(String startDate, String endDate);
 	
+	public int ztCount(String tradeDate);
+	
 }

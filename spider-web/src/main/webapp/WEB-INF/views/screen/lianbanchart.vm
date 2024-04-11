@@ -78,7 +78,6 @@ $(function(){
 	var xdata = [];
 	var xTopData = [];
 	// === Prepare the chart data
-    var sin = [], cos = [];
 	var maxDays;
 	#foreach($m in $lbMap.entrySet())
 		xTopData.push([$velocityCount, '$m.key']);
@@ -87,33 +86,37 @@ $(function(){
 		pointData.push([$velocityCount, maxDays]);
 		xdata.push([$velocityCount, lbX]);
 	#end
+	
+	var ksData = [];
+	#foreach($m in $ksMap.entrySet())
+		ksData.push([$velocityCount, '$m.value.hc']);
+	#end
     
     // === Make chart === //
     var plot = $.plot($(".chart"),
-           [ { data: pointData, label: "sin(x)", color: "#ee7951"}, { data: cos, label: "cos(x)",color: "#4fb9f0" } ], {
+           [ { data: pointData, label: "涨停板", color: "#ee7951"}, { data: [], label: "大回撤",color: "#4fb9f0" } ], {
                series: {
                    lines: { show: true },
                    points: { show: true }
                },
                grid: { hoverable: true, clickable: true },
 			   xaxes: [ { position: 'bottom', ticks: xdata}, { position: 'top', ticks: xTopData} ],
-			   yaxis: { position: 'right', min: 0, max: 15, tickSize: 1, tickDecimals:0 }
+			   yaxis: { position: 'right', min: 0, max: 20, tickSize: 1, tickDecimals:0 }
     	   });
     
     // === Point hover in chart === //
     var previousPoint = null;
     $(".chart").bind("plothover", function (event, pos, item) {
         if (item) {
-			var tips = 'MAX：'+pos.y.toFixed()+'<br/>' + item.series.xaxis.ticks[pos.x.toFixed()-1].label;
+			var tips = 'MAX：' + pos.y.toFixed()+'<br/>' + item.series.xaxis.ticks[pos.x.toFixed()-1].label;
             if (previousPoint != item.dataIndex) {
                 previousPoint = item.dataIndex;
                 
-                $('#tooltip').fadeOut(200,function(){
+                $('#tooltip').fadeOut(200, function(){
     				$(this).remove();
     			});
                 var x = item.datapoint[0].toFixed(2),
     				y = item.datapoint[1].toFixed(2);
-                    
                 maruti.flot_tooltip(item.pageX, item.pageY, tips);
             }
             
@@ -128,7 +131,6 @@ $(function(){
 	maruti = {
 		// === Tooltip for flot charts === //
 		flot_tooltip: function(x, y, contents) {
-			
 			$('<div id="tooltip">' + contents + '</div>').css( {
 				top: y + 5,
 				left: x + 5

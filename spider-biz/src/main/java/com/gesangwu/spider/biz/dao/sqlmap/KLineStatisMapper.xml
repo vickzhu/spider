@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gesangwu.spider.biz.dao.mapper.KLineStatisMapper" >
+  <resultMap id="BaseResultMap" type="com.gesangwu.spider.biz.dao.model.KLineStatis" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="trade_date" property="tradeDate" jdbcType="VARCHAR" />
+    <result column="zt" property="zt" jdbcType="INTEGER" />
+    <result column="dt" property="dt" jdbcType="INTEGER" />
+    <result column="hc" property="hc" jdbcType="INTEGER" />
+    <result column="sz" property="sz" jdbcType="INTEGER" />
+    <result column="xd" property="xd" jdbcType="INTEGER" />
+    <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, trade_date, zt, dt, hc, sz, xd, gmt_create
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gesangwu.spider.biz.dao.model.KLineStatisExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from k_line_statis
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="offset != null and offset > -1" >
+      limit ${offset},${rows}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from k_line_statis
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from k_line_statis
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gesangwu.spider.biz.dao.model.KLineStatisExample" >
+    delete from k_line_statis
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.gesangwu.spider.biz.dao.model.KLineStatis" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into k_line_statis (trade_date, zt, dt, 
+      hc, sz, xd, gmt_create
+      )
+    values (#{tradeDate,jdbcType=VARCHAR}, #{zt,jdbcType=INTEGER}, #{dt,jdbcType=INTEGER}, 
+      #{hc,jdbcType=INTEGER}, #{sz,jdbcType=INTEGER}, #{xd,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.gesangwu.spider.biz.dao.model.KLineStatis" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into k_line_statis
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tradeDate != null" >
+        trade_date,
+      </if>
+      <if test="zt != null" >
+        zt,
+      </if>
+      <if test="dt != null" >
+        dt,
+      </if>
+      <if test="hc != null" >
+        hc,
+      </if>
+      <if test="sz != null" >
+        sz,
+      </if>
+      <if test="xd != null" >
+        xd,
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tradeDate != null" >
+        #{tradeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null" >
+        #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="dt != null" >
+        #{dt,jdbcType=INTEGER},
+      </if>
+      <if test="hc != null" >
+        #{hc,jdbcType=INTEGER},
+      </if>
+      <if test="sz != null" >
+        #{sz,jdbcType=INTEGER},
+      </if>
+      <if test="xd != null" >
+        #{xd,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null" >
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gesangwu.spider.biz.dao.model.KLineStatisExample" resultType="java.lang.Integer" >
+    select count(*) from k_line_statis
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update k_line_statis
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.tradeDate != null" >
+        trade_date = #{record.tradeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zt != null" >
+        zt = #{record.zt,jdbcType=INTEGER},
+      </if>
+      <if test="record.dt != null" >
+        dt = #{record.dt,jdbcType=INTEGER},
+      </if>
+      <if test="record.hc != null" >
+        hc = #{record.hc,jdbcType=INTEGER},
+      </if>
+      <if test="record.sz != null" >
+        sz = #{record.sz,jdbcType=INTEGER},
+      </if>
+      <if test="record.xd != null" >
+        xd = #{record.xd,jdbcType=INTEGER},
+      </if>
+      <if test="record.gmtCreate != null" >
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update k_line_statis
+    set id = #{record.id,jdbcType=BIGINT},
+      trade_date = #{record.tradeDate,jdbcType=VARCHAR},
+      zt = #{record.zt,jdbcType=INTEGER},
+      dt = #{record.dt,jdbcType=INTEGER},
+      hc = #{record.hc,jdbcType=INTEGER},
+      sz = #{record.sz,jdbcType=INTEGER},
+      xd = #{record.xd,jdbcType=INTEGER},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gesangwu.spider.biz.dao.model.KLineStatis" >
+    update k_line_statis
+    <set >
+      <if test="tradeDate != null" >
+        trade_date = #{tradeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null" >
+        zt = #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="dt != null" >
+        dt = #{dt,jdbcType=INTEGER},
+      </if>
+      <if test="hc != null" >
+        hc = #{hc,jdbcType=INTEGER},
+      </if>
+      <if test="sz != null" >
+        sz = #{sz,jdbcType=INTEGER},
+      </if>
+      <if test="xd != null" >
+        xd = #{xd,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gesangwu.spider.biz.dao.model.KLineStatis" >
+    update k_line_statis
+    set trade_date = #{tradeDate,jdbcType=VARCHAR},
+      zt = #{zt,jdbcType=INTEGER},
+      dt = #{dt,jdbcType=INTEGER},
+      hc = #{hc,jdbcType=INTEGER},
+      sz = #{sz,jdbcType=INTEGER},
+      xd = #{xd,jdbcType=INTEGER},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,12 +30,13 @@ import com.gesangwu.spider.biz.common.LianBanStatus;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
+import com.gesangwu.spider.biz.dao.model.KLineStatis;
 import com.gesangwu.spider.biz.dao.model.LianBan;
 import com.gesangwu.spider.biz.dao.model.LianBanExample;
 import com.gesangwu.spider.biz.dao.model.LianBanPlate;
 import com.gesangwu.spider.biz.service.CompanyService;
-import com.gesangwu.spider.biz.service.HolidayService;
 import com.gesangwu.spider.biz.service.KLineService;
+import com.gesangwu.spider.biz.service.KLineStatisService;
 import com.gesangwu.spider.biz.service.LianBanPlateService;
 import com.gesangwu.spider.biz.service.LianBanService;
 
@@ -50,6 +50,8 @@ public class LianBanController {
 	private LianBanService lbService;
 	@Resource
 	private KLineService klService;
+	@Resource
+	private KLineStatisService ksService;
 	@Resource
 	private CompanyService companyService;
 	@Resource
@@ -140,7 +142,7 @@ public class LianBanController {
 				return new AjaxResult(500, "没有对应日期的K线！");
 			}
 		}
-		int count = lbService.insert(lb);
+		lbService.insert(lb);
 		updatePreLB(lb);
 		return new AjaxResult();
 	}
@@ -149,7 +151,7 @@ public class LianBanController {
 	@RequestMapping(value = "/del", method = RequestMethod.POST)
 	public AjaxResult del(HttpServletRequest request){
 		Long id = Long.valueOf(request.getParameter("id"));
-		int count = lbService.deleteByPrimaryKey(id);
+		lbService.deleteByPrimaryKey(id);
 		return new AjaxResult();
 	}
 	
@@ -412,11 +414,17 @@ public class LianBanController {
 				list.add(lianBan);
 			}
 		}
+		List<KLineStatis> ksList = ksService.getList(startDate, endDate);
+		Map<String, KLineStatis> ksMap = new TreeMap<String, KLineStatis>();
+		for(KLineStatis ks : ksList) {
+			ksMap.put(ks.getTradeDate(), ks);			
+		}
 		ModelAndView mav = new ModelAndView("lianbanchart");
 		mav.addObject("startDate", startDate);
 		mav.addObject("endDate", endDate);
 //		mav.addObject("lbList", lbList);
 		mav.addObject("lbMap", lbMap);
+		mav.addObject("ksMap", ksMap);
 		return mav;
 	}
 	

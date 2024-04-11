@@ -14,8 +14,10 @@ import com.gesangwu.spider.biz.common.ShapeEnum;
 import com.gesangwu.spider.biz.dao.model.Company;
 import com.gesangwu.spider.biz.dao.model.KLine;
 import com.gesangwu.spider.biz.dao.model.KLineExample;
+import com.gesangwu.spider.biz.dao.model.KLineStatis;
 import com.gesangwu.spider.biz.service.CompanyService;
 import com.gesangwu.spider.biz.service.KLineService;
+import com.gesangwu.spider.biz.service.KLineStatisService;
 
 @Component
 public class DieTingTask extends BaseTask {
@@ -26,6 +28,8 @@ public class DieTingTask extends BaseTask {
 	private KLineService klService;
 	@Resource
 	private CompanyService compnayService;
+	@Resource
+	private KLineStatisService ksService;
 
 	public void execute(){
 		Date now = new Date();
@@ -45,6 +49,7 @@ public class DieTingTask extends BaseTask {
 		}
 		List<KLine> klList = getKLineList(tradeDate);
 		String preTradeDate = getPreTradeDate(tradeDate);
+		int dtCount = 0;
 		for (KLine kl : klList) {
 			if(kl.getSymbol().startsWith("sh688") || (cybStartDate.compareTo(tradeDate) <= 0 && kl.getSymbol().startsWith("sz30")) || kl.getSymbol().startsWith("bj")){
 				continue;
@@ -61,9 +66,13 @@ public class DieTingTask extends BaseTask {
 					continue;
 				}
 			}
+			dtCount++;
 			kl.setShape(ShapeEnum.DIE_TING.getCode());
 			klService.updateByPrimaryKeySelective(kl);
 		}
+		KLineStatis ks = ksService.aou(tradeDate);
+		ks.setDt(dtCount);
+		ksService.updateByPrimaryKeySelective(ks);
 	}
 	
 	private List<KLine> getKLineList(String tradeDate){
