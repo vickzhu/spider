@@ -64,7 +64,7 @@ public class LianBanController {
 			tradeDate = klService.selectLatestDate();
 		}
 		LianBanExample example = new LianBanExample();
-		example.setOrderByClause("days desc,percent desc");
+		example.setOrderByClause("lb_days desc,days desc");
 		LianBanExample.Criteria criteria = example.createCriteria();
 		criteria.andTradeDateEqualTo(tradeDate);
 		criteria.andStatusEqualTo(LianBanStatus.ZT.getCode());
