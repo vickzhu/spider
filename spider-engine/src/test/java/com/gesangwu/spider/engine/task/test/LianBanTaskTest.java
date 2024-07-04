@@ -18,13 +18,13 @@ public class LianBanTaskTest extends BaseTest {
 	
 	@Test
 	public void execute(){
-//		task.execute();
-		task.execute("2024-03-29");
+		task.execute();
+//		task.execute("2024-06-10");
 	}
 	
 //	@Test
 	public void init(){
-		init("2023-12-01","2023-12-07");
+		init("2024-03-28","2024-07-30");
 	}
 	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

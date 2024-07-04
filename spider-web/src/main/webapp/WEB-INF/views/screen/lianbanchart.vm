@@ -101,7 +101,7 @@ $(function(){
                },
                grid: { hoverable: true, clickable: true },
 			   xaxes: [ { position: 'bottom', ticks: xdata}, { position: 'top', ticks: xTopData} ],
-			   yaxis: { position: 'right', min: 0, max: 20, tickSize: 1, tickDecimals:0 }
+			   yaxis: { position: 'right', min: 0, max: 10, tickSize: 1, tickDecimals:0 }
     	   });
     
     // === Point hover in chart === //
