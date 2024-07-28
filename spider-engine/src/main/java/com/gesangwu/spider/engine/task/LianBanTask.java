@@ -92,7 +92,8 @@ public class LianBanTask extends BaseTask {
 			KLine preKl = klService.selectByDate(kl.getSymbol(), preTradeDate);
 			if(preKl != null) {
 				double ztPrice = preKl.getClose();
-				double todayZtPrice = CalculateUtil.mul(ztPrice, 1.1);
+				double factor = kl.getSymbol().startsWith("sz30") ? 1.2:1.1;
+				double todayZtPrice = CalculateUtil.mul(ztPrice, factor);
 				if(kl.getClose() != todayZtPrice) {
 					continue;
 				}
