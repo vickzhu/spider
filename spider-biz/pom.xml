@@ -8,7 +8,7 @@
   <artifactId>spider-biz</artifactId>
   <properties>
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	<druid.version>1.0.1</druid.version>
+	<druid.version>1.2.8</druid.version>
   </properties>
   <dependencies>
   	<dependency>
